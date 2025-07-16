@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "name": "Push-Up",
+    "description": "A basic upper body exercise targeting the chest, shoulders, and triceps.",
+    "difficulty": "Beginner"
+  },
+  {
+    "id": 2,
+    "name": "Pull-Up",
+    "description": "A compound exercise focusing on the back and biceps.",
+    "difficulty": "Intermediate"
+  },
+  {
+    "id": 3,
+    "name": "Handstand Push-Up",
+    "description": "An advanced exercise for shoulder and triceps strength.",
+    "difficulty": "Advanced"
+  }
+] 

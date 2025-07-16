@@ -1,0 +1,8 @@
+{
+  "name": "Calisthenics Mastery",
+  "short_name": "Calis4",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fafbfc",
+  "description": "A PWA for calisthenics training."
+}
