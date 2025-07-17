@@ -19,7 +19,9 @@ const APP_SHELL = [
   '/js/utils/chart-helpers.js',
   '/data/exercises.json',
   '/data/programs.json',
-  '/manifest.json'
+  '/manifest.json',
+  '/assets/icons/favicon-32x32.png',
+  '/assets/icons/favicon-16x16.png',
 ];
 
 self.addEventListener('install', event => {

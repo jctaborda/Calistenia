@@ -2,6 +2,8 @@ import { getState } from '../services/state.js';
 import { renderHeader } from '../components/header.js';
 import { logSet } from '../services/workout-engine.js';
 
+let bound = false;
+
 export function renderActiveWorkoutView() {
   const main = document.getElementById('app');
   const { activeWorkout, exercises } = getState();
@@ -9,8 +11,18 @@ export function renderActiveWorkoutView() {
     main.innerHTML = renderHeader() + '<p>No active workout.</p>';
     return;
   }
-  // For now, always show the first exercise in the program
-  const exerciseId = activeWorkout.program.exercises[0];
+  // Find the current exercise (first one in program.exercises that has no progress or incomplete set)
+  const progress = activeWorkout.progress || {};
+  const programExercises = activeWorkout.program.exercises;
+  let currentIdx = 0;
+  for (let i = 0; i < programExercises.length; i++) {
+    if (!progress[programExercises[i]] || progress[programExercises[i]].length === 0) {
+      currentIdx = i;
+      break;
+    }
+    if (i === programExercises.length - 1) currentIdx = i;
+  }
+  const exerciseId = programExercises[currentIdx];
   const exercise = (exercises || []).find(e => String(e.id) === String(exerciseId));
   if (!exercise) {
     main.innerHTML = renderHeader() + '<p>Exercise not found.</p>';
@@ -31,8 +43,15 @@ export function renderActiveWorkoutView() {
       e.preventDefault();
       const reps = form.elements['reps'].value;
       logSet(reps);
-      // The view will re-render on stateChange, but for now, call renderActiveWorkoutView directly
-      renderActiveWorkoutView();
+      // No direct re-render; will re-render on stateChange
     });
+  }
+  if (!bound) {
+    document.addEventListener('stateChange', () => {
+      if (window.location.hash === '#active-workout') {
+        renderActiveWorkoutView();
+      }
+    });
+    bound = true;
   }
 } 
