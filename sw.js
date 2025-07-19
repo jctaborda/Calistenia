@@ -22,6 +22,9 @@ const APP_SHELL = [
   '/manifest.json',
   '/assets/icons/favicon-32x32.png',
   '/assets/icons/favicon-16x16.png',
+  '/assets/icons/favicon-192x192.png',
+  'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap',
+  
 ];
 
 self.addEventListener('install', event => {

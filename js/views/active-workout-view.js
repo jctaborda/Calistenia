@@ -8,10 +8,9 @@ export function renderActiveWorkoutView() {
   const main = document.getElementById('app');
   const { activeWorkout, exercises } = getState();
   if (!activeWorkout || !activeWorkout.program) {
-    main.innerHTML = renderHeader() + '<p>No active workout.</p>';
+    main.innerHTML = renderHeader() + '<div class="card"><p>No active workout.</p></div>';
     return;
   }
-  // Find the current exercise (first one in program.exercises that has no progress or incomplete set)
   const progress = activeWorkout.progress || {};
   const programExercises = activeWorkout.program.exercises;
   let currentIdx = 0;
@@ -25,17 +24,19 @@ export function renderActiveWorkoutView() {
   const exerciseId = programExercises[currentIdx];
   const exercise = (exercises || []).find(e => String(e.id) === String(exerciseId));
   if (!exercise) {
-    main.innerHTML = renderHeader() + '<p>Exercise not found.</p>';
+    main.innerHTML = renderHeader() + '<div class="card"><p>Exercise not found.</p></div>';
     return;
   }
   main.innerHTML = renderHeader() + `
-    <h1>Active Workout</h1>
-    <h2>${exercise.name}</h2>
-    <p>${exercise.description}</p>
-    <form id="log-set-form">
-      <label>Reps Completed: <input type="number" name="reps" min="1" required></label>
-      <button type="submit">Log Set</button>
-    </form>
+    <div class="card">
+      <h1>Active Workout</h1>
+      <h2>${exercise.name}</h2>
+      <p>${exercise.description}</p>
+      <form id="log-set-form">
+        <label>Reps Completed: <input type="number" name="reps" min="1" required></label>
+        <button class="btn" type="submit">Log Set</button>
+      </form>
+    </div>
   `;
   const form = main.querySelector('#log-set-form');
   if (form) {
@@ -43,7 +44,6 @@ export function renderActiveWorkoutView() {
       e.preventDefault();
       const reps = form.elements['reps'].value;
       logSet(reps);
-      // No direct re-render; will re-render on stateChange
     });
   }
   if (!bound) {

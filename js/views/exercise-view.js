@@ -7,7 +7,7 @@ export function renderExerciseView(exerciseId) {
   const { exercises, history } = getState();
   const exercise = (exercises || []).find(e => String(e.id) === String(exerciseId));
   if (!exercise) {
-    main.innerHTML = renderHeader() + '<p>Exercise not found.</p>';
+    main.innerHTML = renderHeader() + '<div class="card"><p>Exercise not found.</p></div>';
     return;
   }
   let progressRows = '';
@@ -18,13 +18,15 @@ export function renderExerciseView(exerciseId) {
     progressRows = '<tr><td colspan="2">No data</td></tr>';
   }
   main.innerHTML = renderHeader() + `
-    <h1>${exercise.name}</h1>
-    <p>${exercise.description}</p>
-    <p><strong>Difficulty:</strong> ${exercise.difficulty}</p>
-    <h2>Progress</h2>
-    <table>
-      <thead><tr><th>Date</th><th>Total Reps</th></tr></thead>
-      <tbody>${progressRows}</tbody>
-    </table>
+    <div class="card">
+      <h1>${exercise.name}</h1>
+      <p>${exercise.description}</p>
+      <p><strong>Difficulty:</strong> ${exercise.difficulty}</p>
+      <h2>Progress</h2>
+      <table>
+        <thead><tr><th>Date</th><th>Total Reps</th></tr></thead>
+        <tbody>${progressRows}</tbody>
+      </table>
+    </div>
   `;
 } 

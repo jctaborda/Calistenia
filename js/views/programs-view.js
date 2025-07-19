@@ -8,14 +8,18 @@ export async function renderProgramsView() {
   const user = getState().user || {};
   const customRoutines = user.customRoutines || [];
   main.innerHTML = renderHeader() + `
-    <h1>Programs</h1>
-    <ul>
-      ${programs.map(p => `<li>${p.name} <button data-type="program" data-id="${p.id}">Start</button></li>`).join('')}
-    </ul>
-    <h2>Your Custom Routines</h2>
-    <ul>
-      ${customRoutines.length === 0 ? '<li>No custom routines yet.</li>' : customRoutines.map((r, i) => `<li>${r.name} <button data-type="custom" data-id="${i}">Start</button></li>`).join('')}
-    </ul>
+    <div class="card">
+      <h1>Programs</h1>
+      <ul>
+        ${programs.map(p => `<li>${p.name} <button class="btn" data-type="program" data-id="${p.id}">Start</button></li>`).join('')}
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Custom Routines</h2>
+      <ul>
+        ${customRoutines.length === 0 ? '<li>No custom routines yet.</li>' : customRoutines.map((r, i) => `<li>${r.name} <button class="btn" data-type="custom" data-id="${i}">Start</button></li>`).join('')}
+      </ul>
+    </div>
   `;
 
   // Start button logic for both types
@@ -32,7 +36,6 @@ export async function renderProgramsView() {
       } else if (type === 'custom') {
         const routine = customRoutines[Number(id)];
         if (routine) {
-          // Custom routines have name and exercises
           setState({ activeWorkout: { program: { id: 'custom-' + id, name: routine.name, exercises: routine.exercises }, progress: {} } });
           window.location.hash = '#active-workout';
         }

@@ -6,20 +6,22 @@ export async function renderBuilderView() {
   const main = document.getElementById('app');
   const exercises = await fetchExercises();
   main.innerHTML = renderHeader() + `
-    <h1>Routine Builder</h1>
-    <form id="routine-builder-form">
-      <ul>
-        ${exercises.map(e => `
-          <li>
-            <label>
-              <input type="checkbox" name="exercise" value="${e.id}">
-              ${e.name}
-            </label>
-          </li>
-        `).join('')}
-      </ul>
-      <button type="submit">Save Routine</button>
-    </form>
+    <div class="card">
+      <h1>Routine Builder</h1>
+      <form id="routine-builder-form">
+        <ul>
+          ${exercises.map(e => `
+            <li>
+              <label>
+                <input type="checkbox" name="exercise" value="${e.id}">
+                ${e.name}
+              </label>
+            </li>
+          `).join('')}
+        </ul>
+        <button class="btn" type="submit">Save Routine</button>
+      </form>
+    </div>
   `;
   const form = main.querySelector('#routine-builder-form');
   if (form) {
