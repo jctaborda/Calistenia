@@ -1,4 +1,5 @@
-const CACHE_NAME = 'calisthenics-app-shell-v1';
+const VERSION = '0.0.1';
+const CACHE_NAME = `calisthenics-app-${VERSION}`;
 const APP_SHELL = [
   '/',
   '/index.html',
@@ -17,8 +18,8 @@ const APP_SHELL = [
   '/js/views/builder-view.js',
   '/js/components/header.js',
   '/js/utils/chart-helpers.js',
-  '/data/exercises.json',
-  '/data/programs.json',
+  'https://jctaborda.github.io/Calistenia/data/exercises.json',
+  'https://jctaborda.github.io/Calistenia/data/programs.json',
   '/manifest.json',
   '/assets/icons/favicon-32x32.png',
   '/assets/icons/favicon-16x16.png',

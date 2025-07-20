@@ -7,6 +7,7 @@ import { renderWorkoutSummaryView } from './views/workout-summary-view.js';
 import { renderOnboardingView } from './views/onboarding-view.js';
 import { renderProfileView } from './views/profile-view.js';
 import { renderBuilderView } from './views/builder-view.js';
+import { renderExercisesView } from './views/exercises-view.js';
 import { fetchExercises } from './services/api.js';
 import { getExerciseProgressData } from './utils/chart-helpers.js';
 
@@ -40,6 +41,8 @@ async function router() {
     renderActiveWorkoutView();
   } else if (hash === '#summary') {
     renderWorkoutSummaryView();
+  } else if (hash === '#exercises') {
+    renderExercisesView();
   } else if (hash === '#profile') {
     renderProfileView();
   } else if (hash === '#builder') {

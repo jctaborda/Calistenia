@@ -8,6 +8,7 @@ export function renderHeader() {
       <nav aria-label="Main navigation">
         <a href="#home">Home</a>
         <a href="#programs">Programs</a>
+        <a href="#exercises">Exercises</a>
         <a href="#builder">Routine Builder</a>
         <a href="#profile">Profile</a>
       </nav>

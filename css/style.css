@@ -5,7 +5,7 @@ html {
   box-sizing: inherit;
 }
 body {
-  font-family: 'Inter', system-ui, Arial, sans-serif;
+  font-family: 'Inter','Roboto';
   margin: 0;
   padding: 0;
   background: #f5f7fa;
@@ -59,7 +59,7 @@ nav a:hover, nav a.active {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Inter', system-ui, Arial, sans-serif;
+  font-family: 'Inter','Roboto';
   font-weight: 600;
   color: #222;
 }
@@ -76,6 +76,8 @@ button, .btn {
   cursor: pointer;
   box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
   transition: background 0.2s, box-shadow 0.2s;
+  display:block;
+  margin: 1px;
 }
 button:hover, .btn:hover {
   background: #1251a3;
