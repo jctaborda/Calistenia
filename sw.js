@@ -2,27 +2,27 @@ const VERSION = '0.0.1';
 const CACHE_NAME = `calisthenics-app-${VERSION}`;
 const PATH = "Calistenia";
 const APP_SHELL = [
-  `${PATH}/index.html`,
-  `${PATH}/css/style.css`,
-  `${PATH}/js/main.js`,
-  `${PATH}/js/services/api.js`,
-  `${PATH}/js/services/state.js`,
-  `${PATH}/js/services/workout-engine.js`,
-  `${PATH}/js/views/home-view.js`,
-  `${PATH}/js/views/exercise-view.js`,
-  `${PATH}/js/views/programs-view.js`,
-  `${PATH}/js/views/active-workout-view.js`,
-  `${PATH}/js/views/workout-summary-view.js`,
-  `${PATH}/js/views/onboarding-view.js`,
-  `${PATH}/js/views/profile-view.js`,
-  `${PATH}/js/views/builder-view.js`,
-  `${PATH}/js/components/header.js`,
-  `${PATH}/js/utils/chart-helpers.js`,
-  `${PATH}/data/exercises.json`,
-  `${PATH}/data/programs.json`,
-  `${PATH}/manifest.json`,
-  `${PATH}/assets/icons/favicon-32x32.png`,
-  `{PATH}/assets/icons/favicon-192x192.png`
+  `./index.html`,
+  `./css/style.css`,
+  `./js/main.js`,
+  `./js/services/api.js`,
+  `./js/services/state.js`,
+  `./js/services/workout-engine.js`,
+  `./js/views/home-view.js`,
+  `./js/views/exercise-view.js`,
+  `./js/views/programs-view.js`,
+  `./js/views/active-workout-view.js`,
+  `./js/views/workout-summary-view.js`,
+  `./js/views/onboarding-view.js`,
+  `./js/views/profile-view.js`,
+  `./js/views/builder-view.js`,
+  `./js/components/header.js`,
+  `./js/utils/chart-helpers.js`,
+  `./data/exercises.json`,
+  `./data/programs.json`,
+  `./manifest.json`,
+  `./assets/icons/favicon-32x32.png`,
+  `./assets/icons/favicon-192x192.png`
   
 ];
 

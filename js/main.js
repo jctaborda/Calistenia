@@ -57,7 +57,7 @@ router();
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js').then(() => {
-      // Registered
+      console.log("[Main] SW Registered");// Registered
     }).catch(err => {
       console.error('Service Worker registration failed:', err);
     });

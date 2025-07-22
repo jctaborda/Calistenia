@@ -1,7 +1,8 @@
 {
   "name": "Calisthenics Mastery",
   "short_name": "Calis4",
-  "start_url": "/",
+  "start_url": "/Calistenia/",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#fafbfc",
   "theme_color": "#1976d2",
