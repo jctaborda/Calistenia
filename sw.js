@@ -2,7 +2,6 @@ const VERSION = '0.0.1';
 const CACHE_NAME = `calisthenics-app-${VERSION}`;
 const PATH = "Calistenia";
 const APP_SHELL = [
-  '${PATH}/',
   '${PATH}/index.html',
   '${PATH}/css/style.css',
   '${PATH}/js/main.js',
@@ -23,7 +22,6 @@ const APP_SHELL = [
   '${PATH}/data/programs.json',
   '${PATH}/manifest.json',
   '${PATH}/assets/icons/favicon-32x32.png',
-  '${PATH}/assets/icons/favicon-16x16.png',
   '${PATH}/assets/icons/favicon-192x192.png',
   
 ];
