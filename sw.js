@@ -25,21 +25,49 @@ const APP_SHELL = [
   '${PATH}/assets/icons/favicon-32x32.png',
   '${PATH}/assets/icons/favicon-16x16.png',
   '${PATH}/assets/icons/favicon-192x192.png',
-  'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap',
   
 ];
 
 self.addEventListener('install', event => {
-  console.log('Service Worker Registered');
+  console.log('[Service Worker] Install');
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL))
+    (async () => {
+      const cache = await caches.open(CACHE_NAME);
+      console.log('[Service Worker] Caching all');
+      await cache.addAll(APP_SHELL);
+    })(),  
   );
 });
 
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || fetch(event.request);
-    })
+
+self.addEventListener("fetch", (e) => {
+  e.respondWith(
+    (async () => {
+      const r = await caches.match(e.request);
+      console.log(`[Service Worker] Fetching resource: ${e.request.url}`);
+      if (r) {
+        return r;
+      }
+      const response = await fetch(e.request);
+      const cache = await caches.open(CACHE_NAME);
+      console.log(`[Service Worker] Caching new resource: ${e.request.url}`);
+      cache.put(e.request, response.clone());
+      return response;
+    })(),
+  );
+});
+
+self.addEventListener("activate", (e) => {
+  e.waitUntil(
+    caches.keys().then((keyList) =>
+      Promise.all(
+        keyList.map((key) => {
+          if (key === CACHE_NAME) {
+            return undefined;
+          }
+          return caches.delete(key);
+        }),
+      ),
+    ),
   );
 });
