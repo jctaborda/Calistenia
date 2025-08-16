@@ -1,6 +1,6 @@
 import { getState, setState } from './state.js';
 
-export function logSet(reps) {
+export function logSet(reps, { deferAdvance = false } = {}) {
   const { activeWorkout, user, history = [] } = getState();
   if (!activeWorkout) return;
   const programExercises = activeWorkout.program.exercises;
@@ -30,9 +30,12 @@ export function logSet(reps) {
     setState({
       history: [...(getState().history || []), completedWorkout],
       activeWorkout: null,
-    });
-    window.location.hash = '#summary';
+    }, { silent: deferAdvance });
+    if (!deferAdvance) {
+      window.location.hash = '#summary';
+    }
   } else {
-    setState({ activeWorkout: { ...activeWorkout, progress } });
+    setState({ activeWorkout: { ...activeWorkout, progress } }, { silent: deferAdvance });
   }
+  return { finished };
 } 

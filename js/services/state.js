@@ -4,10 +4,13 @@ export function getState() {
   return state;
 }
 
-export function setState(newState) {
+export function setState(newState, options = {}) {
+  const { silent = false } = options;
   Object.assign(state, newState);
   localStorage.setItem('state', JSON.stringify(state));
-  document.dispatchEvent(new CustomEvent('stateChange'));
+  if (!silent) {
+    document.dispatchEvent(new CustomEvent('stateChange'));
+  }
 }
 
 export function initializeState() {

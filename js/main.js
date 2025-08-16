@@ -4,6 +4,7 @@ import { renderExerciseView } from './views/exercise-view.js';
 import { renderProgramsView } from './views/programs-view.js';
 import { renderActiveWorkoutView } from './views/active-workout-view.js';
 import { renderWorkoutSummaryView } from './views/workout-summary-view.js';
+import { renderWorkoutCompletionView } from './views/workout-completion-view.js';
 import { renderOnboardingView } from './views/onboarding-view.js';
 import { renderProfileView } from './views/profile-view.js';
 import { renderBuilderView } from './views/builder-view.js';
@@ -39,6 +40,8 @@ async function router() {
     renderProgramsView();
   } else if (hash === '#active-workout') {
     renderActiveWorkoutView();
+  } else if (hash === '#workout-completion') {
+    renderWorkoutCompletionView();
   } else if (hash === '#summary') {
     renderWorkoutSummaryView();
   } else if (hash === '#exercises') {
@@ -56,7 +59,8 @@ router();
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/Calistenia/sw.js').then(() => {
+    navigator.serviceWorker.register('./sw.js').then(() => {
+    //navigator.serviceWorker.register('/Calistenia/sw.js').then(() => {
       console.log("[Main] SW Registered");// Registered
     }).catch(err => {
       console.error('Service Worker registration failed:', err);

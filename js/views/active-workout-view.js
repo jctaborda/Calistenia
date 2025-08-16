@@ -1,51 +1,147 @@
-import { getState } from '../services/state.js';
+import { getState, setState } from '../services/state.js';
 import { renderHeader } from '../components/header.js';
-import { logSet } from '../services/workout-engine.js';
+import { renderTimer, startTimer } from '../components/timer.js';
 
 let bound = false;
 
 export function renderActiveWorkoutView() {
   const main = document.getElementById('app');
   const { activeWorkout, exercises } = getState();
+  
   if (!activeWorkout || !activeWorkout.program) {
     main.innerHTML = renderHeader() + '<div class="card"><p>No active workout.</p></div>';
     return;
   }
-  const progress = activeWorkout.progress || {};
-  const programExercises = activeWorkout.program.exercises;
-  let currentIdx = 0;
-  for (let i = 0; i < programExercises.length; i++) {
-    if (!progress[programExercises[i]] || progress[programExercises[i]].length === 0) {
-      currentIdx = i;
-      break;
-    }
-    if (i === programExercises.length - 1) currentIdx = i;
+
+  const program = activeWorkout.program;
+  const currentExerciseIndex = activeWorkout.currentExerciseIndex || 0;
+  const currentSetIndex = activeWorkout.currentSetIndex || 0;
+  
+  if (currentExerciseIndex >= program.exercises.length) {
+    // Workout completed, go to completion view
+    window.location.hash = '#workout-completion';
+    return;
   }
-  const exerciseId = programExercises[currentIdx];
-  const exercise = (exercises || []).find(e => String(e.id) === String(exerciseId));
+
+  const currentExerciseData = program.exercises[currentExerciseIndex];
+  const exercise = exercises.find(e => String(e.id) === String(currentExerciseData.exerciseId));
+  
   if (!exercise) {
     main.innerHTML = renderHeader() + '<div class="card"><p>Exercise not found.</p></div>';
     return;
   }
+
+  const isLastSet = currentSetIndex >= currentExerciseData.sets - 1;
+  const isLastExercise = currentExerciseIndex >= program.exercises.length - 1;
+
   main.innerHTML = renderHeader() + `
     <div class="card">
-      <h1>Active Workout</h1>
+      <h1>Active Workout: ${program.name}</h1>
+      <div style="margin-bottom: 1rem;">
+        <small>Exercise ${currentExerciseIndex + 1} of ${program.exercises.length}</small>
+      </div>
+      
       <h2>${exercise.name}</h2>
       <p>${exercise.description}</p>
-      <form id="log-set-form">
-        <label>Reps Completed: <input type="number" name="reps" min="1" required></label>
-        <button class="btn" type="submit">Log Set</button>
-      </form>
+      
+      <div class="card" style="background: var(--muted, #f8f9fa); margin: 1rem 0;">
+        <h3>Current Set</h3>
+        <p><strong>Set ${currentSetIndex + 1} of ${currentExerciseData.sets}</strong></p>
+        <p><strong>Target Reps:</strong> ${currentExerciseData.reps}</p>
+        ${!isLastSet ? `<p><strong>Rest after this set:</strong> ${currentExerciseData.restTime}s</p>` : ''}
+      </div>
+
+      <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+        <button id="complete-set-btn" class="btn" style="flex: 1;">Complete Set</button>
+        ${!isLastSet || !isLastExercise ? `<button id="skip-exercise-btn" class="btn" style="background: #6c757d;">Skip Exercise</button>` : ''}
+      </div>
+      
+      <div id="rest-timer"></div>
     </div>
   `;
-  const form = main.querySelector('#log-set-form');
-  if (form) {
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      const reps = form.elements['reps'].value;
-      logSet(reps);
+
+  // Complete set button
+  const completeBtn = main.querySelector('#complete-set-btn');
+  if (completeBtn) {
+    completeBtn.addEventListener('click', () => {
+      const newSetIndex = currentSetIndex + 1;
+      
+      if (newSetIndex >= currentExerciseData.sets) {
+        // Move to next exercise
+        const newExerciseIndex = currentExerciseIndex + 1;
+        setState({
+          activeWorkout: {
+            ...activeWorkout,
+            currentExerciseIndex: newExerciseIndex,
+            currentSetIndex: 0
+          }
+        }, { silent: true });
+        
+        if (newExerciseIndex >= program.exercises.length) {
+          // Workout completed
+          window.location.hash = '#workout-completion';
+        } else {
+          // Show rest timer and then move to next exercise
+          showRestTimer(currentExerciseData.restTime, () => {
+            document.dispatchEvent(new CustomEvent('stateChange'));
+          });
+        }
+      } else {
+        // Move to next set
+        setState({
+          activeWorkout: {
+            ...activeWorkout,
+            currentSetIndex: newSetIndex
+          }
+        }, { silent: true });
+        
+        // Show rest timer and then update view
+        showRestTimer(currentExerciseData.restTime, () => {
+          document.dispatchEvent(new CustomEvent('stateChange'));
+        });
+      }
     });
   }
+
+  // Skip exercise button
+  const skipBtn = main.querySelector('#skip-exercise-btn');
+  if (skipBtn) {
+    skipBtn.addEventListener('click', () => {
+      const newExerciseIndex = currentExerciseIndex + 1;
+      setState({
+        activeWorkout: {
+          ...activeWorkout,
+          currentExerciseIndex: newExerciseIndex,
+          currentSetIndex: 0
+        }
+      });
+      
+      if (newExerciseIndex >= program.exercises.length) {
+        window.location.hash = '#workout-completion';
+      }
+    });
+  }
+
+  function showRestTimer(restTime, onComplete) {
+    const restEl = main.querySelector('#rest-timer');
+    if (!restEl) return;
+    
+    restEl.innerHTML = renderTimer(restTime);
+    
+    startTimer(restTime, {
+      onTick: (remaining, total) => {
+        const secEl = document.getElementById('timer-seconds');
+        const progEl = document.getElementById('timer-progress');
+        if (secEl) secEl.textContent = Math.max(0, remaining);
+        if (progEl) {
+          const pct = Math.min(100, Math.max(0, ((total - remaining) / total) * 100));
+          progEl.style.width = pct + '%';
+        }
+      },
+      onComplete: onComplete
+    });
+  }
+
   if (!bound) {
     document.addEventListener('stateChange', () => {
       if (window.location.hash === '#active-workout') {
