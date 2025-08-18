@@ -7,9 +7,36 @@ export async function renderExercisesView() {
   main.innerHTML = renderHeader() + `
     <div class="card">
       <h1>Exercises</h1>
-      <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
-        ${exercises.map(e => `<a class="btn" href="#exercise/${e.id}">${e.name}</a>`).join('')}
+      <input 
+        type="text" 
+        id="exercise-filter" 
+        class="filter-input" 
+        placeholder="Search exercises..." 
+        autocomplete="off"
+      >
+      <div id="exercises-grid" class="exercise-grid">
+        ${exercises.map(e => `<a class="btn" href="#exercise/${e.id}" data-exercise-name="${e.name.toLowerCase()}">${e.name}</a>`).join('')}
       </div>
     </div>
   `;
+
+  // Add filter functionality
+  const filterInput = main.querySelector('#exercise-filter');
+  const exercisesGrid = main.querySelector('#exercises-grid');
+  const exerciseButtons = exercisesGrid.querySelectorAll('a[data-exercise-name]');
+
+  if (filterInput) {
+    filterInput.addEventListener('input', (e) => {
+      const filterText = e.target.value.toLowerCase().trim();
+      
+      exerciseButtons.forEach(button => {
+        const exerciseName = button.getAttribute('data-exercise-name');
+        if (exerciseName.includes(filterText)) {
+          button.style.display = '';
+        } else {
+          button.style.display = 'none';
+        }
+      });
+    });
+  }
 } 

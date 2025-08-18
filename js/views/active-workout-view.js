@@ -37,23 +37,23 @@ export function renderActiveWorkoutView() {
   main.innerHTML = renderHeader() + `
     <div class="card">
       <h1>Active Workout: ${program.name}</h1>
-      <div style="margin-bottom: 1rem;">
+      <div class="margin-bottom-1">
         <small>Exercise ${currentExerciseIndex + 1} of ${program.exercises.length}</small>
       </div>
       
       <h2>${exercise.name}</h2>
       <p>${exercise.description}</p>
       
-      <div class="card" style="background: var(--muted, #f8f9fa); margin: 1rem 0;">
+      <div class="card card-muted">
         <h3>Current Set</h3>
         <p><strong>Set ${currentSetIndex + 1} of ${currentExerciseData.sets}</strong></p>
         <p><strong>Target Reps:</strong> ${currentExerciseData.reps}</p>
         ${!isLastSet ? `<p><strong>Rest after this set:</strong> ${currentExerciseData.restTime}s</p>` : ''}
       </div>
 
-      <div style="display: flex; gap: 1rem; margin-top: 1rem;">
-        <button id="complete-set-btn" class="btn" style="flex: 1;">Complete Set</button>
-        ${!isLastSet || !isLastExercise ? `<button id="skip-exercise-btn" class="btn" style="background: #6c757d;">Skip Exercise</button>` : ''}
+      <div class="flex-container">
+        <button id="complete-set-btn" class="btn flex-1">Complete Set</button>
+        ${!isLastSet || !isLastExercise ? `<button id="skip-exercise-btn" class="btn btn-secondary">Skip Exercise</button>` : ''}
       </div>
       
       <div id="rest-timer"></div>

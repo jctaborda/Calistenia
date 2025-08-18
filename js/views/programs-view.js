@@ -15,7 +15,7 @@ export async function renderProgramsView() {
       <ul>
         ${programs.map(p => `
           <li>
-            <button class="program-name-btn" data-type="program" data-id="${p.id}" style="background: none; border: none; color: var(--primary, #007bff); text-decoration: underline; cursor: pointer; padding: 0; font-size: inherit;">
+            <button class="program-name-btn btn-link" data-type="program" data-id="${p.id}">
               ${p.name}
             </button>
             <button class="btn" data-type="program" data-id="${p.id}" data-action="start">Start</button>
@@ -28,7 +28,7 @@ export async function renderProgramsView() {
       <ul>
         ${customRoutines.length === 0 ? '<li>No custom routines yet.</li>' : customRoutines.map((r, i) => `
           <li>
-            <button class="program-name-btn" data-type="custom" data-id="${i}" style="background: none; border: none; color: var(--primary, #007bff); text-decoration: underline; cursor: pointer; padding: 0; font-size: inherit;">
+            <button class="program-name-btn btn-link" data-type="custom" data-id="${i}">
               ${r.name}
             </button>
             <button class="btn" data-type="custom" data-id="${i}" data-action="start">Start</button>
@@ -36,7 +36,7 @@ export async function renderProgramsView() {
         `).join('')}
       </ul>
     </div>
-    <div id="program-details" class="card" style="display: none;">
+    <div id="program-details" class="card hidden">
       <h3 id="program-details-title"></h3>
       <div id="program-details-content"></div>
       <button id="close-details" class="btn">Close Details</button>
@@ -73,7 +73,7 @@ export async function renderProgramsView() {
         }).join('')}
       </ul>
     `;
-    detailsDiv.style.display = 'block';
+    detailsDiv.classList.remove('hidden');
     detailsDiv.scrollIntoView({ behavior: 'smooth' });
   }
 
@@ -111,7 +111,7 @@ export async function renderProgramsView() {
   const closeBtn = main.querySelector('#close-details');
   if (closeBtn) {
     closeBtn.addEventListener('click', () => {
-      main.querySelector('#program-details').style.display = 'none';
+      main.querySelector('#program-details').classList.add('hidden');
     });
   }
 } 

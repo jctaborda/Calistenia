@@ -9,23 +9,41 @@ export async function renderBuilderView() {
     <div class="card">
       <h1>Routine Builder</h1>
       <form id="routine-builder-form">
+        <div class="card">
+          <h3>Routine Name</h3>
+          <input 
+            type="text" 
+            id="routine-name" 
+            class="filter-input" 
+            placeholder="Enter routine name..." 
+            required
+          >
+        </div>
         <div id="selected-exercises">
           <h3>Selected Exercises</h3>
           <div id="exercise-list"></div>
         </div>
         <div class="card">
           <h3>Available Exercises</h3>
-          <ul>
+          <input 
+            type="text" 
+            id="available-exercise-filter" 
+            class="filter-input" 
+            placeholder="Search available exercises..." 
+            autocomplete="off"
+          >
+          <ul id="available-exercises-list" class="checkbox-list">
             ${exercises.map(e => `
-              <li>
-                <button type="button" class="btn" data-exercise-id="${e.id}" data-exercise-name="${e.name}">
-                  Add ${e.name}
-                </button>
+              <li data-exercise-name="${e.name.toLowerCase()}">
+                <label>
+                  <input type="checkbox" data-exercise-id="${e.id}" data-exercise-name="${e.name}">
+                  <span>${e.name}</span>
+                </label>
               </li>
             `).join('')}
           </ul>
         </div>
-        <button class="btn" type="submit" style="margin-top: 1rem;">Save Routine</button>
+        <button class="btn margin-top-1" type="submit">Save Routine</button>
       </form>
     </div>
   `;
@@ -39,13 +57,13 @@ export async function renderBuilderView() {
     }
     
     exerciseList.innerHTML = selectedExercises.map((ex, index) => `
-      <div class="card" style="margin-bottom: 1rem;">
+      <div class="card margin-bottom-1">
         <h4>${ex.name}</h4>
-        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 0.5rem; align-items: center;">
+        <div class="exercise-form-grid">
           <label>Sets: <input type="number" min="1" max="10" value="${ex.sets}" data-index="${index}" data-field="sets"></label>
           <label>Reps: <input type="number" min="1" max="50" value="${ex.reps}" data-index="${index}" data-field="reps"></label>
           <label>Rest (s): <input type="number" min="15" max="300" step="15" value="${ex.restTime}" data-index="${index}" data-field="restTime"></label>
-          <button type="button" class="btn" data-remove="${index}" style="background: #dc3545; color: white;">Remove</button>
+          <button type="button" class="btn btn-danger" data-remove="${index}">Remove</button>
         </div>
       </div>
     `).join('');
@@ -63,32 +81,66 @@ export async function renderBuilderView() {
     exerciseList.querySelectorAll('button[data-remove]').forEach(btn => {
       btn.addEventListener('click', e => {
         const index = parseInt(e.target.dataset.remove);
+        const exerciseId = selectedExercises[index].exerciseId;
+        
+        // Uncheck the corresponding checkbox
+        const checkbox = main.querySelector(`input[type="checkbox"][data-exercise-id="${exerciseId}"]`);
+        if (checkbox) {
+          checkbox.checked = false;
+        }
+        
         selectedExercises.splice(index, 1);
         updateExerciseList();
       });
     });
   }
 
-  // Add event listeners for "Add Exercise" buttons
-  main.querySelectorAll('button[data-exercise-id]').forEach(btn => {
-    btn.addEventListener('click', e => {
+  // Add filter functionality for available exercises
+  const filterInput = main.querySelector('#available-exercise-filter');
+  const exercisesList = main.querySelector('#available-exercises-list');
+  const exerciseItems = exercisesList.querySelectorAll('li[data-exercise-name]');
+
+  if (filterInput) {
+    filterInput.addEventListener('input', (e) => {
+      const filterText = e.target.value.toLowerCase().trim();
+      
+      exerciseItems.forEach(item => {
+        const exerciseName = item.getAttribute('data-exercise-name');
+        if (exerciseName.includes(filterText)) {
+          item.style.display = '';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+  }
+
+  // Add event listeners for exercise checkboxes
+  main.querySelectorAll('input[type="checkbox"][data-exercise-id]').forEach(checkbox => {
+    checkbox.addEventListener('change', e => {
       const exerciseId = parseInt(e.target.dataset.exerciseId);
       const exerciseName = e.target.dataset.exerciseName;
       
-      // Check if exercise is already added
-      if (selectedExercises.some(ex => ex.exerciseId === exerciseId)) {
-        alert('Exercise already added to routine!');
-        return;
+      if (e.target.checked) {
+        // Add exercise to selected list
+        if (!selectedExercises.some(ex => ex.exerciseId === exerciseId)) {
+          selectedExercises.push({
+            exerciseId,
+            name: exerciseName,
+            sets: 3,
+            reps: 8,
+            restTime: 60
+          });
+          updateExerciseList();
+        }
+      } else {
+        // Remove exercise from selected list
+        const index = selectedExercises.findIndex(ex => ex.exerciseId === exerciseId);
+        if (index !== -1) {
+          selectedExercises.splice(index, 1);
+          updateExerciseList();
+        }
       }
-      
-      selectedExercises.push({
-        exerciseId,
-        name: exerciseName,
-        sets: 3,
-        reps: 8,
-        restTime: 60
-      });
-      updateExerciseList();
     });
   });
 
@@ -96,12 +148,20 @@ export async function renderBuilderView() {
   if (form) {
     form.addEventListener('submit', e => {
       e.preventDefault();
-      if (selectedExercises.length === 0) {
-        alert('Please add at least one exercise.');
+      
+      const nameInput = main.querySelector('#routine-name');
+      const name = nameInput.value.trim();
+      
+      if (!name) {
+        alert('Please enter a name for your routine.');
+        nameInput.focus();
         return;
       }
-      const name = prompt('Enter a name for your routine:');
-      if (!name) return;
+      
+      if (selectedExercises.length === 0) {
+        alert('Please select at least one exercise.');
+        return;
+      }
       
       const state = getState();
       const user = { ...state.user };
