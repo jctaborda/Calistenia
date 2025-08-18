@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "name": "Beginner Strength Routine",
+    "exercises": [
+      {
+        "exerciseId": 1,
+        "sets": 3,
+        "reps": 8,
+        "restTime": 60
+      },
+      {
+        "exerciseId": 2,
+        "sets": 3,
+        "reps": 10,
+        "restTime": 45
+      }
+    ]
+  }
+] 
