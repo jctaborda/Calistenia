@@ -30,9 +30,9 @@ self.addEventListener('install', event => {
     (async () => {
       try {
         const cache = await caches.open(CACHE_NAME);
-        console.log('[Service Worker] Caching app shell');
+        //console.log('[Service Worker] Caching app shell');
         await cache.addAll(APP_SHELL);
-        console.log('[Service Worker] App shell cached successfully');
+        //console.log('[Service Worker] App shell cached successfully');
         // Skip waiting to activate immediately
         self.skipWaiting();
       } catch (error) {
@@ -61,13 +61,13 @@ self.addEventListener("fetch", (e) => {
       
       try {
         // Network first strategy: try to fetch from network first
-        console.log(`[Service Worker] Attempting network fetch: ${request.url}`);
+        //console.log(`[Service Worker] Attempting network fetch: ${request.url}`);
         const networkResponse = await fetch(request);
         
         // If successful, update cache and return response
         if (networkResponse.ok) {
           const cache = await caches.open(CACHE_NAME);
-          console.log(`[Service Worker] Caching fresh resource: ${request.url}`);
+          //console.log(`[Service Worker] Caching fresh resource: ${request.url}`);
           cache.put(request, networkResponse.clone());
         }
         
@@ -78,12 +78,12 @@ self.addEventListener("fetch", (e) => {
         const cachedResponse = await caches.match(request);
         
         if (cachedResponse) {
-          console.log(`[Service Worker] Serving from cache: ${request.url}`);
+          //console.log(`[Service Worker] Serving from cache: ${request.url}`);
           return cachedResponse;
         }
         
         // If not in cache either, return a fallback or error
-        console.log(`[Service Worker] No cache available for: ${request.url}`);
+        //console.log(`[Service Worker] No cache available for: ${request.url}`);
         
         // For navigation requests, return a fallback page
         if (request.mode === 'navigate') {
@@ -116,7 +116,7 @@ self.addEventListener("activate", (e) => {
         await Promise.all(
           keyList.map((key) => {
             if (key !== CACHE_NAME) {
-              console.log('[Service Worker] Deleting old cache:', key);
+              //console.log('[Service Worker] Deleting old cache:', key);
               return caches.delete(key);
             }
           }),
@@ -124,7 +124,7 @@ self.addEventListener("activate", (e) => {
         
         // Take control of all clients immediately
         await self.clients.claim();
-        console.log('[Service Worker] Activated and controlling clients');
+        //console.log('[Service Worker] Activated and controlling clients');
       } catch (error) {
         console.error('[Service Worker] Activation failed:', error);
       }
