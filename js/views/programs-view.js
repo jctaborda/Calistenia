@@ -11,7 +11,10 @@ export async function renderProgramsView() {
   
   main.innerHTML = renderHeader() + `
     <div class="card">
-      <h1>Programs</h1>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h1>Programs</h1>
+        <button class="btn" id="create-routine-btn">Create New Routine</button>
+      </div>
       <ul>
         ${programs.map(p => `
           <li>
@@ -36,53 +39,24 @@ export async function renderProgramsView() {
         `).join('')}
       </ul>
     </div>
-    <div id="program-details" class="card hidden">
-      <h3 id="program-details-title"></h3>
-      <div id="program-details-content"></div>
-      <button id="close-details" class="btn">Close Details</button>
-    </div>
   `;
 
-  function showProgramDetails(type, id) {
-    const detailsDiv = main.querySelector('#program-details');
-    const titleEl = main.querySelector('#program-details-title');
-    const contentEl = main.querySelector('#program-details-content');
-    
-    let program;
-    if (type === 'program') {
-      program = programs.find(p => String(p.id) === String(id));
-    } else if (type === 'custom') {
-      const routine = customRoutines[Number(id)];
-      program = { name: routine.name, exercises: routine.exercises };
-    }
-    
-    if (!program) return;
-    
-    titleEl.textContent = program.name;
-    contentEl.innerHTML = `
-      <h4>Exercises:</h4>
-      <ul>
-        ${program.exercises.map(ex => {
-          const exercise = exercises.find(e => String(e.id) === String(ex.exerciseId));
-          return `
-            <li>
-              <strong>${exercise ? exercise.name : 'Unknown Exercise'}</strong><br>
-              Sets: ${ex.sets} | Reps: ${ex.reps} | Rest: ${ex.restTime}s
-            </li>
-          `;
-        }).join('')}
-      </ul>
-    `;
-    detailsDiv.classList.remove('hidden');
-    detailsDiv.scrollIntoView({ behavior: 'smooth' });
+  // Create New Routine button handler
+  const createRoutineBtn = main.querySelector('#create-routine-btn');
+  if (createRoutineBtn) {
+    createRoutineBtn.addEventListener('click', () => {
+      // Clear any editing state and navigate to builder
+      setState({ editingProgram: null });
+      window.location.hash = '#builder';
+    });
   }
 
-  // Program name click handlers
+  // Program name click handlers - navigate to details page
   main.querySelectorAll('.program-name-btn').forEach(btn => {
     btn.addEventListener('click', e => {
       const type = btn.getAttribute('data-type');
       const id = btn.getAttribute('data-id');
-      showProgramDetails(type, id);
+      window.location.hash = `#program-details/${type}/${id}`;
     });
   });
 
@@ -107,11 +81,5 @@ export async function renderProgramsView() {
     });
   });
 
-  // Close details button
-  const closeBtn = main.querySelector('#close-details');
-  if (closeBtn) {
-    closeBtn.addEventListener('click', () => {
-      main.querySelector('#program-details').classList.add('hidden');
-    });
-  }
+
 } 

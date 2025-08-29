@@ -186,6 +186,38 @@ li {
   color: #0056b3;
 }
 
+/* Drag and drop styles */
+.draggable-item {
+  transition: all 0.2s ease;
+}
+
+.draggable-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(25, 118, 210, 0.12);
+}
+
+.draggable-item.dragging {
+  opacity: 0.5;
+  transform: rotate(2deg);
+}
+
+.drag-handle {
+  user-select: none;
+}
+
+.drag-handle:hover {
+  background: #e0e0e0 !important;
+}
+
+.btn-secondary {
+  background: #6c757d;
+  color: #fff;
+}
+
+.btn-secondary:hover {
+  background: #5a6268;
+}
+
 /* Card variants */
 .card-muted {
   background: var(--muted, #f8f9fa);

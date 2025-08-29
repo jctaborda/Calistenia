@@ -9,6 +9,7 @@ import { renderOnboardingView } from './views/onboarding-view.js';
 import { renderProfileView } from './views/profile-view.js';
 import { renderBuilderView } from './views/builder-view.js';
 import { renderExercisesView } from './views/exercises-view.js';
+import { renderProgramDetailsView } from './views/program-details-view.js';
 import { fetchExercises } from './services/api.js';
 import { getExerciseProgressData } from './utils/chart-helpers.js';
 
@@ -38,6 +39,11 @@ async function router() {
     renderExerciseView(id);
   } else if (hash === '#programs') {
     renderProgramsView();
+  } else if (hash.startsWith('#program-details/')) {
+    const parts = hash.split('/');
+    const type = parts[1];
+    const id = parts[2];
+    renderProgramDetailsView(type, id);
   } else if (hash === '#active-workout') {
     renderActiveWorkoutView();
   } else if (hash === '#workout-completion') {
@@ -59,9 +65,30 @@ router();
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').then(() => {
-    //navigator.serviceWorker.register('/Calistenia/sw.js').then(() => {
-      console.log("[Main] SW Registered");// Registered
+    navigator.serviceWorker.register('./sw.js').then((registration) => {
+      console.log("[Main] SW Registered");
+      
+      // Handle service worker updates
+      registration.addEventListener('updatefound', () => {
+        const newWorker = registration.installing;
+        if (newWorker) {
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              // New service worker is available
+              if (confirm('A new version of the app is available. Would you like to update?')) {
+                newWorker.postMessage({ type: 'SKIP_WAITING' });
+                window.location.reload();
+              }
+            }
+          });
+        }
+      });
+      
+      // Handle service worker controller change
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        window.location.reload();
+      });
+      
     }).catch(err => {
       console.error('Service Worker registration failed:', err);
     });

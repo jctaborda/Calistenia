@@ -21,7 +21,20 @@ export function renderExerciseView(exerciseId) {
     <div class="card">
       <h1>${exercise.name}</h1>
       <p>${exercise.description}</p>
+      <p><strong>Skill:</strong> ${exercise.skill}</p>
+      <p><strong>Equipment:</strong> ${exercise.equipment}</p>
       <p><strong>Difficulty:</strong> ${exercise.difficulty}</p>
+
+      
+      ${exercise.image_url ? `<img src="${exercise.image_url}" alt="${exercise.name}" style="max-width: 200px;">` : ''}
+      ${exercise.video_url ? `<video controls width="300"> <source src="${exercise.video_url}" type="video/mp4">Your browser does not support the video tag.</video>` : ''}
+
+      <h2>Categories</h2>
+      <p>${exercise.categories.join(', ')}</p>
+
+      <h2>Subcategories</h2>
+      <p>${exercise.subcategories.join(', ')}</p>
+
       <h2>Progress</h2>
       <table>
         <thead><tr><th>Date</th><th>Total Reps</th></tr></thead>

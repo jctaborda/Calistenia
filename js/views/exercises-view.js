@@ -7,6 +7,7 @@ export async function renderExercisesView() {
   main.innerHTML = renderHeader() + `
     <div class="card">
       <h1>Exercises</h1>
+      <button class="btn" id="add-exercise">Add Exercise</button>
       <input 
         type="text" 
         id="exercise-filter" 
@@ -17,6 +18,7 @@ export async function renderExercisesView() {
       <div id="exercises-grid" class="exercise-grid">
         ${exercises.map(e => `<a class="btn" href="#exercise/${e.id}" data-exercise-name="${e.name.toLowerCase()}">${e.name}</a>`).join('')}
       </div>
+      
     </div>
   `;
 
