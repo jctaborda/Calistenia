@@ -10,7 +10,7 @@ import { renderProfileView } from './views/profile-view.js';
 import { renderBuilderView } from './views/builder-view.js';
 import { renderExercisesView } from './views/exercises-view.js';
 import { renderProgramDetailsView } from './views/program-details-view.js';
-import { fetchExercises } from './services/api.js';
+import { fetchExercises, fetchPrograms } from './services/api.js';
 import { getExerciseProgressData } from './utils/chart-helpers.js';
 
 initializeState();
@@ -22,8 +22,16 @@ async function ensureExercisesLoaded() {
   }
 }
 
+async function ensureProgramsLoaded(){
+  if (!getState().programs){
+    const programs = await fetchPrograms();
+    setState({ programs });
+  }
+}
+
 async function router() {
   await ensureExercisesLoaded();
+  await ensureProgramsLoaded();
   const state = getState();
   const hash = window.location.hash;
   if (!state.user && hash !== '#onboarding') {

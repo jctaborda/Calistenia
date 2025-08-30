@@ -27,14 +27,14 @@ export function renderExerciseView(exerciseId) {
 
   const prerequisitesLinks = (exercise.prerequisites || []).map(id => {
     const name = getExerciseName(id);
-    console.log(`Prerequisite ID: ${id}, Name: ${name}`); // Debug log
-    return `<a href="#" onclick="renderExerciseView('${id}')">${name}</a>`;
+    //console.log(`Prerequisite ID: ${id}, Name: ${name}`); // Debug log
+    return `<a href="#exercise/${id}">${name}</a>`;
   }).join(', ');
 
   const progressionsLinks = (exercise.progressions || []).map(id => {
     const name = getExerciseName(id);
-    console.log(`Progression ID: ${id}, Name: ${name}`); // Debug log
-    return `<a href="#" onclick="renderExerciseView('${id}')">${name}</a>`;
+    //console.log(`Progression ID: ${id}, Name: ${name}`); // Debug log
+    return `<a href="#exercise/${id}" >${name}</a>`;
   }).join(', ');
 
   main.innerHTML = renderHeader() + `
