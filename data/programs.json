@@ -1,19 +1,115 @@
 [
   {
     "id": 1,
-    "name": "Beginner Strength Routine",
+    "name": "Push Training",
     "exercises": [
       {
-        "exerciseId": 1,
-        "sets": 3,
-        "reps": 8,
+        "exerciseId": 1, 
+        "sets": 3, 
+        "reps": 10, 
         "restTime": 60
       },
       {
         "exerciseId": 2,
         "sets": 3,
         "reps": 10,
-        "restTime": 45
+        "restTime": 60
+      },
+      {
+        "exerciseId": 3,
+        "sets": 3,
+        "reps": 8,
+        "restTime": 60
+      },
+      {
+        "exerciseId": 5,
+        "sets": 3,
+        "reps": 8,
+        "restTime": 60
+      },
+      {
+        "exerciseId": 25,
+        "sets": 3,
+        "reps": 8,
+        "restTime": 60
+      },
+      {
+        "exerciseId": 32,
+        "sets": 3,
+        "reps": 10,
+        "restTime": 60
+      },
+      {
+        "exerciseId": 27,
+        "sets": 3,
+        "reps": 8,
+        "restTime": 60
+      },
+      {
+        "exerciseId": 105,
+        "sets": 3,
+        "reps": 8,
+        "restTime": 60
+      }
+    ]
+  },
+  {
+    "id": 1,
+    "name": "Pull Training",
+    "exercises": [
+      {
+        "exerciseId": 11, 
+        "sets": 3, 
+        "reps": 10, 
+        "restTime": 60
+      },
+      {
+        "exerciseId": 13,
+        "sets": 3,
+        "reps": 10,
+        "restTime": 60
+      },
+      {
+        "exerciseId": 12,
+        "sets": 3,
+        "reps": 8,
+        "restTime": 60
+      },
+      {
+        "exerciseId": 16,
+        "sets": 3,
+        "reps": 10,
+        "restTime": 60
+      },
+      {
+        "exerciseId": 38,
+        "sets": 3,
+        "reps": 8,
+        "restTime": 60
+      },
+      {
+        "exerciseId": 42,
+        "sets": 3,
+        "reps": 50,
+        "restTime": 60
+      },
+      {
+        "exerciseId": 101,
+        "sets": 3,
+        "reps": 5,
+        "restTime": 60
+      },
+      {
+        "exerciseId": 107,
+        "sets": 3,
+        "reps": 5,
+        "restTime": 60
+      },
+      {
+        "exerciseId": 114,
+        "sets": 3,
+        "reps": 8,
+        "restTime": 60
       }
     ]
   }

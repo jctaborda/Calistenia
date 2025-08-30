@@ -4,7 +4,9 @@ import { getExerciseProgressData } from '../utils/chart-helpers.js';
 
 export function renderExerciseView(exerciseId) {
   const main = document.getElementById('app');
-  const { exercises, history } = getState();
+  //const { exercises, history } = getState();
+  const exercises = getState().exercises;
+  const history = getState().history;
   const exercise = (exercises || []).find(e => String(e.id) === String(exerciseId));
   if (!exercise) {
     main.innerHTML = renderHeader() + '<div class="card"><p>Exercise not found.</p></div>';

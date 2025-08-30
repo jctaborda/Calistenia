@@ -4,7 +4,8 @@ import { setState, getState } from '../services/state.js';
 
 export async function renderProgramsView() {
   const main = document.getElementById('app');
-  const programs = await fetchPrograms();
+  //const programs = await fetchPrograms();
+  const programs = await getState().programs;
   const user = getState().user || {};
   const customRoutines = user.customRoutines || [];
   const { exercises } = getState();
