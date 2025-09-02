@@ -43,6 +43,10 @@ export function renderExerciseView(exerciseId) {
     <div class="card">
       <h1>${exercise.name}</h1>
       <p>${exercise.description}</p>
+      <h3>Common Mistakes</h3>
+      <p>${exercise.commonMistakes}</p>
+      <h3>Form Cues</h3>
+      <p>${exercise.formCues}</p>
       <h3>Skill: </h3><p> ${exercise.skill} </p>
       <h3>Equipment: </h3><p> ${exercise.equipment}</p>
       <h3>Difficulty: </h3><p>${exercise.difficulty}</p>

@@ -4,7 +4,7 @@ import { getState, setState } from '../services/state.js';
 
 export async function renderBuilderView() {
   const main = document.getElementById('app');
-  const exercises = await fetchExercises();
+  const exercises = await getState().exercises;
   const state = getState();
   const editingProgram = state.editingProgram;
   

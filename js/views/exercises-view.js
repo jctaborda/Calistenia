@@ -1,9 +1,10 @@
 import { fetchExercises } from '../services/api.js';
 import { renderHeader } from '../components/header.js';
+import { getState } from '../services/state.js';
 
 export async function renderExercisesView() {
   const main = document.getElementById('app');
-  const exercises = await fetchExercises();
+  const exercises = await getState().exercises;
   main.innerHTML = renderHeader() + `
     <div class="card">
       <h1>Exercises</h1>

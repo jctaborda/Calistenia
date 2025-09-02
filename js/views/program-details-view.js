@@ -1,10 +1,11 @@
+// views/program-details-view.js
 import { fetchPrograms } from '../services/api.js';
 import { renderHeader } from '../components/header.js';
 import { setState, getState } from '../services/state.js';
 
 export async function renderProgramDetailsView(type, id) {
   const main = document.getElementById('app');
-  const programs = await fetchPrograms();
+  const programs = await getState().programs;
   const user = getState().user || {};
   const customRoutines = user.customRoutines || [];
   const { exercises } = getState();
@@ -41,6 +42,24 @@ export async function renderProgramDetailsView(type, id) {
       </div>
       <h1>${program.name}</h1>
       <div class="program-details-content">
+        ${program.warmup && program.warmup.length > 0 ? `
+          <h3>Warmup:</h3>
+          <ul class="exercise-list">
+            ${program.warmup.map(ex => {
+              const exercise = exercises.find(e => String(e.id) === String(ex.exerciseId));
+              return `
+                <li class="exercise-item">
+                  <div class="exercise-info">
+                    <strong>${exercise ? exercise.name : 'Unknown Exercise'}</strong>
+                    <div class="exercise-details">
+                      Sets: ${ex.sets} | Reps: ${ex.reps} | Rest: ${ex.restTime}s
+                    </div>
+                  </div>
+                </li>
+              `;
+            }).join('')}
+          </ul>
+        ` : ''}
         <h3>Exercises:</h3>
         <ul class="exercise-list">
           ${program.exercises.map(ex => {
@@ -57,6 +76,24 @@ export async function renderProgramDetailsView(type, id) {
             `;
           }).join('')}
         </ul>
+        ${program.cooldown && program.cooldown.length > 0 ? `
+          <h3>Cooldown:</h3>
+          <ul class="exercise-list">
+            ${program.cooldown.map(ex => {
+              const exercise = exercises.find(e => String(e.id) === String(ex.exerciseId));
+              return `
+                <li class="exercise-item">
+                  <div class="exercise-info">
+                    <strong>${exercise ? exercise.name : 'Unknown Exercise'}</strong>
+                    <div class="exercise-details">
+                      Sets: ${ex.sets} | Reps: ${ex.reps} | Rest: ${ex.restTime}s
+                    </div>
+                  </div>
+                </li>
+              `;
+            }).join('')}
+          </ul>
+        ` : ''}
         <div style="margin-top: 2rem;">
           <button class="btn" id="start-program-btn" data-type="${type}" data-id="${id}">
             Start Program
@@ -71,10 +108,10 @@ export async function renderProgramDetailsView(type, id) {
   if (editBtn) {
     editBtn.addEventListener('click', () => {
       // Store the program data for editing
-      setState({ 
-        editingProgram: { 
-          type, 
-          id, 
+      setState({
+        editingProgram: {
+          type,
+          id,
           program: {
             name: program.name,
             exercises: program.exercises
@@ -116,13 +153,31 @@ export async function renderProgramDetailsView(type, id) {
       if (type === 'program') {
         const originalProgram = programs.find(p => String(p.id) === String(id));
         if (originalProgram) {
-          setState({ activeWorkout: { program: originalProgram, progress: {}, currentExerciseIndex: 0, currentSetIndex: 0 } });
+          setState({
+            activeWorkout: {
+              program: originalProgram,
+              progress: {},
+              currentExerciseIndex: 0,
+              currentSetIndex: 0
+            }
+          });
           window.location.hash = '#active-workout';
         }
       } else if (type === 'custom') {
         const routine = customRoutines[Number(id)];
         if (routine) {
-          setState({ activeWorkout: { program: { id: 'custom-' + id, name: routine.name, exercises: routine.exercises }, progress: {}, currentExerciseIndex: 0, currentSetIndex: 0 } });
+          setState({
+            activeWorkout: {
+              program: {
+                id: 'custom-' + id,
+                name: routine.name,
+                exercises: routine.exercises
+              },
+              progress: {},
+              currentExerciseIndex: 0,
+              currentSetIndex: 0
+            }
+          });
           window.location.hash = '#active-workout';
         }
       }
