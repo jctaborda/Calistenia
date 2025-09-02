@@ -52,8 +52,18 @@
                 "restTime": 60
             }
         ],
-        "warmup": [1],
-        "cooldown": [105]
+        "warmup": [{
+                "exerciseId": 1,
+                "sets": 3,
+                "reps": 10,
+                "restTime": 60
+            }],
+        "cooldown": [{
+                "exerciseId": 1,
+                "sets": 3,
+                "reps": 10,
+                "restTime": 60
+            }]
     },
     {
         "id": 2,
