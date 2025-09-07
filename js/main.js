@@ -1,6 +1,6 @@
 import { initializeState, setState, getState } from './services/state.js';
 import { renderHomeView } from './views/home-view.js';
-import { renderExerciseView } from './views/exercise-view.js';
+import { renderExerciseView } from './views/exercise-details-view.js';
 import { renderProgramsView } from './views/programs-view.js';
 import { renderActiveWorkoutView } from './views/active-workout-view.js';
 import { renderWorkoutSummaryView } from './views/workout-summary-view.js';
@@ -10,7 +10,7 @@ import { renderProfileView } from './views/profile-view.js';
 import { renderBuilderView } from './views/builder-view.js';
 import { renderExercisesView } from './views/exercises-view.js';
 import { renderProgramDetailsView } from './views/program-details-view.js';
-import { fetchExercises, fetchPrograms } from './services/api.js';
+import { fetchExercises, fetchPrograms, fetchCategories, fetchEquipment, fetchMuscles } from './services/api.js';
 import { getExerciseProgressData } from './utils/chart-helpers.js';
 
 initializeState();
@@ -29,9 +29,34 @@ async function ensureProgramsLoaded(){
   }
 }
 
+async function ensureCategoriesLoaded(){
+  if (!getState().categories){
+    const categories = await fetchCategories();
+    setState({ categories });
+  }
+}
+
+async function ensureEquipmentLoaded(){
+  if (!getState().equipment){
+    const equipment = await fetchEquipment();
+    setState({ equipment });
+  }
+}
+
+async function ensureMusclesLoaded(){
+  if (!getState().muscles){
+    const muscles = await fetchMuscles();
+    setState({ muscles });
+  }
+}
+
 async function router() {
   await ensureExercisesLoaded();
   await ensureProgramsLoaded();
+  await ensureCategoriesLoaded();
+  await ensureEquipmentLoaded();
+  await ensureMusclesLoaded();
+
   const state = getState();
   const hash = window.location.hash;
   if (!state.user && hash !== '#onboarding') {

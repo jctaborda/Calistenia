@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "name": "Biceps brachii",
+    "is_front": true,
+    "name_en": "Biceps"
+  },
+  {
+    "id": 2,
+    "name": "Anterior deltoid",
+    "is_front": true,
+    "name_en": "Shoulders"
+  },
+  {
+    "id": 3,
+    "name": "Serratus anterior",
+    "is_front": true,
+    "name_en": "Serratus"
+  },
+  {
+    "id": 4,
+    "name": "Pectoralis major",
+    "is_front": true,
+    "name_en": "Chest"
+  },
+  {
+    "id": 5,
+    "name": "Triceps brachii",
+    "is_front": false,
+    "name_en": "Triceps"
+  },
+  {
+    "id": 6,
+    "name": "Rectus abdominis",
+    "is_front": true,
+    "name_en": "Abs"
+  },
+  {
+    "id": 7,
+    "name": "Gastrocnemius",
+    "is_front": false,
+    "name_en": "Calves"
+  },
+  {
+    "id": 8,
+    "name": "Gluteus maximus",
+    "is_front": false,
+    "name_en": "Glutes"
+  },
+  {
+    "id": 9,
+    "name": "Trapezius",
+    "is_front": false,
+    "name_en": "Trapezius"
+  },
+  {
+    "id": 10,
+    "name": "Quadriceps femoris",
+    "is_front": true,
+    "name_en": "Quads"
+  },
+  {
+    "id": 11,
+    "name": "Biceps femoris",
+    "is_front": false,
+    "name_en": "Hamstrings"
+  },
+  {
+    "id": 12,
+    "name": "Latissimus dorsi",
+    "is_front": false,
+    "name_en": "Lats"
+  },
+  {
+    "id": 13,
+    "name": "Brachialis",
+    "is_front": true,
+    "name_en": "Brachialis"
+  },
+  {
+    "id": 14,
+    "name": "Obliquus externus abdominis",
+    "is_front": true,
+    "name_en": "Obliques"
+  },
+  {
+    "id": 15,
+    "name": "Soleus",
+    "is_front": true,
+    "name_en": "Soleus"
+  },
+  {
+    "id": 16,
+    "name": "Erector spinae",
+    "is_front": false,
+    "name_en": "Lower back"
+  },
+  {
+    "id": 17,
+    "name": "Teres",
+    "is_front": false,
+    "name_en": "Teres"
+  },
+  {
+    "id": 18,
+    "name": "Posterior Deltoid",
+    "is_front": false,
+    "name_en": "Posterior Deltoid"
+  },
+  {
+    "id": 19,
+    "name": "Forearm",
+    "is_front": true,
+    "name_en": "Forearm"
+  },
+  {
+    "id": 20,
+    "name": "Adductor",
+    "is_front": true,
+    "name_en": "Adductor"
+  }
+]

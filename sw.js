@@ -1,4 +1,4 @@
-const VERSION = '0.0.4';
+const VERSION = '0.0.5';
 const CACHE_NAME = `calisthenics-app-${VERSION}`;
 const PATH = "Calistenia";
 const APP_SHELL = [
@@ -9,7 +9,7 @@ const APP_SHELL = [
   `./js/services/state.js`,
   `./js/services/workout-engine.js`,
   `./js/views/home-view.js`,
-  `./js/views/exercise-view.js`,
+  `./js/views/exercise-details-view.js`,
   `./js/views/programs-view.js`,
   `./js/views/program-details-view.js`,
   `./js/views/active-workout-view.js`,
@@ -21,7 +21,52 @@ const APP_SHELL = [
   `./js/utils/chart-helpers.js`,
   `./manifest.json`,
   `./assets/icons/favicon-32x32.png`,
-  `./assets/icons/favicon-192x192.png`
+  `./assets/icons/favicon-192x192.png`,
+  // Muscle images
+  `./assets/images/muscles/muscular_system_back.svg`,
+  `./assets/images/muscles/muscular_system_front.svg`,
+  // Main muscle images
+  `./assets/images/muscles/main/muscle-1.svg`,
+  `./assets/images/muscles/main/muscle-2.svg`,
+  `./assets/images/muscles/main/muscle-3.svg`,
+  `./assets/images/muscles/main/muscle-4.svg`,
+  `./assets/images/muscles/main/muscle-5.svg`,
+  `./assets/images/muscles/main/muscle-6.svg`,
+  `./assets/images/muscles/main/muscle-7.svg`,
+  `./assets/images/muscles/main/muscle-8.svg`,
+  `./assets/images/muscles/main/muscle-9.svg`,
+  `./assets/images/muscles/main/muscle-10.svg`,
+  `./assets/images/muscles/main/muscle-11.svg`,
+  `./assets/images/muscles/main/muscle-12.svg`,
+  `./assets/images/muscles/main/muscle-13.svg`,
+  `./assets/images/muscles/main/muscle-14.svg`,
+  `./assets/images/muscles/main/muscle-15.svg`,
+  `./assets/images/muscles/main/muscle-16.svg`,
+  `./assets/images/muscles/main/muscle-17.svg`,
+  `./assets/images/muscles/main/muscle-18.svg`,
+  `./assets/images/muscles/main/muscle-19.svg`,
+  `./assets/images/muscles/main/muscle-20.svg`,
+  // Secondary muscle images
+  `./assets/images/muscles/secondary/muscle-1.svg`,
+  `./assets/images/muscles/secondary/muscle-2.svg`,
+  `./assets/images/muscles/secondary/muscle-3.svg`,
+  `./assets/images/muscles/secondary/muscle-4.svg`,
+  `./assets/images/muscles/secondary/muscle-5.svg`,
+  `./assets/images/muscles/secondary/muscle-6.svg`,
+  `./assets/images/muscles/secondary/muscle-7.svg`,
+  `./assets/images/muscles/secondary/muscle-8.svg`,
+  `./assets/images/muscles/secondary/muscle-9.svg`,
+  `./assets/images/muscles/secondary/muscle-10.svg`,
+  `./assets/images/muscles/secondary/muscle-11.svg`,
+  `./assets/images/muscles/secondary/muscle-12.svg`,
+  `./assets/images/muscles/secondary/muscle-13.svg`,
+  `./assets/images/muscles/secondary/muscle-14.svg`,
+  `./assets/images/muscles/secondary/muscle-15.svg`,
+  `./assets/images/muscles/secondary/muscle-16.svg`,
+  `./assets/images/muscles/secondary/muscle-17.svg`,
+  `./assets/images/muscles/secondary/muscle-18.svg`,
+  `./assets/images/muscles/secondary/muscle-19.svg`,
+  `./assets/images/muscles/secondary/muscle-20.svg`
 ];
 
 self.addEventListener('install', event => {
@@ -36,7 +81,7 @@ self.addEventListener('install', event => {
         // Skip waiting to activate immediately
         self.skipWaiting();
       } catch (error) {
-        console.error('[Service Worker] Failed to cache app shell:', error);
+        //console.error('[Service Worker] Failed to cache app shell:', error);
       }
     })(),  
   );
@@ -74,7 +119,7 @@ self.addEventListener("fetch", (e) => {
         return networkResponse;
       } catch (error) {
         // Network failed, try to serve from cache
-        console.log(`[Service Worker] Network failed, trying cache: ${request.url}`);
+        //console.log(`[Service Worker] Network failed, trying cache: ${request.url}`);
         const cachedResponse = await caches.match(request);
         
         if (cachedResponse) {
@@ -107,7 +152,7 @@ self.addEventListener("fetch", (e) => {
 });
 
 self.addEventListener("activate", (e) => {
-  console.log('[Service Worker] Activate');
+  //console.log('[Service Worker] Activate');
   e.waitUntil(
     (async () => {
       try {
@@ -126,7 +171,7 @@ self.addEventListener("activate", (e) => {
         await self.clients.claim();
         //console.log('[Service Worker] Activated and controlling clients');
       } catch (error) {
-        console.error('[Service Worker] Activation failed:', error);
+        //console.error('[Service Worker] Activation failed:', error);
       }
     })(),
   );

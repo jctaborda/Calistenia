@@ -286,4 +286,34 @@ li {
     grid-template-columns: 1fr;
     gap: 0.3rem;
   }
-} 
+}
+
+.muscle-container {
+  display: flex;
+  gap: 20px;
+}
+
+.muscle-diagram-front, .muscle-diagram-back{
+  flex:1;
+  position: relative;
+  width: 300px; /* Adjust as needed */
+  margin-top: 20px;
+}
+
+
+.muscle-diagram-front img, .muscle-diagram-back img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+}
+
+ 
+.base-image {
+  z-index: 1;
+}
+
+.muscle-layer {
+  z-index: 2;
+}
