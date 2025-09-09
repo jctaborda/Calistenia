@@ -66,7 +66,7 @@ export async function renderProgramDetailsView(type, id) {
     //  return ''; // Or handle the error in a more appropriate way
     //}
     return fullExercise.muscles.map(muscleId => {
-      if (muscles[muscleId - 1] && muscles[muscleId - 1].is_front) {
+      if (muscles[muscleId - 1] && !muscles[muscleId - 1].is_front) {
         return `<img src="assets/images/muscles/main/muscle-${muscleId}.svg" alt="Muscle ${muscleId}" class="muscle-layer" />`;
       }
       return ''; // Handle cases where muscle data is missing
@@ -82,7 +82,7 @@ export async function renderProgramDetailsView(type, id) {
     //  return ''; // Or handle the error in a more appropriate way
     //}
     return fullExercise.muscles_secondary.map(muscleId => {
-      if (muscles[muscleId - 1] && muscles[muscleId - 1].is_front) {
+      if (muscles[muscleId - 1] && !muscles[muscleId - 1].is_front) {
         return `<img src="assets/images/muscles/secondary/muscle-${muscleId}.svg" alt="Muscle ${muscleId}" class="muscle-layer" />`;
       }
       return ''; // Handle cases where muscle data is missing
