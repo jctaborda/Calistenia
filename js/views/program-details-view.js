@@ -6,9 +6,10 @@ import { setState, getState } from '../services/state.js';
 export async function renderProgramDetailsView(type, id) {
   const main = document.getElementById('app');
   const programs = await getState().programs;
+  const muscles = await getState().muscles;
   const user = getState().user || {};
   const customRoutines = user.customRoutines || [];
-  const { exercises } = getState();
+  const exercises = getState().exercises;
   
   let program;
   if (type === 'program') {
@@ -23,6 +24,72 @@ export async function renderProgramDetailsView(type, id) {
     return;
   }
   
+  
+  
+  function generateFrontImages(myExercises, myMuscles) {
+  return myExercises.map(exercise => { 
+    // Fetch the full exercise object based on the exercise ID
+    const fullExercise = exercises.find(ex => ex.id === exercise.exerciseId);
+    //if (!fullExercise) {
+    //  return ''; // Or handle the error in a more appropriate way
+    //}
+    return fullExercise.muscles.map(muscleId => {
+      if (muscles[muscleId - 1] && muscles[muscleId - 1].is_front) {
+        return `<img src="assets/images/muscles/main/muscle-${muscleId}.svg" alt="Muscle ${muscleId}" class="muscle-layer" />`;
+      }
+      return ''; // Handle cases where muscle data is missing
+    }).join('');
+  }).join('');
+  }
+
+  function generateFrontImagesSecondary(myExercises, myMuscles) {
+  return myExercises.map(exercise => { 
+    // Fetch the full exercise object based on the exercise ID
+    const fullExercise = exercises.find(ex => ex.id === exercise.exerciseId);
+    //if (!fullExercise) {
+    //  return ''; // Or handle the error in a more appropriate way
+    //}
+    return fullExercise.muscles_secondary.map(muscleId => {
+      if (muscles[muscleId - 1] && muscles[muscleId - 1].is_front) {
+        return `<img src="assets/images/muscles/secondary/muscle-${muscleId}.svg" alt="Muscle ${muscleId}" class="muscle-layer" />`;
+      }
+      return ''; // Handle cases where muscle data is missing
+    }).join('');
+  }).join('');
+  }
+
+  function generateBackImages(myExercises, myMuscles) {
+  return myExercises.map(exercise => { 
+    // Fetch the full exercise object based on the exercise ID
+    const fullExercise = exercises.find(ex => ex.id === exercise.exerciseId);
+    //if (!fullExercise) {
+    //  return ''; // Or handle the error in a more appropriate way
+    //}
+    return fullExercise.muscles.map(muscleId => {
+      if (muscles[muscleId - 1] && muscles[muscleId - 1].is_front) {
+        return `<img src="assets/images/muscles/main/muscle-${muscleId}.svg" alt="Muscle ${muscleId}" class="muscle-layer" />`;
+      }
+      return ''; // Handle cases where muscle data is missing
+    }).join('');
+  }).join('');
+  }
+
+  function generateBackImagesSecondary(myExercises, myMuscles) {
+  return myExercises.map(exercise => { 
+    // Fetch the full exercise object based on the exercise ID
+    const fullExercise = exercises.find(ex => ex.id === exercise.exerciseId);
+    //if (!fullExercise) {
+    //  return ''; // Or handle the error in a more appropriate way
+    //}
+    return fullExercise.muscles_secondary.map(muscleId => {
+      if (muscles[muscleId - 1] && muscles[muscleId - 1].is_front) {
+        return `<img src="assets/images/muscles/secondary/muscle-${muscleId}.svg" alt="Muscle ${muscleId}" class="muscle-layer" />`;
+      }
+      return ''; // Handle cases where muscle data is missing
+    }).join('');
+  }).join('');
+  }
+
   main.innerHTML = renderHeader() + `
     <div class="card">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
@@ -94,6 +161,19 @@ export async function renderProgramDetailsView(type, id) {
             }).join('')}
           </ul>
         ` : ''}
+        <div class="muscle-container">
+          <div class="muscle-diagram-front">
+            <img src="./assets/images/muscles/muscular_system_front.svg" alt="Muscular System Front" class="base-image">
+            ${generateFrontImagesSecondary(program.exercises, muscles)}
+            ${generateFrontImages(program.exercises, muscles)}
+            
+          </div>
+          <div class="muscle-diagram-back">
+            <img src="./assets/images/muscles/muscular_system_back.svg" alt="Muscular System Back" class="base-image">
+            ${generateBackImagesSecondary(program.exercises, muscles)}
+            ${generateBackImages(program.exercises, muscles)}
+            
+          </div>
         <div style="margin-top: 2rem;">
           <button class="btn" id="start-program-btn" data-type="${type}" data-id="${id}">
             Start Program
