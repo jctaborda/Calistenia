@@ -8,6 +8,7 @@ export function renderExerciseView(exerciseId) {
   const exercises = getState().exercises;
   const history = getState().history;
   const muscles = getState().muscles;
+  const categories = getState().categories;
   const exercise = (exercises || []).find(e => String(e.id) === String(exerciseId));
   if (!exercise) {
     main.innerHTML = renderHeader() + '<div class="card"><p>Exercise not found.</p></div>';
@@ -37,6 +38,23 @@ export function renderExerciseView(exerciseId) {
   const progressionsLinks = (exercise.progressions || []).map(id => {
     const name = getExerciseName(id);
     return `<a href="#exercise/${id}" >${name}</a>`;
+  }).join(', ');
+
+  // Fetch muscle names
+  const muscleNames = (exercise.muscles ||[]).map(muscleId => {
+    const muscle = muscles.find(m => m.id === muscleId);
+    return muscle ? muscle.name : 'Unknown';
+  }).join(', ');
+  const muscleSecNames = (exercise.muscles_secondary ||[]).map(muscleId => {
+    const muscle = muscles.find(m => m.id === muscleId);
+    return muscle ? muscle.name : 'Unknown';
+  }).join(', ');
+  
+
+  // Fetch category names
+  const categoryNames = (exercise.categories || []).map(categoryId => {
+    const categ = categories.find(c => c.id === categoryId);
+    return categ ? categ.name : 'Unknown';
   }).join(', ');
 
   const frontImages = exercise.muscles.map(muscleId => {
@@ -75,10 +93,10 @@ export function renderExerciseView(exerciseId) {
       ${exercise.video_url ? `<video controls width="300"> <source src="${exercise.video_url}" type="video/mp4">Your browser does not support the video tag.</video>` : ''}
 
       <h3>Categories: </h3>
-      <p>${exercise.categories.join(', ')}</p>
+      <p>${categoryNames}</p>
 
       <h3>Muscles: </h3>
-      <p>${exercise.muscles.join(', ')}</p>
+      <p>${muscleNames}, ${muscleSecNames}</p>
 
       <h3>Prerequisites: </h3>
       <p>${prerequisitesLinks}</p>

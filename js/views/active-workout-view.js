@@ -1,9 +1,7 @@
 import { getState, setState } from '../services/state.js';
 import { renderHeader } from '../components/header.js';
 import { renderTimer, startTimer } from '../components/timer.js';
-
 let bound = false;
-
 export function renderActiveWorkoutView() {
   const main = document.getElementById('app');
   const { activeWorkout, exercises } = getState();
@@ -12,7 +10,6 @@ export function renderActiveWorkoutView() {
     main.innerHTML = renderHeader() + '<div class="card"><p>No active workout.</p></div>';
     return;
   }
-
   const program = activeWorkout.program;
   const currentExerciseIndex = activeWorkout.currentExerciseIndex || 0;
   const currentSetIndex = activeWorkout.currentSetIndex || 0;
@@ -22,7 +19,6 @@ export function renderActiveWorkoutView() {
     window.location.hash = '#workout-completion';
     return;
   }
-
   const currentExerciseData = program.exercises[currentExerciseIndex];
   const exercise = exercises.find(e => String(e.id) === String(currentExerciseData.exerciseId));
   
@@ -30,36 +26,31 @@ export function renderActiveWorkoutView() {
     main.innerHTML = renderHeader() + '<div class="card"><p>Exercise not found.</p></div>';
     return;
   }
-
   const isLastSet = currentSetIndex >= currentExerciseData.sets - 1;
   const isLastExercise = currentExerciseIndex >= program.exercises.length - 1;
-
   main.innerHTML = renderHeader() + `
     <div class="card">
-      <h1>Active Workout: ${program.name}</h1>
+      <h1>${program.name}</h1>
       <div class="margin-bottom-1">
-        <small>Exercise ${currentExerciseIndex + 1} of ${program.exercises.length}</small>
+        Exercise ${currentExerciseIndex + 1} of ${program.exercises.length}
       </div>
       
-      <h2>${exercise.name}</h2>
-      <p>${exercise.description}</p>
-      
-      <div class="card card-muted">
-        <h3>Current Set</h3>
+  <div class="currEx card card-muted" id="current-exercise">
+        <h2>${exercise.name}</h2>
         <p><strong>Set ${currentSetIndex + 1} of ${currentExerciseData.sets}</strong></p>
         <p><strong>Target Reps:</strong> ${currentExerciseData.reps}</p>
-        ${!isLastSet ? `<p><strong>Rest after this set:</strong> ${currentExerciseData.restTime}s</p>` : ''}
       </div>
+
+      <div id="rest-timer"></div>
 
       <div class="flex-container">
-        <button id="complete-set-btn" class="btn flex-1">Complete Set</button>
-        ${!isLastSet || !isLastExercise ? `<button id="skip-exercise-btn" class="btn btn-secondary">Skip Exercise</button>` : ''}
+        <button id="complete-set-btn" class="btn flex-1">Next Set</button>
+        ${!isLastSet || !isLastExercise ? `
+        <button id="skip-exercise-btn" class="btn btn-secondary">Skip Exercise</button>` : ''}
       </div>
       
-      <div id="rest-timer"></div>
     </div>
   `;
-
   // Complete set button
   const completeBtn = main.querySelector('#complete-set-btn');
   if (completeBtn) {
@@ -102,7 +93,6 @@ export function renderActiveWorkoutView() {
       }
     });
   }
-
   // Skip exercise button
   const skipBtn = main.querySelector('#skip-exercise-btn');
   if (skipBtn) {
@@ -121,11 +111,13 @@ export function renderActiveWorkoutView() {
       }
     });
   }
-
   function showRestTimer(restTime, onComplete) {
     const restEl = main.querySelector('#rest-timer');
+  const currExEl = main.querySelector('#current-exercise');
+
     if (!restEl) return;
     
+  currExEl.style.display = 'none';
     restEl.innerHTML = renderTimer(restTime);
     
     startTimer(restTime, {
@@ -138,10 +130,13 @@ export function renderActiveWorkoutView() {
           progEl.style.width = pct + '%';
         }
       },
-      onComplete: onComplete
-    });
+  onComplete: () => {
+  currExEl.style.display = 'block';
+  restEl.innerHTML = '';
+  onComplete();
   }
-
+  });
+  }
   if (!bound) {
     document.addEventListener('stateChange', () => {
       if (window.location.hash === '#active-workout') {

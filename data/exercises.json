@@ -8,11 +8,11 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 11],
         "muscles": [
-            4,5,2
+            4,
+            5,
+            2
         ],
         "prerequisites": [],
         "progressions": [
@@ -22,7 +22,11 @@
         ],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [3,13,9]
+        "muscles_secondary": [
+            3,
+            13,
+            9
+        ]
     },
     {
         "id": 2,
@@ -33,9 +37,7 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 11],
         "muscles": [
             4
         ],
@@ -43,7 +45,11 @@
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [5,2,3]
+        "muscles_secondary": [
+            5,
+            2,
+            3
+        ]
     },
     {
         "id": 3,
@@ -54,11 +60,10 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 11],
         "muscles": [
-            5,4
+            5,
+            4
         ],
         "prerequisites": [
             1
@@ -66,7 +71,10 @@
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [2,13]
+        "muscles_secondary": [
+            2,
+            13
+        ]
     },
     {
         "id": 4,
@@ -77,11 +85,11 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 11],
         "muscles": [
-            4,5,2
+            4,
+            5,
+            2
         ],
         "prerequisites": [
             1
@@ -89,7 +97,11 @@
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [3,13,9]
+        "muscles_secondary": [
+            3,
+            13,
+            9
+        ]
     },
     {
         "id": 5,
@@ -100,17 +112,21 @@
         "difficulty": "advanced",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 11],
         "muscles": [
-            4,2,5
+            4,
+            2,
+            5
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [3,13,9]
+        "muscles_secondary": [
+            3,
+            13,
+            9
+        ]
     },
     {
         "id": 6,
@@ -121,17 +137,20 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 11],
         "muscles": [
-            4,5,2
+            4,
+            5,
+            2
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [3,13]
+        "muscles_secondary": [
+            3,
+            13
+        ]
     },
     {
         "id": 7,
@@ -142,17 +161,20 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 11],
         "muscles": [
-            4,5,2
+            4,
+            5,
+            2
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [3,13]
+        "muscles_secondary": [
+            3,
+            13
+        ]
     },
     {
         "id": 8,
@@ -163,17 +185,21 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 11],
         "muscles": [
-            4,5,2
+            4,
+            5,
+            2
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [3,13,9]
+        "muscles_secondary": [
+            3,
+            13,
+            9
+        ]
     },
     {
         "id": 9,
@@ -184,18 +210,21 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body",
-            "Core"
-        ],
+        "categories": [8, 11],
         "muscles": [
-            4,5,2
+            4,
+            5,
+            2
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [3,13,14]
+        "muscles_secondary": [
+            3,
+            13,
+            14
+        ]
     },
     {
         "id": 10,
@@ -206,17 +235,21 @@
         "difficulty": "advanced",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 11],
         "muscles": [
-            4,2,5
+            4,
+            2,
+            5
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [3,13,9]
+        "muscles_secondary": [
+            3,
+            13,
+            9
+        ]
     },
     {
         "id": 11,
@@ -227,17 +260,21 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 12],
         "muscles": [
-            12,1,13
+            12,
+            1,
+            13
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [9,17,18]
+        "muscles_secondary": [
+            9,
+            17,
+            18
+        ]
     },
     {
         "id": 12,
@@ -248,17 +285,21 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 12],
         "muscles": [
-            12,1,13
+            12,
+            1,
+            13
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [9,17,18]
+        "muscles_secondary": [
+            9,
+            17,
+            18
+        ]
     },
     {
         "id": 13,
@@ -269,17 +310,21 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 12],
         "muscles": [
-            12,1,13
+            12,
+            1,
+            13
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [9,17,18]
+        "muscles_secondary": [
+            9,
+            17,
+            18
+        ]
     },
     {
         "id": 14,
@@ -290,17 +335,21 @@
         "difficulty": "advanced",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 12],
         "muscles": [
-            12,1,13
+            12,
+            1,
+            13
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [9,17,18]
+        "muscles_secondary": [
+            9,
+            17,
+            18
+        ]
     },
     {
         "id": 15,
@@ -311,17 +360,21 @@
         "difficulty": "advanced",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 12],
         "muscles": [
-            12,1,13
+            12,
+            1,
+            13
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [9,17,18]
+        "muscles_secondary": [
+            9,
+            17,
+            18
+        ]
     },
     {
         "id": 16,
@@ -332,18 +385,21 @@
         "difficulty": "advanced",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body",
-            "Core"
-        ],
+        "categories": [8, 12],
         "muscles": [
-            12,6,14
+            12,
+            6,
+            14
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [13,19,9]
+        "muscles_secondary": [
+            13,
+            19,
+            9
+        ]
     },
     {
         "id": 17,
@@ -354,9 +410,7 @@
         "difficulty": "advanced",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            12,9,18
-        ],
+        "categories": [8, 12],
         "muscles": [
             "Back",
             "14"
@@ -365,7 +419,11 @@
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [13,19,16]
+        "muscles_secondary": [
+            13,
+            19,
+            16
+        ]
     },
     {
         "id": 18,
@@ -376,17 +434,21 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            
-        ],
+        "categories": [8, 12],
         "muscles": [
-            12,6,14
+            12,
+            6,
+            14
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [13,19,9]
+        "muscles_secondary": [
+            13,
+            19,
+            9
+        ]
     },
     {
         "id": 19,
@@ -397,17 +459,21 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 12],
         "muscles": [
-            12,1,13
+            12,
+            1,
+            13
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [9,17,18]
+        "muscles_secondary": [
+            9,
+            17,
+            18
+        ]
     },
     {
         "id": 20,
@@ -418,17 +484,21 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 12],
         "muscles": [
-            12,1,13
+            12,
+            1,
+            13
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [9,17,18]
+        "muscles_secondary": [
+            9,
+            17,
+            18
+        ]
     },
     {
         "id": 21,
@@ -439,17 +509,22 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 12],
         "muscles": [
-            12,1,13
+            12,
+            1,
+            13
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [9,17,18,14]
+        "muscles_secondary": [
+            9,
+            17,
+            18,
+            14
+        ]
     },
     {
         "id": 22,
@@ -460,17 +535,21 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 12],
         "muscles": [
-            12,1,13
+            12,
+            1,
+            13
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [9,17,18]
+        "muscles_secondary": [
+            9,
+            17,
+            18
+        ]
     },
     {
         "id": 23,
@@ -481,17 +560,22 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 13],
         "muscles": [
-            2,9,19
+            2,
+            9,
+            19
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [5,3,6,14]
+        "muscles_secondary": [
+            5,
+            3,
+            6,
+            14
+        ]
     },
     {
         "id": 24,
@@ -502,17 +586,22 @@
         "difficulty": "advanced",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 13],
         "muscles": [
-            2,9,19
+            2,
+            9,
+            19
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [5,3,6,14]
+        "muscles_secondary": [
+            5,
+            3,
+            6,
+            14
+        ]
     },
     {
         "id": 25,
@@ -523,17 +612,20 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 11, 13],
         "muscles": [
-            2,18,4
+            2,
+            18,
+            4
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [5,9]
+        "muscles_secondary": [
+            5,
+            9
+        ]
     },
     {
         "id": 26,
@@ -544,17 +636,22 @@
         "difficulty": "advanced",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 11, 13],
         "muscles": [
-            2,18,5
+            2,
+            18,
+            5
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [9,3,6,14]
+        "muscles_secondary": [
+            9,
+            3,
+            6,
+            14
+        ]
     },
     {
         "id": 27,
@@ -565,17 +662,22 @@
         "difficulty": "advanced",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 11, 13],
         "muscles": [
-            2,4,5,18
+            2,
+            4,
+            5,
+            18
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [9,6,14]
+        "muscles_secondary": [
+            9,
+            6,
+            14
+        ]
     },
     {
         "id": 28,
@@ -586,17 +688,22 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 11, 13],
         "muscles": [
-            2,4,5,18
+            2,
+            4,
+            5,
+            18
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [9,6,14]
+        "muscles_secondary": [
+            9,
+            6,
+            14
+        ]
     },
     {
         "id": 29,
@@ -607,17 +714,22 @@
         "difficulty": "advanced",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 11, 13],
         "muscles": [
-            2,4,5,18
+            2,
+            4,
+            5,
+            18
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [9,6,14]
+        "muscles_secondary": [
+            9,
+            6,
+            14
+        ]
     },
     {
         "id": 30,
@@ -628,17 +740,22 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 13],
         "muscles": [
-            2,9,19
+            2,
+            9,
+            19
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [3,5,6,14]
+        "muscles_secondary": [
+            3,
+            5,
+            6,
+            14
+        ]
     },
     {
         "id": 31,
@@ -649,12 +766,10 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body",
-            "Core"
-        ],
+        "categories": [8, 13],
         "muscles": [
-            6,14
+            6,
+            14
         ],
         "prerequisites": [],
         "progressions": [],
@@ -671,9 +786,7 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 11],
         "muscles": [
             5
         ],
@@ -681,7 +794,10 @@
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [4,2]
+        "muscles_secondary": [
+            4,
+            2
+        ]
     },
     {
         "id": 33,
@@ -692,9 +808,7 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 11],
         "muscles": [
             5
         ],
@@ -702,7 +816,10 @@
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [4,2]
+        "muscles_secondary": [
+            4,
+            2
+        ]
     },
     {
         "id": 34,
@@ -713,9 +830,7 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 11],
         "muscles": [
             5
         ],
@@ -723,7 +838,10 @@
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [4,2]
+        "muscles_secondary": [
+            4,
+            2
+        ]
     },
     {
         "id": 35,
@@ -734,9 +852,7 @@
         "difficulty": "advanced",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 11],
         "muscles": [
             5
         ],
@@ -744,7 +860,10 @@
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [4,2]
+        "muscles_secondary": [
+            4,
+            2
+        ]
     },
     {
         "id": 36,
@@ -755,9 +874,7 @@
         "difficulty": "advanced",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 11],
         "muscles": [
             5
         ],
@@ -765,7 +882,10 @@
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [4,2]
+        "muscles_secondary": [
+            4,
+            2
+        ]
     },
     {
         "id": 37,
@@ -776,17 +896,18 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 11],
         "muscles": [
-            5,4
+            5,
+            4
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [2]
+        "muscles_secondary": [
+            2
+        ]
     },
     {
         "id": 38,
@@ -797,9 +918,7 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 11],
         "muscles": [
             5
         ],
@@ -818,17 +937,21 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 12],
         "muscles": [
-            12,1,13
+            12,
+            1,
+            13
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [9,17,18]
+        "muscles_secondary": [
+            9,
+            17,
+            18
+        ]
     },
     {
         "id": 40,
@@ -839,17 +962,21 @@
         "difficulty": "advanced",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 12],
         "muscles": [
-            12,1,13
+            12,
+            1,
+            13
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [9,17,18]
+        "muscles_secondary": [
+            9,
+            17,
+            18
+        ]
     },
     {
         "id": 41,
@@ -860,17 +987,18 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8],
         "muscles": [
-            1,13
+            1,
+            13
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [19]
+        "muscles_secondary": [
+            19
+        ]
     },
     {
         "id": 42,
@@ -881,9 +1009,7 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 12],
         "muscles": [
             19
         ],
@@ -891,7 +1017,10 @@
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [9,12]
+        "muscles_secondary": [
+            9,
+            12
+        ]
     },
     {
         "id": 43,
@@ -902,17 +1031,20 @@
         "difficulty": "advanced",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 12],
         "muscles": [
-            1,12,13
+            1,
+            12,
+            13
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [9,19]
+        "muscles_secondary": [
+            9,
+            19
+        ]
     },
     {
         "id": 44,
@@ -923,9 +1055,7 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 12],
         "muscles": [
             19
         ],
@@ -933,7 +1063,10 @@
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [9,12]
+        "muscles_secondary": [
+            9,
+            12
+        ]
     },
     {
         "id": 45,
@@ -944,17 +1077,20 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core"
-        ],
+        "categories": [10],
         "muscles": [
-            6,14
+            6,
+            14
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [2,8,18]
+        "muscles_secondary": [
+            2,
+            8,
+            18
+        ]
     },
     {
         "id": 46,
@@ -965,17 +1101,18 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core"
-        ],
+        "categories": [10],
         "muscles": [
-            6,14
+            6,
+            14
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [16]
+        "muscles_secondary": [
+            16
+        ]
     },
     {
         "id": 47,
@@ -986,17 +1123,19 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core"
-        ],
+        "categories": [10],
         "muscles": [
-            6,14
+            6,
+            14
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [2,18]
+        "muscles_secondary": [
+            2,
+            18
+        ]
     },
     {
         "id": 48,
@@ -1007,11 +1146,10 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core"
-        ],
+        "categories": [10],
         "muscles": [
-            6,14
+            6,
+            14
         ],
         "prerequisites": [],
         "progressions": [],
@@ -1028,11 +1166,10 @@
         "difficulty": "advanced",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core"
-        ],
+        "categories": [10],
         "muscles": [
-            6,14
+            6,
+            14
         ],
         "prerequisites": [],
         "progressions": [],
@@ -1049,11 +1186,10 @@
         "difficulty": "advanced",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core"
-        ],
+        "categories": [10],
         "muscles": [
-            6,14
+            6,
+            14
         ],
         "prerequisites": [],
         "progressions": [],
@@ -1070,17 +1206,19 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core"
-        ],
+        "categories": [10],
         "muscles": [
-            6,14
+            6,
+            14
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [2,18]
+        "muscles_secondary": [
+            2,
+            18
+        ]
     },
     {
         "id": 52,
@@ -1091,17 +1229,19 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core"
-        ],
+        "categories": [10],
         "muscles": [
-            6,14
+            6,
+            14
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [2,18]
+        "muscles_secondary": [
+            2,
+            18
+        ]
     },
     {
         "id": 53,
@@ -1112,9 +1252,7 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core"
-        ],
+        "categories": [10],
         "muscles": [
             6
         ],
@@ -1122,7 +1260,9 @@
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [14]
+        "muscles_secondary": [
+            14
+        ]
     },
     {
         "id": 54,
@@ -1133,9 +1273,7 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core"
-        ],
+        "categories": [10],
         "muscles": [
             14
         ],
@@ -1143,7 +1281,9 @@
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [8]
+        "muscles_secondary": [
+            8
+        ]
     },
     {
         "id": 55,
@@ -1154,9 +1294,7 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core"
-        ],
+        "categories": [10],
         "muscles": [
             14
         ],
@@ -1164,7 +1302,9 @@
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [6]
+        "muscles_secondary": [
+            6
+        ]
     },
     {
         "id": 56,
@@ -1175,18 +1315,21 @@
         "difficulty": "advanced",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body",
-            "Core"
-        ],
+        "categories": [8, 12],
         "muscles": [
-            6,14
+            6,
+            14
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [2,9,12,18]
+        "muscles_secondary": [
+            2,
+            9,
+            12,
+            18
+        ]
     },
     {
         "id": 57,
@@ -1197,9 +1340,7 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core"
-        ],
+        "categories": [8, 12],
         "muscles": [
             14
         ],
@@ -1218,11 +1359,10 @@
         "difficulty": "advanced",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core"
-        ],
+        "categories": [10],
         "muscles": [
-            6,14
+            6,
+            14
         ],
         "prerequisites": [],
         "progressions": [],
@@ -1239,9 +1379,7 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core"
-        ],
+        "categories": [10],
         "muscles": [
             6
         ],
@@ -1249,7 +1387,9 @@
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [8]
+        "muscles_secondary": [
+            8
+        ]
     },
     {
         "id": 60,
@@ -1260,17 +1400,18 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core"
-        ],
+        "categories": [10],
         "muscles": [
-            6,14
+            6,
+            14
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [8]
+        "muscles_secondary": [
+            8
+        ]
     },
     {
         "id": 61,
@@ -1281,9 +1422,7 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core"
-        ],
+        "categories": [10],
         "muscles": [
             16
         ],
@@ -1291,7 +1430,11 @@
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [2,8,18]
+        "muscles_secondary": [
+            2,
+            8,
+            18
+        ]
     },
     {
         "id": 62,
@@ -1302,17 +1445,19 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core"
-        ],
+        "categories": [10],
         "muscles": [
-            16,8,12
+            16,
+            8,
+            12
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [9]
+        "muscles_secondary": [
+            9
+        ]
     },
     {
         "id": 63,
@@ -1323,9 +1468,7 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core"
-        ],
+        "categories": [12],
         "muscles": [
             16
         ],
@@ -1333,7 +1476,10 @@
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [8,11]
+        "muscles_secondary": [
+            8,
+            11
+        ]
     },
     {
         "id": 64,
@@ -1344,18 +1490,18 @@
         "difficulty": "intermediate",
         "image_url": null,
         "video_url": "",
-        "categories": [
-            "Core",
-            "Legs"
-        ],
+        "categories": [12],
         "muscles": [
-            16,8
+            16,
+            8
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [11]
+        "muscles_secondary": [
+            11
+        ]
     },
     {
         "id": 65,
@@ -1366,9 +1512,7 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core"
-        ],
+        "categories": [10],
         "muscles": [
             6
         ],
@@ -1387,9 +1531,7 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core"
-        ],
+        "categories": [10],
         "muscles": [
             6
         ],
@@ -1408,18 +1550,20 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core",
-            "Legs"
-        ],
+        "categories": [9],
         "muscles": [
-            8,10,11
+            8,
+            10,
+            11
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [7,20]
+        "muscles_secondary": [
+            7,
+            20
+        ]
     },
     {
         "id": 68,
@@ -1430,18 +1574,20 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core",
-            "Legs"
-        ],
+        "categories": [9],
         "muscles": [
-            8,10,11
+            8,
+            10,
+            11
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [7,20]
+        "muscles_secondary": [
+            7,
+            20
+        ]
     },
     {
         "id": 69,
@@ -1452,17 +1598,19 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core"
-        ],
+        "categories": [9],
         "muscles": [
-            10,8,11
+            10,
+            8,
+            11
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [7]
+        "muscles_secondary": [
+            7
+        ]
     },
     {
         "id": 70,
@@ -1473,18 +1621,20 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core",
-            "Legs"
-        ],
+        "categories": [9],
         "muscles": [
-            8,10,11
+            8,
+            10,
+            11
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [7,20]
+        "muscles_secondary": [
+            7,
+            20
+        ]
     },
     {
         "id": 71,
@@ -1495,18 +1645,20 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core",
-            "Legs"
-        ],
+        "categories": [9],
         "muscles": [
-            8,10,11
+            8,
+            10,
+            11
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [7,20]
+        "muscles_secondary": [
+            7,
+            20
+        ]
     },
     {
         "id": 72,
@@ -1517,18 +1669,19 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core",
-            "Legs"
-        ],
+        "categories": [9],
         "muscles": [
-            10,8,11
+            10,
+            8,
+            11
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [7]
+        "muscles_secondary": [
+            7
+        ]
     },
     {
         "id": 73,
@@ -1539,18 +1692,20 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core",
-            "Legs"
-        ],
+        "categories": [9],
         "muscles": [
-            8,10,11
+            8,
+            10,
+            11
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [7,20]
+        "muscles_secondary": [
+            7,
+            20
+        ]
     },
     {
         "id": 74,
@@ -1561,9 +1716,7 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Legs"
-        ],
+        "categories": [9],
         "muscles": [
             11
         ],
@@ -1571,7 +1724,10 @@
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [6,8]
+        "muscles_secondary": [
+            6,
+            8
+        ]
     },
     {
         "id": 75,
@@ -1582,17 +1738,19 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Legs"
-        ],
+        "categories": [9],
         "muscles": [
-            8,11
+            8,
+            11
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [16,20]
+        "muscles_secondary": [
+            16,
+            20
+        ]
     },
     {
         "id": 76,
@@ -1603,17 +1761,18 @@
         "difficulty": "advanced",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Legs"
-        ],
+        "categories": [9],
         "muscles": [
-            11,8
+            11,
+            8
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [16]
+        "muscles_secondary": [
+            16
+        ]
     },
     {
         "id": 77,
@@ -1624,9 +1783,7 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Legs"
-        ],
+        "categories": [9],
         "muscles": [
             11
         ],
@@ -1634,7 +1791,9 @@
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [8]
+        "muscles_secondary": [
+            8
+        ]
     },
     {
         "id": 78,
@@ -1645,17 +1804,18 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Legs"
-        ],
+        "categories": [9],
         "muscles": [
-            11,8
+            11,
+            8
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [16]
+        "muscles_secondary": [
+            16
+        ]
     },
     {
         "id": 79,
@@ -1666,9 +1826,7 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Legs"
-        ],
+        "categories": [9],
         "muscles": [
             8
         ],
@@ -1676,7 +1834,10 @@
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [6,11]
+        "muscles_secondary": [
+            6,
+            11
+        ]
     },
     {
         "id": 80,
@@ -1687,9 +1848,7 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Legs"
-        ],
+        "categories": [9],
         "muscles": [
             8
         ],
@@ -1697,7 +1856,10 @@
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [6,11]
+        "muscles_secondary": [
+            6,
+            11
+        ]
     },
     {
         "id": 81,
@@ -1708,9 +1870,7 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Legs"
-        ],
+        "categories": [9],
         "muscles": [
             8
         ],
@@ -1718,7 +1878,10 @@
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [6,11]
+        "muscles_secondary": [
+            6,
+            11
+        ]
     },
     {
         "id": 82,
@@ -1729,9 +1892,7 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Legs"
-        ],
+        "categories": [9],
         "muscles": [
             8
         ],
@@ -1739,7 +1900,9 @@
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [11]
+        "muscles_secondary": [
+            11
+        ]
     },
     {
         "id": 83,
@@ -1750,9 +1913,7 @@
         "difficulty": "advanced",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Legs"
-        ],
+        "categories": [9],
         "muscles": [
             8
         ],
@@ -1760,7 +1921,10 @@
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [6,11]
+        "muscles_secondary": [
+            6,
+            11
+        ]
     },
     {
         "id": 84,
@@ -1771,9 +1935,7 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Legs"
-        ],
+        "categories": [14],
         "muscles": [
             7
         ],
@@ -1792,9 +1954,7 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Legs"
-        ],
+        "categories": [14],
         "muscles": [
             7
         ],
@@ -1813,9 +1973,7 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Legs"
-        ],
+        "categories": [14],
         "muscles": [
             7
         ],
@@ -1834,9 +1992,7 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Legs"
-        ],
+        "categories": [14],
         "muscles": [
             7
         ],
@@ -1855,9 +2011,7 @@
         "difficulty": "advanced",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Legs"
-        ],
+        "categories": [14],
         "muscles": [
             7
         ],
@@ -1876,18 +2030,20 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core",
-            "Legs"
-        ],
+        "categories": [9],
         "muscles": [
-            8,10,11
+            8,
+            10,
+            11
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [7,20]
+        "muscles_secondary": [
+            7,
+            20
+        ]
     },
     {
         "id": 90,
@@ -1898,18 +2054,20 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core",
-            "Legs"
-        ],
+        "categories": [9],
         "muscles": [
-            8,10,11
+            8,
+            10,
+            11
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [7,20]
+        "muscles_secondary": [
+            7,
+            20
+        ]
     },
     {
         "id": 91,
@@ -1920,9 +2078,7 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Legs"
-        ],
+        "categories": [9],
         "muscles": [
             20
         ],
@@ -1930,7 +2086,10 @@
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [6,14]
+        "muscles_secondary": [
+            6,
+            14
+        ]
     },
     {
         "id": 92,
@@ -1941,18 +2100,20 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core",
-            "Legs"
-        ],
+        "categories": [9],
         "muscles": [
-            8,10,11
+            8,
+            10,
+            11
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [7,20]
+        "muscles_secondary": [
+            7,
+            20
+        ]
     },
     {
         "id": 93,
@@ -1963,9 +2124,7 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Legs"
-        ],
+        "categories": [9],
         "muscles": [
             20
         ],
@@ -1973,7 +2132,9 @@
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [8]
+        "muscles_secondary": [
+            8
+        ]
     },
     {
         "id": 94,
@@ -1984,9 +2145,7 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Legs"
-        ],
+        "categories": [9],
         "muscles": [
             20
         ],
@@ -1994,7 +2153,9 @@
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [8]
+        "muscles_secondary": [
+            8
+        ]
     },
     {
         "id": 95,
@@ -2005,9 +2166,7 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Legs"
-        ],
+        "categories": [9],
         "muscles": [
             8
         ],
@@ -2026,9 +2185,7 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Legs"
-        ],
+        "categories": [9],
         "muscles": [
             8
         ],
@@ -2047,9 +2204,7 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Legs"
-        ],
+        "categories": [9],
         "muscles": [
             8
         ],
@@ -2068,9 +2223,7 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Legs"
-        ],
+        "categories": [9],
         "muscles": [
             8
         ],
@@ -2089,18 +2242,22 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body",
-            "Core"
-        ],
+        "categories": [9, 11, 12, 15],
         "muscles": [
-            8,10,11
+            8,
+            10,
+            11
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [2,4,5,6]
+        "muscles_secondary": [
+            2,
+            4,
+            5,
+            6
+        ]
     },
     {
         "id": 100,
@@ -2111,17 +2268,21 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core"
-        ],
+        "categories": [15],
         "muscles": [
-            6,14
+            6,
+            14
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [2,10,11,18]
+        "muscles_secondary": [
+            2,
+            10,
+            11,
+            18
+        ]
     },
     {
         "id": 101,
@@ -2132,17 +2293,24 @@
         "difficulty": "advanced",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 12],
         "muscles": [
-            12,1,13,4,5,2
+            12,
+            1,
+            13,
+            4,
+            5,
+            2
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [9,17,18]
+        "muscles_secondary": [
+            9,
+            17,
+            18
+        ]
     },
     {
         "id": 102,
@@ -2153,18 +2321,21 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core",
-            "Legs"
-        ],
+        "categories": [15],
         "muscles": [
-            8,10,11
+            8,
+            10,
+            11
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [2,7,18]
+        "muscles_secondary": [
+            2,
+            7,
+            18
+        ]
     },
     {
         "id": 103,
@@ -2175,17 +2346,20 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core"
-        ],
+        "categories": [15],
         "muscles": [
-            8,10,11
+            8,
+            10,
+            11
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [6,7]
+        "muscles_secondary": [
+            6,
+            7
+        ]
     },
     {
         "id": 104,
@@ -2196,18 +2370,22 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body",
-            "Core"
-        ],
+        "categories": [15],
         "muscles": [
-            8,10,11
+            8,
+            10,
+            11
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [2,6,14,18]
+        "muscles_secondary": [
+            2,
+            6,
+            14,
+            18
+        ]
     },
     {
         "id": 105,
@@ -2218,18 +2396,18 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body",
-            "Core"
-        ],
+        "categories": [15],
         "muscles": [
-            8,20
+            8,
+            20
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [6]
+        "muscles_secondary": [
+            6
+        ]
     },
     {
         "id": 106,
@@ -2240,18 +2418,19 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body",
-            "Core"
-        ],
+        "categories": [15],
         "muscles": [
-            6,19
+            6,
+            19
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [2,18]
+        "muscles_secondary": [
+            2,
+            18
+        ]
     },
     {
         "id": 107,
@@ -2262,10 +2441,7 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body",
-            "Core"
-        ],
+        "categories": [8, 12],
         "muscles": [
             "Back",
             "14"
@@ -2285,17 +2461,19 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 12],
         "muscles": [
-            12,9
+            12,
+            9
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [1,13]
+        "muscles_secondary": [
+            1,
+            13
+        ]
     },
     {
         "id": 109,
@@ -2306,11 +2484,10 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core"
-        ],
+        "categories": [10],
         "muscles": [
-            6,14
+            6,
+            14
         ],
         "prerequisites": [],
         "progressions": [],
@@ -2327,9 +2504,7 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core"
-        ],
+        "categories": [10],
         "muscles": [
             6
         ],
@@ -2348,17 +2523,19 @@
         "difficulty": "beginner",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 12],
         "muscles": [
-            12,9
+            12,
+            9
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [1,13]
+        "muscles_secondary": [
+            1,
+            13
+        ]
     },
     {
         "id": 112,
@@ -2369,17 +2546,24 @@
         "difficulty": "intermediate",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body"
-        ],
+        "categories": [8, 12],
         "muscles": [
-            12,1,13,4,5,2
+            12,
+            1,
+            13,
+            4,
+            5,
+            2
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [9,17,18]
+        "muscles_secondary": [
+            9,
+            17,
+            18
+        ]
     },
     {
         "id": 113,
@@ -2390,17 +2574,19 @@
         "difficulty": "advanced",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Core"
-        ],
+        "categories": [10],
         "muscles": [
-            6,14
+            6,
+            14
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [2,18]
+        "muscles_secondary": [
+            2,
+            18
+        ]
     },
     {
         "id": 114,
@@ -2411,17 +2597,20 @@
         "difficulty": "advanced",
         "image_url": "",
         "video_url": "",
-        "categories": [
-            "Upper Body",
-            "Core"
-        ],
+        "categories": [8, 12],
         "muscles": [
-            6,12,14
+            6,
+            12,
+            14
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
-        "muscles_secondary": [9,13,19]
+        "muscles_secondary": [
+            9,
+            13,
+            19
+        ]
     }
 ]

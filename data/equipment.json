@@ -1,58 +1,58 @@
 [
     {
-        "pk": 1,
+        "id": 1,
             "name": "Dip Bars"
     },
     {
-        "pk": 2,
+        "id": 2,
             "name": "Resistance Bands"
     },
     {
-        "pk": 3,
+        "id": 3,
             "name": "Dumbbell"
     },
     {
-        "pk": 4,
+        "id": 4,
             "name": "Gym mat"
     },
     {
-        "pk": 5,
+        "id": 5,
             "name": "Parallettes"
     },
     {
-        "pk": 6,
+        "id": 6,
             "name": "Pull-up bar"
     },
     {
-        "pk": 7,
+        "id": 7,
             "name": "none (bodyweight exercise)"
     },
     {
-        "pk": 8,
+        "id": 8,
             "name": "Bench"
     },
     {
-        "pk": 9,
+        "id": 9,
             "name": "Incline bench"
     },
     {
-        "pk": 10,
+        "id": 10,
             "name": "Kettlebell"
     },
         {
-        "pk": 11,
+        "id": 11,
             "name": "Gymnastic Rings"
     },
         {
-        "pk": 12,
+        "id": 12,
             "name": "Bench/Step"
     },
         {
-        "pk": 13,
+        "id": 13,
             "name": "Weighted Vest/Belt"
     },
         {
-        "pk": 14,
+        "id": 14,
             "name": "Pole/Vertical Bar"
     }
 ]
