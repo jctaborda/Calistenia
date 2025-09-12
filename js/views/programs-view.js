@@ -18,11 +18,12 @@ export async function renderProgramsView() {
       </div>
       <ul>
         ${programs.map(p => `
-          <li>
+          <li class=flex-container>
             <button class="program-name-btn btn-link" data-type="program" data-id="${p.id}">
               ${p.name}
             </button>
-            <button class="btn" data-type="program" data-id="${p.id}" data-action="start">Start</button>
+             
+            <button class="btn btn-start" data-type="program" data-id="${p.id}" data-action="start">Start</button>
           </li>
         `).join('')}
       </ul>
