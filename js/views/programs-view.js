@@ -14,11 +14,11 @@ export async function renderProgramsView() {
     <div class="card">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
         <h1>Programs</h1>
-        <button class="btn" id="create-routine-btn">Create New Routine</button>
+        <button class="btn" id="create-routine-btn">New Routine</button>
       </div>
       <ul>
         ${programs.map(p => `
-          <li class=flex-container>
+          <li class="flex-container">
             <button class="program-name-btn btn-link" data-type="program" data-id="${p.id}">
               ${p.name}
             </button>

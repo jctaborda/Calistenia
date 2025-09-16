@@ -32,7 +32,7 @@ export async function renderBuilderView() {
     <div class="card">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
         <button class="btn btn-secondary" onclick="window.location.hash = '${isEditing ? '#programs' : '#programs'}'">
-          ← Back to Programs
+          Back to Programms
         </button>
         <h1>${isEditing ? 'Edit Routine' : 'Routine Builder'}</h1>
       </div>
@@ -61,18 +61,26 @@ export async function renderBuilderView() {
             placeholder="Search available exercises..." 
             autocomplete="off"
           >
-          <ul id="available-exercises-list" class="checkbox-list">
-            ${exercises.map(e => {
-              const isSelected = selectedExercises.some(ex => ex.exerciseId === e.id);
+          <select id="available-categories" multiple size="5">
+            ${state.categories.map(category => {
               return `
-                <li data-exercise-name="${e.name.toLowerCase()}">
-                  <label>
-                    <input type="checkbox" data-exercise-id="${e.id}" data-exercise-name="${e.name}" ${isSelected ? 'checked' : ''}>
-                    <span>${e.name}</span>
-                  </label>
-                </li>
+                <option value="${category.id}">${category.name}</option>
               `;
             }).join('')}
+          </select>
+          <ul id="available-exercises-list" class="checkbox-list">
+            ${exercises.filter(ex => ex.categories.some(c => state.categories.find(cat => cat.id === c)))
+              .map(e => {
+                const isSelected = selectedExercises.some(ex => ex.exerciseId === e.id);
+                return `
+                  <li data-exercise-name="${e.name.toLowerCase()}">
+                    <label>
+                      <input type="checkbox" data-exercise-id="${e.id}" data-exercise-name="${e.name}" ${isSelected ? 'checked' : ''}>
+                      <span>${e.name}</span>
+                    </label>
+                  </li>
+                `;
+              }).join('')}
           </ul>
         </div>
         <button class="btn margin-top-1" type="submit">${isEditing ? 'Update Routine' : 'Save Routine'}</button>
@@ -178,6 +186,7 @@ export async function renderBuilderView() {
   const filterInput = main.querySelector('#available-exercise-filter');
   const exercisesList = main.querySelector('#available-exercises-list');
   const exerciseItems = exercisesList.querySelectorAll('li[data-exercise-name]');
+  const categoryFilter = main.querySelector('#available-categories');
 
   if (filterInput) {
     filterInput.addEventListener('input', (e) => {
@@ -194,6 +203,31 @@ export async function renderBuilderView() {
     });
   }
 
+  // Filter exercises based on selected categories
+  function filterExercises() {
+    const selectedCategories = Array.from(categoryFilter.selectedOptions).map(option => option.value);
+    
+    exerciseItems.forEach(item => {
+      const exerciseId = parseInt(item.querySelector('input').dataset.exerciseId);
+      
+      // Check if the exercise has ANY of the selected categories
+    const hasSelectedCategory = selectedCategories.some(categoryId => {
+      // Find the exercise's categories and see if it includes the selected category ID
+      const exerciseCategories = exercises.find(ex => ex.id === exerciseId)?.categories;
+      return exerciseCategories?.includes(parseInt(categoryId));
+    });
+
+    if (hasSelectedCategory) {
+      item.style.display = '';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+  }
+
+  // Add event listeners for category filter selection
+  categoryFilter.addEventListener('change', filterExercises);
+  
   // Add event listeners for exercise checkboxes
   main.querySelectorAll('input[type="checkbox"][data-exercise-id]').forEach(checkbox => {
     checkbox.addEventListener('change', e => {
