@@ -1,3 +1,38 @@
+:root {
+    /* Color palette */
+    --primary: #2D3250;
+    --secondary: #424769;
+    --accent: #7077A1;
+    --light: #F6B17A;
+    --white: #FFFFFF;
+    --gray-100: #F8F9FA;
+    --gray-200: #E9ECEF;
+    --gray-300: #DEE2E6;
+    --gray-400: #CED4DA;
+    --gray-500: #ADB5BD;
+    --gray-600: #6C757D;
+    --gray-700: #495057;
+    --gray-800: #343A40;
+    --gray-900: #212529;
+   
+    /* Spacing */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    
+    /* Border radius */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 16px;
+    
+    /* Shadows */
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+    --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+}
+
 html {
   box-sizing: border-box;
 }
@@ -6,6 +41,7 @@ html {
 }
 body {
   font-family: 'Inter','Roboto';
+  display:block;
   margin: 0;
   padding: 0;
   background: #f5f7fa;
@@ -82,6 +118,26 @@ button, .btn {
 button:hover, .btn:hover {
   background: #1251a3;
   box-shadow: 0 4px 16px rgba(25, 118, 210, 0.12);
+}
+
+.view-btn {
+    background: #2196F3;
+    color: white;
+}
+
+.start-btn {
+    background: #4CAF50;
+    color: white;
+}
+
+.edit-btn {
+    background: #FFC107;
+    color: white;
+}
+
+.delete-btn {
+    background: #F44336;
+    color: white;
 }
 
 .card {
@@ -220,24 +276,85 @@ li {
   background: #5a6268;
 }
 
+/* Lists */
+.list-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+/* Cards */
+.exercise-card, .workout-card, .progress-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--gray-100);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    box-shadow: var(--shadow-md);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.exercise-card:hover, .workout-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
 /* Card variants */
 .card-muted {
   background: var(--muted, #f8f9fa);
   margin: 1rem 0;
 }
 
+.controls {
+    display: flex;
+    gap: 8px;
+}
 /* Exercise grid */
-.exercise-grid {
+.exercises-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--spacing-lg);
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: var(--spacing-xl);
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+.exercises-list {
+    display: grid;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+}
+
+.exercise-item {
+    background-color: var(--gray-100);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
+}
+
+.difficulty-beginner {  border-left: 4px solid #4CAF50;}
+.difficulty-intermediate { border-left: 4px solid #FFC107;}
+.difficulty-advanced { border-left: 4px solid #F44336;}
+
+.tags {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.tag {
+  background: #e0e0e0;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8em;
 }
 
 /* Filter input */
 .filter-input {
   width: 100%;
   max-width: 400px;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 /* Checkbox list styling */
@@ -319,3 +436,5 @@ li {
 .muscle-layer {
   z-index: 2;
 }
+
+

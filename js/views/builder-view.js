@@ -2,6 +2,14 @@ import { fetchExercises } from '../services/api.js';
 import { renderHeader } from '../components/header.js';
 import { getState, setState } from '../services/state.js';
 
+function generateUniqueRoutineId() {
+  const state = getState();
+  const user = state.user;
+  
+  // Use a combination of user ID and current timestamp (or increment)
+  return `${user.id}-${Date.now()}`;
+}
+
 export async function renderBuilderView() {
   const main = document.getElementById('app');
   const exercises = await getState().exercises;
@@ -31,8 +39,8 @@ export async function renderBuilderView() {
   main.innerHTML = renderHeader() + `
     <div class="card">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <button class="btn btn-secondary" onclick="window.location.hash = '${isEditing ? '#programs' : '#programs'}'">
-          Back to Programms
+        <button class="btn btn-secondary" onclick="window.location.hash = '#programs'">
+          Back to Programs
         </button>
         <h1>${isEditing ? 'Edit Routine' : 'Routine Builder'}</h1>
       </div>
@@ -283,7 +291,10 @@ export async function renderBuilderView() {
         // Update existing custom routine
         if (editingType === 'custom') {
           user.customRoutines = user.customRoutines || [];
-          user.customRoutines[Number(editingId)] = { 
+          const routineIndex = user.customRoutines.findIndex(r => r.id === editingId);
+          if (routineIndex !== -1) {
+          user.customRoutines[routineIndex] = {
+            id: editingId,
             name, 
             exercises: selectedExercises.map(ex => ({
               exerciseId: ex.exerciseId,
@@ -292,12 +303,12 @@ export async function renderBuilderView() {
               restTime: ex.restTime
             }))
           };
-          setState({ user, editingProgram: null });
-          alert('Routine updated!');
+          }
         } else {
           // For built-in programs, we can't edit them, so create a new custom routine
           user.customRoutines = user.customRoutines || [];
           user.customRoutines.push({ 
+            id: generateUniqueRoutineId(),
             name: name + ' (Modified)', 
             exercises: selectedExercises.map(ex => ({
               exerciseId: ex.exerciseId,
@@ -306,13 +317,14 @@ export async function renderBuilderView() {
               restTime: ex.restTime
             }))
           });
-          setState({ user, editingProgram: null });
-          alert('New custom routine created from the program!');
         }
+        setState({ user, editingProgram: null });
+        alert('New custom routine created from the program!');
       } else {
         // Create new custom routine
         user.customRoutines = user.customRoutines || [];
         user.customRoutines.push({ 
+          id: generateUniqueRoutineId(),
           name, 
           exercises: selectedExercises.map(ex => ({
             exerciseId: ex.exerciseId,

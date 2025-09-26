@@ -15,7 +15,7 @@ export async function renderProgramDetailsView(type, id) {
   if (type === 'program') {
     program = programs.find(p => String(p.id) === String(id));
   } else if (type === 'custom') {
-    const routine = customRoutines[Number(id)];
+    const routine = customRoutines.find(r => String(r.id) === String(id));
     program = { id: 'custom-' + id, name: routine.name, exercises: routine.exercises };
   }
   
@@ -212,8 +212,11 @@ export async function renderProgramDetailsView(type, id) {
           const user = { ...state.user };
           user.customRoutines = user.customRoutines || [];
           
-          // Remove the routine at the specified index
-          user.customRoutines.splice(Number(id), 1);
+          // Find and remove the routine by ID
+          const routineIndex = user.customRoutines.findIndex(r => String(r.id) === String(id));
+          if (routineIndex !== -1) {
+            user.customRoutines.splice(routineIndex, 1);
+          }
           
           // Update state
           setState({ user });
@@ -244,7 +247,7 @@ export async function renderProgramDetailsView(type, id) {
           window.location.hash = '#active-workout';
         }
       } else if (type === 'custom') {
-        const routine = customRoutines[Number(id)];
+        const routine = customRoutines.find(r => String(r.id) === String(id));
         if (routine) {
           setState({
             activeWorkout: {

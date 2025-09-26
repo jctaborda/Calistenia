@@ -2,6 +2,7 @@ import { fetchPrograms } from '../services/api.js';
 import { renderHeader } from '../components/header.js';
 import { setState, getState } from '../services/state.js';
 
+
 export async function renderProgramsView() {
   const main = document.getElementById('app');
   //const programs = await fetchPrograms();
@@ -19,24 +20,31 @@ export async function renderProgramsView() {
       <ul>
         ${programs.map(p => `
           <li class="flex-container">
-            <button class="program-name-btn btn-link" data-type="program" data-id="${p.id}">
-              ${p.name}
-            </button>
-             
-            <button class="btn btn-start" data-type="program" data-id="${p.id}" data-action="start">Start</button>
+            <div class="workout-card">
+              <h2 program-name-btn data-type="program" data-id="${p.id}" data-action="view">${p.name}</h2>
+              <div class="controls">
+                <button class="view-btn program-name-btn" data-type="program" data-id="${p.id}" data-action="view">View</button>
+                <button class="start-btn" data-type="program" data-id="${p.id}" data-action="start">Start</button>
+                <button class="edit-btn" data-type="program" data-id="${p.id}" data-action="edit">Edit</button>
+                <button class="delete-btn" data-type="program" data-id="${p.id}" data-action="delete">Delete</button>
+              </div>
+            </div>
           </li>
         `).join('')}
       </ul>
-    </div>
-    <div class="card">
-      <h2>Custom Routines</h2>
+      <h1>Custom Routines</h1>
       <ul>
-        ${customRoutines.length === 0 ? '<li>No custom routines yet.</li>' : customRoutines.map((r, i) => `
-          <li>
-            <button class="program-name-btn btn-link" data-type="custom" data-id="${i}">
-              ${r.name}
-            </button>
-            <button class="btn" data-type="custom" data-id="${i}" data-action="start">Start</button>
+        ${customRoutines.length === 0 ? '<li>No custom routines yet.</li>' : customRoutines.map((r) => `
+          <li class="flex-container">
+            <div class="workout-card">
+              <h2 program-name-btn data-type="custom" data-id="${r.id}" data-action="view">${r.name}</h2>
+              <div class="controls">
+                <button class="view-btn program-name-btn" data-type="custom" data-id="${r.id}" data-action="view">View</button>
+                <button class="start-btn" data-type="custom" data-id="${r.id}" data-action="start">Start</button>
+                <button class="edit-btn" data-type="custom" data-id="${r.id}" data-action="edit">Edit</button>
+                <button class="delete-btn" data-type="custom" data-id="${r.id}" data-action="delete">Delete</button>
+              </div>
+            </div>
           </li>
         `).join('')}
       </ul>
@@ -53,7 +61,7 @@ export async function renderProgramsView() {
     });
   }
 
-  // Program name click handlers - navigate to details page
+  // View click handlers - navigate to details page
   main.querySelectorAll('.program-name-btn').forEach(btn => {
     btn.addEventListener('click', e => {
       const type = btn.getAttribute('data-type');
@@ -62,6 +70,68 @@ export async function renderProgramsView() {
     });
   });
 
+  // Edit button handler
+  main.querySelectorAll('.edit-btn').forEach(editBtn =>{
+    if (editBtn) {
+      editBtn.addEventListener('click', () => {
+        // Store the program data for editing
+        const type = editBtn.getAttribute('data-type');
+        const id = editBtn.getAttribute('data-id');
+        let program;
+          if (type === 'program') {
+            program = programs.find(p => String(p.id) === String(id));
+          } else if (type === 'custom') {
+            const routine = customRoutines.find(r => String(r.id)==String(id));
+            program = { id: id, name: routine.name, exercises: routine.exercises };
+          }
+    
+        setState({
+          editingProgram: {
+            type,
+            id,
+            program: {
+              name: program.name,
+              exercises: program.exercises
+            }
+          } 
+        });
+        window.location.hash = '#builder';
+      });
+    };
+  });
+
+  // Delete routine button handler (only for custom routines)
+  main.querySelectorAll('.delete-btn').forEach(deleteBtn => {
+    if (deleteBtn) { 
+      deleteBtn.addEventListener('click', () => {
+        const type = deleteBtn.getAttribute('data-type');
+        const id = Number(deleteBtn.getAttribute('data-id'));
+        let program;
+        if (type === 'custom') {
+        const routine = customRoutines.find(r => String(r.id) === String(id));
+          if (routine) {
+            program = { id: id, name: routine.name, exercises: routine.exercises };
+          if (confirm(`Are you sure you want to delete "${program.name}"? This action cannot be undone.`)) {
+            const state = getState();
+            const user = { ...state.user };
+            user.customRoutines = user.customRoutines || [];
+            const routineIndex = user.customRoutines.findIndex(r => String(r.id) === String(id));
+            if (routineIndex !== -1) {
+              user.customRoutines.splice(routineIndex, 1);
+            }
+            setState({ user });
+            alert('Routine deleted successfully!');
+            window.location.hash = '#programs';
+          }
+        } else {
+          console.log(`Routine with id ${id} not found.`);
+        };
+        };
+      });
+    };
+  });
+  
+  
   // Start button logic
   main.querySelectorAll('button[data-action="start"]').forEach(btn => {
     btn.addEventListener('click', e => {
@@ -74,9 +144,9 @@ export async function renderProgramsView() {
           window.location.hash = '#active-workout';
         }
       } else if (type === 'custom') {
-        const routine = customRoutines[Number(id)];
+        const routine = customRoutines.find(r => String(r.id)==String(id));
         if (routine) {
-          setState({ activeWorkout: { program: { id: 'custom-' + id, name: routine.name, exercises: routine.exercises }, progress: {}, currentExerciseIndex: 0, currentSetIndex: 0 } });
+          setState({ activeWorkout: { program: { id: id, name: routine.name, exercises: routine.exercises }, progress: {}, currentExerciseIndex: 0, currentSetIndex: 0 } });
           window.location.hash = '#active-workout';
         }
       }
