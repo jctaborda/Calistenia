@@ -2597,20 +2597,288 @@
         "difficulty": "advanced",
         "image_url": "",
         "video_url": "",
-        "categories": [8, 12],
+        "categories": ["16"],
         "muscles": [
-            6,
-            12,
-            14
+            
         ],
         "prerequisites": [],
         "progressions": [],
         "formCues": [],
         "commonMistakes": [],
         "muscles_secondary": [
-            9,
-            13,
-            19
+            
+        ]
+    },
+    {
+        "id": 115,
+        "name": "Planche Lean",
+        "description": "",
+        "skill": "Planche",
+        "equipment": "Bodyweight",
+        "difficulty": "advanced",
+        "image_url": "",
+        "video_url": "",
+        "categories": [16],
+        "muscles": [
+            
+        ],
+        "prerequisites": [],
+        "progressions": [],
+        "formCues": [],
+        "commonMistakes": [],
+        "muscles_secondary": [
+            
+        ]
+    },
+    {
+        "id": 116,
+        "name": "Tuck Planche Hold",
+        "description": "",
+        "skill": "Planche",
+        "equipment": "Bodyweight",
+        "difficulty": "advanced",
+        "image_url": "",
+        "video_url": "",
+        "categories": [16],
+        "muscles": [
+            
+        ],
+        "prerequisites": [],
+        "progressions": [],
+        "formCues": [],
+        "commonMistakes": [],
+        "muscles_secondary": [
+            
+        ]
+    },
+    {
+        "id": 117,
+        "name": "Skull Crushers",
+        "description": "",
+        "skill": "",
+        "equipment": "Bodyweight",
+        "difficulty": "advanced",
+        "image_url": "",
+        "video_url": "",
+        "categories": [16],
+        "muscles": [
+            
+        ],
+        "prerequisites": [],
+        "progressions": [],
+        "formCues": [],
+        "commonMistakes": [],
+        "muscles_secondary": [
+            
+        ]
+    },
+    {
+        "id": 118,
+        "name": "Rows",
+        "description": "",
+        "skill": "",
+        "equipment": "Pull-Up Bar",
+        "difficulty": "advanced",
+        "image_url": "",
+        "video_url": "",
+        "categories": [16],
+        "muscles": [
+            
+        ],
+        "prerequisites": [],
+        "progressions": [],
+        "formCues": [],
+        "commonMistakes": [],
+        "muscles_secondary": [
+            
+        ]
+    },{
+        "id": 119,
+        "name": "Australian Pull Up",
+        "description": "",
+        "skill": "Pull-Up Variations",
+        "equipment": "Pull-Up Bar",
+        "difficulty": "advanced",
+        "image_url": "",
+        "video_url": "",
+        "categories": [16],
+        "muscles": [
+            
+        ],
+        "prerequisites": [],
+        "progressions": [],
+        "formCues": [],
+        "commonMistakes": [],
+        "muscles_secondary": [
+            
+        ]
+    },{
+        "id": 120,
+        "name": "Hammer Pull Up",
+        "description": "",
+        "skill": "Pull-Up Variations",
+        "equipment": "Pull-Up Bar",
+        "difficulty": "advanced",
+        "image_url": "",
+        "video_url": "",
+        "categories": [16],
+        "muscles": [
+            
+        ],
+        "prerequisites": [],
+        "progressions": [],
+        "formCues": [],
+        "commonMistakes": [],
+        "muscles_secondary": [
+            
+        ]
+    },
+    {
+        "id": 121,
+        "name": "In and Out",
+        "description": "",
+        "skill": "",
+        "equipment": "Bodyweight",
+        "difficulty": "advanced",
+        "image_url": "",
+        "video_url": "",
+        "categories": [16],
+        "muscles": [
+           
+        ],
+        "prerequisites": [],
+        "progressions": [],
+        "formCues": [],
+        "commonMistakes": [],
+        "muscles_secondary": [
+            
+        ]
+    },
+    {
+        "id": 122,
+        "name": "Twist Sit Up",
+        "description": "",
+        "skill": "",
+        "equipment": "",
+        "difficulty": "advanced",
+        "image_url": "",
+        "video_url": "",
+        "categories": [16],
+        "muscles": [
+            
+        ],
+        "prerequisites": [],
+        "progressions": [],
+        "formCues": [],
+        "commonMistakes": [],
+        "muscles_secondary": [
+            
+        ]
+    },
+    {
+        "id": 123,
+        "name": "Plank Knee to Elbow",
+        "description": "",
+        "skill": "",
+        "equipment": "",
+        "difficulty": "advanced",
+        "image_url": "",
+        "video_url": "",
+        "categories": [16],
+        "muscles": [
+            
+        ],
+        "prerequisites": [],
+        "progressions": [],
+        "formCues": [],
+        "commonMistakes": [],
+        "muscles_secondary": [
+            
+        ]
+    },
+    {
+        "id": 124,
+        "name": "Bicycles",
+        "description": "",
+        "skill": "",
+        "equipment": "",
+        "difficulty": "",
+        "image_url": "",
+        "video_url": "",
+        "categories": [16],
+        "muscles": [
+            
+        ],
+        "prerequisites": [],
+        "progressions": [],
+        "formCues": [],
+        "commonMistakes": [],
+        "muscles_secondary": [
+            
+        ]
+    },
+    {
+        "id": 125,
+        "name": "Flutter",
+        "description": "",
+        "skill": "",
+        "equipment": "",
+        "difficulty": "",
+        "image_url": "",
+        "video_url": "",
+        "categories": [16],
+        "muscles": [
+            
+        ],
+        "prerequisites": [],
+        "progressions": [],
+        "formCues": [],
+        "commonMistakes": [],
+        "muscles_secondary": [
+            
+        ]
+    },
+    {
+        "id": 126,
+        "name": "Plank Side to Side",
+        "description": "",
+        "skill": "",
+        "equipment": "",
+        "difficulty": "",
+        "image_url": "",
+        "video_url": "",
+        "categories": [16],
+        "muscles": [
+            
+        ],
+        "prerequisites": [],
+        "progressions": [],
+        "formCues": [],
+        "commonMistakes": [],
+        "muscles_secondary": [
+            
+        ]
+    },
+    {
+        "id": 127,
+        "name": "Reach Up",
+        "description": "",
+        "skill": "",
+        "equipment": "",
+        "difficulty": "",
+        "image_url": "",
+        "video_url": "",
+        "categories": [16],
+        "muscles": [
+            
+        ],
+        "prerequisites": [],
+        "progressions": [],
+        "formCues": [],
+        "commonMistakes": [],
+        "muscles_secondary": [
+            
         ]
     }
+
 ]

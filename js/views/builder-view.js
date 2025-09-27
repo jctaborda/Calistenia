@@ -7,13 +7,14 @@ function generateUniqueRoutineId() {
   const user = state.user;
   
   // Use a combination of user ID and current timestamp (or increment)
-  return `${user.id}-${Date.now()}`;
+  return `${user.name}-${Date.now()}`;
 }
 
 export async function renderBuilderView() {
   const main = document.getElementById('app');
-  const exercises = await getState().exercises;
-  const state = getState();
+  const state = await getState();
+  const exercises = state.exercises;
+  
   const editingProgram = state.editingProgram;
   
   // Initialize selected exercises based on editing mode

@@ -105,12 +105,12 @@ export async function renderProgramsView() {
     if (deleteBtn) { 
       deleteBtn.addEventListener('click', () => {
         const type = deleteBtn.getAttribute('data-type');
-        const id = Number(deleteBtn.getAttribute('data-id'));
+        const id = String(deleteBtn.getAttribute('data-id'));
         let program;
         if (type === 'custom') {
         const routine = customRoutines.find(r => String(r.id) === String(id));
           if (routine) {
-            program = { id: id, name: routine.name, exercises: routine.exercises };
+          const program = { id: id, name: routine.name, exercises: routine.exercises };
           if (confirm(`Are you sure you want to delete "${program.name}"? This action cannot be undone.`)) {
             const state = getState();
             const user = { ...state.user };
@@ -121,7 +121,8 @@ export async function renderProgramsView() {
             }
             setState({ user });
             alert('Routine deleted successfully!');
-            window.location.hash = '#programs';
+            //window.location.hash = '#programs';
+            renderProgramsView();
           }
         } else {
           console.log(`Routine with id ${id} not found.`);
@@ -155,3 +156,4 @@ export async function renderProgramsView() {
 
 
 } 
+
