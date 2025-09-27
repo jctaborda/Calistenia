@@ -31,8 +31,9 @@ export async function renderExercisesView() {
       ${exercises.map(e => `<div class="exercise-card difficulty-${e.difficulty}" data-id="${e.id}" 
         data-exercise-name="${e.name.toLowerCase()}"><h3>${e.name}</h3> <p>${e.description}</p> 
         <div class="tags">
-      ${e.categories.map(cat => `<span class="tag">${categories.find(c => c.id===cat)?.name}</span>`).join('')}
+        ${e.categories.map(cat => `<span class="tag">${categories.find(c => c.id===cat)?.name}</span>`).join('')}
     </div>
+    
       </div>` ).join('')}
     </div> 
   </div>
