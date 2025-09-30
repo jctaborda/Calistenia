@@ -1,18 +1,22 @@
 // src/views/exercises-view.js
-import { fetchExercises } from '../services/api.js';
 import { renderHeader } from '../components/header.js';
 import { getState } from '../services/state.js';
 export async function renderExercisesView() {
   const main = document.getElementById('app');
   const exercises = await getState().exercises;
   const categories = await getState().categories;
+  const itemsPerPage = 10; // Number of exercises to display per page
+  const totalItems = exercises.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  let currentPage = 1;
+  let exercisesToRender = exercises.slice(0, itemsPerPage);
+  
   main.innerHTML = renderHeader() + `
   <div class="card">
     <h1>Exercises</h1>
     <button class="btn hidden" id="add-exercise">Add Exercise</button>
     <input type="text" id="exercise-filter" class="filter-input"
       placeholder="Search exercises..." autocomplete="off">
-  
     <p>Filter by Category</p>
   
     <select id="category-filter" multipe size="0">
@@ -28,16 +32,58 @@ export async function renderExercisesView() {
     </select>
 
     <div id="exercises-grid" class="exercises-grid">
-      ${exercises.map(e => `<div class="exercise-card difficulty-${e.difficulty}" data-id="${e.id}" 
-        data-exercise-name="${e.name.toLowerCase()}"><h3>${e.name}</h3> <p>${e.description}</p> 
-        <div class="tags">
+      ${exercisesToRender.map(e => `<div class="exercise-card difficulty-${e.difficulty}" data-id="${e.id}"
+      data-exercise-name="${e.name.toLowerCase()}"><h3>${e.name}</h3> <p>${e.description}</p> 
+      <div class="tags">
         ${e.categories.map(cat => `<span class="tag">${categories.find(c => c.id===cat)?.name}</span>`).join('')}
+      </div>
+      </div>`).join('')}
     </div>
-    
-      </div>` ).join('')}
-    </div> 
-  </div>
-  `;
+    <div class="pagination">
+      <button class="btn" id="prev-page" disabled>Previous</button>
+      <span id="current-page">${currentPage}</span>
+      <button class="btn" id="next-page">Next</button>
+    </div>
+  </div>`;
+      
+  document.getElementById('next-page').addEventListener('click', () => {
+    if (currentPage < totalPages) {
+      currentPage++;
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      exercisesToRender = exercises.slice(startIndex, startIndex + itemsPerPage);
+      document.getElementById('exercises-grid').innerHTML =
+        exercisesToRender.map(e => `<div class="exercise-card difficulty-${e.difficulty}" data-id="${e.id}"
+        data-exercise-name="${e.name.toLowerCase()}"><h3>${e.name}</h3> <p>${e.description}</p>
+        <div class="tags">
+          ${e.categories.map(cat => `<span class="tag">${categories.find(c => c.id===cat)?.name}</span>`).join('')}
+        </div>
+      </div>`).join('');
+      document.getElementById('current-page').textContent = currentPage;
+      document.getElementById('prev-page').disabled = currentPage === 1;
+      document.getElementById('next-page').disabled = currentPage === totalPages;
+    }
+  });
+  document.getElementById('prev-page').addEventListener('click', () => {
+  if (currentPage > 1) {
+    currentPage--;
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    exercisesToRender = exercises.slice(startIndex, startIndex + itemsPerPage);
+    document.getElementById('exercises-grid').innerHTML =
+      exercisesToRender.map(e => `<div class="exercise-card difficulty-${e.difficulty}" data-id="${e.id}"
+      data-exercise-name="${e.name.toLowerCase()}"><h3>${e.name}</h3> <p>${e.description}</p>
+      <div class="tags">
+      ${e.categories.map(cat => `<span class="tag">${categories.find(c => c.id===cat)?.name}</span>`).join('')}
+      </div>
+      </div>`).join('');
+    document.getElementById('current-page').textContent = currentPage;
+    document.getElementById('prev-page').disabled = currentPage === 1;
+    document.getElementById('next-page').disabled = currentPage === totalPages;
+  }
+  });
+   
+  document.getElementById('prev-page').disabled = currentPage === 1;
+  document.getElementById('next-page').disabled = currentPage === totalPages;
+  
   
   // Add filter functionality
   const filterInput = main.querySelector('#exercise-filter');
