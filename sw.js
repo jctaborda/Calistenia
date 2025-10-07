@@ -1,9 +1,10 @@
-const VERSION = '0.0.6';
+const VERSION = '0.0.7';
 const CACHE_NAME = `calisthenics-app-${VERSION}`;
 const PATH = "Calistenia";
 const APP_SHELL = [
   `./index.html`,
   `./css/style.css`,
+  `./css/OpenSans.ttf`,
   `./js/main.js`,
   `./js/services/api.js`,
   `./js/services/state.js`,

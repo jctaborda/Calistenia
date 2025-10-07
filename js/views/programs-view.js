@@ -22,6 +22,7 @@ export async function renderProgramsView() {
           <li class="flex-container">
             <div class="workout-card">
               <h2 program-name-btn data-type="program" data-id="${p.id}" data-action="view">${p.name}</h2>
+              <p>
               <div class="controls">
                 <button class="view-btn program-name-btn" data-type="program" data-id="${p.id}" data-action="view">View</button>
                 <button class="start-btn" data-type="program" data-id="${p.id}" data-action="start">Start</button>
@@ -38,7 +39,9 @@ export async function renderProgramsView() {
           <li class="flex-container">
             <div class="workout-card">
               <h2 program-name-btn data-type="custom" data-id="${r.id}" data-action="view">${r.name}</h2>
+              
               <div class="controls">
+              
                 <button class="view-btn program-name-btn" data-type="custom" data-id="${r.id}" data-action="view">View</button>
                 <button class="start-btn" data-type="custom" data-id="${r.id}" data-action="start">Start</button>
                 <button class="edit-btn" data-type="custom" data-id="${r.id}" data-action="edit">Edit</button>
@@ -97,7 +100,7 @@ export async function renderProgramsView() {
         });
         window.location.hash = '#builder';
       });
-    };
+    }
   });
 
   // Delete routine button handler (only for custom routines)
@@ -126,10 +129,10 @@ export async function renderProgramsView() {
           }
         } else {
           console.log(`Routine with id ${id} not found.`);
-        };
-        };
+        }
+        }
       });
-    };
+    }
   });
   
   
