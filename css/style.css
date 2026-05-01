@@ -319,6 +319,15 @@ li {
 .controls {
     display: flex;
     gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+.controls button {
+    flex: 1;
+    min-width: 70px;
+    padding: 0.5em 1em;
+    font-size: 0.9rem;
 }
 /* Exercise grid */
 .exercises-grid {
@@ -415,6 +424,16 @@ li {
   .exercise-form-grid {
     grid-template-columns: 1fr;
     gap: 0.3rem;
+  }
+  
+  /* Stack buttons vertically on small screens */
+  .controls {
+    flex-direction: column;
+  }
+  
+  .controls button {
+    min-width: auto;
+    width: 100%;
   }
 }
 
@@ -526,5 +545,585 @@ li {
   cursor: not-allowed;
   opacity: 0.6;
 }
+/* Loading Spinner */
+.spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
 
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #2196F3;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Error View */
+.error-view {
+  text-align: center;
+  padding: 2rem;
+}
+
+.error-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.error-message {
+  color: #666;
+  margin: 1rem 0;
+  line-height: 1.6;
+}
+
+/* HIIT/Tabata Section */
+.hiit-section {
+  background: #e3f2fd;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.hiit-section h3 {
+  margin-top: 0;
+  color: #1976d2;
+}
+
+/* Modal styles for exercise swap and set adjustment */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9998;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modal-body {
+  margin: 1.5rem 0;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #cfd8dc;
+  border-radius: 5px;
+  background: #f9fafb;
+  color: #222;
+  font-size: 1rem;
+}
+
+/* Accessibility improvements */
+.btn:focus,
+a:focus,
+input:focus,
+select:focus {
+  outline: 3px solid #1976d2;
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .btn {
+    border: 2px solid currentColor;
+  }
+  
+  a {
+    text-decoration: underline;
+  }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+  background: #121212;
+  color: #e0e0e0;
+}
+
+body.dark-mode h1, 
+body.dark-mode h2, 
+body.dark-mode h3, 
+body.dark-mode h4, 
+body.dark-mode h5, 
+body.dark-mode h6 {
+  color: #ffffff;
+}
+
+body.dark-mode header {
+  background: #1f1f1f;
+  border-bottom: 1px solid #333;
+}
+
+body.dark-mode nav a {
+  color: #e0e0e0;
+}
+
+body.dark-mode nav a:hover, 
+body.dark-mode nav a.active {
+  background: rgba(255,255,255,0.1);
+}
+
+body.dark-mode .card,
+body.dark-mode .exercise-card,
+body.dark-mode .workout-card,
+body.dark-mode .progress-card,
+body.dark-mode .exercise-item {
+  background: #1e1e1e;
+  color: #e0e0e0;
+  border: 1px solid #333;
+}
+
+body.dark-mode input, 
+body.dark-mode select, 
+body.dark-mode textarea {
+  background: #2a2a2a;
+  color: #e0e0e0;
+  border-color: #444;
+}
+
+body.dark-mode input:focus, 
+body.dark-mode select:focus, 
+body.dark-mode textarea:focus {
+  border-color: #1976d2;
+}
+
+body.dark-mode .tags {
+  background: transparent;
+}
+
+body.dark-mode .tag {
+  background: #333;
+  color: #e0e0e0;
+}
+
+body.dark-mode .checkbox-list label:hover {
+  background-color: #2a2a2a;
+}
+
+body.dark-mode button, 
+body.dark-mode .btn {
+  background: #1976d2;
+  color: #fff;
+}
+
+body.dark-mode button:hover, 
+body.dark-mode .btn:hover {
+  background: #3b8cdb;
+}
+
+body.dark-mode .pagination-btn {
+  background: #1e1e1e;
+  color: #1976d2;
+  border-color: #1976d2;
+}
+
+body.dark-mode .pagination-btn:hover {
+  background: #1976d2;
+  color: #fff;
+}
+
+body.dark-mode .pagination-nav-btn:not(.disabled) {
+  background: #1e1e1e;
+  color: #1976d2;
+  border-color: #1976d2;
+}
+
+body.dark-mode .pagination-nav-btn:hover:not(.disabled) {
+  background: #1976d2;
+  color: #fff;
+}
+
+body.dark-mode .pagination-nav-btn.disabled {
+  background: #2a2a2a;
+  color: #6c757d;
+  border-color: #444;
+}
+
+body.dark-mode .theme-toggle {
+  background: #333;
+  color: #e0e0e0;
+  border: 1px solid #444;
+}
+
+body.dark-mode .theme-toggle:hover {
+  background: #444;
+}
+
+/* Modal dark mode */
+body.dark-mode .modal {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+body.dark-mode .modal-content {
+  background: #1e1e1e;
+  color: #e0e0e0;
+  border: 1px solid #333;
+}
+
+/* Form dark mode */
+body.dark-mode .form-control {
+  background: #2a2a2a;
+  color: #e0e0e0;
+  border-color: #444;
+}
+
+/* Loading spinner overlay dark mode */
+body.dark-mode .spinner-overlay {
+  background: rgba(18, 18, 18, 0.9);
+}
+
+/* Error view dark mode */
+body.dark-mode .error-message {
+  color: #b0b0b0;
+}
+
+/* ===========================
+   EXERCISE MANAGER FORM STYLES
+   =========================== */
+
+.exercise-form-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #f5f7fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.exercise-form-container h1 {
+  color: #1976d2;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.form-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #cfd8dc;
+}
+
+.tab-btn {
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  border: none;
+  color: #6c757d;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  border-bottom: 2px solid transparent;
+  font-family: 'OpenSans';
+  font-weight: 600;
+}
+
+.tab-btn:hover {
+  color: #1976d2;
+}
+
+.tab-btn.active {
+  color: #1976d2;
+  border-bottom-color: #1976d2;
+}
+
+.form-section {
+  display: none;
+}
+
+.form-section.active {
+  display: block;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  color: #222;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  background: #f9fafb;
+  border: 1px solid #cfd8dc;
+  border-radius: 6px;
+  color: #222;
+  font-size: 1rem;
+  font-family: 'OpenSans';
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #1976d2;
+}
+
+.form-group textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.checkbox-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.75rem;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: #f8f9fa;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.checkbox-item:hover {
+  background: #e9ecef;
+}
+
+.checkbox-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  margin: 0;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  background: #1976d2;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #1251a3;
+}
+
+.btn-secondary {
+  background: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #5a6268;
+}
+
+.btn-danger {
+  background: #dc3545;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #c82333;
+}
+
+.message {
+  padding: 1rem;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  display: none;
+}
+
+.message.success {
+  background: rgba(46, 204, 113, 0.2);
+  border: 1px solid #2ecc71;
+  color: #27ae60;
+}
+
+.message.error {
+  background: rgba(231, 76, 60, 0.2);
+  border: 1px solid #e74c3c;
+  color: #c0392b;
+}
+
+.exercise-list {
+  margin-top: 2rem;
+  display: none;
+}
+
+.exercise-list.active {
+  display: block;
+}
+
+.exercise-list h2 {
+  color: #1976d2;
+  margin-bottom: 1rem;
+}
+
+.search-box {
+  margin-bottom: 1rem;
+}
+
+.exercise-item {
+  padding: 1rem;
+  background: #fff;
+  border-radius: 5px;
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.exercise-item-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.loading {
+  text-align: center;
+  color: #666;
+  padding: 2rem;
+}
+
+/* Dark mode for exercise form */
+body.dark-mode .exercise-form-container {
+  background: #1e1e1e;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .exercise-form-container h1 {
+  color: #42a5f5;
+}
+
+body.dark-mode .form-group label {
+  color: #e0e0e0;
+}
+
+body.dark-mode .tab-btn {
+  color: #909090;
+}
+
+body.dark-mode .tab-btn:hover,
+body.dark-mode .tab-btn.active {
+  color: #42a5f5;
+}
+
+body.dark-mode .form-tabs {
+  border-bottom-color: #333;
+}
+
+body.dark-mode .form-group input,
+body.dark-mode .form-group textarea,
+body.dark-mode .form-group select {
+  background: #2a2a2a;
+  color: #e0e0e0;
+  border-color: #444;
+}
+
+body.dark-mode .checkbox-item {
+  background: #2a2a2a;
+}
+
+body.dark-mode .checkbox-item:hover {
+  background: #333;
+}
+
+body.dark-mode .exercise-item {
+  background: #2a2a2a;
+  color: #e0e0e0;
+  box-shadow: none;
+}
+
+body.dark-mode .message.success {
+  background: rgba(46, 204, 113, 0.2);
+  color: #81c784;
+}
+
+body.dark-mode .message.error {
+  background: rgba(231, 76, 60, 0.2);
+  color: #e57373;
+}
+
+body.dark-mode .exercise-list h2 {
+  color: #42a5f5;
+}
+
+body.dark-mode .loading {
+  color: #b0b0b0;
+}
+
+/* Mobile responsive */
+@media (max-width: 600px) {
+  .exercise-form-container {
+    margin: 1rem;
+    padding: 1rem;
+  }
+
+  .checkbox-group {
+    grid-template-columns: 1fr;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .form-tabs {
+    flex-wrap: wrap;
+  }
+
+  .tab-btn {
+    flex: 1;
+    text-align: center;
+  }
+}
 

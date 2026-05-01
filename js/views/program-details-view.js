@@ -194,7 +194,9 @@ export async function renderProgramDetailsView(type, id) {
           id,
           program: {
             name: program.name,
-            exercises: program.exercises
+            exercises: program.exercises,
+            warmup: program.warmup || [],
+            cooldown: program.cooldown || []
           }
         } 
       });
@@ -254,7 +256,9 @@ export async function renderProgramDetailsView(type, id) {
               program: {
                 id: 'custom-' + id,
                 name: routine.name,
-                exercises: routine.exercises
+                exercises: routine.exercises,
+                warmup: routine.warmup || [],
+                cooldown: routine.cooldown || []
               },
               progress: {},
               currentExerciseIndex: 0,

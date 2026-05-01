@@ -111,25 +111,22 @@ export async function renderProgramsView() {
         const id = String(deleteBtn.getAttribute('data-id'));
         let program;
         if (type === 'custom') {
-        const routine = customRoutines.find(r => String(r.id) === String(id));
+          const routine = customRoutines.find(r => String(r.id) === String(id));
           if (routine) {
-          const program = { id: id, name: routine.name, exercises: routine.exercises };
-          if (confirm(`Are you sure you want to delete "${program.name}"? This action cannot be undone.`)) {
-            const state = getState();
-            const user = { ...state.user };
-            user.customRoutines = user.customRoutines || [];
-            const routineIndex = user.customRoutines.findIndex(r => String(r.id) === String(id));
-            if (routineIndex !== -1) {
-              user.customRoutines.splice(routineIndex, 1);
+            const programName = routine.name;
+            if (confirm(`Are you sure you want to delete "${programName}"? This action cannot be undone.`)) {
+              const state = getState();
+              const user = { ...state.user };
+              user.customRoutines = user.customRoutines || [];
+              const routineIndex = user.customRoutines.findIndex(r => String(r.id) === String(id));
+              if (routineIndex !== -1) {
+                user.customRoutines.splice(routineIndex, 1);
+              }
+              setState({ user });
+              alert('Routine deleted successfully!');
+              renderProgramsView();
             }
-            setState({ user });
-            alert('Routine deleted successfully!');
-            //window.location.hash = '#programs';
-            renderProgramsView();
           }
-        } else {
-          console.log(`Routine with id ${id} not found.`);
-        }
         }
       });
     }
@@ -150,7 +147,7 @@ export async function renderProgramsView() {
       } else if (type === 'custom') {
         const routine = customRoutines.find(r => String(r.id)==String(id));
         if (routine) {
-          setState({ activeWorkout: { program: { id: id, name: routine.name, exercises: routine.exercises }, progress: {}, currentExerciseIndex: 0, currentSetIndex: 0 } });
+          setState({ activeWorkout: { program: { id: id, name: routine.name, exercises: routine.exercises, warmup: routine.warmup || [], cooldown: routine.cooldown || [] }, progress: {}, currentExerciseIndex: 0, currentSetIndex: 0 } });
           window.location.hash = '#active-workout';
         }
       }

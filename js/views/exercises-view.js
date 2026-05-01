@@ -119,9 +119,11 @@ export async function renderExercisesView() {
   main.innerHTML = renderHeader() + `
   <div class="card">
     <h1>Exercises</h1>
-    <button class="btn hidden" id="add-exercise">Add Exercise</button>
-    <input type="text" id="exercise-filter" class="filter-input"
-      placeholder="Search exercises..." autocomplete="off">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+      <button class="btn btn-primary" id="add-exercise-btn">➕ Add Exercise</button>
+      <input type="text" id="exercise-filter" class="filter-input" style="width: 300px;"
+        placeholder="Search exercises..." autocomplete="off">
+    </div>
     <p>Filter by Category</p>
   
     <select id="category-filter" multiple size="0">
@@ -141,6 +143,10 @@ export async function renderExercisesView() {
       data-exercise-name="${e.name.toLowerCase()}"><h3>${e.name}</h3> <p>${e.description}</p> 
       <div class="tags">
         ${e.categories.map(cat => `<span class="tag">${categories.find(c => c.id===cat)?.name}</span>`).join('')}
+      </div>
+      <div class="controls" style="margin-top: 1rem;">
+        <button class="btn view-btn">View</button>
+        <button class="btn edit-btn">Edit</button>
       </div>
       </div>`).join('')}
     </div>
@@ -199,11 +205,36 @@ export async function renderExercisesView() {
 
   // Function to attach exercise card event listeners
   function attachExerciseCardListeners() {
-    document.querySelectorAll('.exercise-card').forEach(btn => {
-      btn.addEventListener('click', e => {
-        const id = btn.getAttribute('data-id');
-        window.location.hash = `#exercise/${id}`;
-      });
+    document.querySelectorAll('.exercise-card').forEach(card => {
+      const id = card.getAttribute('data-id');
+      
+      // View button - navigate to exercise details
+      const viewBtn = card.querySelector('.view-btn');
+      if (viewBtn) {
+        viewBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          window.location.hash = `#exercise/${id}`;
+        });
+      }
+      
+      // Edit button - navigate to exercise form with edit mode
+      const editBtn = card.querySelector('.edit-btn');
+      if (editBtn) {
+        editBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          // Store the edit ID in sessionStorage so it persists during navigation
+          sessionStorage.setItem('editingExerciseId', id);
+          window.location.hash = '#exercise-form';
+        });
+      }
+    });
+  }
+
+  // Add Exercise button listener
+  const addExerciseBtn = document.getElementById('add-exercise-btn');
+  if (addExerciseBtn) {
+    addExerciseBtn.addEventListener('click', () => {
+      window.location.hash = '#exercise-form';
     });
   }
 

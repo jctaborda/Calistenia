@@ -64,8 +64,34 @@
                 "restTime": 60
             }
         ],
-        "warmup": [],
-        "cooldown": []
+        "warmup": [
+            {
+                "exerciseId": 1,
+                "sets": 2,
+                "reps": 15,
+                "restTime": 30
+            },
+            {
+                "exerciseId": 6,
+                "sets": 2,
+                "reps": 12,
+                "restTime": 30
+            }
+        ],
+        "cooldown": [
+            {
+                "exerciseId": 6,
+                "sets": 2,
+                "reps": 10,
+                "restTime": 45
+            },
+            {
+                "exerciseId": 1,
+                "sets": 2,
+                "reps": 8,
+                "restTime": 45
+            }
+        ]
     },
     {
         "id": 2,
@@ -138,8 +164,34 @@
                 "restTime": 60
             }
         ],
-        "warmup": [],
-        "cooldown": []
+        "warmup": [
+            {
+                "exerciseId": 11,
+                "sets": 2,
+                "reps": 8,
+                "restTime": 30
+            },
+            {
+                "exerciseId": 19,
+                "sets": 2,
+                "reps": 10,
+                "restTime": 30
+            }
+        ],
+        "cooldown": [
+            {
+                "exerciseId": 11,
+                "sets": 2,
+                "reps": 8,
+                "restTime": 45
+            },
+            {
+                "exerciseId": 19,
+                "sets": 2,
+                "reps": 6,
+                "restTime": 45
+            }
+        ]
     },
     {
         "id": 3,
@@ -206,7 +258,33 @@
                 "restTime": 60
             }
         ],
-        "warmup": [],
-        "cooldown": []
+        "warmup": [
+            {
+                "exerciseId": 53,
+                "sets": 2,
+                "reps": 12,
+                "restTime": 30
+            },
+            {
+                "exerciseId": 65,
+                "sets": 2,
+                "reps": 10,
+                "restTime": 30
+            }
+        ],
+        "cooldown": [
+            {
+                "exerciseId": 53,
+                "sets": 2,
+                "reps": 8,
+                "restTime": 45
+            },
+            {
+                "exerciseId": 65,
+                "sets": 2,
+                "reps": 6,
+                "restTime": 45
+            }
+        ]
     }
 ]

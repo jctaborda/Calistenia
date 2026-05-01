@@ -57,25 +57,25 @@ export function renderExerciseView(exerciseId) {
     return categ ? categ.name : 'Unknown';
   }).join(', ');
 
-  const frontImages = exercise.muscles.map(muscleId => {
-    if (muscles[muscleId-1].is_front) {
-      return `<img src="assets/images/muscles/main/muscle-${muscleId}.svg" alt="Muscle ${muscleId}" class="muscle-layer" />`
-  }}).join('');
+  const frontImages = (exercise.muscles || []).filter(muscleId => {
+    const muscle = muscles.find(m => m.id === muscleId);
+    return muscle && muscle.is_front;
+  }).map(muscleId => `<img src="assets/images/muscles/main/muscle-${muscleId}.svg" alt="Muscle ${muscleId}" class="muscle-layer" />`).join('');
 
-  const backImages = exercise.muscles.map(muscleId => {
-    if (!muscles[muscleId-1].is_front) {
-      return `<img src="assets/images/muscles/main/muscle-${muscleId}.svg" alt="Muscle ${muscleId}" class="muscle-layer" />`
-  }}).join('');
+  const backImages = (exercise.muscles || []).filter(muscleId => {
+    const muscle = muscles.find(m => m.id === muscleId);
+    return muscle && !muscle.is_front;
+  }).map(muscleId => `<img src="assets/images/muscles/main/muscle-${muscleId}.svg" alt="Muscle ${muscleId}" class="muscle-layer" />`).join('');
 
-  const frontImagesSecondary = exercise.muscles_secondary.map(muscleId => {
-    if (muscles[muscleId-1].is_front) {
-      return `<img src="assets/images/muscles/secondary/muscle-${muscleId}.svg" alt="Muscle ${muscleId}" class="muscle-layer" />`
-  }}).join('');
+  const frontImagesSecondary = (exercise.muscles_secondary || []).filter(muscleId => {
+    const muscle = muscles.find(m => m.id === muscleId);
+    return muscle && muscle.is_front;
+  }).map(muscleId => `<img src="assets/images/muscles/secondary/muscle-${muscleId}.svg" alt="Muscle ${muscleId}" class="muscle-layer" />`).join('');
 
-  const backImagesSecondary = exercise.muscles_secondary.map(muscleId => {
-    if (!muscles[muscleId-1].is_front) {
-      return `<img src="assets/images/muscles/secondary/muscle-${muscleId}.svg" alt="Muscle ${muscleId}" class="muscle-layer" />`
-  }}).join('');
+  const backImagesSecondary = (exercise.muscles_secondary || []).filter(muscleId => {
+    const muscle = muscles.find(m => m.id === muscleId);
+    return muscle && !muscle.is_front;
+  }).map(muscleId => `<img src="assets/images/muscles/secondary/muscle-${muscleId}.svg" alt="Muscle ${muscleId}" class="muscle-layer" />`).join('');
 
   main.innerHTML = renderHeader() + `
     <div class="card">

@@ -1,0 +1,160 @@
+<!-- Exercise Form HTML - This file is loaded via fetch and its innerHTML is extracted -->
+<div class="exercise-form-container">
+  <h1>Exercise Manager</h1>
+
+  <div id="message" class="message"></div>
+
+  <div class="form-tabs">
+    <button class="tab-btn active" data-tab="add">Add New Exercise</button>
+    <button class="tab-btn" data-tab="edit">Edit/Delete Exercise</button>
+  </div>
+
+  <!-- Add Exercise Form -->
+  <div id="add-form" class="form-section active">
+    <form id="exerciseForm">
+      <div class="form-group">
+        <label for="name">Exercise Name *</label>
+        <input type="text" id="name" name="name" required placeholder="e.g., Push-Up">
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description *</label>
+        <textarea id="description" name="description" required placeholder="Describe the exercise..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="skill">Skill Category</label>
+        <input type="text" id="skill" name="skill" placeholder="e.g., Push-Up Variations">
+      </div>
+
+      <div class="form-group">
+        <label for="equipment">Equipment</label>
+        <select id="equipment" name="equipment">
+          <option value="">Select Equipment...</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="difficulty">Difficulty Level</label>
+        <select id="difficulty" name="difficulty">
+          <option value="beginner">Beginner</option>
+          <option value="intermediate">Intermediate</option>
+          <option value="advanced">Advanced</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="image_url">Image URL (optional)</label>
+        <input type="text" id="image_url" name="image_url" placeholder="https://...">
+      </div>
+
+      <div class="form-group">
+        <label for="video_url">Video URL (optional)</label>
+        <input type="text" id="video_url" name="video_url" placeholder="https://...">
+      </div>
+
+      <div class="form-group">
+        <label for="categories">Categories (select multiple)</label>
+        <div class="checkbox-group" id="categories-container"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="muscles">Primary Muscles (select multiple)</label>
+        <div class="checkbox-group" id="muscles-container"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="muscles_secondary">Secondary Muscles (select multiple)</label>
+        <div class="checkbox-group" id="muscles-secondary-container"></div>
+      </div>
+
+      <div class="button-group">
+        <button type="submit" class="btn btn-primary">Add Exercise</button>
+        <button type="reset" class="btn btn-secondary">Clear Form</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Edit/Delete Exercise Form -->
+  <div id="edit-form" class="form-section">
+    <div class="search-box">
+      <div class="form-group">
+        <label for="searchExercise">Search Exercise</label>
+        <input type="text" id="searchExercise" placeholder="Type to search...">
+      </div>
+    </div>
+
+    <div id="exerciseList" class="exercise-list"></div>
+
+    <div id="editContainer" style="display: none;">
+      <h2>Edit Exercise</h2>
+      <form id="editForm">
+        <input type="hidden" id="editId" name="id">
+
+        <div class="form-group">
+          <label for="editName">Exercise Name *</label>
+          <input type="text" id="editName" name="name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="editDescription">Description *</label>
+          <textarea id="editDescription" name="description" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="editSkill">Skill Category</label>
+          <input type="text" id="editSkill" name="skill">
+        </div>
+
+        <div class="form-group">
+          <label for="editEquipment">Equipment</label>
+          <select id="editEquipment" name="equipment"></select>
+        </div>
+
+        <div class="form-group">
+          <label for="editDifficulty">Difficulty Level</label>
+          <select id="editDifficulty" name="difficulty">
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="editImage_url">Image URL</label>
+          <input type="text" id="editImage_url" name="image_url">
+        </div>
+
+        <div class="form-group">
+          <label for="editVideo_url">Video URL</label>
+          <input type="text" id="editVideo_url" name="video_url">
+        </div>
+
+        <div class="form-group">
+          <label for="editCategories">Categories</label>
+          <div class="checkbox-group" id="edit-categories-container"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="editMuscles">Primary Muscles</label>
+          <div class="checkbox-group" id="edit-muscles-container"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="editMuscles_secondary">Secondary Muscles</label>
+          <div class="checkbox-group" id="edit-muscles-secondary-container"></div>
+        </div>
+
+        <div class="button-group">
+          <button type="submit" class="btn btn-primary">Update Exercise</button>
+          <button type="button" class="btn btn-danger" id="deleteBtn">Delete Exercise</button>
+          <button type="button" class="btn btn-secondary" id="cancelEditBtn">Cancel</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="loadingExercise" class="loading" style="display: none;">
+      Loading exercise details...
+    </div>
+  </div>
+</div>

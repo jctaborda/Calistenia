@@ -1,4 +1,3 @@
-import { fetchExercises } from '../services/api.js';
 import { renderHeader } from '../components/header.js';
 import { getState, setState } from '../services/state.js';
 
@@ -223,14 +222,24 @@ export async function renderBuilderView() {
     isEditing = true;
     editingType = editingProgram.type;
     editingId = editingProgram.id;
+    
+    // Load exercises from the program being edited
+    let loadedExercises = editingProgram.program.exercises || [];
+    let loadedWarmup = editingProgram.program.warmup || [];
+    let loadedCooldown = editingProgram.program.cooldown || [];
+    
     // Enrich the exercises with names from the exercises array
-    selectedExercises = editingProgram.program.exercises.map(ex => {
+    selectedExercises = loadedExercises.map(ex => {
       const exercise = exercises.find(e => String(e.id) === String(ex.exerciseId));
       return {
         ...ex,
         name: exercise ? exercise.name : 'Unknown Exercise'
       };
     });
+    
+    // Store warmup and cooldown for later saving
+    window._editingWarmup = loadedWarmup;
+    window._editingCooldown = loadedCooldown;
   }
   
   main.innerHTML = renderHeader() + `
@@ -316,7 +325,7 @@ export async function renderBuilderView() {
             <span>⋮⋮</span>
             <span style="font-weight: 600;">${exerciseName}</span>
           </div>
-                  <div class="exercise-form-grid">
+          <div class="exercise-form-grid">
             <label>Sets: <input type="number" min="1" max="10" value="${ex.sets}" data-index="${index}" data-field="sets"></label>
             <label>Reps: <input type="number" min="1" max="50" value="${ex.reps}" data-index="${index}" data-field="reps"></label>
             <label>Rest (s): <input type="number" min="15" max="300" step="15" value="${ex.restTime}" data-index="${index}" data-field="restTime"></label>
@@ -440,16 +449,18 @@ export async function renderBuilderView() {
           user.customRoutines = user.customRoutines || [];
           const routineIndex = user.customRoutines.findIndex(r => r.id === editingId);
           if (routineIndex !== -1) {
-          user.customRoutines[routineIndex] = {
-            id: editingId,
-            name, 
-            exercises: selectedExercises.map(ex => ({
-              exerciseId: ex.exerciseId,
-              sets: ex.sets,
-              reps: ex.reps,
-              restTime: ex.restTime
-            }))
-          };
+            user.customRoutines[routineIndex] = {
+              id: editingId,
+              name, 
+              exercises: selectedExercises.map(ex => ({
+                exerciseId: ex.exerciseId,
+                sets: ex.sets,
+                reps: ex.reps,
+                restTime: ex.restTime
+              })),
+              warmup: window._editingWarmup || [],
+              cooldown: window._editingCooldown || []
+            };
           }
         } else {
           // For built-in programs, we can't edit them, so create a new custom routine
@@ -462,7 +473,9 @@ export async function renderBuilderView() {
               sets: ex.sets,
               reps: ex.reps,
               restTime: ex.restTime
-            }))
+            })),
+            warmup: window._editingWarmup || [],
+            cooldown: window._editingCooldown || []
           });
         }
         setState({ user, editingProgram: null });
@@ -478,7 +491,9 @@ export async function renderBuilderView() {
             sets: ex.sets,
             reps: ex.reps,
             restTime: ex.restTime
-          }))
+          })),
+          warmup: [],
+          cooldown: []
         });
         setState({ user });
         alert('Routine saved!');

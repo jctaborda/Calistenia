@@ -1,9 +1,10 @@
 import { getState, setState } from '../services/state.js';
 import { renderHeader } from '../components/header.js';
+import { checkAchievements } from '../services/achievements.js';
 
 export function renderWorkoutCompletionView() {
   const main = document.getElementById('app');
-  const { activeWorkout, exercises } = getState();
+  const { activeWorkout, exercises, history = [] } = getState();
   
   if (!activeWorkout || !activeWorkout.program) {
     main.innerHTML = renderHeader() + '<div class="card"><p>No active workout to complete.</p></div>';
@@ -12,11 +13,29 @@ export function renderWorkoutCompletionView() {
 
   const program = activeWorkout.program;
   
+  // Check for new achievements after workout completion
+  const newlyUnlockedAchievements = checkAchievements({ date: new Date().toISOString() });
+
   main.innerHTML = renderHeader() + `
     <div class="card">
       <h1>Workout Complete!</h1>
       <h2>${program.name}</h2>
       <p>Great job! Now let's log the reps you actually completed for each set.</p>
+      
+      ${newlyUnlockedAchievements.length > 0 ? `
+        <div class="achievements-unlocked">
+          <h3>🎉 Achievements Unlocked!</h3>
+          ${newlyUnlockedAchievements.map(ach => `
+            <div class="achievement-item">
+              <span class="achievement-emoji">${ach.emoji}</span>
+              <div class="achievement-details">
+                <strong>${ach.name}</strong>
+                <p>${ach.description}</p>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      ` : ''}
       
       <form id="workout-completion-form">
         ${program.exercises.map((exerciseData, exerciseIndex) => {
@@ -85,7 +104,7 @@ export function renderWorkoutCompletionView() {
         activeWorkout: null
       });
       
-      alert('Workout logged successfully!');
+      // Navigate to summary with difficulty feedback
       window.location.hash = '#summary';
     });
   }
@@ -93,9 +112,11 @@ export function renderWorkoutCompletionView() {
   const skipBtn = main.querySelector('#skip-logging-btn');
   if (skipBtn) {
     skipBtn.addEventListener('click', () => {
-      // Just clear the active workout without logging
       setState({ activeWorkout: null });
-      window.location.hash = '#home';
+      window.location.hash = '#summary';
     });
   }
 }
+
+// Export for router usage
+window.renderWorkoutCompletionView = renderWorkoutCompletionView;
