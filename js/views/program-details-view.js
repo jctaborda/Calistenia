@@ -1,7 +1,7 @@
 // views/program-details-view.js
 import { fetchPrograms } from '../services/api.js';
 import { renderHeader } from '../components/header.js';
-import { setState, getState } from '../services/state.js';
+import { setState, updateState, getState } from '../services/state.js';
 
 export async function renderProgramDetailsView(type, id) {
   const main = document.getElementById('app');
@@ -129,7 +129,7 @@ export async function renderProgramDetailsView(type, id) {
         ` : ''}
         <h3>Exercises:</h3>
         <ul class="exercise-list">
-          ${program.exercises.map(ex => {
+          ${((program.exercises || [])).map(ex => {
             const exercise = exercises.find(e => String(e.id) === String(ex.exerciseId));
             return `
               <li class="exercise-item">
@@ -188,7 +188,7 @@ export async function renderProgramDetailsView(type, id) {
   if (editBtn) {
     editBtn.addEventListener('click', () => {
       // Store the program data for editing
-      setState({
+      updateState({
         editingProgram: {
           type,
           id,
@@ -221,7 +221,7 @@ export async function renderProgramDetailsView(type, id) {
           }
           
           // Update state
-          setState({ user });
+          updateState({ user });
           
           // Navigate back to programs view
           alert('Routine deleted successfully!');
@@ -238,7 +238,7 @@ export async function renderProgramDetailsView(type, id) {
       if (type === 'program') {
         const originalProgram = programs.find(p => String(p.id) === String(id));
         if (originalProgram) {
-          setState({
+          updateState({
             activeWorkout: {
               program: originalProgram,
               progress: {},
@@ -251,7 +251,7 @@ export async function renderProgramDetailsView(type, id) {
       } else if (type === 'custom') {
         const routine = customRoutines.find(r => String(r.id) === String(id));
         if (routine) {
-          setState({
+          updateState({
             activeWorkout: {
               program: {
                 id: 'custom-' + id,
@@ -271,3 +271,8 @@ export async function renderProgramDetailsView(type, id) {
     });
   }
 }
+
+
+
+// Export as object for wrapView compatibility
+export default { render: renderProgramDetailsView };

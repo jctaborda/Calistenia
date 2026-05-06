@@ -1,0 +1,5145 @@
+{
+  "categories": [
+    {
+      "id": 8,
+      "name": "Arms"
+    },
+    {
+      "id": 9,
+      "name": "Legs"
+    },
+    {
+      "id": 10,
+      "name": "Abs"
+    },
+    {
+      "id": 11,
+      "name": "Chest"
+    },
+    {
+      "id": 12,
+      "name": "Back"
+    },
+    {
+      "id": 13,
+      "name": "Shoulders"
+    },
+    {
+      "id": 14,
+      "name": "Calves"
+    },
+    {
+      "id": 15,
+      "name": "Cardio"
+    },
+    {
+      "id": 16,
+      "name": "Undefined"
+    }
+  ],
+  "equipment": [
+    {
+      "id": 1,
+      "name": "Dip Bars"
+    },
+    {
+      "id": 2,
+      "name": "Resistance Bands"
+    },
+    {
+      "id": 3,
+      "name": "Dumbbell"
+    },
+    {
+      "id": 4,
+      "name": "Gym mat"
+    },
+    {
+      "id": 5,
+      "name": "Parallettes"
+    },
+    {
+      "id": 6,
+      "name": "Pull-up bar"
+    },
+    {
+      "id": 7,
+      "name": "none (bodyweight exercise)"
+    },
+    {
+      "id": 8,
+      "name": "Bench"
+    },
+    {
+      "id": 9,
+      "name": "Incline bench"
+    },
+    {
+      "id": 10,
+      "name": "Kettlebell"
+    },
+    {
+      "id": 11,
+      "name": "Gymnastic Rings"
+    },
+    {
+      "id": 12,
+      "name": "Bench/Step"
+    },
+    {
+      "id": 13,
+      "name": "Weighted Vest/Belt"
+    },
+    {
+      "id": 14,
+      "name": "Pole/Vertical Bar"
+    },
+    {
+      "id": 15,
+      "name": "Bodyweight"
+    },
+    {
+      "id": 16,
+      "name": "Floor"
+    },
+    {
+      "id": 17,
+      "name": "Wall"
+    }
+  ],
+  "exercises": [
+    {
+      "id": 1,
+      "name": "Push-Up",
+      "description": "A foundational exercise where you lower your chest to the ground and push back up, engaging the chest, shoulders, and triceps. ",
+      "skill": "Push-Up Variations",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        11
+      ],
+      "muscles": [
+        4,
+        5,
+        2
+      ],
+      "prerequisites": [],
+      "progressions": [
+        2,
+        3,
+        4
+      ],
+      "formCues": [
+        "Keep your core tight throughout the movement",
+        "Maintain a straight line from head to heels",
+        "Exhale as you push up, inhale as you lower",
+        "Keep elbows at 45 degrees to your body"
+      ],
+      "commonMistakes": [
+        "Don't let hips sag or pike up",
+        "Avoid flaring elbows out to 90 degrees",
+        "Don't stop halfway through the movement"
+      ],
+      "muscles_secondary": [
+        3,
+        13,
+        9
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Wide Push-Up",
+      "description": "Hands placed wider than shoulders to emphasize chest activation over triceps, performed by lowering and raising the body.",
+      "skill": "Push-Up Variations",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        11
+      ],
+      "muscles": [
+        4
+      ],
+      "prerequisites": [
+        1
+      ],
+      "progressions": [
+        5
+      ],
+      "formCues": [
+        "Widen hands to 1.5x shoulder width",
+        "Keep core engaged throughout",
+        "Lower chest to center between hands",
+        "Control the descent for 2-3 seconds"
+      ],
+      "commonMistakes": [
+        "Don't let shoulders shrug toward ears",
+        "Avoid incomplete range of motion",
+        "Don't rotate hips side to side"
+      ],
+      "muscles_secondary": [
+        5,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Diamond Push-Up",
+      "description": "Hands close together forming a diamond shape, targeting the inner chest and triceps with a challenging push-up variation.",
+      "skill": "Push-Up Variations",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        11
+      ],
+      "muscles": [
+        5,
+        4
+      ],
+      "prerequisites": [
+        1
+      ],
+      "progressions": [
+        6
+      ],
+      "formCues": [
+        "Form diamond with thumbs and index fingers",
+        "Keep elbows close to your ribs",
+        "Lower chest to diamond shape",
+        "Focus on triceps engagement"
+      ],
+      "commonMistakes": [
+        "Don't let elbows flare out",
+        "Avoid sagging hips",
+        "Don't go too shallow in the movement"
+      ],
+      "muscles_secondary": [
+        2,
+        13
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Clap Push-Up",
+      "description": "An explosive push-up where you push off the ground hard enough to clap hands mid-air, building chest power and speed.",
+      "skill": "Push-Up Variations",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        11
+      ],
+      "muscles": [
+        4,
+        5,
+        2
+      ],
+      "prerequisites": [
+        1
+      ],
+      "progressions": [
+        7
+      ],
+      "formCues": [
+        "Explode up with maximum power",
+        "Clap hands at peak of movement",
+        "Land softly on palms",
+        "Keep core braced throughout"
+      ],
+      "commonMistakes": [
+        "Don't hesitate to clap - be decisive",
+        "Avoid landing with straight arms",
+        "Don't sacrifice form for height"
+      ],
+      "muscles_secondary": [
+        3,
+        13,
+        9
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Archer Push-Up",
+      "description": "One arm extends to the side while the other bends, mimicking an archer's draw, for unilateral chest strength.",
+      "skill": "Push-Up Variations",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        11
+      ],
+      "muscles": [
+        4,
+        2,
+        5
+      ],
+      "prerequisites": [
+        2
+      ],
+      "progressions": [
+        8
+      ],
+      "formCues": [
+        "Widen hand stance significantly",
+        "Shift weight to one arm as you lower",
+        "Keep other arm straight like an archer's bow",
+        "Push back to center from each side"
+      ],
+      "commonMistakes": [
+        "Don't rotate your torso",
+        "Avoid letting the working elbow flare",
+        "Don't touch ground with non-working hand"
+      ],
+      "muscles_secondary": [
+        3,
+        13,
+        9
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Incline Push-Up",
+      "description": "Hands on an elevated surface reduce difficulty, focusing on lower chest with a standard push-up motion.",
+      "skill": "Push-Up Variations",
+      "equipment": [
+        12
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        11
+      ],
+      "muscles": [
+        4,
+        5,
+        2
+      ],
+      "prerequisites": [
+        3
+      ],
+      "progressions": [],
+      "formCues": [
+        "Hands elevated on stable surface",
+        "Body forms straight line from head to heels",
+        "Keep core and glutes engaged",
+        "Use a height that allows proper form"
+      ],
+      "commonMistakes": [
+        "Don't let hips sag",
+        "Avoid partial range of motion",
+        "Don't pike at the hips"
+      ],
+      "muscles_secondary": [
+        3,
+        13
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Decline Push-Up",
+      "description": "Feet elevated, hands on ground, shifting focus to upper chest and shoulders in a push-up.",
+      "skill": "Push-Up Variations",
+      "equipment": [
+        12
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        11
+      ],
+      "muscles": [
+        4,
+        5,
+        2
+      ],
+      "prerequisites": [
+        4
+      ],
+      "progressions": [
+        9
+      ],
+      "formCues": [
+        "Feet elevated on stable surface",
+        "Hands shoulder-width apart",
+        "Focus on upper chest and shoulders",
+        "Start with moderate elevation"
+      ],
+      "commonMistakes": [
+        "Don't let hips sag below shoulder line",
+        "Avoid going too deep too soon",
+        "Don't bend arms too wide"
+      ],
+      "muscles_secondary": [
+        3,
+        13
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Plyo Push-Up",
+      "description": "Push explosively to lift hands off the ground, enhancing chest and shoulder power.",
+      "skill": "Push-Up Variations",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        11
+      ],
+      "muscles": [
+        4,
+        5,
+        2
+      ],
+      "prerequisites": [
+        5
+      ],
+      "progressions": [
+        10
+      ],
+      "formCues": [
+        "Explosive upward movement",
+        "Generate maximum power from chest",
+        "Hands leave the ground completely",
+        "Land softly and immediately lower"
+      ],
+      "commonMistakes": [
+        "Don't land with locked elbows",
+        "Avoid weak push-off",
+        "Don't compromise form for height"
+      ],
+      "muscles_secondary": [
+        3,
+        13,
+        9
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Spiderman Push-Up",
+      "description": "Bring one knee to elbow during a push-up, engaging chest and obliques simultaneously.",
+      "skill": "Push-Up Variations",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        11
+      ],
+      "muscles": [
+        4,
+        5,
+        2
+      ],
+      "prerequisites": [
+        7
+      ],
+      "progressions": [],
+      "formCues": [
+        "Wide hand stance",
+        "Bring knee to same-side elbow on descent",
+        "Alternate sides with each rep",
+        "Control the movement fully"
+      ],
+      "commonMistakes": [
+        "Don't let hip rotate",
+        "Avoid rushing the knee movement",
+        "Don't collapse the chest"
+      ],
+      "muscles_secondary": [
+        3,
+        13,
+        14
+      ]
+    },
+    {
+      "id": 10,
+      "name": "One-Arm Push-Up",
+      "description": "Performed with one arm, requiring significant chest, shoulder, and core strength.",
+      "skill": "Push-Up Variations",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        11
+      ],
+      "muscles": [
+        4,
+        2,
+        5
+      ],
+      "prerequisites": [
+        8
+      ],
+      "progressions": [],
+      "formCues": [
+        "Master incline push-ups first",
+        "Widen stance for stability",
+        "Keep working arm at 45 degrees",
+        "Build up gradually with progressions"
+      ],
+      "commonMistakes": [
+        "Don't rotate your torso",
+        "Avoid partial range of motion",
+        "Don't collapse the working shoulder"
+      ],
+      "muscles_secondary": [
+        3,
+        13,
+        9
+      ]
+    },
+    {
+      "id": 11,
+      "name": "Pull-Up",
+      "description": "Hang from a bar and pull your chin above it, targeting lats, biceps, and upper back with a full range of motion.",
+      "skill": "Pull-Up Variations",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        12
+      ],
+      "muscles": [
+        12,
+        1,
+        13
+      ],
+      "prerequisites": [],
+      "progressions": [
+        19,
+        20
+      ],
+      "formCues": [
+        "Grab bar with overhand grip, slightly wider than shoulders",
+        "Hang with arms fully extended",
+        "Pull chest up to bar",
+        "Squeeze shoulder blades together"
+      ],
+      "commonMistakes": [
+        "Don't use momentum or kipping",
+        "Avoid half-reps at the top",
+        "Don't shrug shoulders instead of pulling"
+      ],
+      "muscles_secondary": [
+        9,
+        17,
+        18
+      ]
+    },
+    {
+      "id": 12,
+      "name": "Chin-Up",
+      "description": "Palms facing you, pull up to engage biceps more than lats, a classic back exercise.",
+      "skill": "Pull-Up Variations",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        12
+      ],
+      "muscles": [
+        12,
+        1,
+        13
+      ],
+      "prerequisites": [
+        11
+      ],
+      "progressions": [
+        13
+      ],
+      "formCues": [
+        "Underhand grip, shoulder-width apart",
+        "Keep elbows close to body",
+        "Pull chin over bar",
+        "Squeeze biceps at top"
+      ],
+      "commonMistakes": [
+        "Don't swing your legs",
+        "Avoid going too shallow at top",
+        "Don't rush the eccentric phase"
+      ],
+      "muscles_secondary": [
+        9,
+        17,
+        18
+      ]
+    },
+    {
+      "id": 13,
+      "name": "Wide Pull-Up",
+      "description": "Hands wider than shoulders to maximize lat engagement during the pull-up motion.",
+      "skill": "Pull-Up Variations",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        12
+      ],
+      "muscles": [
+        12,
+        1,
+        13
+      ],
+      "prerequisites": [
+        12
+      ],
+      "progressions": [
+        14
+      ],
+      "formCues": [
+        "Grip bar 1.5x shoulder width",
+        "Keep core engaged",
+        "Pull chest to center of bar",
+        "Feel lats engage throughout"
+      ],
+      "commonMistakes": [
+        "Don't lean back too much",
+        "Avoid incomplete range of motion",
+        "Don't let shoulders roll forward"
+      ],
+      "muscles_secondary": [
+        9,
+        17,
+        18
+      ]
+    },
+    {
+      "id": 14,
+      "name": "Archer Pull-Up",
+      "description": "One arm pulls while the other extends sideways, building unilateral back strength.",
+      "skill": "Pull-Up Variations",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        12
+      ],
+      "muscles": [
+        12,
+        1,
+        13
+      ],
+      "prerequisites": [
+        13
+      ],
+      "progressions": [
+        15
+      ],
+      "formCues": [
+        "Wide overhand grip",
+        "Shift weight to one side on pull",
+        "Keep other arm straight",
+        "Pull to one shoulder",
+        "Alternate sides with each rep"
+      ],
+      "commonMistakes": [
+        "Don't rotate your torso",
+        "Avoid helping with the non-working arm",
+        "Don't shorten the range of motion"
+      ],
+      "muscles_secondary": [
+        9,
+        17,
+        18
+      ]
+    },
+    {
+      "id": 15,
+      "name": "One-Arm Pull-Up",
+      "description": "Pull your body up with one arm, an advanced move for back and biceps.",
+      "skill": "One-Arm Pull-Up",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        12
+      ],
+      "muscles": [
+        12,
+        1,
+        13
+      ],
+      "prerequisites": [
+        14
+      ],
+      "progressions": [],
+      "formCues": [
+        "Master assisted variations first",
+        "Use resistance band for help initially",
+        "Keep body straight, no swinging",
+        "Build up gradually"
+      ],
+      "commonMistakes": [
+        "Don't rotate your body",
+        "Avoid using momentum",
+        "Don't compromise form for reps"
+      ],
+      "muscles_secondary": [
+        9,
+        17,
+        18
+      ]
+    },
+    {
+      "id": 16,
+      "name": "Front Lever",
+      "description": "Hold body parallel to the ground from a bar, a static exercise for back and core strength.",
+      "skill": "Front Lever",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        12
+      ],
+      "muscles": [
+        12,
+        6,
+        14
+      ],
+      "prerequisites": [],
+      "progressions": [
+        18
+      ],
+      "formCues": [
+        "Hang from bar with straight arms",
+        "Engage lats and core tightly",
+        "Raise body until parallel to ground",
+        "Keep arms straight throughout"
+      ],
+      "commonMistakes": [
+        "Don't bend your elbows",
+        "Avoid piking at hips",
+        "Don't let legs drop below horizontal"
+      ],
+      "muscles_secondary": [
+        13,
+        19,
+        9
+      ]
+    },
+    {
+      "id": 17,
+      "name": "Back Lever",
+      "description": "Hang upside down, body parallel to ground, engaging back and posterior chain.",
+      "skill": "Back Lever",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        12
+      ],
+      "muscles": [
+        "Back",
+        "14"
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Start with tucked position on ring or bar",
+        "Engage lats and core intensely",
+        "Extend legs backward gradually",
+        "Maintain straight body line"
+      ],
+      "commonMistakes": [
+        "Don't bend elbows",
+        "Avoid sagging hips",
+        "Don't arch your back excessively"
+      ],
+      "muscles_secondary": [
+        13,
+        19,
+        16
+      ]
+    },
+    {
+      "id": 18,
+      "name": "Tuck Front Lever",
+      "description": "Knees tucked to chest while holding parallel, a progression to full front lever.",
+      "skill": "Tuck Variations",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        12
+      ],
+      "muscles": [
+        12,
+        6,
+        14
+      ],
+      "prerequisites": [
+        16
+      ],
+      "progressions": [],
+      "formCues": [
+        "Pull knees to chest while hanging",
+        "Engage lats fully",
+        "Lift hips off vertical position",
+        "Keep arms straight and locked"
+      ],
+      "commonMistakes": [
+        "Don't bend elbows for help",
+        "Avoid letting back round",
+        "Don't use momentum to swing up"
+      ],
+      "muscles_secondary": [
+        13,
+        19,
+        9
+      ]
+    },
+    {
+      "id": 19,
+      "name": "Negative Pull-Up",
+      "description": "Slowly lower from the top of a pull-up, building strength for full pull-ups.",
+      "skill": "Pull-Up Variations",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        12
+      ],
+      "muscles": [
+        12,
+        1,
+        13
+      ],
+      "prerequisites": [],
+      "progressions": [
+        11
+      ],
+      "formCues": [
+        "Start at top position with chin over bar",
+        "Lower as slowly as possible",
+        "Take 5-10 seconds for descent",
+        "Control throughout entire range"
+      ],
+      "commonMistakes": [
+        "Don't drop quickly",
+        "Avoid losing control",
+        "Don't use bounce at bottom"
+      ],
+      "muscles_secondary": [
+        9,
+        17,
+        18
+      ]
+    },
+    {
+      "id": 20,
+      "name": "Assisted Pull-Up",
+      "description": "Use resistance bands to assist in pulling up, ideal for beginners.",
+      "skill": "Pull-Up Variations",
+      "equipment": [
+        2
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        12
+      ],
+      "muscles": [
+        12,
+        1,
+        13
+      ],
+      "prerequisites": [],
+      "progressions": [
+        12
+      ],
+      "formCues": [
+        "Use band or machine for support",
+        "Focus on proper form not just reps",
+        "Start with more assistance",
+        "Reduce help gradually"
+      ],
+      "commonMistakes": [
+        "Don't rely too much on assistance",
+        "Avoid partial range of motion",
+        "Don't use momentum from legs"
+      ],
+      "muscles_secondary": [
+        9,
+        17,
+        18
+      ]
+    },
+    {
+      "id": 21,
+      "name": "Commando Pull-Up",
+      "description": "Alternate grip pull-up, pulling head to one side then the other, targeting back and biceps.",
+      "skill": "Pull-Up Variations",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        12
+      ],
+      "muscles": [
+        12,
+        1,
+        13
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Grip rings or bars one hand each side",
+        "Pull chest to one side",
+        "Alternate sides with each rep",
+        "Keep core engaged"
+      ],
+      "commonMistakes": [
+        "Don't rotate your torso excessively",
+        "Avoid using momentum",
+        "Don't let one side do all the work"
+      ],
+      "muscles_secondary": [
+        9,
+        17,
+        18,
+        14
+      ]
+    },
+    {
+      "id": 22,
+      "name": "Towel Pull-Up",
+      "description": "Grip towels over a bar to pull up, enhancing grip strength alongside back work.",
+      "skill": "Pull-Up Variations",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        12
+      ],
+      "muscles": [
+        12,
+        1,
+        13
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Hang from towel draped over bar",
+        "Grip towel with both hands",
+        "Pull chin over towel",
+        "Focus on grip strength and pull-up"
+      ],
+      "commonMistakes": [
+        "Don't let towel slide",
+        "Avoid losing grip during rep",
+        "Don't swing your body"
+      ],
+      "muscles_secondary": [
+        9,
+        17,
+        18
+      ]
+    },
+    {
+      "id": 23,
+      "name": "Handstand",
+      "description": "Balance on hands with feet in the air, building shoulder stability and strength.",
+      "skill": "Handstand",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        13
+      ],
+      "muscles": [
+        2,
+        9,
+        19
+      ],
+      "prerequisites": [],
+      "progressions": [
+        24,
+        25,
+        26
+      ],
+      "formCues": [
+        "Start with wall handstand for stability",
+        "Keep wrists under shoulders",
+        "Engage entire body tightly",
+        "Look at hands, not floor"
+      ],
+      "commonMistakes": [
+        "Don't pike at hips",
+        "Avoid walking feet too far down wall",
+        "Don't arch your lower back"
+      ],
+      "muscles_secondary": [
+        5,
+        3,
+        6,
+        14
+      ]
+    },
+    {
+      "id": 24,
+      "name": "One-Arm Handstand",
+      "description": "Balance on one hand, an advanced shoulder and core stability challenge.",
+      "skill": "One-Arm Handstand",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        13
+      ],
+      "muscles": [
+        2,
+        9,
+        19
+      ],
+      "prerequisites": [
+        23
+      ],
+      "progressions": [
+        27
+      ],
+      "formCues": [
+        "Master wall handstand first",
+        "Practice against wall one arm at a time",
+        "Keep body tight and straight",
+        "Build up gradually"
+      ],
+      "commonMistakes": [
+        "Don't try too soon",
+        "Avoid using momentum to kick up",
+        "Don't let hips rotate"
+      ],
+      "muscles_secondary": [
+        5,
+        3,
+        6,
+        14
+      ]
+    },
+    {
+      "id": 25,
+      "name": "Pike Push-Up",
+      "description": "Bend at hips with feet on ground, pushing up to target shoulders in a vertical press.",
+      "skill": "Push-Up Variations",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        11,
+        13
+      ],
+      "muscles": [
+        2,
+        18,
+        4
+      ],
+      "prerequisites": [
+        23
+      ],
+      "progressions": [
+        28
+      ],
+      "formCues": [
+        "Start in downward dog position",
+        "Walk feet closer, lift hips high",
+        "Lower head toward floor by bending elbows",
+        "Push back to pike position"
+      ],
+      "commonMistakes": [
+        "Don't let hips sag during movement",
+        "Avoid bending too much at waist",
+        "Don't go too shallow"
+      ],
+      "muscles_secondary": [
+        5,
+        9
+      ]
+    },
+    {
+      "id": 26,
+      "name": "Handstand Push-Up",
+      "description": "From a handstand, lower head to ground and push back up, a powerful shoulder exercise.",
+      "skill": "Handstand",
+      "equipment": [
+        17
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        11,
+        13
+      ],
+      "muscles": [
+        2,
+        18,
+        5
+      ],
+      "prerequisites": [
+        23
+      ],
+      "progressions": [],
+      "formCues": [
+        "Kick up to handstand against wall",
+        "Lower head toward floor gradually",
+        "Push back up with triceps and shoulders",
+        "Keep core tight throughout"
+      ],
+      "commonMistakes": [
+        "Don't walk feet down wall too far",
+        "Avoid bending elbows out",
+        "Don't rush the descent"
+      ],
+      "muscles_secondary": [
+        9,
+        3,
+        6,
+        14
+      ]
+    },
+    {
+      "id": 27,
+      "name": "Planche",
+      "description": "Hold body parallel to ground on hands, an intense shoulder and chest static exercise.",
+      "skill": "Planche",
+      "equipment": [
+        5
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        11,
+        13
+      ],
+      "muscles": [
+        2,
+        4,
+        5,
+        18
+      ],
+      "prerequisites": [
+        24
+      ],
+      "progressions": [
+        29
+      ],
+      "formCues": [
+        "Full planche - body parallel to ground",
+        "Arms straight, hands pushing hard",
+        "Engage entire core and shoulders",
+        "Maintain for brief duration"
+      ],
+      "commonMistakes": [
+        "Don't bend elbows during hold",
+        "Avoid sagging at hips",
+        "Don't try without progressions"
+      ],
+      "muscles_secondary": [
+        9,
+        6,
+        14
+      ]
+    },
+    {
+      "id": 28,
+      "name": "Tuck Planche",
+      "description": "Knees tucked while holding parallel on hands, a planche progression.",
+      "skill": "Tuck Variations",
+      "equipment": [
+        5
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        11,
+        13
+      ],
+      "muscles": [
+        2,
+        4,
+        5,
+        18
+      ],
+      "prerequisites": [
+        25
+      ],
+      "progressions": [],
+      "formCues": [
+        "Start in push-up position, hands near hips",
+        "Lean forward with arms straight",
+        "Lift feet off ground, knees to chest",
+        "Hold briefly, then lower"
+      ],
+      "commonMistakes": [
+        "Don't bend elbows during lift",
+        "Avoid going too deep initially",
+        "Don't collapse shoulders"
+      ],
+      "muscles_secondary": [
+        9,
+        6,
+        14
+      ]
+    },
+    {
+      "id": 29,
+      "name": "Straddle Planche",
+      "description": "Legs spread wide in a planche hold, increasing shoulder demand.",
+      "skill": "Planche",
+      "equipment": [
+        5
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        11,
+        13
+      ],
+      "muscles": [
+        2,
+        4,
+        5,
+        18
+      ],
+      "prerequisites": [
+        27
+      ],
+      "progressions": [],
+      "formCues": [
+        "Start in push-up position with wide stance",
+        "Lean forward, arms straight",
+        "Lift legs with knees slightly bent outward",
+        "Maintain horizontal body line"
+      ],
+      "commonMistakes": [
+        "Don't bend elbows during lift",
+        "Avoid letting hips sag",
+        "Don't rush the progression"
+      ],
+      "muscles_secondary": [
+        9,
+        6,
+        14
+      ]
+    },
+    {
+      "id": 30,
+      "name": "Wall Handstand",
+      "description": "Practice handstand against a wall, building shoulder strength and balance.",
+      "skill": "Handstand",
+      "equipment": [
+        17
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        13
+      ],
+      "muscles": [
+        2,
+        9,
+        19
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Kick up against wall with back to it",
+        "Walk feet up wall gradually",
+        "Keep body straight line",
+        "Engage core and glutes"
+      ],
+      "commonMistakes": [
+        "Don't pike at hips",
+        "Avoid walking feet too far down",
+        "Don't arch your lower back"
+      ],
+      "muscles_secondary": [
+        3,
+        5,
+        6,
+        14
+      ]
+    },
+    {
+      "id": 31,
+      "name": "Shoulder Tap",
+      "description": "In a plank, tap opposite shoulder with one hand, engaging shoulders and core.",
+      "skill": "Push-Up Variations",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        13
+      ],
+      "muscles": [
+        6,
+        14
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Start in plank position",
+        "Keep hips stable and square",
+        "Tap opposite shoulder with each hand",
+        "Maintain perfect plank form"
+      ],
+      "commonMistakes": [
+        "Don't let hips rotate or pike",
+        "Avoid lifting one leg for reach",
+        "Don't rush the taps"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 32,
+      "name": "Tricep Dip",
+      "description": "Lower body between parallel bars and push back up, targeting triceps effectively.",
+      "skill": "Dip Variations",
+      "equipment": [
+        1
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        11
+      ],
+      "muscles": [
+        5
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Hands on stable surface, legs extended",
+        "Keep elbows close to body",
+        "Lower hips toward ground",
+        "Push through triceps to return"
+      ],
+      "commonMistakes": [
+        "Don't let elbows flare out",
+        "Avoid going too deep",
+        "Don't lock elbows at top"
+      ],
+      "muscles_secondary": [
+        4,
+        2
+      ]
+    },
+    {
+      "id": 33,
+      "name": "Ring Dip",
+      "description": "Perform dips on unstable rings, increasing triceps and stabilizer muscle demand.",
+      "skill": "Dip Variations",
+      "equipment": [
+        11
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        11
+      ],
+      "muscles": [
+        5
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Adjust rings to chest height",
+        "Grip rings firmly, arms extended",
+        "Lower with control on unstable rings",
+        "Push through full extension"
+      ],
+      "commonMistakes": [
+        "Don't let rings rotate too much",
+        "Avoid losing balance",
+        "Don't rush the movement"
+      ],
+      "muscles_secondary": [
+        4,
+        2
+      ]
+    },
+    {
+      "id": 34,
+      "name": "Bench Dip",
+      "description": "Hands on a bench, feet on ground, dip down to work triceps with less intensity.",
+      "skill": "Dip Variations",
+      "equipment": [
+        12
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        11
+      ],
+      "muscles": [
+        5
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Sit on edge of bench, hands gripping edge",
+        "Slide butt off bench, arms extended",
+        "Lower body by bending elbows",
+        "Push back up to starting position"
+      ],
+      "commonMistakes": [
+        "Don't go too deep initially",
+        "Avoid rounding shoulders",
+        "Don't place feet too far forward"
+      ],
+      "muscles_secondary": [
+        4,
+        2
+      ]
+    },
+    {
+      "id": 35,
+      "name": "Korean Dip",
+      "description": "Dip on a straight bar with body behind, an advanced triceps and chest exercise.",
+      "skill": "Dip Variations",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        11
+      ],
+      "muscles": [
+        5
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Lean torso forward significantly",
+        "Hands placed on parallel bars",
+        "Lower body with control",
+        "Focus on triceps stretch"
+      ],
+      "commonMistakes": [
+        "Don't let hips drop",
+        "Avoid going too shallow",
+        "Don't flare elbows excessively"
+      ],
+      "muscles_secondary": [
+        4,
+        2
+      ]
+    },
+    {
+      "id": 36,
+      "name": "Weighted Dip",
+      "description": "Add weight to dips using a vest or belt, intensifying triceps work.",
+      "skill": "Dip Variations",
+      "equipment": [
+        13
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        11
+      ],
+      "muscles": [
+        5
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Start with light weight and progress gradually",
+        "Maintain strict form throughout",
+        "Control both phases equally",
+        "Engage core to prevent swinging"
+      ],
+      "commonMistakes": [
+        "Don't add too much weight too soon",
+        "Avoid using momentum",
+        "Don't let shoulders roll forward"
+      ],
+      "muscles_secondary": [
+        4,
+        2
+      ]
+    },
+    {
+      "id": 37,
+      "name": "Close-Grip Push-Up",
+      "description": "Hands close together in a push-up, shifting focus to triceps over chest.",
+      "skill": "Push-Up Variations",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        11
+      ],
+      "muscles": [
+        5,
+        4
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Hands under chest, close together",
+        "Keep elbows tucked to ribs",
+        "Lower chest to between hands",
+        "Focus on triceps engagement"
+      ],
+      "commonMistakes": [
+        "Don't let elbows flare out",
+        "Avoid sagging hips",
+        "Don't go too shallow"
+      ],
+      "muscles_secondary": [
+        2
+      ]
+    },
+    {
+      "id": 38,
+      "name": "Triceps Extension",
+      "description": "Using a resistance band overhead, extend arms to isolate triceps.",
+      "skill": "Dip Variations",
+      "equipment": [
+        2
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        11
+      ],
+      "muscles": [
+        5
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Sit on bench with dumbbell overhead",
+        "Lower weight behind head by bending elbow",
+        "Extend arm back to start",
+        "Keep upper arm stationary"
+      ],
+      "commonMistakes": [
+        "Don't use momentum to lift",
+        "Avoid flaring elbow out",
+        "Don't let torso rock"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 39,
+      "name": "Ring Chin-Up",
+      "description": "Chin-up on unstable rings, increasing biceps and stabilizer engagement.",
+      "skill": "Pull-Up Variations",
+      "equipment": [
+        11
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        12
+      ],
+      "muscles": [
+        12,
+        1,
+        13
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Grip rings with palms facing you",
+        "Allow rings to rotate naturally",
+        "Pull chest to rings",
+        "Keep core engaged for stability"
+      ],
+      "commonMistakes": [
+        "Don't fight the ring rotation",
+        "Avoid using too much momentum",
+        "Don't let shoulders roll forward"
+      ],
+      "muscles_secondary": [
+        9,
+        17,
+        18
+      ]
+    },
+    {
+      "id": 40,
+      "name": "One-Arm Chin-Up",
+      "description": "Pull up with one arm on a bar, an extreme biceps and back challenge.",
+      "skill": "One-Arm Pull-Up",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        12
+      ],
+      "muscles": [
+        12,
+        1,
+        13
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Master regular chin-ups first",
+        "Use resistance band for assistance initially",
+        "Keep body straight, no swinging",
+        "Build gradually"
+      ],
+      "commonMistakes": [
+        "Don't rotate your body",
+        "Avoid using momentum",
+        "Don't compromise form"
+      ],
+      "muscles_secondary": [
+        9,
+        17,
+        18
+      ]
+    },
+    {
+      "id": 41,
+      "name": "Biceps Curl",
+      "description": "Using resistance bands, curl hands toward shoulders to isolate biceps.",
+      "skill": "Pull-Up Variations",
+      "equipment": [
+        2
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8
+      ],
+      "muscles": [
+        1,
+        13
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Stand tall, hold weight with underhand grip",
+        "Keep elbows close to torso",
+        "Lift weight by bending elbows",
+        "Lower slowly for 2-3 seconds"
+      ],
+      "commonMistakes": [
+        "Don't swing your body",
+        "Avoid using momentum",
+        "Don't extend elbows completely"
+      ],
+      "muscles_secondary": [
+        19
+      ]
+    },
+    {
+      "id": 42,
+      "name": "Dead Hang",
+      "description": "Hang from a bar as long as possible, building forearm endurance and grip.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        12
+      ],
+      "muscles": [
+        19
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Grip bar with both hands, arms extended",
+        "Hang freely, let shoulders relax",
+        "Keep core engaged lightly",
+        "Hold for desired duration"
+      ],
+      "commonMistakes": [
+        "Don't shrug shoulders excessively",
+        "Avoid using only finger grip",
+        "Don't bounce at bottom"
+      ],
+      "muscles_secondary": [
+        9,
+        12
+      ]
+    },
+    {
+      "id": 43,
+      "name": "Finger Pull-Up",
+      "description": "Pull up using only fingertips on a bar, enhancing forearm and grip strength.",
+      "skill": "Pull-Up Variations",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        12
+      ],
+      "muscles": [
+        1,
+        12,
+        13
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Grip bar with fingertips only",
+        "Perform pull-up with finger strength",
+        "Build up gradually from regular pull-ups",
+        "Engage entire body"
+      ],
+      "commonMistakes": [
+        "Don't try too soon",
+        "Avoid using palm grip instead",
+        "Don't let fingers slip"
+      ],
+      "muscles_secondary": [
+        9,
+        19
+      ]
+    },
+    {
+      "id": 44,
+      "name": "Towel Hang",
+      "description": "Hang from towels over a bar, challenging forearms and grip intensely.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        12
+      ],
+      "muscles": [
+        19
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Drape towel over bar",
+        "Grip each end with one hand",
+        "Hang for duration",
+        "Focus on grip and shoulder stability"
+      ],
+      "commonMistakes": [
+        "Don't let towel slip from hands",
+        "Avoid using only finger grip",
+        "Don't shrug shoulders"
+      ],
+      "muscles_secondary": [
+        9,
+        12
+      ]
+    },
+    {
+      "id": 45,
+      "name": "Plank",
+      "description": "Hold a straight body position on forearms and toes, engaging abs for stability.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6,
+        14
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Forearms on ground, elbows under shoulders",
+        "Keep body in straight line from head to heels",
+        "Engage core and glutes tightly",
+        "Breathe steadily throughout hold"
+      ],
+      "commonMistakes": [
+        "Don't let hips drop",
+        "Avoid piking hips up too high",
+        "Don't hold your breath"
+      ],
+      "muscles_secondary": [
+        2,
+        8,
+        18
+      ]
+    },
+    {
+      "id": 46,
+      "name": "Hollow Body Hold",
+      "description": "Lie on back, lift arms and legs slightly, forming a 'banana' shape to work abs.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6,
+        14
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Lie on back, arms extended overhead",
+        "Lift shoulders and legs off ground",
+        "Press lower back into floor",
+        "Hold with steady breathing"
+      ],
+      "commonMistakes": [
+        "Don't let back arch off floor",
+        "Avoid bending elbows",
+        "Don't lift too high initially"
+      ],
+      "muscles_secondary": [
+        16
+      ]
+    },
+    {
+      "id": 47,
+      "name": "L-Sit",
+      "description": "Hold legs straight out while supporting on hands, targeting abs and hip flexors.",
+      "skill": "L-Sit",
+      "equipment": [
+        5
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6,
+        14
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Sit between parallel bars or rings",
+        "Press down through hands, lift legs",
+        "Keep legs straight and together",
+        "Hold with core engaged"
+      ],
+      "commonMistakes": [
+        "Don't bend elbows during hold",
+        "Avoid swinging legs",
+        "Don't let knees sag"
+      ],
+      "muscles_secondary": [
+        2,
+        18
+      ]
+    },
+    {
+      "id": 48,
+      "name": "Hanging Leg Raise",
+      "description": "Hang from a bar, raise straight legs to 90 degrees, focusing on lower abs.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6,
+        14
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Hang from bar, arms straight",
+        "Raise legs to horizontal or higher",
+        "Control the descent fully",
+        "Keep core tight throughout"
+      ],
+      "commonMistakes": [
+        "Don't bend knees during raise",
+        "Avoid swinging your body",
+        "Don't let legs drop too fast"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 49,
+      "name": "Dragon Flag",
+      "description": "Lie on a bench, lift legs and hips straight up, then lower slowly, an advanced ab move.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        12
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6,
+        14
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Lie on bench, grip behind head",
+        "Lift entire body as one straight line",
+        "Lower slowly with control",
+        "Engage abs intensely throughout"
+      ],
+      "commonMistakes": [
+        "Don't break at the waist",
+        "Avoid using momentum",
+        "Don't go too deep initially"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 50,
+      "name": "V-Sit",
+      "description": "Sit with legs and torso lifted in a V-shape, holding to engage abs and hip flexors.",
+      "skill": "L-Sit",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6,
+        14
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Sit with legs and torso forming V shape",
+        "Lift feet off ground, balance on sit bones",
+        "Reach hands forward or hold shins",
+        "Keep back straight"
+      ],
+      "commonMistakes": [
+        "Don't let back round excessively",
+        "Avoid bending knees too much",
+        "Don't lean back onto floor"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 51,
+      "name": "Tuck L-Sit",
+      "description": "Knees tucked while holding an L-sit position, a progression to full L-sit.",
+      "skill": "Tuck Variations",
+      "equipment": [
+        5
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6,
+        14
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Start in tucked position, knees to chest",
+        "Lift hips and legs with core strength",
+        "Keep arms straight for support",
+        "Progress to full L-sit gradually"
+      ],
+      "commonMistakes": [
+        "Don't bend elbows for support",
+        "Avoid using momentum",
+        "Don't rush the progression"
+      ],
+      "muscles_secondary": [
+        2,
+        18
+      ]
+    },
+    {
+      "id": 52,
+      "name": "Ab Rollout",
+      "description": "Kneel and roll forward with hands on a bench, extending abs fully.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        12
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6,
+        14
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Start kneeling with ab wheel",
+        "Roll out keeping core tight",
+        "Go only as far as you can maintain form",
+        "Pull back with abs, don't push"
+      ],
+      "commonMistakes": [
+        "Don't let hips sag",
+        "Avoid going too far too soon",
+        "Don't round your lower back"
+      ],
+      "muscles_secondary": [
+        2,
+        18
+      ]
+    },
+    {
+      "id": 53,
+      "name": "Crunch",
+      "description": "Lie on back, curl shoulders toward pelvis to contract abs directly.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Lie on back, knees bent",
+        "Hands behind head or crossed on chest",
+        "Lift shoulders off ground",
+        "Squeeze abs at top"
+      ],
+      "commonMistakes": [
+        "Don't pull on your neck",
+        "Avoid going too high too soon",
+        "Don't bounce at bottom"
+      ],
+      "muscles_secondary": [
+        14
+      ]
+    },
+    {
+      "id": 54,
+      "name": "Side Plank",
+      "description": "Support body on one forearm and side of foot, holding to target obliques.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        14
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Lie on side, prop up on one forearm",
+        "Stack feet or stagger for stability",
+        "Lift hips to form straight line",
+        "Hold with core engaged"
+      ],
+      "commonMistakes": [
+        "Don't let hips sag",
+        "Avoid rolling forward or backward",
+        "Don't push hip too high"
+      ],
+      "muscles_secondary": [
+        8
+      ]
+    },
+    {
+      "id": 55,
+      "name": "Russian Twist",
+      "description": "Sit, twist torso side to side with feet off ground, engaging obliques.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        14
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Sit with knees bent, feet lifted",
+        "Lean back slightly to engage core",
+        "Rotate torso side to side",
+        "Keep chest up throughout"
+      ],
+      "commonMistakes": [
+        "Don't use momentum to swing",
+        "Avoid rounding your back completely",
+        "Don't rotate lower back instead of abs"
+      ],
+      "muscles_secondary": [
+        6
+      ]
+    },
+    {
+      "id": 56,
+      "name": "Human Flag",
+      "description": "Hold body sideways from a pole, an extreme oblique and shoulder exercise.",
+      "skill": "Human Flag",
+      "equipment": [
+        14
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        12
+      ],
+      "muscles": [
+        6,
+        14
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Grip pole or bar with one hand high, one low",
+        "Leaning sideways horizontally",
+        "Engage entire body intensely",
+        "Keep straight line from head to feet"
+      ],
+      "commonMistakes": [
+        "Don't let hips sag downward",
+        "Avoid bending elbows in grip",
+        "Don't rotate your torso"
+      ],
+      "muscles_secondary": [
+        2,
+        9,
+        12,
+        18
+      ]
+    },
+    {
+      "id": 57,
+      "name": "Side Hanging Raise",
+      "description": "Hang from a bar, raise legs sideways to target obliques.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        12
+      ],
+      "muscles": [
+        14
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Hang from bar, lean to one side",
+        "Raise body sideways using core",
+        "Keep arms straight throughout",
+        "Alternate sides"
+      ],
+      "commonMistakes": [
+        "Don't use momentum to swing",
+        "Avoid bending elbows for help",
+        "Don't let hips sag"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 58,
+      "name": "Windshield Wipers",
+      "description": "Hang from a bar, swing legs side to side like wipers, working obliques.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6,
+        14
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Lie on back, arms out to sides",
+        "Lift legs and bring to one side",
+        "Lower control, then bring other side",
+        "Keep shoulders planted"
+      ],
+      "commonMistakes": [
+        "Don't let shoulders lift off ground",
+        "Avoid using momentum",
+        "Don't lower too fast"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 59,
+      "name": "Dead Bug",
+      "description": "Lie on back, extend opposite arm and leg while keeping core braced, targeting deep abs.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Lie on back, arms extended up",
+        "Lift legs to tabletop position",
+        "Lower opposite arm and leg slowly",
+        "Keep lower back pressed to floor"
+      ],
+      "commonMistakes": [
+        "Don't let back arch off floor",
+        "Avoid rushing the movement",
+        "Don't push too hard with limbs"
+      ],
+      "muscles_secondary": [
+        8
+      ]
+    },
+    {
+      "id": 60,
+      "name": "Plank with Leg Lift",
+      "description": "In a plank, lift one leg at a time, enhancing transverse abdominis stability.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6,
+        14
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Start in forearm plank",
+        "Lift one leg without rotating hips",
+        "Keep core engaged throughout",
+        "Alternate legs or hold"
+      ],
+      "commonMistakes": [
+        "Don't let hips rotate up",
+        "Avoid hiking the lifted hip",
+        "Don't bend supporting knee"
+      ],
+      "muscles_secondary": [
+        8
+      ]
+    },
+    {
+      "id": 61,
+      "name": "Bird Dog",
+      "description": "From all fours, extend opposite arm and leg, balancing to engage deep core muscles.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        16
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Start on hands and knees",
+        "Extend opposite arm and leg",
+        "Keep hips level and square",
+        "Hold briefly, then alternate"
+      ],
+      "commonMistakes": [
+        "Don't let hips rotate",
+        "Avoid arching your back",
+        "Don't extend too far"
+      ],
+      "muscles_secondary": [
+        2,
+        8,
+        18
+      ]
+    },
+    {
+      "id": 62,
+      "name": "Superman Hold",
+      "description": "Lie face down, lift arms and legs off ground, holding to strengthen lower back.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        16,
+        8,
+        12
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Lie face down, arms extended forward",
+        "Lift chest and legs off ground",
+        "Hold with lower back engaged",
+        "Keep neck neutral"
+      ],
+      "commonMistakes": [
+        "Don't hyperextend neck",
+        "Avoid lifting too high initially",
+        "Don't hold breath"
+      ],
+      "muscles_secondary": [
+        9
+      ]
+    },
+    {
+      "id": 63,
+      "name": "Back Extension",
+      "description": "Lie face down on a bench, lift torso up to work lower back muscles.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        12
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        12
+      ],
+      "muscles": [
+        16
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Lie face down on hyperextension bench",
+        "Cross arms or behind head",
+        "Lift chest using lower back",
+        "Lower with control"
+      ],
+      "commonMistakes": [
+        "Don't hyperextend excessively",
+        "Avoid using momentum to lift",
+        "Don't round your back during descent"
+      ],
+      "muscles_secondary": [
+        8,
+        11
+      ]
+    },
+    {
+      "id": 64,
+      "name": "Reverse Hyperextension",
+      "description": "Lie face down, lift legs up from a bench, targeting lower back and glutes.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        12
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": null,
+      "video_url": "",
+      "categories": [
+        12
+      ],
+      "muscles": [
+        16,
+        8
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Lie prone, hold bar behind head",
+        "Lift legs up toward ceiling",
+        "Squeeze glutes at top",
+        "Lower with control"
+      ],
+      "commonMistakes": [
+        "Don't arch lower back excessively",
+        "Avoid using momentum",
+        "Don't swing legs"
+      ],
+      "muscles_secondary": [
+        11
+      ]
+    },
+    {
+      "id": 65,
+      "name": "Leg Raise",
+      "description": "Lie on back, lift straight legs to 90 degrees, engaging hip flexors and lower abs.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Lie on floor, hands under hips",
+        "Keep legs straight and together",
+        "Lift to 90 degrees or higher",
+        "Lower with control"
+      ],
+      "commonMistakes": [
+        "Don't arch your back off floor",
+        "Avoid bending knees",
+        "Don't use momentum"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 66,
+      "name": "Hanging Knee Raise",
+      "description": "Hang from a bar, raise knees to chest, targeting hip flexors and abs.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Hang from bar with straight arms",
+        "Raise knees toward chest",
+        "Control the movement both ways",
+        "Keep core engaged, no swinging"
+      ],
+      "commonMistakes": [
+        "Don't use momentum to swing",
+        "Avoid rounding your back",
+        "Don't lift too fast"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 67,
+      "name": "Squat",
+      "description": "Bend knees and hips to lower body, then stand, a basic quad and glute exercise.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8,
+        10,
+        11
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Feet shoulder-width apart",
+        "Keep chest up, core tight",
+        "Lower hips back and down",
+        "Drive through heels to stand"
+      ],
+      "commonMistakes": [
+        "Don't let knees cave inward",
+        "Avoid lifting heels off ground",
+        "Don't round your lower back"
+      ],
+      "muscles_secondary": [
+        7,
+        20
+      ]
+    },
+    {
+      "id": 68,
+      "name": "Pistol Squat",
+      "description": "Squat on one leg with the other extended forward, requiring quad strength and balance.",
+      "skill": "Pistol Squat",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8,
+        10,
+        11
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Stand on one leg, other extended forward",
+        "Keep chest up and core tight",
+        "Lower as low as possible",
+        "Use arm for balance if needed"
+      ],
+      "commonMistakes": [
+        "Don't let knee collapse inward",
+        "Avoid heel lifting off ground",
+        "Don't round your back"
+      ],
+      "muscles_secondary": [
+        7,
+        20
+      ]
+    },
+    {
+      "id": 69,
+      "name": "Wall Sit",
+      "description": "Lean against a wall, hold a seated position, an isometric quad endurance move.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        17
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        10,
+        8,
+        11
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Back against wall, feet forward",
+        "Sit until thighs parallel to ground",
+        "Hold with core engaged",
+        "Breathe steadily"
+      ],
+      "commonMistakes": [
+        "Don't let knees go past toes too far",
+        "Avoid letting back slide down wall",
+        "Don't push through heels only"
+      ],
+      "muscles_secondary": [
+        7
+      ]
+    },
+    {
+      "id": 70,
+      "name": "Jump Squat",
+      "description": "Squat down and explode upward into a jump, building explosive quad power.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8,
+        10,
+        11
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Start in squat position",
+        "Explode upward with maximum power",
+        "Land softly on balls of feet",
+        "Absorb impact immediately"
+      ],
+      "commonMistakes": [
+        "Don't land with straight legs",
+        "Avoid landing flat-footed heavily",
+        "Don't let knees collapse inward on landing"
+      ],
+      "muscles_secondary": [
+        7,
+        20
+      ]
+    },
+    {
+      "id": 71,
+      "name": "Bulgarian Split Squat",
+      "description": "One foot elevated behind on a bench, squat with front leg to target quads.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        12
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8,
+        10,
+        11
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "One foot behind on bench or step",
+        "Lower hips until front knee at 90 degrees",
+        "Drive through front heel to return",
+        "Keep torso upright"
+      ],
+      "commonMistakes": [
+        "Don't let front knee go past toes too far",
+        "Avoid incomplete range of motion",
+        "Don't lean forward excessively"
+      ],
+      "muscles_secondary": [
+        7,
+        20
+      ]
+    },
+    {
+      "id": 72,
+      "name": "Step-Up",
+      "description": "Step onto a bench with one leg, driving through heel to work quads.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        12
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        10,
+        8,
+        11
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Stand in front of box or step",
+        "Drive through one foot to step up",
+        "Bring other foot to stand beside it",
+        "Step down with control"
+      ],
+      "commonMistakes": [
+        "Don't push off back foot",
+        "Avoid incomplete range of motion",
+        "Don't lead with knee on way down"
+      ],
+      "muscles_secondary": [
+        7
+      ]
+    },
+    {
+      "id": 73,
+      "name": "Assisted Pistol Squat",
+      "description": "Use a band for support while performing a single-leg squat.",
+      "skill": "Pistol Squat",
+      "equipment": [
+        2
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8,
+        10,
+        11
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Hold onto support for balance",
+        "Stand on one leg, other extended forward",
+        "Lower as low as possible on single leg",
+        "Use arm for minimal assistance"
+      ],
+      "commonMistakes": [
+        "Don't let knee collapse inward",
+        "Avoid heel lifting off ground",
+        "Don't round your back"
+      ],
+      "muscles_secondary": [
+        7,
+        20
+      ]
+    },
+    {
+      "id": 74,
+      "name": "Nordic Hamstring Curl",
+      "description": "Kneel, lower torso forward with feet anchored, targeting hamstrings with eccentric strength.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        11
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Kneel, anchor feet under stable object",
+        "Lower body with control using hamstrings",
+        "Use hands to push back up initially",
+        "Build strength progressively"
+      ],
+      "commonMistakes": [
+        "Don't let knees come off ground",
+        "Avoid using momentum",
+        "Don't go too deep too soon"
+      ],
+      "muscles_secondary": [
+        6,
+        8
+      ]
+    },
+    {
+      "id": 75,
+      "name": "Single-Leg Romanian Deadlift",
+      "description": "Hinge at hips on one leg, lowering torso to work hamstrings and improve balance.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8,
+        11
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Stand on one leg, slight knee bend",
+        "Hinge at hip, extend other leg back",
+        "Keep standing leg slightly bent",
+        "Return by squeezing glutes"
+      ],
+      "commonMistakes": [
+        "Don't let standing knee collapse",
+        "Avoid rounding lower back",
+        "Don't go too deep initially"
+      ],
+      "muscles_secondary": [
+        16,
+        20
+      ]
+    },
+    {
+      "id": 76,
+      "name": "Glute-Ham Raise",
+      "description": "On a bench, curl body up from knees, an advanced hamstring and glute exercise.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        12
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        11,
+        8
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Anchor feet under pads, knees on pad",
+        "Lower body by extending at knee",
+        "Use hamstrings to pull back up",
+        "Keep core engaged"
+      ],
+      "commonMistakes": [
+        "Don't let hips sag too low",
+        "Avoid using momentum to return",
+        "Don't round your back"
+      ],
+      "muscles_secondary": [
+        16
+      ]
+    },
+    {
+      "id": 77,
+      "name": "Hamstring Curl with Band",
+      "description": "Lie prone, curl legs against band resistance, isolating hamstrings effectively.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        2
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        11
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Attach band to ankle, anchor opposite end",
+        "Lie prone or stand, curl heel toward glute",
+        "Squeeze hamstring at top",
+        "Lower slowly"
+      ],
+      "commonMistakes": [
+        "Don't use momentum to curl up",
+        "Avoid hip hiking during movement",
+        "Don't rush the eccentric"
+      ],
+      "muscles_secondary": [
+        8
+      ]
+    },
+    {
+      "id": 78,
+      "name": "Natural Glute-Ham Raise",
+      "description": "Kneel and lower body using hamstrings without equipment, a bodyweight variation.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        11,
+        8
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Lie prone, anchor feet under furniture",
+        "Pull body up using hamstrings and glutes",
+        "Control the descent fully",
+        "Keep core tight"
+      ],
+      "commonMistakes": [
+        "Don't use momentum to pull up",
+        "Avoid going too deep initially",
+        "Don't arch back excessively"
+      ],
+      "muscles_secondary": [
+        16
+      ]
+    },
+    {
+      "id": 79,
+      "name": "Glute Bridge",
+      "description": "Lie on back, lift hips by squeezing glutes, a basic activation exercise for glute strength.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Lie on back, knees bent, feet flat",
+        "Lift hips until shoulders to knees in line",
+        "Squeeze glutes at top",
+        "Lower slowly"
+      ],
+      "commonMistakes": [
+        "Don't arch lower back excessively",
+        "Avoid going too shallow",
+        "Don't push with heels only"
+      ],
+      "muscles_secondary": [
+        6,
+        11
+      ]
+    },
+    {
+      "id": 80,
+      "name": "Single-Leg Glute Bridge",
+      "description": "Lift hips with one leg extended, targeting glutes unilaterally with added challenge.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "One leg extended, other bent",
+        "Lift hips using standing leg",
+        "Squeeze working glute at top",
+        "Lower with control"
+      ],
+      "commonMistakes": [
+        "Don't let supporting foot lift",
+        "Avoid hiking hips to one side",
+        "Don't go too shallow"
+      ],
+      "muscles_secondary": [
+        6,
+        11
+      ]
+    },
+    {
+      "id": 81,
+      "name": "Hip Thrust",
+      "description": "Rest shoulders on a bench, thrust hips up with feet flat, focusing on glute power.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        12
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Upper back on bench, feet on ground",
+        "Drive through heels to lift hips",
+        "Squeeze glutes at top",
+        "Lower with control"
+      ],
+      "commonMistakes": [
+        "Don't arch lower back excessively",
+        "Avoid going too shallow",
+        "Don't push with toes"
+      ],
+      "muscles_secondary": [
+        6,
+        11
+      ]
+    },
+    {
+      "id": 82,
+      "name": "Donkey Kick",
+      "description": "On all fours, kick one leg back and up, isolating the glutes for strength and tone.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Start on hands and knees",
+        "Lift one leg with knee bent at 90 degrees",
+        "Kick heel toward ceiling",
+        "Squeeze glutes at top"
+      ],
+      "commonMistakes": [
+        "Don't extend the leg too much",
+        "Avoid rotating hips upward",
+        "Don't rush the movement"
+      ],
+      "muscles_secondary": [
+        11
+      ]
+    },
+    {
+      "id": 83,
+      "name": "Weighted Hip Thrust",
+      "description": "Add weight across hips during a hip thrust, intensifying glute activation.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        13
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Place weight plate on hips",
+        "Maintain proper hip thrust form",
+        "Focus on glute contraction",
+        "Control both phases"
+      ],
+      "commonMistakes": [
+        "Don't let bar roll off hips",
+        "Avoid using momentum",
+        "Don't sacrifice form for weight"
+      ],
+      "muscles_secondary": [
+        6,
+        11
+      ]
+    },
+    {
+      "id": 84,
+      "name": "Calf Raise",
+      "description": "Stand, lift heels off ground, working calves with bodyweight in a simple motion.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        14
+      ],
+      "muscles": [
+        7
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Stand with feet shoulder-width apart",
+        "Rise up onto toes as high as possible",
+        "Squeeze calves at top",
+        "Lower slowly"
+      ],
+      "commonMistakes": [
+        "Don't lock knees harshly",
+        "Avoid going too fast",
+        "Don't raise only partway"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 85,
+      "name": "Single-Leg Calf Raise",
+      "description": "Lift heel on one leg, increasing calf strength and stability unilaterally.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        14
+      ],
+      "muscles": [
+        7
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Stand on one leg, other slightly forward",
+        "Rise up onto ball of standing foot",
+        "Keep balance without holding",
+        "Lower slowly"
+      ],
+      "commonMistakes": [
+        "Don't let supporting knee bend",
+        "Avoid using momentum",
+        "Don't rush the movement"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 86,
+      "name": "Bench Calf Raise",
+      "description": "Stand on a bench edge, raise heels for greater range, targeting calves.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        12
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        14
+      ],
+      "muscles": [
+        7
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Stand on edge of bench with heels hanging",
+        "Rise up onto balls of feet as high as possible",
+        "Squeeze calves at top",
+        "Lower heels below level of bench"
+      ],
+      "commonMistakes": [
+        "Don't go too shallow",
+        "Avoid using momentum",
+        "Don't rush the eccentric phase"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 87,
+      "name": "Jump Calf Raise",
+      "description": "Explosively jump while raising heels, building calf power and explosiveness.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        14
+      ],
+      "muscles": [
+        7
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Start on balls of feet",
+        "Jump explosively upward",
+        "Land softly on balls of feet",
+        "Immediately prepare for next rep"
+      ],
+      "commonMistakes": [
+        "Don't land flat-footed heavily",
+        "Avoid locking knees on landing",
+        "Don't let toes point inward"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 88,
+      "name": "Weighted Calf Raise",
+      "description": "Hold a weight or wear a vest, raise heels to increase calf resistance.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        13
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        14
+      ],
+      "muscles": [
+        7
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Hold dumbbell or plate in one hand",
+        "Stand tall, rise onto toes",
+        "Focus on calf contraction",
+        "Control both phases"
+      ],
+      "commonMistakes": [
+        "Don't lean with weight",
+        "Avoid using momentum",
+        "Don't go too shallow"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 89,
+      "name": "Side Lunge",
+      "description": "Step to the side and squat, targeting adductors and improving lateral mobility.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8,
+        10,
+        11
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Step out to one side into lunge",
+        "Keep other leg straight",
+        "Bend working knee, keep heel down",
+        "Push back to start"
+      ],
+      "commonMistakes": [
+        "Don't let standing leg bend",
+        "Avoid incomplete range of motion",
+        "Don't let toe of working foot turn in"
+      ],
+      "muscles_secondary": [
+        7,
+        20
+      ]
+    },
+    {
+      "id": 90,
+      "name": "Cossack Squat",
+      "description": "Wide stance squat shifting weight side to side, stretching and strengthening adductors.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8,
+        10,
+        11
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Stand wide, shift weight to one side",
+        "Squat deeply on one leg while other straight",
+        "Keep heel down on squatting leg",
+        "Alternate sides"
+      ],
+      "commonMistakes": [
+        "Don't lift heel on squatting leg",
+        "Avoid going too shallow",
+        "Don't let knee collapse inward"
+      ],
+      "muscles_secondary": [
+        7,
+        20
+      ]
+    },
+    {
+      "id": 91,
+      "name": "Adductor Plank",
+      "description": "In a side plank, lift top leg slightly, engaging adductors for stability.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        20
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Side plank position with top leg crossed under",
+        "Press bottom knee into floor",
+        "Engage inner thighs",
+        "Hold with core tight"
+      ],
+      "commonMistakes": [
+        "Don't let hips sag",
+        "Avoid relaxing the engaged leg",
+        "Don't put too much weight on bottom shoulder"
+      ],
+      "muscles_secondary": [
+        6,
+        14
+      ]
+    },
+    {
+      "id": 92,
+      "name": "Sumo Squat",
+      "description": "Wide stance squat with toes out, emphasizing adductors and inner thighs.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8,
+        10,
+        11
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Wide stance, toes pointed out",
+        "Lower hips down and between legs",
+        "Keep chest up throughout",
+        "Drive through heels to stand"
+      ],
+      "commonMistakes": [
+        "Don't let knees cave inward",
+        "Avoid going too shallow",
+        "Don't round your back"
+      ],
+      "muscles_secondary": [
+        7,
+        20
+      ]
+    },
+    {
+      "id": 93,
+      "name": "Adductor Side Raise",
+      "description": "Lie on side, lift bottom leg up against gravity, isolating adductors.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        20
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Stand with band around ankles or ankles crossed",
+        "Lift leg across body slightly",
+        "Engage inner thigh muscles",
+        "Lower slowly"
+      ],
+      "commonMistakes": [
+        "Don't use momentum to swing leg",
+        "Avoid leaning away from movement",
+        "Don't bend standing knee excessively"
+      ],
+      "muscles_secondary": [
+        8
+      ]
+    },
+    {
+      "id": 94,
+      "name": "Side-Lying Leg Raise",
+      "description": "Lie on side, lift top leg up, isolating abductors for hip stability.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        20
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Lie on side, legs stacked",
+        "Lift top leg keeping it straight",
+        "Lower slowly to just above ground",
+        "Squeeze outer hip at top"
+      ],
+      "commonMistakes": [
+        "Don't let hips roll backward",
+        "Avoid using momentum to lift",
+        "Don't raise too high initially"
+      ],
+      "muscles_secondary": [
+        8
+      ]
+    },
+    {
+      "id": 95,
+      "name": "Clamshell",
+      "description": "Lie on side with knees bent, open knees like a clam to work abductors.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Lie on side, knees bent at 90 degrees",
+        "Keep feet together, lift top knee",
+        "Squeeze glute medius at top",
+        "Lower slowly"
+      ],
+      "commonMistakes": [
+        "Don't let back roll backward",
+        "Avoid using momentum to lift",
+        "Don't let feet separate"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 96,
+      "name": "Standing Abduction",
+      "description": "With a band around legs, push one leg out to the side against resistance.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        2
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Stand tall, band around ankles",
+        "Lift one leg out to side keeping straight",
+        "Squeeze outer hip at top",
+        "Lower with control"
+      ],
+      "commonMistakes": [
+        "Don't lean away from working leg",
+        "Avoid using momentum to lift",
+        "Don't bend the working knee"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 97,
+      "name": "Abductor Walk",
+      "description": "With a band around legs, step sideways, keeping tension to target abductors.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        2
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Band around ankles, slight squat",
+        "Step sideways keeping tension on band",
+        "Keep knees out during movement",
+        "Walk a set distance then return"
+      ],
+      "commonMistakes": [
+        "Don't straighten legs completely",
+        "Avoid letting hips hike up",
+        "Don't rush the walking"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 98,
+      "name": "Fire Hydrant",
+      "description": "On all fours, lift one leg out to the side, mimicking a dog at a hydrant, for abductors.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Start on hands and knees",
+        "Lift one leg out to side, knee bent at 90",
+        "Keep ankle above knee",
+        "Lower with control"
+      ],
+      "commonMistakes": [
+        "Don't let hip rotate forward",
+        "Avoid going too high initially",
+        "Don't rush the movement"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 99,
+      "name": "Burpee",
+      "description": "Squat, jump back to plank, push-up, then jump up\u2014a full-body conditioning move.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9,
+        11,
+        12,
+        15
+      ],
+      "muscles": [
+        8,
+        10,
+        11
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Start standing, drop into squat",
+        "Kick feet back to plank",
+        "Do push-up",
+        "Jump feet forward and explode up"
+      ],
+      "commonMistakes": [
+        "Don't skip the push-up",
+        "Avoid wide leg kick-backs",
+        "Don't sag on the plank position"
+      ],
+      "muscles_secondary": [
+        2,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "id": 100,
+      "name": "Mountain Climber",
+      "description": "In plank, rapidly bring knees to chest, working core, shoulders, and legs.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        15
+      ],
+      "muscles": [
+        6,
+        14
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Start in plank position",
+        "Drive one knee toward chest",
+        "Alternate legs rapidly like running",
+        "Keep hips level and core tight"
+      ],
+      "commonMistakes": [
+        "Don't let hips pike or sag",
+        "Avoid lifting one hip too high",
+        "Don't rush at expense of form"
+      ],
+      "muscles_secondary": [
+        2,
+        10,
+        11,
+        18
+      ]
+    },
+    {
+      "id": 101,
+      "name": "Muscle-Up",
+      "description": "Pull up and transition to a dip on a bar or rings, a full-body gymnastic move.",
+      "skill": "Muscle-Up",
+      "equipment": [
+        11
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        12
+      ],
+      "muscles": [
+        12,
+        1,
+        13,
+        4,
+        5,
+        2
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Start with kip or explosive pull-up",
+        "Transition quickly at top of pull",
+        "Push into dip position",
+        "Lower back to hanging position"
+      ],
+      "commonMistakes": [
+        "Don't delay the transition",
+        "Avoid letting shoulders roll forward",
+        "Don't use too much momentum"
+      ],
+      "muscles_secondary": [
+        9,
+        17,
+        18
+      ]
+    },
+    {
+      "id": 102,
+      "name": "Jumping Jack",
+      "description": "Jump with arms and legs spreading out and in, a classic full-body warm-up.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        15
+      ],
+      "muscles": [
+        8,
+        10,
+        11
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Start standing feet together",
+        "Jump feet out while raising arms",
+        "Jump back to start position",
+        "Keep core engaged"
+      ],
+      "commonMistakes": [
+        "Don't land heavily on heels",
+        "Avoid locking elbows at top",
+        "Don't let posture collapse"
+      ],
+      "muscles_secondary": [
+        2,
+        7,
+        18
+      ]
+    },
+    {
+      "id": 103,
+      "name": "Tuck Jump",
+      "description": "Jump and tuck knees to chest mid-air, engaging legs, core, and cardio.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        15
+      ],
+      "muscles": [
+        8,
+        10,
+        11
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Start standing",
+        "Jump up explosively, bring knees to chest",
+        "Land softly on balls of feet",
+        "Immediately prepare for next rep"
+      ],
+      "commonMistakes": [
+        "Don't land with straight legs",
+        "Avoid landing flat-footed heavily",
+        "Don't let knees collapse inward"
+      ],
+      "muscles_secondary": [
+        6,
+        7
+      ]
+    },
+    {
+      "id": 104,
+      "name": "Bear Crawl",
+      "description": "Crawl on hands and feet with knees off ground, a full-body strength and mobility move.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        15
+      ],
+      "muscles": [
+        8,
+        10,
+        11
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Start on hands and feet, knees hovering",
+        "Move forward with opposite hand and foot",
+        "Keep hips level and low to ground",
+        "Maintain steady rhythm"
+      ],
+      "commonMistakes": [
+        "Don't let hips sag or pike",
+        "Avoid lifting one knee too high",
+        "Don't rush the movement"
+      ],
+      "muscles_secondary": [
+        2,
+        6,
+        14,
+        18
+      ]
+    },
+    {
+      "id": 105,
+      "name": "Frog Stand",
+      "description": "Balance on hands with knees resting on elbows, a beginner step toward planche.",
+      "skill": "Planche",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        15
+      ],
+      "muscles": [
+        8,
+        20
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Squat low with hands on floor between feet",
+        "Place knees on arms for support",
+        "Lift one foot, then other to hover",
+        "Balance with core engaged"
+      ],
+      "commonMistakes": [
+        "Don't let elbows collapse inward",
+        "Avoid putting too much weight on shoulders",
+        "Don't rush the lift-off"
+      ],
+      "muscles_secondary": [
+        6
+      ]
+    },
+    {
+      "id": 106,
+      "name": "Crow Pose",
+      "description": "Similar to frog stand but with knees outside elbows, improving wrist and core strength.",
+      "skill": "Planche",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        15
+      ],
+      "muscles": [
+        6,
+        19
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Squat with hands shoulder-width apart",
+        "Place knees on backs of upper arms",
+        "Lean forward slightly",
+        "Lift one foot, then other"
+      ],
+      "commonMistakes": [
+        "Don't let elbows splay out",
+        "Avoid looking down too much",
+        "Don't put full weight on wrists"
+      ],
+      "muscles_secondary": [
+        2,
+        18
+      ]
+    },
+    {
+      "id": 107,
+      "name": "Skin the Cat",
+      "description": "Rotate backward through a hang on rings or bar, a mobility and back lever progression.",
+      "skill": "Back Lever",
+      "equipment": [
+        11
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        12
+      ],
+      "muscles": [
+        "Back",
+        "14"
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Hang from bar with rings or rig",
+        "Walk feet forward while rotating body",
+        "Lower until back is against bar",
+        "Reverse motion slowly"
+      ],
+      "commonMistakes": [
+        "Don't rotate too quickly",
+        "Avoid using momentum",
+        "Don't release grip prematurely"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 108,
+      "name": "Ring Row",
+      "description": "Pull body up from a low hang on rings, targeting back and biceps with adjustable difficulty.",
+      "skill": "Pull-Up Variations",
+      "equipment": [
+        11
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        12
+      ],
+      "muscles": [
+        12,
+        9
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Hang from rings with arms extended",
+        "Pull chest to rings",
+        "Squeeze shoulder blades together",
+        "Lower with control"
+      ],
+      "commonMistakes": [
+        "Don't let rings rotate too much",
+        "Avoid going too shallow",
+        "Don't use momentum"
+      ],
+      "muscles_secondary": [
+        1,
+        13
+      ]
+    },
+    {
+      "id": 109,
+      "name": "Hollow Rock",
+      "description": "Rock back and forth in a hollow body position, enhancing core stability.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6,
+        14
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Start in hollow body position",
+        "Rock forward and backward gently",
+        "Keep lower back pressed to ground",
+        "Maintain core engagement"
+      ],
+      "commonMistakes": [
+        "Don't let back come off floor",
+        "Avoid losing hollow shape",
+        "Don't rock too vigorously"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 110,
+      "name": "Supine Leg Raise",
+      "description": "Lie on back, lift legs to vertical then lower slowly, targeting lower abs and hip flexors.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Lie on back, arms by sides",
+        "Lift legs keeping them straight",
+        "Control the lowering phase",
+        "Keep lower back pressed down"
+      ],
+      "commonMistakes": [
+        "Don't let back lift off floor",
+        "Avoid using momentum to raise",
+        "Don't lock knees harshly"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 111,
+      "name": "Parallel Bar Support",
+      "description": "Hold body upright between parallel bars, building shoulder and triceps stability.",
+      "skill": "Dip Variations",
+      "equipment": [
+        1
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        12
+      ],
+      "muscles": [
+        12,
+        9
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Hold position between parallel bars",
+        "Arms straight, body vertical",
+        "Engage shoulders and core",
+        "Keep chest up"
+      ],
+      "commonMistakes": [
+        "Don't let shoulders roll forward",
+        "Avoid locking knees harshly",
+        "Don't relax at the bottom"
+      ],
+      "muscles_secondary": [
+        1,
+        13
+      ]
+    },
+    {
+      "id": 112,
+      "name": "Muscle-Up Negative",
+      "description": "Lower slowly from the top of a muscle-up, a progression for the full move.",
+      "skill": "Muscle-Up",
+      "equipment": [
+        11
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8,
+        12
+      ],
+      "muscles": [
+        12,
+        1,
+        13,
+        4,
+        5,
+        2
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Start at top of muscle-up (dip position)",
+        "Lower slowly with control",
+        "Take 5-10 seconds to descend",
+        "Build strength for full rep"
+      ],
+      "commonMistakes": [
+        "Don't drop quickly",
+        "Avoid losing control during transition",
+        "Don't use momentum"
+      ],
+      "muscles_secondary": [
+        9,
+        17,
+        18
+      ]
+    },
+    {
+      "id": 113,
+      "name": "Straddle L-Sit",
+      "description": "Hold legs spread wide in an L-sit, advancing core and hip flexor strength.",
+      "skill": "L-Sit",
+      "equipment": [
+        5
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6,
+        14
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Sit between bars, legs spread wide",
+        "Lift legs to horizontal position",
+        "Keep core engaged and back flat",
+        "Lower slowly when tired"
+      ],
+      "commonMistakes": [
+        "Don't let knees sag downward",
+        "Avoid rounding your back",
+        "Don't use arms to pull up"
+      ],
+      "muscles_secondary": [
+        2,
+        18
+      ]
+    },
+    {
+      "id": 114,
+      "name": "Front Lever Pull",
+      "description": "From a hang, pull into a front lever and hold briefly, building dynamic strength.",
+      "skill": "Front Lever",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        "16"
+      ],
+      "muscles": [],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Start in front lever position",
+        "Pull body up toward bar with straight arms",
+        "Keep core tight throughout",
+        "Control descent"
+      ],
+      "commonMistakes": [
+        "Don't bend elbows during pull",
+        "Avoid piking at hips",
+        "Don't use momentum"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 115,
+      "name": "Planche Lean",
+      "description": "A foundational planche progression where you lean your body forward at an angle while supporting weight on your hands, building the shoulder and core strength necessary for the full planche position.",
+      "skill": "Planche",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        13
+      ],
+      "muscles": [],
+      "prerequisites": [
+        1,
+        2,
+        3,
+        8
+      ],
+      "progressions": [
+        116
+      ],
+      "formCues": [
+        "Start in push-up position",
+        "Lean forward gradually over wrists",
+        "Keep arms straight",
+        "Build shoulder strength slowly"
+      ],
+      "commonMistakes": [
+        "Don't bend elbows during lean",
+        "Avoid going too far too soon",
+        "Don't let wrists collapse"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 116,
+      "name": "Tuck Planche Hold",
+      "description": "Hold your body in a tuck position with knees bent and close to chest while balancing on your hands, developing critical shoulder stability and core engagement for advanced calisthenics skills.",
+      "skill": "Planche",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        13
+      ],
+      "muscles": [],
+      "prerequisites": [
+        115
+      ],
+      "progressions": [],
+      "formCues": [
+        "Hands near hips, lean forward",
+        "Lift feet with knees to chest",
+        "Keep arms straight and locked",
+        "Hold briefly, engage intensely"
+      ],
+      "commonMistakes": [
+        "Don't bend elbows during hold",
+        "Avoid letting shoulders collapse",
+        "Don't go too deep initially"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 117,
+      "name": "Skull Crushers",
+      "description": "An effective triceps isolation exercise performed lying face up, lowering a weight or resistance towards your forehead then extending arms back up to target the triceps head.",
+      "skill": "",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8
+      ],
+      "muscles": [],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Lie on bench, hold barbell overhead",
+        "Lower bar toward forehead by bending elbows",
+        "Extend arms back to start",
+        "Keep upper arms stationary"
+      ],
+      "commonMistakes": [
+        "Don't bounce bar off forehead",
+        "Avoid moving shoulders during exercise",
+        "Don't use too heavy weight"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 118,
+      "name": "Rows",
+      "description": "A fundamental horizontal pulling movement performed while hanging from rings or parallel bars, engaging lats, rhomboids, and rear delts with controlled upward motion of the torso.",
+      "skill": "",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        12
+      ],
+      "muscles": [],
+      "prerequisites": [
+        11
+      ],
+      "progressions": [
+        119
+      ],
+      "formCues": [
+        "Bend over slightly with back flat",
+        "Pull weight to lower chest or abs",
+        "Squeeze back muscles at top",
+        "Control the descent"
+      ],
+      "commonMistakes": [
+        "Don't use momentum to swing",
+        "Avoid rounding your back",
+        "Don't pull too high"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 119,
+      "name": "Australian Pull Up",
+      "description": "A bodyweight row variation performed on a bar set at waist height, requiring you to lie beneath the bar and pull your chest up while keeping your body in a straight line - excellent for building back strength.",
+      "skill": "Pull-Up Variations",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        12
+      ],
+      "muscles": [],
+      "prerequisites": [
+        118
+      ],
+      "progressions": [
+        120
+      ],
+      "formCues": [
+        "Position body under bar, feet on ground",
+        "Grip bar shoulder-width apart",
+        "Pull chest to bar while keeping body straight",
+        "Lower with control"
+      ],
+      "commonMistakes": [
+        "Don't let body sag",
+        "Avoid going too vertical",
+        "Don't pull with arms only"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 120,
+      "name": "Hammer Pull Up",
+      "description": "An advanced pull-up variation using gymnastic rings or a fat grip that emphasizes bicep engagement through the supinated (hammer) grip position at the top of each repetition.",
+      "skill": "Pull-Up Variations",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        12
+      ],
+      "muscles": [],
+      "prerequisites": [
+        119
+      ],
+      "progressions": [],
+      "formCues": [
+        "Neutral grip (palms facing each other)",
+        "Keep elbows close to body",
+        "Pull chest to bar",
+        "Squeeze back at top"
+      ],
+      "commonMistakes": [
+        "Don't let palms rotate during pull",
+        "Avoid using momentum",
+        "Don't go too shallow"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 121,
+      "name": "In and Out",
+      "description": "A dynamic core exercise performed from a plank position where you jump your feet forward toward hands then back out, building explosive core strength and coordination for advanced calisthenics movements.",
+      "skill": "",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [],
+      "prerequisites": [],
+      "progressions": [
+        122,
+        123
+      ],
+      "formCues": [
+        "Start sitting, lean back slightly",
+        "Jump feet out to wide position",
+        "Jump feet back together",
+        "Keep core tight throughout"
+      ],
+      "commonMistakes": [
+        "Don't let hips collapse down",
+        "Avoid going too slow",
+        "Don't round your back excessively"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 122,
+      "name": "Twist Sit Up",
+      "description": "An abdominal exercise performed sitting on the floor with legs extended, twisting your torso to bring opposite elbow to knee in a controlled motion that targets obliques and rectus abdominis.",
+      "skill": "",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [],
+      "prerequisites": [
+        121
+      ],
+      "progressions": [],
+      "formCues": [
+        "Lie on back, knees bent",
+        "Sit up while rotating torso",
+        "Bring opposite elbow to knee",
+        "Alternate sides each rep"
+      ],
+      "commonMistakes": [
+        "Don't use momentum to swing up",
+        "Avoid pulling neck",
+        "Don't rush the rotation"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 123,
+      "name": "Plank Knee to Elbow",
+      "description": "A plank variation where you bring alternating knees toward opposite elbows while maintaining a stable plank position, engaging deep core muscles including obliques and transverse abdominis for improved stability.",
+      "skill": "",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [],
+      "prerequisites": [
+        121
+      ],
+      "progressions": [
+        124
+      ],
+      "formCues": [
+        "Start in plank position",
+        "Bring knee to same-side elbow",
+        "Keep core engaged and stable",
+        "Alternate sides rhythmically"
+      ],
+      "commonMistakes": [
+        "Don't let hips pike or sag",
+        "Avoid rushing the movement",
+        "Don't lose plank position"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 124,
+      "name": "Bicycles",
+      "description": "A dynamic core exercise performed lying on your back with legs in cycling motion while bringing opposite elbow to knee, providing comprehensive abdominal engagement through rotational movement patterns.",
+      "skill": "",
+      "equipment": [
+        16
+      ],
+      "difficulty": [],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [],
+      "prerequisites": [
+        123
+      ],
+      "progressions": [
+        125
+      ],
+      "formCues": [
+        "Lie on back, hands behind head",
+        "Bring opposite elbow to knee",
+        "Extend other leg straight out",
+        "Alternate sides in cycling motion"
+      ],
+      "commonMistakes": [
+        "Don't pull on your neck",
+        "Avoid going too fast",
+        "Don't let elbows flare out"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 125,
+      "name": "Flutter",
+      "description": "An ab isolation exercise performed lying on your back where you alternate raising and lowering legs in a fluttering motion, targeting lower abdominals and hip flexors for core strength development.",
+      "skill": "",
+      "equipment": [
+        16
+      ],
+      "difficulty": [],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [],
+      "prerequisites": [
+        124
+      ],
+      "progressions": [
+        126
+      ],
+      "formCues": [
+        "Lie on back, arms by sides",
+        "Lift legs slightly off ground",
+        "Alternate legs in small scissoring motion",
+        "Keep core engaged"
+      ],
+      "commonMistakes": [
+        "Don't let legs sag to floor",
+        "Avoid kicking too high",
+        "Don't arch your back"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 126,
+      "name": "Plank Side to Side",
+      "description": "A lateral plank variation where you shift weight side to side while maintaining one elbow support, building oblique strength and improving unilateral core stability for advanced bodyweight movements.",
+      "skill": "",
+      "equipment": [
+        16
+      ],
+      "difficulty": [],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [],
+      "prerequisites": [
+        125
+      ],
+      "progressions": [],
+      "formCues": [
+        "Start in high plank with feet wide",
+        "Rotate body to touch one hip to floor",
+        "Return to center and rotate other side",
+        "Keep core tight throughout"
+      ],
+      "commonMistakes": [
+        "Don't sag through lower back",
+        "Avoid using momentum only",
+        "Don't lift hips too high"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 127,
+      "name": "Reach Up",
+      "description": "A mobility and core activation exercise performed standing or seated where you reach arms overhead while arching the back slightly, promoting thoracic spine extension and shoulder mobility essential for planche progression.",
+      "skill": "",
+      "equipment": [
+        16
+      ],
+      "difficulty": [],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Stand tall, arms overhead",
+        "Stretch entire body upward",
+        "Hold briefly at top",
+        "Lower slowly with control"
+      ],
+      "commonMistakes": [
+        "Don't arch lower back excessively",
+        "Avoid using momentum to reach",
+        "Don't rush the movement"
+      ],
+      "muscles_secondary": []
+    }
+  ],
+  "muscles": [
+    {
+      "id": 1,
+      "name": "Biceps brachii",
+      "is_front": true,
+      "name_en": "Biceps"
+    },
+    {
+      "id": 2,
+      "name": "Anterior deltoid",
+      "is_front": true,
+      "name_en": "Shoulders"
+    },
+    {
+      "id": 3,
+      "name": "Serratus anterior",
+      "is_front": true,
+      "name_en": "Serratus"
+    },
+    {
+      "id": 4,
+      "name": "Pectoralis major",
+      "is_front": true,
+      "name_en": "Chest"
+    },
+    {
+      "id": 5,
+      "name": "Triceps brachii",
+      "is_front": false,
+      "name_en": "Triceps"
+    },
+    {
+      "id": 6,
+      "name": "Rectus abdominis",
+      "is_front": true,
+      "name_en": "Abs"
+    },
+    {
+      "id": 7,
+      "name": "Gastrocnemius",
+      "is_front": false,
+      "name_en": "Calves"
+    },
+    {
+      "id": 8,
+      "name": "Gluteus maximus",
+      "is_front": false,
+      "name_en": "Glutes"
+    },
+    {
+      "id": 9,
+      "name": "Trapezius",
+      "is_front": false,
+      "name_en": "Trapezius"
+    },
+    {
+      "id": 10,
+      "name": "Quadriceps femoris",
+      "is_front": true,
+      "name_en": "Quads"
+    },
+    {
+      "id": 11,
+      "name": "Biceps femoris",
+      "is_front": false,
+      "name_en": "Hamstrings"
+    },
+    {
+      "id": 12,
+      "name": "Latissimus dorsi",
+      "is_front": false,
+      "name_en": "Lats"
+    },
+    {
+      "id": 13,
+      "name": "Brachialis",
+      "is_front": true,
+      "name_en": "Brachialis"
+    },
+    {
+      "id": 14,
+      "name": "Obliquus externus abdominis",
+      "is_front": true,
+      "name_en": "Obliques"
+    },
+    {
+      "id": 15,
+      "name": "Soleus",
+      "is_front": true,
+      "name_en": "Soleus"
+    },
+    {
+      "id": 16,
+      "name": "Erector spinae",
+      "is_front": false,
+      "name_en": "Lower back"
+    },
+    {
+      "id": 17,
+      "name": "Teres",
+      "is_front": false,
+      "name_en": "Teres"
+    },
+    {
+      "id": 18,
+      "name": "Posterior Deltoid",
+      "is_front": false,
+      "name_en": "Posterior Deltoid"
+    },
+    {
+      "id": 19,
+      "name": "Forearm",
+      "is_front": true,
+      "name_en": "Forearm"
+    },
+    {
+      "id": 20,
+      "name": "Adductors",
+      "is_front": true,
+      "name_en": "Adductors"
+    }
+  ],
+  "difficulties": [
+    {
+      "id": 1,
+      "name": "beginner",
+      "label": "Beginner"
+    },
+    {
+      "id": 2,
+      "name": "intermediate",
+      "label": "Intermediate"
+    },
+    {
+      "id": 3,
+      "name": "advanced",
+      "label": "Advanced"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 import { renderHeader } from '../components/header.js';
-import { getState, setState } from '../services/state.js';
+import { getState, setState, updateState } from '../services/state.js';
 
 function generateUniqueRoutineId() {
   const state = getState();
@@ -478,7 +478,7 @@ export async function renderBuilderView() {
             cooldown: window._editingCooldown || []
           });
         }
-        setState({ user, editingProgram: null });
+        updateState({ user, editingProgram: null });
         alert('New custom routine created from the program!');
       } else {
         // Create new custom routine
@@ -495,7 +495,7 @@ export async function renderBuilderView() {
           warmup: [],
           cooldown: []
         });
-        setState({ user });
+        updateState({ user });
         alert('Routine saved!');
       }
       
@@ -505,3 +505,7 @@ export async function renderBuilderView() {
 
   updateExerciseList();
 } 
+
+
+// Export as object for wrapView compatibility
+export default { render: renderBuilderView };

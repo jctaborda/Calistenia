@@ -1,34 +1,87 @@
+// PWA Offline Data Loading - loads all data from single data.json file
+// No server endpoints needed - works offline as a progressive web app
+
+let cachedData = null;
+
+export async function fetchAllData() {
+  if (cachedData) {
+    return cachedData;
+  }
+  
+  try {
+    const response = await fetch('./data/data.json');
+    if (!response.ok) throw new Error('Failed to fetch data');
+    const data = await response.json();
+    cachedData = data;
+    return data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    throw error;
+  }
+}
+
 export async function fetchExercises() {
-  const response = await fetch('./data/exercises.json');
-  //const response = await fetch('https://jctaborda.github.io/Calistenia/data/exercises.json');
-  if (!response.ok) throw new Error('Failed to fetch exercises');
-  return await response.json();
+  try {
+    // Use storage.js which loads from IndexedDB or data.json
+    const storage = await import('./storage.js');
+    return storage.loadExercises();
+  } catch (error) {
+    console.error('Error fetching exercises:', error);
+    throw error;
+  }
 }
 
 export async function fetchPrograms() {
-  const response = await fetch('./data/programs.json');
-  //const response = await fetch('https://jctaborda.github.io/Calistenia/data/programs.json');
-  if (!response.ok) throw new Error('Failed to fetch programs');
-  return await response.json();
-} 
+  try {
+    const data = await fetchAllData();
+    return data.programs;
+  } catch (error) {
+    console.error('Error fetching programs:', error);
+    throw error;
+  }
+}
 
 export async function fetchMuscles() {
-  const response = await fetch('./data/muscles.json');
-  //const response = await fetch('https://jctaborda.github.io/Calistenia/data/muscles.json');
-  if (!response.ok) throw new Error('Failed to fetch muscles');
-  return await response.json();
-} 
+  try {
+    const data = await fetchAllData();
+    return data.muscles;
+  } catch (error) {
+    console.error('Error fetching muscles:', error);
+    throw error;
+  }
+}
 
 export async function fetchCategories() {
-  const response = await fetch('./data/categories.json');
-  //const response = await fetch('https://jctaborda.github.io/Calistenia/data/categories.json');
-  if (!response.ok) throw new Error('Failed to fetch categories');
-  return await response.json();
-} 
+  try {
+    const data = await fetchAllData();
+    return data.categories;
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+    throw error;
+  }
+}
 
 export async function fetchEquipment() {
-  const response = await fetch('./data/equipment.json');
-  //const response = await fetch('https://jctaborda.github.io/Calistenia/data/equipment.json');
-  if (!response.ok) throw new Error('Failed to fetch equipment');
-  return await response.json();
-} 
+  try {
+    const data = await fetchAllData();
+    return data.equipment;
+  } catch (error) {
+    console.error('Error fetching equipment:', error);
+    throw error;
+  }
+}
+
+export async function fetchDifficulties() {
+  try {
+    const data = await fetchAllData();
+    return data.difficulties;
+  } catch (error) {
+    console.error('Error fetching difficulties:', error);
+    throw error;
+  }
+}
+
+// Clear cache to force reload from file
+export function clearDataCache() {
+  cachedData = null;
+}

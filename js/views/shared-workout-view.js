@@ -112,3 +112,7 @@ export async function renderSharedWorkoutView(workoutId) {
 
 // Export for router usage
 window.renderSharedWorkoutView = renderSharedWorkoutView;
+
+
+// Export as object for wrapView compatibility
+export default { render: renderSharedWorkoutView };

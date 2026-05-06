@@ -14,43 +14,39 @@
     <form id="exerciseForm">
       <div class="form-group">
         <label for="name">Exercise Name *</label>
-        <input type="text" id="name" name="name" required placeholder="e.g., Push-Up">
+        <input type="text" id="name" name="name" required minlength="2" maxlength="100" placeholder="e.g., Push-Up" pattern="[a-zA-Z0-9\s\-\,\.\(\)]+" title="Minimum 2 characters, maximum 100. Letters, numbers, spaces only.">
       </div>
 
       <div class="form-group">
         <label for="description">Description *</label>
-        <textarea id="description" name="description" required placeholder="Describe the exercise..."></textarea>
+        <textarea id="description" name="description" required maxlength="2000" placeholder="Describe the exercise..."></textarea>
       </div>
 
       <div class="form-group">
-        <label for="skill">Skill Category</label>
-        <input type="text" id="skill" name="skill" placeholder="e.g., Push-Up Variations">
+        <label for="skill">Skill Category *</label>
+        <input type="text" id="skill" name="skill" required minlength="2" maxlength="100" placeholder="e.g., Push-Up Variations" pattern="[a-zA-Z0-9\s\-\,\.\(\)]+">
       </div>
 
       <div class="form-group">
-        <label for="equipment">Equipment</label>
-        <select id="equipment" name="equipment">
-          <option value="">Select Equipment...</option>
-        </select>
+        <label for="equipment">Equipment (select multiple)</label>
+        <div class="checkbox-group" id="equipment-container"></div>
       </div>
 
       <div class="form-group">
         <label for="difficulty">Difficulty Level</label>
         <select id="difficulty" name="difficulty">
-          <option value="beginner">Beginner</option>
-          <option value="intermediate">Intermediate</option>
-          <option value="advanced">Advanced</option>
+          <option value="">Select Difficulty...</option>
         </select>
       </div>
 
       <div class="form-group">
         <label for="image_url">Image URL (optional)</label>
-        <input type="text" id="image_url" name="image_url" placeholder="https://...">
+        <input type="url" id="image_url" name="image_url" placeholder="https://..." maxlength="500" title="Must be a valid URL">
       </div>
 
       <div class="form-group">
         <label for="video_url">Video URL (optional)</label>
-        <input type="text" id="video_url" name="video_url" placeholder="https://...">
+        <input type="url" id="video_url" name="video_url" placeholder="https://..." maxlength="500" title="Must be a valid URL">
       </div>
 
       <div class="form-group">
@@ -87,61 +83,60 @@
     <div id="exerciseList" class="exercise-list"></div>
 
     <div id="editContainer" style="display: none;">
+      <!-- Edit form with checkboxes and dropdowns properly populated -->
       <h2>Edit Exercise</h2>
       <form id="editForm">
         <input type="hidden" id="editId" name="id">
 
         <div class="form-group">
           <label for="editName">Exercise Name *</label>
-          <input type="text" id="editName" name="name" required>
+          <input type="text" id="editName" name="name" required minlength="2" maxlength="100" placeholder="e.g., Push-Up" pattern="[a-zA-Z0-9\s\-\,\.\(\)]+">
         </div>
 
         <div class="form-group">
           <label for="editDescription">Description *</label>
-          <textarea id="editDescription" name="description" required></textarea>
+          <textarea id="editDescription" name="description" required maxlength="2000"></textarea>
         </div>
 
         <div class="form-group">
-          <label for="editSkill">Skill Category</label>
-          <input type="text" id="editSkill" name="skill">
+          <label for="editSkill">Skill Category *</label>
+          <input type="text" id="editSkill" name="skill" required minlength="2" maxlength="100" pattern="[a-zA-Z0-9\s\-\,\.\(\)]+">
         </div>
 
         <div class="form-group">
-          <label for="editEquipment">Equipment</label>
-          <select id="editEquipment" name="equipment"></select>
+          <label for="editEquipment">Equipment (select multiple)</label>
+          <div class="checkbox-group" id="edit-equipment-container"></div>
         </div>
 
         <div class="form-group">
           <label for="editDifficulty">Difficulty Level</label>
           <select id="editDifficulty" name="difficulty">
-            <option value="beginner">Beginner</option>
-            <option value="intermediate">Intermediate</option>
-            <option value="advanced">Advanced</option>
+            <option value="">Select Difficulty...</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label for="editImage_url">Image URL</label>
-          <input type="text" id="editImage_url" name="image_url">
+          <label for="editImage_url">Image URL (optional)</label>
+          <input type="url" id="editImage_url" name="image_url" maxlength="500" title="Must be a valid URL">
         </div>
 
         <div class="form-group">
-          <label for="editVideo_url">Video URL</label>
-          <input type="text" id="editVideo_url" name="video_url">
+          <label for="editVideo_url">Video URL (optional)</label>
+          <input type="url" id="editVideo_url" name="video_url" maxlength="500" title="Must be a valid URL">
         </div>
 
         <div class="form-group">
-          <label for="editCategories">Categories</label>
+          <label for="editCategories">Categories (select multiple)</label>
           <div class="checkbox-group" id="edit-categories-container"></div>
         </div>
 
         <div class="form-group">
-          <label for="editMuscles">Primary Muscles</label>
+          <label for="editMuscles">Primary Muscles (select multiple)</label>
           <div class="checkbox-group" id="edit-muscles-container"></div>
         </div>
 
         <div class="form-group">
-          <label for="editMuscles_secondary">Secondary Muscles</label>
+          <label for="editMuscles_secondary">Secondary Muscles (select multiple)</label>
           <div class="checkbox-group" id="edit-muscles-secondary-container"></div>
         </div>
 

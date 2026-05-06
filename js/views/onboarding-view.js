@@ -1,5 +1,5 @@
 import { renderHeader } from '../components/header.js';
-import { setState } from '../services/state.js';
+import { setState, getState, updateState } from '../services/state.js';
 
 export function renderOnboardingView() {
   const main = document.getElementById('app');
@@ -28,8 +28,12 @@ export function renderOnboardingView() {
         name: formData.get('name'),
         level: formData.get('level'),
       };
-      setState({ user });
+      updateState({ user });
       window.location.hash = '#home';
     });
   }
 } 
+
+
+// Export as object for wrapView compatibility
+export default { render: renderOnboardingView };

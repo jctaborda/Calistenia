@@ -1,121 +1,279 @@
 // js/views/exercises-view.js
 import { renderHeader } from '../components/header.js';
 import { getState } from '../services/state.js';
+import { 
+  diffUpdateGrid, 
+  setupVirtualScroll,
+  withScrollPreservation,
+  batchDomUpdates,
+  setupLazyLoadImages 
+} from '../utils/dom-optimizer.js';
+
 export async function renderExercisesView() {
   const main = document.getElementById('app');
-  const exercises = await getState().exercises;
-  const categories = await getState().categories;
+  const exercises = (await getState().exercises) || [];
+  const categories = (await getState().categories) || [];
+  const difficulties = (await getState().difficulties) || [];
   const itemsPerPage = 10; // Number of exercises to display per page
+  
+  // State management
   let currentPage = 1;
-  let filteredExercises = exercises; // Start with all exercises
+  let filteredExercises = exercises;
   let totalItems = filteredExercises.length;
   let totalPages = Math.ceil(totalItems / itemsPerPage);
-  let exercisesToRender = filteredExercises.slice(0, itemsPerPage);
   
   // Filter state
   let currentFilters = {
     searchText: '',
     selectedCategories: [],
-    selectedDifficulties: []
+    selectedDifficulties: [],
+    showAllCategories: true,
+    showAllDifficulties: true
   };
+  
+  // Cache for optimized updates
+  const cardCache = new Map();
 
-  // Function to apply filters to exercises
-  function applyFilters() {
-    filteredExercises = exercises.filter(exercise => {
-      // Search text filter
-      const matchesSearch = currentFilters.searchText === '' || 
-        exercise.name.toLowerCase().includes(currentFilters.searchText.toLowerCase());
-      
-      // Category filter
-      const matchesCategory = currentFilters.selectedCategories.length === 0 ||
-        currentFilters.selectedCategories.some(categoryId => exercise.categories.includes(categoryId));
-      
-      // Difficulty filter
-      const matchesDifficulty = currentFilters.selectedDifficulties.length === 0 ||
-        currentFilters.selectedDifficulties.some(difficulty => 
-          exercise.difficulty.toLowerCase() === difficulty.toLowerCase());
-      
-      return matchesSearch && matchesCategory && matchesDifficulty;
-    });
-    
-    // Update pagination variables
-    totalItems = filteredExercises.length;
-    totalPages = Math.ceil(totalItems / itemsPerPage);
-    
-    // Reset to first page if current page is beyond filtered results
-    if (currentPage > totalPages && totalPages > 0) {
-      currentPage = 1;
-    }
-    
-    // Update the view
-    updatePageView(currentPage);
+  /**
+   * Get difficulty label from ID (with caching for performance)
+   */
+  const getDifficultyLabel = (() => {
+    const cache = new Map();
+    return (diffId) => {
+      if (!cache.has(diffId)) {
+        const diff = difficulties.find(d => d.id === diffId);
+        cache.set(diffId, diff ? diff.label : `Difficulty ${diffId}`);
+      }
+      return cache.get(diffId);
+    };
+  })();
+
+  /**
+   * Get difficulty labels for an exercise (optimized)
+   */
+  function getDifficultyLabels(exercise) {
+    const diffIds = Array.isArray(exercise.difficulty) ? exercise.difficulty : [exercise.difficulty];
+    return diffIds.map(getDifficultyLabel).join(', ');
   }
 
-  // Function to generate pagination numbers
-  function generatePaginationNumbers(current, total) {
-    const numbers = [];
+  /**
+   * Apply filters efficiently with debouncing
+   */
+  let filterTimeout;
+  function applyFilters() {
+    // Clear previous timeout
+    clearTimeout(filterTimeout);
+    
+    // Debounce filter changes for better performance
+    filterTimeout = setTimeout(() => {
+      filteredExercises = exercises.filter(exercise => {
+        const matchesSearch = currentFilters.searchText === '' || 
+          exercise.name.toLowerCase().includes(currentFilters.searchText.toLowerCase());
+        
+        let matchesCategory = true;
+        if (!currentFilters.showAllCategories && currentFilters.selectedCategories.length > 0) {
+          const exCats = Array.isArray(exercise.categories) ? exercise.categories : (exercise.categories ? [exercise.categories] : []);
+          matchesCategory = exCats.some(categoryId => 
+            currentFilters.selectedCategories.includes(categoryId));
+        }
+        
+        let matchesDifficulty = true;
+        if (!currentFilters.showAllDifficulties && currentFilters.selectedDifficulties.length > 0) {
+          const exerciseDiffIds = Array.isArray(exercise.difficulty) ? exercise.difficulty : [exercise.difficulty];
+          matchesDifficulty = currentFilters.selectedDifficulties.some(difficultyId => 
+            exerciseDiffIds.includes(difficultyId));
+        }
+        
+        return matchesSearch && matchesCategory && matchesDifficulty;
+      });
+      
+      totalItems = filteredExercises.length;
+      totalPages = Math.ceil(totalItems / itemsPerPage);
+      
+      if (currentPage > totalPages && totalPages > 0) {
+        currentPage = 1;
+      }
+      
+      updatePageView(currentPage);
+    }, 150); // 150ms debounce
+  }
+
+  /**
+   * Render pagination numbers (optimized - only updates text content)
+   */
+  function renderPaginationNumbers(container, current, total) {
+    const existingElements = Array.from(container.children);
+    
+    // Clear and rebuild pagination
+    container.innerHTML = '';
     
     if (total <= 7) {
-      // If total pages is 7 or less, show all pages
       for (let i = 1; i <= total; i++) {
-        numbers.push(i);
+        if (i === current) {
+          const span = document.createElement('span');
+          span.className = 'pagination-current';
+          span.textContent = i;
+          container.appendChild(span);
+        } else {
+          const btn = document.createElement('button');
+          btn.className = 'pagination-btn';
+          btn.setAttribute('data-page', i);
+          btn.textContent = i;
+          container.appendChild(btn);
+        }
       }
     } else {
-      // Always show first page
-      numbers.push(1);
+      // First page always shown
+      const firstBtn = document.createElement('button');
+      firstBtn.className = 'pagination-btn';
+      firstBtn.setAttribute('data-page', 1);
+      firstBtn.textContent = 1;
+      container.appendChild(firstBtn);
       
       if (current <= 4) {
-        // Show pages 1, 2, 3, 4, 5, ..., last
         for (let i = 2; i <= 5; i++) {
-          numbers.push(i);
+          const btn = document.createElement('button');
+          btn.className = 'pagination-btn';
+          btn.setAttribute('data-page', i);
+          btn.textContent = i;
+          container.appendChild(btn);
         }
-        if (total > 6) numbers.push('...');
-        numbers.push(total);
+        if (total > 6) {
+          const span = document.createElement('span');
+          span.className = 'pagination-ellipsis';
+          span.textContent = '...';
+          container.appendChild(span);
+        }
+        
+        const lastBtn = document.createElement('button');
+        lastBtn.className = 'pagination-btn';
+        lastBtn.setAttribute('data-page', total);
+        lastBtn.textContent = total;
+        container.appendChild(lastBtn);
       } else if (current >= total - 3) {
-        // Show pages 1, ..., n-4, n-3, n-2, n-1, n
-        if (total > 6) numbers.push('...');
+        if (total > 6) {
+          const span = document.createElement('span');
+          span.className = 'pagination-ellipsis';
+          span.textContent = '...';
+          container.appendChild(span);
+        }
         for (let i = total - 4; i <= total; i++) {
-          numbers.push(i);
+          const btn = document.createElement('button');
+          btn.className = 'pagination-btn';
+          btn.setAttribute('data-page', i);
+          btn.textContent = i;
+          container.appendChild(btn);
         }
       } else {
-        // Show pages 1, ..., current-1, current, current+1, ..., last
-        if (total > 6) numbers.push('...');
-        for (let i = current - 1; i <= current + 1; i++) {
-          numbers.push(i);
+        if (total > 6) {
+          const span = document.createElement('span');
+          span.className = 'pagination-ellipsis';
+          span.textContent = '...';
+          container.appendChild(span);
         }
-        if (total > 6) numbers.push('...');
-        numbers.push(total);
+        
+        for (let i = current - 1; i <= current + 1; i++) {
+          const btn = document.createElement('button');
+          btn.className = 'pagination-btn';
+          btn.setAttribute('data-page', i);
+          btn.textContent = i;
+          container.appendChild(btn);
+        }
+        
+        if (total > 6) {
+          const span = document.createElement('span');
+          span.className = 'pagination-ellipsis';
+          span.textContent = '...';
+          container.appendChild(span);
+        }
+        
+        const lastBtn = document.createElement('button');
+        lastBtn.className = 'pagination-btn';
+        lastBtn.setAttribute('data-page', total);
+        lastBtn.textContent = total;
+        container.appendChild(lastBtn);
+      }
+    }
+  }
+
+  /**
+   * Update pagination element (optimized)
+   */
+  function updatePagination(current, total) {
+    const paginationContainer = document.querySelector('.pagination');
+    if (!paginationContainer) return;
+    
+    const prevButton = paginationContainer.querySelector('.pagination-nav-btn[data-action="prev"]');
+    const nextButton = paginationContainer.querySelector('.pagination-nav-btn[data-action="next"]');
+    const pageNumbersContainer = paginationContainer.querySelector('[id*="page-numbers"]') || 
+                                  document.createElement('div');
+    
+    // Create or get page numbers container
+    let numbersWrapper = paginationContainer.querySelector('[id*="page-numbers"]');
+    if (!numbersWrapper) {
+      numbersWrapper = document.createElement('div');
+      numbersWrapper.id = 'pagination-numbers-wrapper';
+      const existingButtons = Array.from(paginationContainer.querySelectorAll('.pagination-btn'));
+      existingButtons.forEach(btn => btn.remove());
+      paginationContainer.insertBefore(numbersWrapper, paginationContainer.firstChild);
+    }
+    
+    // Only update the page numbers
+    renderPaginationNumbers(numbersWrapper, current, total);
+    
+    // Update navigation buttons (preserve state)
+    if (prevButton) {
+      if (current > 1) {
+        prevButton.classList.remove('disabled');
+        prevButton.disabled = false;
+        prevButton.title = 'Previous page';
+      } else {
+        prevButton.classList.add('disabled');
+        prevButton.disabled = true;
+        prevButton.title = 'Previous page';
       }
     }
     
-    return numbers;
+    if (nextButton) {
+      if (current < total) {
+        nextButton.classList.remove('disabled');
+        nextButton.disabled = false;
+        nextButton.title = 'Next page';
+      } else {
+        nextButton.classList.add('disabled');
+        nextButton.disabled = true;
+        nextButton.title = 'Next page';
+      }
+    }
   }
 
-  // Function to render pagination HTML
-  function renderPagination(current, total) {
-    const numbers = generatePaginationNumbers(current, total);
-    const pageNumbers = numbers.map(num => {
-      if (num === '...') {
-        return '<span class="pagination-ellipsis">...</span>';
-      } else if (num === current) {
-        return `<span class="pagination-current">${num}</span>`;
-      } else {
-        return `<button class="pagination-btn" data-page="${num}">${num}</button>`;
-      }
-    }).join('');
-    
-    // Add navigation buttons
-    const prevButton = current > 1 ? 
-      `<button class="pagination-nav-btn" data-action="prev" title="Previous page"><<</button>` : 
-      `<button class="pagination-nav-btn disabled" disabled title="Previous page"><<</button>`;
-    
-    const nextButton = current < total ? 
-      `<button class="pagination-nav-btn" data-action="next" title="Next page">>></button>` : 
-      `<button class="pagination-nav-btn disabled" disabled title="Next page">>></button>`;
-    
-    return prevButton + pageNumbers + nextButton;
+  /**
+   * Update view when page changes - using optimized DOM updates
+   */
+  function updatePageView(newPage) {
+    if (newPage >= 1 && newPage <= totalPages) {
+      currentPage = newPage;
+      
+      // Preserve scroll position
+      withScrollPreservation(main.querySelector('#exercises-grid'), () => {
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const exercisesToShow = filteredExercises.slice(startIndex, startIndex + itemsPerPage);
+        
+        // Use diff-based update instead of full re-render
+        const gridElement = main.querySelector('#exercises-grid');
+        if (gridElement) {
+          batchDomUpdates(() => {
+            diffUpdateGrid(gridElement, exercisesToShow, categories, cardCache);
+          });
+        }
+      });
+      
+      // Update pagination efficiently
+      updatePagination(currentPage, totalPages);
+    }
   }
-  
+
+  // Render main layout with optimized structure
   main.innerHTML = renderHeader() + `
   <div class="card">
     <h1>Exercises</h1>
@@ -127,122 +285,85 @@ export async function renderExercisesView() {
     <p>Filter by Category</p>
   
     <select id="category-filter" multiple size="0">
+      <option value="all" data-type="all">All Categories</option>
       ${categories.map(category => `<option value="${category.id}">${category.name}</option>`).join('')}
     </select>
 
     <p>Filter by Difficulty</p>
   
     <select id="difficulty-filter" multiple size="0">
-      <option value="Beginner">Beginner</option>
-      <option value="Intermediate">Intermediate</option>
-      <option value="Advanced">Advanced</option>
+      <option value="all" data-type="all">All Difficulties</option>
+      ${difficulties.map(diff => `<option value="${diff.id}">${diff.label}</option>`).join('')}
     </select>
 
-    <div id="exercises-grid" class="exercises-grid">
-      ${exercisesToRender.map(e => `<div class="exercise-card difficulty-${e.difficulty}" data-id="${e.id}"
-      data-exercise-name="${e.name.toLowerCase()}"><h3>${e.name}</h3> <p>${e.description}</p> 
-      <div class="tags">
-        ${e.categories.map(cat => `<span class="tag">${categories.find(c => c.id===cat)?.name}</span>`).join('')}
-      </div>
-      <div class="controls" style="margin-top: 1rem;">
-        <button class="btn view-btn">View</button>
-        <button class="btn edit-btn">Edit</button>
-      </div>
-      </div>`).join('')}
-    </div>
+    <div id="exercises-grid" class="exercises-grid"></div>
+    
     <div class="pagination">
-      ${renderPagination(currentPage, totalPages)}
+      <button class="pagination-nav-btn" data-action="prev" disabled title="Previous page"><<<</button>
+      <div id="pagination-numbers-wrapper"></div>
+      <button class="pagination-nav-btn" data-action="next" disabled title="Next page">>></button>
     </div>
   </div>`;
-      
-  // Function to update the view when page changes
-  function updatePageView(newPage) {
-    if (newPage >= 1 && newPage <= totalPages) {
-      currentPage = newPage;
-      const startIndex = (currentPage - 1) * itemsPerPage;
-      exercisesToRender = filteredExercises.slice(startIndex, startIndex + itemsPerPage);
-      document.getElementById('exercises-grid').innerHTML =
-        exercisesToRender.map(e => `<div class="exercise-card difficulty-${e.difficulty}" data-id="${e.id}"
-        data-exercise-name="${e.name.toLowerCase()}"><h3>${e.name}</h3> <p>${e.description}</p>
-        <div class="tags">
-          ${e.categories.map(cat => `<span class="tag">${categories.find(c => c.id===cat)?.name}</span>`).join('')}
-        </div>
-      </div>`).join('');
-      
-      // Update pagination
-      document.querySelector('.pagination').innerHTML = renderPagination(currentPage, totalPages);
-      
-      // Re-attach event listeners to new pagination buttons
-      attachPaginationListeners();
-      
-      // Re-attach exercise card listeners
-      attachExerciseCardListeners();
-    }
-  }
 
-  // Function to attach pagination event listeners
-  function attachPaginationListeners() {
-    // Handle numbered page buttons
-    document.querySelectorAll('.pagination-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const page = parseInt(e.target.getAttribute('data-page'));
-        updatePageView(page);
-      });
-    });
-    
-    // Handle navigation buttons (<< and >>)
-    document.querySelectorAll('.pagination-nav-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const action = e.target.getAttribute('data-action');
+  /**
+   * Initialize event listeners using event delegation (attached ONCE)
+   */
+  function initializeEventDelegation() {
+    main.addEventListener('click', (e) => {
+      const target = e.target;
+
+      // Handle "View" buttons in exercise cards
+      if (target.classList.contains('view-btn')) {
+        e.stopPropagation();
+        const card = target.closest('.exercise-card');
+        if (card) {
+          const id = card.getAttribute('data-id');
+          window.location.hash = `#exercise/${id}`;
+        }
+      }
+
+      // Handle "Edit" buttons in exercise cards
+      else if (target.classList.contains('edit-btn')) {
+        e.stopPropagation();
+        const card = target.closest('.exercise-card');
+        if (card) {
+          const id = card.getAttribute('data-id');
+          sessionStorage.setItem('editingExerciseId', id);
+          window.location.hash = '#exercise-form';
+        }
+      }
+
+      // Handle pagination number buttons
+      else if (target.classList.contains('pagination-btn')) {
+        e.stopPropagation();
+        const page = parseInt(target.getAttribute('data-page'));
+        if (!isNaN(page)) {
+          updatePageView(page);
+        }
+      }
+
+      // Handle pagination navigation buttons
+      else if (target.classList.contains('pagination-nav-btn') && !target.classList.contains('disabled')) {
+        e.stopPropagation();
+        const action = target.getAttribute('data-action');
         if (action === 'prev' && currentPage > 1) {
           updatePageView(currentPage - 1);
         } else if (action === 'next' && currentPage < totalPages) {
           updatePageView(currentPage + 1);
         }
-      });
-    });
-  }
-
-  // Function to attach exercise card event listeners
-  function attachExerciseCardListeners() {
-    document.querySelectorAll('.exercise-card').forEach(card => {
-      const id = card.getAttribute('data-id');
-      
-      // View button - navigate to exercise details
-      const viewBtn = card.querySelector('.view-btn');
-      if (viewBtn) {
-        viewBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          window.location.hash = `#exercise/${id}`;
-        });
       }
-      
-      // Edit button - navigate to exercise form with edit mode
-      const editBtn = card.querySelector('.edit-btn');
-      if (editBtn) {
-        editBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          // Store the edit ID in sessionStorage so it persists during navigation
-          sessionStorage.setItem('editingExerciseId', id);
-          window.location.hash = '#exercise-form';
-        });
+
+      // Handle "Add Exercise" button
+      else if (target.id === 'add-exercise-btn') {
+        window.location.hash = '#exercise-form';
       }
     });
   }
 
-  // Add Exercise button listener
-  const addExerciseBtn = document.getElementById('add-exercise-btn');
-  if (addExerciseBtn) {
-    addExerciseBtn.addEventListener('click', () => {
-      window.location.hash = '#exercise-form';
-    });
-  }
-
-  // Initial setup of event listeners
-  attachPaginationListeners();
+  // Initial setup
+  initializeEventDelegation();
   
-  
-  // Add filter functionality
+  // Set up filter listeners
   const filterInput = main.querySelector('#exercise-filter');
   const categoryFilter = main.querySelector('#category-filter');
   const difficultyFilter = main.querySelector('#difficulty-filter');
@@ -257,7 +378,19 @@ export async function renderExercisesView() {
   if (categoryFilter) {
     categoryFilter.addEventListener('change', (e) => {
       const selectedCategories = e.target.selectedOptions;
-      currentFilters.selectedCategories = Array.from(selectedCategories).map(option => parseInt(option.value));
+      
+      const allSelected = Array.from(selectedCategories).some(option => 
+        option.getAttribute('data-type') === 'all');
+      
+      if (allSelected) {
+        currentFilters.showAllCategories = true;
+        currentFilters.selectedCategories = [];
+      } else {
+        currentFilters.showAllCategories = false;
+        currentFilters.selectedCategories = Array.from(selectedCategories).map(option => 
+          parseInt(option.value));
+      }
+      
       applyFilters();
     });
   }
@@ -265,12 +398,29 @@ export async function renderExercisesView() {
   if (difficultyFilter) {
     difficultyFilter.addEventListener('change', (e) => {
       const selectedDifficulty = e.target.selectedOptions;
-      currentFilters.selectedDifficulties = Array.from(selectedDifficulty).map(option => option.value.toLowerCase());
+      
+      const allSelected = Array.from(selectedDifficulty).some(option => 
+        option.getAttribute('data-type') === 'all');
+      
+      if (allSelected) {
+        currentFilters.showAllDifficulties = true;
+        currentFilters.selectedDifficulties = [];
+      } else {
+        currentFilters.showAllDifficulties = false;
+        currentFilters.selectedDifficulties = Array.from(selectedDifficulty).map(option => 
+          parseInt(option.value));
+      }
+      
       applyFilters();
     });
   }
-  // Exercise card listeners are now handled by attachExerciseCardListeners()
-  attachExerciseCardListeners();
+  
+  // Initial render of first page
+  updatePageView(1);
+  
+  // Setup lazy loading for any future images
+  setupLazyLoadImages();
 }
 
-
+// Export as object for wrapView compatibility
+export default { render: renderExercisesView };

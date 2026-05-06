@@ -1,4 +1,4 @@
-import { getState, setState } from '../services/state.js';
+import { getState, setState, updateState } from '../services/state.js';
 import { renderHeader } from '../components/header.js';
 import { getAllAchievementStatus } from '../services/achievements.js';
 
@@ -127,7 +127,7 @@ export function renderProfileView() {
         index: user.bodyMetrics.length
       });
       
-      setState({ user });
+      updateState({ user });
       
       // Clear form and re-render
       weightInput.value = '';
@@ -155,7 +155,12 @@ export function renderProfileView() {
       index: i
     }));
     
-    setState({ user });
+    updateState({ user });
     renderProfileView();
   };
 }
+
+
+
+// Export as object for wrapView compatibility
+export default { render: renderProfileView };

@@ -1,4 +1,4 @@
-import { getState, setState } from '../services/state.js';
+import { getState, setState, updateState } from '../services/state.js';
 import { renderHeader } from '../components/header.js';
 import { checkAchievements } from '../services/achievements.js';
 
@@ -99,7 +99,7 @@ export function renderWorkoutCompletionView() {
       // Save to history
       const state = getState();
       const history = state.history || [];
-      setState({
+      updateState({
         history: [...history, workoutLog],
         activeWorkout: null
       });
@@ -112,7 +112,7 @@ export function renderWorkoutCompletionView() {
   const skipBtn = main.querySelector('#skip-logging-btn');
   if (skipBtn) {
     skipBtn.addEventListener('click', () => {
-      setState({ activeWorkout: null });
+      updateState({ activeWorkout: null });
       window.location.hash = '#summary';
     });
   }
@@ -120,3 +120,7 @@ export function renderWorkoutCompletionView() {
 
 // Export for router usage
 window.renderWorkoutCompletionView = renderWorkoutCompletionView;
+
+
+// Export as object for wrapView compatibility
+export default { render: renderWorkoutCompletionView };

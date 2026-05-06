@@ -13,3 +13,7 @@ export function renderErrorView(message = 'An unexpected error occurred. Please 
 
 // Export for error handling
 window.renderErrorView = renderErrorView;
+
+
+// Export as object for wrapView compatibility
+export default { render: renderErrorView };

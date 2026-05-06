@@ -12,32 +12,46 @@ export async function renderSkillModulesView() {
     showTreeView = savedPreference === 'true';
   }
   
-  // Load exercises data from data/exercises.json (maps to old skills structure)
+  // Load exercises data from data/data.json (new unified structure)
   let exercisesData;
   try {
-    const response = await fetch('./data/exercises.json');
-    if (!response.ok) throw new Error('Failed to load exercises');
-    const exercisesArray = await response.json();
+    const response = await fetch('./data/data.json');
+    if (!response.ok) throw new Error('Failed to load exercise data');
+    const data = await response.json();
     
-    // Transform exercises array into modules format
-    // Group by skill category (similar to old "skill" field in exercises.json)
-    const skillGroups = {};
+    const exercisesArray = data.exercises || [];
+    const categoriesMap = {};
+    
+    // Build category map for quick lookup
+    if (data.categories && Array.isArray(data.categories)) {
+      data.categories.forEach(cat => {
+        categoriesMap[cat.id] = cat;
+      });
+    }
+    
+    // Group exercises by category (maps to skill modules)
+    const categoryGroups = {};
     exercisesArray.forEach(ex => {
-      const skillName = ex.skill || 'General';
-      if (!skillGroups[skillName]) {
-        skillGroups[skillName] = {
-          id: skillName.toLowerCase().replace(/\s+/g, '-'),
-          name: skillName,
-          description: `Master the ${skillName} progression from beginner to advanced`,
-          difficulty: 'mixed',
-          exercises: []
-        };
-      }
-      skillGroups[skillName].exercises.push(ex.id);
+      if (!ex.categories || ex.categories.length === 0) return;
+      
+      ex.categories.forEach(catId => {
+        const cat = categoriesMap[catId] || { id: catId, name: `Category ${catId}` };
+        
+        if (!categoryGroups[catId]) {
+          categoryGroups[catId] = {
+            id: catId,
+            name: cat.name,
+            description: `${cat.name} exercises for building strength and mastering skills`,
+            difficulty: 'mixed',
+            exercises: []
+          };
+        }
+        categoryGroups[catId].exercises.push(ex.id);
+      });
     });
     
     // Convert to array and sort by name
-    exercisesData = Object.values(skillGroups).sort((a, b) => a.name.localeCompare(b.name));
+    exercisesData = Object.values(categoryGroups).sort((a, b) => a.name.localeCompare(b.name));
   } catch (error) {
     main.innerHTML = renderHeader() + `
       <div class="card">
@@ -124,7 +138,7 @@ function renderSkillModulesList(modules, calculateModuleProgress) {
         const isCompleted = progress === 100;
         
         return `
-          <div class="workout-card" style="cursor: pointer;" onclick="window.location.hash = '#skill-module/${module.id}'">
+          <div class="workout-card" style="cursor: pointer;" onclick="console.log('Clicked module:', '${module.id}'); window.location.hash = '#skill-module/${module.id}'; return false;">
             <div class="flex-container">
               <div class="flex-1">
                 <h3>${module.name}</h3>
@@ -187,3 +201,7 @@ window.updateSkillModulesView = function(showTree) {
 
 // Export for router usage
 window.renderSkillModulesView = renderSkillModulesView;
+
+
+// Export as object for wrapView compatibility
+export default { render: renderSkillModulesView };

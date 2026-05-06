@@ -1,14 +1,17 @@
 import { getState } from '../services/state.js';
 import { renderHeader } from '../components/header.js';
 import { getExerciseProgressData } from '../utils/chart-helpers.js';
+import { ImageService } from '../services/image-service.js';
 
 export function renderExerciseView(exerciseId) {
   const main = document.getElementById('app');
-  //const { exercises, history } = getState();
   const exercises = getState().exercises;
   const history = getState().history;
   const muscles = getState().muscles;
   const categories = getState().categories;
+  const equipment = getState().equipment || [];
+  const difficulties = getState().difficulties || [];
+  
   const exercise = (exercises || []).find(e => String(e.id) === String(exerciseId));
   if (!exercise) {
     main.innerHTML = renderHeader() + '<div class="card"><p>Exercise not found.</p></div>';
@@ -23,74 +26,87 @@ export function renderExerciseView(exerciseId) {
     progressRows = '<tr><td colspan="2">No data</td></tr>';
   }
 
-  // Fetch names for prerequisites and progressions
+  // Helper function to get exercise name for prerequisites/progressions
   function getExerciseName(id) {
-    const exercise = (exercises || []).find(e => String(e.id) === String(id));
-    return exercise ? exercise.name : 'Unknown';
+    const ex = (exercises || []).find(e => String(e.id) === String(id));
+    return ex ? ex.name : 'Unknown';
   }
 
-  const prerequisitesLinks = (exercise.prerequisites || []).map(id => {
+  // Normalize values to arrays - handles null, undefined, empty strings, and single values
+  const normalizeArray = (value) => {
+    if (Array.isArray(value)) return value;
+    if (value === null || value === undefined || value === '') return [];
+    return [value];
+  };
+  
+  // Fetch prerequisites and progressions - handle both array and single value
+  const prerequisiteIds = normalizeArray(exercise.prerequisites);
+  const prerequisitesLinks = prerequisiteIds.map(id => {
     const name = getExerciseName(id);
-    //console.log(`Prerequisite ID: ${id}, Name: ${name}`); // Debug log
     return `<a href="#exercise/${id}">${name}</a>`;
   }).join(', ');
 
-  const progressionsLinks = (exercise.progressions || []).map(id => {
+  const progressionIds = normalizeArray(exercise.progressions);
+  const progressionsLinks = progressionIds.map(id => {
     const name = getExerciseName(id);
-    return `<a href="#exercise/${id}" >${name}</a>`;
+    return `<a href="#exercise/${id}">${name}</a>`;
   }).join(', ');
 
-  // Fetch muscle names
-  const muscleNames = (exercise.muscles ||[]).map(muscleId => {
-    const muscle = muscles.find(m => m.id === muscleId);
-    return muscle ? muscle.name : 'Unknown';
-  }).join(', ');
-  const muscleSecNames = (exercise.muscles_secondary ||[]).map(muscleId => {
+  // Fetch muscle names - handle both array and single value
+  const muscleIds = normalizeArray(exercise.muscles);
+  const muscleSecIds = normalizeArray(exercise.muscles_secondary);
+  
+  const muscleNames = muscleIds.map(muscleId => {
     const muscle = muscles.find(m => m.id === muscleId);
     return muscle ? muscle.name : 'Unknown';
   }).join(', ');
   
+  const muscleSecNames = muscleSecIds.map(muscleId => {
+    const muscle = muscles.find(m => m.id === muscleId);
+    return muscle ? muscle.name : 'Unknown';
+  }).join(', ');
 
-  // Fetch category names
-  const categoryNames = (exercise.categories || []).map(categoryId => {
+  // Fetch equipment names - handle both array and single value
+  const equipmentIds = normalizeArray(exercise.equipment);
+  const equipmentNames = equipmentIds.map(equipmentId => {
+    const equip = equipment.find(e => e.id === equipmentId);
+    return equip ? equip.name : `Equipment ${equipmentId}`;
+  }).join(', ');
+
+  // Fetch difficulty labels - handle both array and single value
+  const difficultyIds = normalizeArray(exercise.difficulty);
+  const difficultyLabels = difficultyIds.map(diffId => {
+    const diff = difficulties.find(d => d.id === diffId);
+    return diff ? diff.label : `Difficulty ${diffId}`;
+  }).join(', ');
+
+  // Fetch category names - handle both array and single value
+  const categoryIds = normalizeArray(exercise.categories);
+  const categoryNames = categoryIds.map(categoryId => {
     const categ = categories.find(c => c.id === categoryId);
     return categ ? categ.name : 'Unknown';
   }).join(', ');
 
-  const frontImages = (exercise.muscles || []).filter(muscleId => {
-    const muscle = muscles.find(m => m.id === muscleId);
-    return muscle && muscle.is_front;
-  }).map(muscleId => `<img src="assets/images/muscles/main/muscle-${muscleId}.svg" alt="Muscle ${muscleId}" class="muscle-layer" />`).join('');
-
-  const backImages = (exercise.muscles || []).filter(muscleId => {
-    const muscle = muscles.find(m => m.id === muscleId);
-    return muscle && !muscle.is_front;
-  }).map(muscleId => `<img src="assets/images/muscles/main/muscle-${muscleId}.svg" alt="Muscle ${muscleId}" class="muscle-layer" />`).join('');
-
-  const frontImagesSecondary = (exercise.muscles_secondary || []).filter(muscleId => {
-    const muscle = muscles.find(m => m.id === muscleId);
-    return muscle && muscle.is_front;
-  }).map(muscleId => `<img src="assets/images/muscles/secondary/muscle-${muscleId}.svg" alt="Muscle ${muscleId}" class="muscle-layer" />`).join('');
-
-  const backImagesSecondary = (exercise.muscles_secondary || []).filter(muscleId => {
-    const muscle = muscles.find(m => m.id === muscleId);
-    return muscle && !muscle.is_front;
-  }).map(muscleId => `<img src="assets/images/muscles/secondary/muscle-${muscleId}.svg" alt="Muscle ${muscleId}" class="muscle-layer" />`).join('');
+  // Generate muscle images with ImageService for error handling
+  const frontImages = ImageService.renderMuscleLayer(muscleIds, 'main', true, muscles);
+  const backImages = ImageService.renderMuscleLayer(muscleIds, 'main', false, muscles);
+  const frontImagesSecondary = ImageService.renderMuscleLayer(muscleSecIds, 'secondary', true, muscles);
+  const backImagesSecondary = ImageService.renderMuscleLayer(muscleSecIds, 'secondary', false, muscles);
 
   main.innerHTML = renderHeader() + `
     <div class="card">
       <h1>${exercise.name}</h1>
       <p>${exercise.description}</p>
       <h3>Common Mistakes</h3>
-      <p>${exercise.commonMistakes}</p>
+      <p>${exercise.commonMistakes || ''}</p>
       <h3>Form Cues</h3>
-      <p>${exercise.formCues}</p>
-      <h3>Skill: </h3><p> ${exercise.skill} </p>
-      <h3>Equipment: </h3><p> ${exercise.equipment}</p>
-      <h3>Difficulty: </h3><p>${exercise.difficulty}</p>
+      <p>${exercise.formCues || ''}</p>
+      <h3>Skill: </h3><p> ${exercise.skill || ''} </p>
+      <h3>Equipment: </h3><p> ${equipmentNames}</p>
+      <h3>Difficulty: </h3><p>${difficultyLabels}</p>
 
-      ${exercise.image_url ? `<img src="${exercise.image_url}" alt="${exercise.name}" style="max-width: 200px;">` : ''}
-      ${exercise.video_url ? `<video controls width="300"> <source src="${exercise.video_url}" type="video/mp4">Your browser does not support the video tag.</video>` : ''}
+      ${ImageService.renderExternalMedia(exercise.image_url, 'image', exercise.name)}
+      ${exercise.video_url ? ImageService.renderExternalMedia(exercise.video_url, 'video', exercise.name) : ''}
 
       <h3>Categories: </h3>
       <p>${categoryNames}</p>
@@ -99,10 +115,10 @@ export function renderExerciseView(exerciseId) {
       <p>${muscleNames}, ${muscleSecNames}</p>
 
       <h3>Prerequisites: </h3>
-      <p>${prerequisitesLinks}</p>
+      <p>${prerequisitesLinks || 'None'}</p>
 
       <h3>Progressions: </h3>
-      <p>${progressionsLinks}</p>
+      <p>${progressionsLinks || 'None'}</p>
 
       <h3>Progress: </h3>
       <table>
@@ -127,3 +143,6 @@ export function renderExerciseView(exerciseId) {
 }
 
 
+
+// Export as object for wrapView compatibility
+export default { render: renderExerciseView };

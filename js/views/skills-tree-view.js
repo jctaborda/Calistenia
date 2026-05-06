@@ -5,24 +5,54 @@ export async function renderSkillsTreeView() {
   const main = document.getElementById('app');
   const state = await getState();
   
-  // Load exercises data from data/exercises.json (maps to old skills-tree structure)
+  // Load exercises with reference data lookup
   let exercisesData;
   try {
-    const response = await fetch('./data/exercises.json');
-    if (!response.ok) throw new Error('Failed to load exercises');
-    const exercisesArray = await response.json();
+    // Fetch both exercises and reference data (categories, difficulties, equipment)
+    const response = await fetch('./data/data.json');
+    if (!response.ok) throw new Error('Failed to load data');
+    const data = await response.json();
+    
+    const exercisesArray = data.exercises || [];
+    const categoriesMap = {};
+    const difficultiesMap = {};
+    
+    // Create lookup maps for reference data
+    (data.categories || []).forEach(cat => {
+      categoriesMap[cat.id] = cat.name;
+    });
+    
+    (data.difficulties || []).forEach(diff => {
+      difficultiesMap[diff.id] = diff.name;
+    });
     
     // Transform exercises array into nodes format for tree visualization
     exercisesData = {
-      nodes: exercisesArray.map(ex => ({
-        id: `exercise-${ex.id}`,
-        exerciseId: ex.id,
-        name: ex.name,
-        category: ex.difficulty,
-        prerequisites: ex.prerequisites || [],
-        unlocks: ex.progressions || [],
-        description: ex.description || ''
-      }))
+      nodes: exercisesArray.map(ex => {
+        // Use first category or difficulty if available, otherwise default
+        const categoryIds = ex.categories || [];
+        const difficultyIds = ex.difficulty || [];
+        
+        const categoryName = categoryIds.length > 0 
+          ? categoriesMap[categoryIds[0]] || 'Undefined'
+          : 'Undefined';
+        
+        const difficultyName = difficultyIds.length > 0
+          ? difficultiesMap[difficultyIds[0]] || 'intermediate'
+          : 'intermediate';
+        
+        return {
+          id: `exercise-${ex.id}`,
+          exerciseId: ex.id,
+          name: ex.name,
+          category: categoryName, // string now
+          difficulty: difficultyName, // string for sorting
+          skill: ex.skill || 'Basic Skills',
+          prerequisites: ex.prerequisites || [],
+          unlocks: ex.progressions || [],
+          description: ex.description || ''
+        };
+      })
     };
   } catch (error) {
     main.innerHTML = renderHeader() + `
@@ -85,8 +115,8 @@ export async function renderSkillsTreeView() {
   const difficultyOrder = { 'beginner': 1, 'intermediate': 2, 'advanced': 3 };
   
   function getDepth(node) {
-    // Depth based on difficulty level
-    return difficultyOrder[node.category] || 0;
+    // Depth based on difficulty level (not category)
+    return difficultyOrder[node.difficulty] || difficultyOrder['intermediate'];
   }
 
   // Calculate overall progress
@@ -161,7 +191,7 @@ export async function renderSkillsTreeView() {
       return connectionLines.join('');
     }
 
-    // Generate nodes SVG elements
+    // Generate nodes SVG elements WITH inline text labels
     function generateNodesSVG() {
       const svgNodes = [];
       
@@ -200,6 +230,7 @@ export async function renderSkillsTreeView() {
           }
           
           const radius = 20;
+          const labelY = y + 45; // Position text below the circle
           
           svgNodes.push(`
             <g class="node" data-node-id="${node.exerciseId}" style="cursor: pointer;">
@@ -220,6 +251,18 @@ export async function renderSkillsTreeView() {
               ${isCompleted ? `
                 <text x="${x}" y="${y + 3}" text-anchor="middle" font-size="12" fill="#4CAF50" font-weight="bold">✓</text>
               ` : ''}
+              
+              <!-- Exercise name label below circle -->
+              <text 
+                x="${x}" 
+                y="${labelY}" 
+                text-anchor="middle" 
+                font-size="11" 
+                fill="#333" 
+                font-weight="500"
+                class="exercise-label"
+                style="pointer-events: none;"
+              >${node.name}</text>
               
               <title>${node.name} (${node.category})${isCompleted ? ' - Completed' : ''}</title>
             </g>
@@ -350,6 +393,20 @@ export async function renderSkillsTreeView() {
         stroke-width: 3px !important;
         cursor: pointer;
       }
+      
+      /* Exercise name labels below circles */
+      .exercise-label {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+        fill: #333 !important;
+        font-weight: 600;
+      }
+      
+      /* Ensure labels wrap nicely for long names */
+      text {
+        user-select: none;
+        -webkit-user-select: none;
+      }
     </style>
   `;
 
@@ -368,3 +425,7 @@ export async function renderSkillsTreeView() {
 
 // Export for router usage
 window.renderSkillsTreeView = renderSkillsTreeView;
+
+
+// Export as object for wrapView compatibility
+export default { render: renderSkillsTreeView };

@@ -1,4 +1,4 @@
-import { getState, setState } from '../services/state.js';
+import { getState, setState, updateState } from '../services/state.js';
 import { renderHeader } from '../components/header.js';
 import { getUnlockedAchievements } from '../services/achievements.js';
 
@@ -74,7 +74,7 @@ export function renderWorkoutSummaryView() {
       const state = getState();
       const user = state.user || {};
       user.lastDifficultyRating = rating;
-      setState({ user });
+      updateState({ user });
       
       // Hide buttons after selection
       difficultyButtons.forEach(b => b.disabled = true);
@@ -179,3 +179,7 @@ export function renderWorkoutSummaryView() {
 
 // Export for router usage
 window.renderWorkoutSummaryView = renderWorkoutSummaryView;
+
+
+// Export as object for wrapView compatibility
+export default { render: renderWorkoutSummaryView };

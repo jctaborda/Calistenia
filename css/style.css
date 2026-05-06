@@ -229,6 +229,7 @@ li {
 
 .btn-secondary {
   background: #6c757d;
+  color: #fff;
 }
 
 .btn-secondary:hover {
@@ -275,15 +276,6 @@ li {
 
 .drag-handle:hover {
   background: #e0e0e0 !important;
-}
-
-.btn-secondary {
-  background: #6c757d;
-  color: #fff;
-}
-
-.btn-secondary:hover {
-  background: #5a6268;
 }
 
 /* Lists */
@@ -956,15 +948,6 @@ body.dark-mode .error-message {
 
 .btn-primary:hover {
   background: #1251a3;
-}
-
-.btn-secondary {
-  background: #6c757d;
-  color: white;
-}
-
-.btn-secondary:hover {
-  background: #5a6268;
 }
 
 .btn-danger {

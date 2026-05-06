@@ -1,12 +1,11 @@
 import { fetchPrograms } from '../services/api.js';
 import { renderHeader } from '../components/header.js';
-import { setState, getState } from '../services/state.js';
+import { setState, getState, updateState } from '../services/state.js';
 
 
 export async function renderProgramsView() {
   const main = document.getElementById('app');
-  //const programs = await fetchPrograms();
-  const programs = await getState().programs;
+  const allPrograms = (await getState().programs) || [];
   const user = getState().user || {};
   const customRoutines = user.customRoutines || [];
   const { exercises } = getState();
@@ -18,7 +17,7 @@ export async function renderProgramsView() {
         <button class="btn" id="create-routine-btn">New Routine</button>
       </div>
       <ul>
-        ${programs.map(p => `
+        ${allPrograms.map(p => `
           <li class="flex-container">
             <div class="workout-card">
               <h2 program-name-btn data-type="program" data-id="${p.id}" data-action="view">${p.name}</h2>
@@ -59,7 +58,7 @@ export async function renderProgramsView() {
   if (createRoutineBtn) {
     createRoutineBtn.addEventListener('click', () => {
       // Clear any editing state and navigate to builder
-      setState({ editingProgram: null });
+      updateState({ editingProgram: null });
       window.location.hash = '#builder';
     });
   }
@@ -82,13 +81,13 @@ export async function renderProgramsView() {
         const id = editBtn.getAttribute('data-id');
         let program;
           if (type === 'program') {
-            program = programs.find(p => String(p.id) === String(id));
+            program = allPrograms.find(p => String(p.id) === String(id));
           } else if (type === 'custom') {
             const routine = customRoutines.find(r => String(r.id)==String(id));
             program = { id: id, name: routine.name, exercises: routine.exercises };
           }
     
-        setState({
+        updateState({
           editingProgram: {
             type,
             id,
@@ -122,7 +121,7 @@ export async function renderProgramsView() {
               if (routineIndex !== -1) {
                 user.customRoutines.splice(routineIndex, 1);
               }
-              setState({ user });
+              updateState({ user });
               alert('Routine deleted successfully!');
               renderProgramsView();
             }
@@ -131,7 +130,7 @@ export async function renderProgramsView() {
       });
     }
   });
-  
+
   
   // Start button logic
   main.querySelectorAll('button[data-action="start"]').forEach(btn => {
@@ -139,15 +138,15 @@ export async function renderProgramsView() {
       const type = btn.getAttribute('data-type');
       const id = btn.getAttribute('data-id');
       if (type === 'program') {
-        const program = programs.find(p => String(p.id) === String(id));
+        const program = allPrograms.find(p => String(p.id) === String(id));
         if (program) {
-          setState({ activeWorkout: { program, progress: {}, currentExerciseIndex: 0, currentSetIndex: 0 } });
+          updateState({ activeWorkout: { program, progress: {}, currentExerciseIndex: 0, currentSetIndex: 0 } });
           window.location.hash = '#active-workout';
         }
       } else if (type === 'custom') {
         const routine = customRoutines.find(r => String(r.id)==String(id));
         if (routine) {
-          setState({ activeWorkout: { program: { id: id, name: routine.name, exercises: routine.exercises, warmup: routine.warmup || [], cooldown: routine.cooldown || [] }, progress: {}, currentExerciseIndex: 0, currentSetIndex: 0 } });
+          updateState({ activeWorkout: { program: { id: id, name: routine.name, exercises: routine.exercises, warmup: routine.warmup || [], cooldown: routine.cooldown || [] }, progress: {}, currentExerciseIndex: 0, currentSetIndex: 0 } });
           window.location.hash = '#active-workout';
         }
       }
@@ -157,3 +156,7 @@ export async function renderProgramsView() {
 
 } 
 
+
+
+// Export as object for wrapView compatibility
+export default { render: renderProgramsView };
