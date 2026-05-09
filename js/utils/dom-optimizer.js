@@ -49,7 +49,22 @@ export function identifyChanges(oldIds, newIds) {
  */
 export function createExerciseCard(exercise, categories) {
   const card = document.createElement('div');
-  card.className = 'exercise-card';
+  
+  // Add difficulty class based on exercise difficulty ID (1=beginner, 2=intermediate, 3=advanced)
+  let difficultyClass = '';
+  if (exercise.difficulty) {
+    const difficulties = Array.isArray(exercise.difficulty) ? exercise.difficulty : [exercise.difficulty];
+    // Check for IDs: 3=advanced, 2=intermediate, 1=beginner
+    if (difficulties.includes(3)) {
+      difficultyClass = 'difficulty-advanced';
+    } else if (difficulties.includes(2)) {
+      difficultyClass = 'difficulty-intermediate';
+    } else if (difficulties.includes(1)) {
+      difficultyClass = 'difficulty-beginner';
+    }
+  }
+  
+  card.className = `exercise-card ${difficultyClass}`;
   card.setAttribute('data-id', exercise.id);
   card.setAttribute('data-exercise-name', exercise.name.toLowerCase());
   

@@ -6,7 +6,8 @@ const DB_VERSION = 1;
 const STORES = {
   EXERCISES: 'exercises',
   WORKOUTS: 'workouts',
-  STATE: 'state' // Keep state here too to free localStorage
+  STATE: 'state',
+  MODULES: 'modules' // Add modules store
 };
 
 let db = null;
@@ -50,7 +51,72 @@ export function openDatabase() {
       if (!database.objectStoreNames.contains(STORES.STATE)) {
         database.createObjectStore(STORES.STATE, { keyPath: 'key' });
       }
+
+      // Create object store for skill modules
+      if (!database.objectStoreNames.contains(STORES.MODULES)) {
+        const moduleStore = database.createObjectStore(STORES.MODULES, { keyPath: 'id' });
+        moduleStore.createIndex('name', 'name', { unique: false });
+        moduleStore.createIndex('category', 'category', { unique: false });
+      }
     };
+  });
+}
+
+// Modules operations
+export async function storeModules(modulesArray) {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.MODULES], 'readwrite');
+  const store = transaction.objectStore(STORES.MODULES);
+
+  // Clear existing and add all modules
+  await store.clear();
+
+  modulesArray.forEach(module => {
+    store.put(module);
+  });
+
+  return new Promise((resolve, reject) => {
+    transaction.oncomplete = () => resolve({ success: true });
+    transaction.onerror = () => reject(transaction.error);
+  });
+}
+
+export async function modulesLoad() {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.MODULES], 'readonly');
+  const store = transaction.objectStore(STORES.MODULES);
+
+  return new Promise((resolve, reject) => {
+    const request = store.getAll();
+
+    request.onsuccess = () => resolve(request.result || []);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+export async function getModuleById(id) {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.MODULES], 'readonly');
+  const store = transaction.objectStore(STORES.MODULES);
+
+  return new Promise((resolve, reject) => {
+    const request = store.get(id);
+
+    request.onsuccess = () => resolve(request.result || null);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+export async function deleteModule(id) {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.MODULES], 'readwrite');
+  const store = transaction.objectStore(STORES.MODULES);
+
+  return new Promise((resolve, reject) => {
+    const request = store.delete(id);
+
+    request.onsuccess = () => resolve({ success: true });
+    request.onerror = () => reject(request.error);
   });
 }
 

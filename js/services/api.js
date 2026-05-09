@@ -81,6 +81,60 @@ export async function fetchDifficulties() {
   }
 }
 
+// Skill Modules API
+export async function fetchSkillModules() {
+  try {
+    const modulesService = await import('./modules-service.js');
+    return modulesService.loadModules();
+  } catch (error) {
+    console.error('Error fetching skill modules:', error);
+    throw error;
+  }
+}
+
+export async function saveSkillModules(modules) {
+  try {
+    const modulesService = await import('./modules-service.js');
+    return modulesService.saveModules(modules);
+  } catch (error) {
+    console.error('Error saving skill modules:', error);
+    throw error;
+  }
+}
+
+export async function addSkillModule(module) {
+  try {
+    const modulesService = await import('./modules-service.js');
+    return modulesService.addModule(module);
+  } catch (error) {
+    console.error('Error adding skill module:', error);
+    throw error;
+  }
+}
+
+export async function updateSkillModule(module) {
+  try {
+    const modulesService = await import('./modules-service.js');
+    return modulesService.updateModule(module);
+  } catch (error) {
+    console.error('Error updating skill module:', error);
+    throw error;
+  }
+}
+
+export async function deleteSkillModule(id) {
+  try {
+    const modulesService = await import('./modules-service.js');
+    return modulesService.deleteModule(id);
+  } catch (error) {
+    console.error('Error deleting skill module:', error);
+    throw error;
+  }
+}
+
+// Re-export ModuleStore for convenience
+export { ModuleStore } from './modules-service.js';
+
 // Clear cache to force reload from file
 export function clearDataCache() {
   cachedData = null;

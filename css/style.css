@@ -980,7 +980,7 @@ body.dark-mode .error-message {
 
 .exercise-list {
   margin-top: 2rem;
-  display: none;
+  display: block;
 }
 
 .exercise-list.active {

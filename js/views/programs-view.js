@@ -17,38 +17,60 @@ export async function renderProgramsView() {
         <button class="btn" id="create-routine-btn">New Routine</button>
       </div>
       <ul>
-        ${allPrograms.map(p => `
-          <li class="flex-container">
-            <div class="workout-card">
-              <h2 program-name-btn data-type="program" data-id="${p.id}" data-action="view">${p.name}</h2>
-              <p>
-              <div class="controls">
-                <button class="view-btn program-name-btn" data-type="program" data-id="${p.id}" data-action="view">View</button>
-                <button class="start-btn" data-type="program" data-id="${p.id}" data-action="start">Start</button>
-                <button class="edit-btn" data-type="program" data-id="${p.id}" data-action="edit">Edit</button>
-                <button class="delete-btn" data-type="program" data-id="${p.id}" data-action="delete">Delete</button>
+        ${allPrograms.map(p => {
+          return `
+            <li class="flex-container">
+              <div class="workout-card" data-type="program" data-id="${p.id}">
+                <h2 program-name-btn data-type="program" data-id="${p.id}" data-action="view">${p.name}</h2>
+                <p>
+                <div class="controls">
+                  <button class="view-btn program-name-btn" data-type="program" data-id="${p.id}" data-action="view">View</button>
+                  <button class="start-btn" data-type="program" data-id="${p.id}" data-action="start">Start</button>
+                  <button class="edit-btn" data-type="program" data-id="${p.id}" data-action="edit">Edit</button>
+                  <button class="delete-btn" data-type="program" data-id="${p.id}" data-action="delete">Delete</button>
+                </div>
               </div>
-            </div>
-          </li>
-        `).join('')}
+            </li>
+          `;
+        }).join('')}
       </ul>
       <h1>Custom Routines</h1>
       <ul>
-        ${customRoutines.length === 0 ? '<li>No custom routines yet.</li>' : customRoutines.map((r) => `
-          <li class="flex-container">
-            <div class="workout-card">
-              <h2 program-name-btn data-type="custom" data-id="${r.id}" data-action="view">${r.name}</h2>
-              
-              <div class="controls">
-              
-                <button class="view-btn program-name-btn" data-type="custom" data-id="${r.id}" data-action="view">View</button>
-                <button class="start-btn" data-type="custom" data-id="${r.id}" data-action="start">Start</button>
-                <button class="edit-btn" data-type="custom" data-id="${r.id}" data-action="edit">Edit</button>
-                <button class="delete-btn" data-type="custom" data-id="${r.id}" data-action="delete">Delete</button>
+        ${customRoutines.length === 0 ? '<li>No custom routines yet.</li>' : customRoutines.map((r) => {
+          // Get difficulty class based on exercise difficulty ID (1=beginner, 2=intermediate, 3=advanced)
+          let difficultyClass = '';
+          if (r.exercises && r.exercises.length > 0) {
+            const firstExId = r.exercises[0].exerciseId;
+            const ex = exercises.find(e => String(e.id) === String(firstExId));
+            if (ex && ex.difficulty) {
+              const difficulties = Array.isArray(ex.difficulty) ? ex.difficulty : [ex.difficulty];
+              // Check for IDs: 3=advanced, 2=intermediate, 1=beginner
+              if (difficulties.includes(3)) {
+                difficultyClass = 'difficulty-advanced';
+              } else if (difficulties.includes(2)) {
+                difficultyClass = 'difficulty-intermediate';
+              } else if (difficulties.includes(1)) {
+                difficultyClass = 'difficulty-beginner';
+              }
+            }
+          }
+          
+          return `
+            <li class="flex-container">
+              <div class="workout-card ${difficultyClass}" data-type="custom" data-id="${r.id}">
+                <h2 program-name-btn data-type="custom" data-id="${r.id}" data-action="view">${r.name}</h2>
+                
+                <div class="controls">
+                
+                  <button class="view-btn program-name-btn" data-type="custom" data-id="${r.id}" data-action="view">View</button>
+                  <button class="start-btn" data-type="custom" data-id="${r.id}" data-action="start">Start</button>
+                  <button class="edit-btn" data-type="custom" data-id="${r.id}" data-action="edit">Edit</button>
+                  <button class="delete-btn" data-type="custom" data-id="${r.id}" data-action="delete">Delete</button>
+                </div>
               </div>
-            </div>
-          </li>
-        `).join('')}
+            </li>
+          `;
+        }).join('')}
       </ul>
     </div>
   `;
@@ -58,7 +80,7 @@ export async function renderProgramsView() {
   if (createRoutineBtn) {
     createRoutineBtn.addEventListener('click', () => {
       // Clear any editing state and navigate to builder
-      updateState({ editingProgram: null });
+      updateState({ editingProgram: null, editingModule: null });
       window.location.hash = '#builder';
     });
   }
@@ -95,7 +117,8 @@ export async function renderProgramsView() {
               name: program.name,
               exercises: program.exercises
             }
-          } 
+          },
+          editingModule: null // Clear any previous module editing state
         });
         window.location.hash = '#builder';
       });

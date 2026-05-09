@@ -1,58 +1,60 @@
-[
-  {
-    "id": "planche",
-    "name": "Planche Progression",
-    "description": "Master the planche, an advanced calisthenics skill requiring exceptional upper body strength.",
-    "difficulty": "Advanced",
-    "exercises": [15, 20, 35, 45, 55]
-  },
-  {
-    "id": "frontlever",
-    "name": "Front Lever Progression",
-    "description": "Build the strength needed for the front lever position.",
-    "difficulty": "Advanced",
-    "exercises": [18, 30, 40, 50]
-  },
-  {
-    "id": "muscle-up",
-    "name": "Muscle-Up Progression",
-    "description": "Learn to perform muscle-ups on a bar or rings.",
-    "difficulty": "Advanced",
-    "exercises": [12, 25, 38, 48]
-  },
-  {
-    "id": "handstand",
-    "name": "Handstand Progression",
-    "description": "Build the strength and balance for a solid handstand.",
-    "difficulty": "Intermediate",
-    "exercises": [50, 60, 70, 80]
-  },
-  {
-    "id": "pullup-mastery",
-    "name": "Pull-Up Mastery",
-    "description": "Progress from first pull-up to advanced variations.",
-    "difficulty": "Intermediate",
-    "exercises": [12, 18, 30, 40]
-  },
-  {
-    "id": "pushup-mastery",
-    "name": "Push-Up Mastery",
-    "description": "Progress from basic push-up to advanced variations.",
-    "difficulty": "Beginner to Advanced",
-    "exercises": [1, 2, 5, 15]
-  },
-  {
-    "id": "dip-mastery",
-    "name": "Dip Mastery",
-    "description": "Build up to parallel bar dips and advanced variations.",
-    "difficulty": "Intermediate",
-    "exercises": [42, 105, 115]
-  },
-  {
-    "id": "core-power",
-    "name": "Core Power",
-    "description": "Develop exceptional core strength for all calisthenics skills.",
-    "difficulty": "All Levels",
-    "exercises": [65, 75, 85, 95]
-  }
-]
+{
+  "modules": [
+    {
+      "id": 1,
+      "name": "Push-Up Progression",
+      "description": "Master the foundational push-up movement from basic to advanced variations",
+      "difficulty": "beginner",
+      "exercises": [1, 2, 5, 3],
+      "category": "Chest"
+    },
+    {
+      "id": 2,
+      "name": "Dip Mastery",
+      "description": "Build upper body pushing strength with dip variations",
+      "difficulty": "intermediate",
+      "exercises": [4, 10],
+      "category": "Chest"
+    },
+    {
+      "id": 3,
+      "name": "Handstand Foundation",
+      "description": "Learn to balance on your hands with progressive drills",
+      "difficulty": "advanced",
+      "exercises": [15, 20],
+      "category": "Shoulders"
+    },
+    {
+      "id": 4,
+      "name": "Pull-Up Progression",
+      "description": "From dead hangs to muscle-ups",
+      "difficulty": "intermediate",
+      "exercises": [12, 18],
+      "category": "Back"
+    },
+    {
+      "id": 5,
+      "name": "Core Strength Basics",
+      "description": "Essential ab exercises for a strong foundation",
+      "difficulty": "beginner",
+      "exercises": [25, 30],
+      "category": "Abs"
+    },
+    {
+      "id": 6,
+      "name": "Planche Progression",
+      "description": "Build the strength for this advanced static skill",
+      "difficulty": "advanced",
+      "exercises": [115, 116],
+      "category": "Shoulders"
+    },
+    {
+      "id": 7,
+      "name": "Front Lever Progression",
+      "description": "Develop horizontal pulling strength",
+      "difficulty": "advanced",
+      "exercises": [18, 107],
+      "category": "Back"
+    }
+  ]
+}

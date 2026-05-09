@@ -47,6 +47,19 @@ async function ensureProgramsLoaded(){
   }
 }
 
+async function ensureModulesLoaded(){
+  if (!getState().modules){
+    try {
+      const modules = await fetchSkillModules();
+      updateState({ modules });
+    } catch (error) {
+      console.error('Failed to load skill modules:', error);
+      // Don't render error view, just log - modules are less critical than programs
+      console.warn('Skill modules will be loaded on demand');
+    }
+  }
+}
+
 async function ensureCategoriesLoaded(){
   if (!getState().categories){
     try {
@@ -98,6 +111,7 @@ async function router() {
     await Promise.all([
       ensureExercisesLoaded(),
       ensureProgramsLoaded(),
+      ensureModulesLoaded(), // Add modules loading
       ensureCategoriesLoaded(),
       ensureEquipmentLoaded(),
       ensureMusclesLoaded(),
@@ -143,9 +157,21 @@ async function router() {
       );
       await programsView.render();
     } else if (hash.startsWith('#program-details/')) {
-      const parts = hash.split('/');
-      const type = parts[1];
-      const id = parts[2];
+      // Fix: Parse hash correctly - can be #program-details/type/id or #program-details/id
+      const cleanHash = hash.replace('#', '');  // "program-details/program/1" or "program-details/1"
+      const parts = cleanHash.split('/');       // ["program-details", "program", "1"] or ["program-details", "1"]
+      
+      let type, id;
+      if (parts.length === 3) {
+        // Format: #program-details/type/id
+        type = parts[1];           // 'program' or 'custom'
+        id = parts[2];             // ID
+      } else {
+        // Format: #program-details/id (backward compatibility)
+        type = 'program';          // Default to program if not specified
+        id = parts[1];             // ID
+      }
+      
       const programDetailsView = ErrorBoundaryService.wrapView(
         await import('./views/program-details-view.js'), 
         'Program Details'
@@ -210,7 +236,8 @@ async function router() {
       );
       await skillsTreeView.render();
     } else if (hash.startsWith('#shared-workout/')) {
-      const workoutId = hash.split('/')[2];
+      // Fix: Split hash correctly - parts[1] contains the workoutId
+      const workoutId = hash.split('/')[1];
       const sharedWorkoutView = ErrorBoundaryService.wrapView(
         await import('./views/shared-workout-view.js'), 
         'Shared Workout'

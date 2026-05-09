@@ -1,15 +1,17 @@
 // views/program-details-view.js
-import { fetchPrograms } from '../services/api.js';
 import { renderHeader } from '../components/header.js';
 import { setState, updateState, getState } from '../services/state.js';
 
 export async function renderProgramDetailsView(type, id) {
   const main = document.getElementById('app');
-  const programs = await getState().programs;
-  const muscles = await getState().muscles;
-  const user = getState().user || {};
+  
+  // Get state values (these are synchronous but data must be loaded first)
+  const state = getState();
+  const programs = state.programs || [];
+  const muscles = state.muscles || [];
+  const exercises = state.exercises || [];
+  const user = state.user || {};
   const customRoutines = user.customRoutines || [];
-  const exercises = getState().exercises;
   
   let program;
   if (type === 'program') {
@@ -24,72 +26,77 @@ export async function renderProgramDetailsView(type, id) {
     return;
   }
   
+  // Helper function to safely find exercise by ID
+  function findExerciseById(exerciseId) {
+    return exercises.find(e => String(e.id) === String(exerciseId));
+  }
   
+ // Render exercise list helper
+  function renderExerciseList(exercisesArray, sectionName) {
+    if (!exercisesArray || exercisesArray.length === 0) {
+      return '';
+    }
+    
+        // Helper to get difficulty class based on exercise difficulty ID (1=beginner, 2=intermediate, 3=advanced)
+    function getDifficultyClass(exerciseId) {
+      const exercise = findExerciseById(exerciseId);
+      if (exercise && exercise.difficulty) {
+        const difficulties = Array.isArray(exercise.difficulty) ? exercise.difficulty : [exercise.difficulty];
+        // Check for IDs: 3=advanced, 2=intermediate, 1=beginner
+        if (difficulties.includes(3)) return 'difficulty-advanced';
+        if (difficulties.includes(2)) return 'difficulty-intermediate';
+        if (difficulties.includes(1)) return 'difficulty-beginner';
+      }
+      return '';
+    }
+    
+    return `
+      <h3>${sectionName}:</h3>
+      <ul class="exercise-list">
+        ${exercisesArray.map(ex => {
+          const exercise = findExerciseById(ex.exerciseId);
+          const difficultyClass = getDifficultyClass(ex.exerciseId);
+          
+          return `
+            <li class="exercise-item ${difficultyClass}">
+              <div class="exercise-info">
+                <strong>${exercise ? exercise.name : 'Unknown Exercise (ID: ' + ex.exerciseId + ')'}</strong>
+                <div class="exercise-details">
+                  Sets: ${ex.sets} | Reps: ${ex.reps} | Rest: ${ex.restTime}s
+                </div>
+              </div>
+            </li>
+          `;
+        }).join('')}
+      </ul>
+    `;
+  }
   
-  function generateFrontImages(myExercises, myMuscles) {
-  return myExercises.map(exercise => { 
-    // Fetch the full exercise object based on the exercise ID
-    const fullExercise = exercises.find(ex => ex.id === exercise.exerciseId);
-    //if (!fullExercise) {
-    //  return ''; // Or handle the error in a more appropriate way
-    //}
-    return fullExercise.muscles.map(muscleId => {
-      if (muscles[muscleId - 1] && muscles[muscleId - 1].is_front) {
-        return `<img src="assets/images/muscles/main/muscle-${muscleId}.svg" alt="Muscle ${muscleId}" class="muscle-layer" />`;
+  // Generate muscle images helper
+  function generateMuscleImages(exercisesArray, muscleData, isSecondary, isFront) {
+    if (!exercisesArray || exercisesArray.length === 0) {
+      return '';
+    }
+    
+    return exercisesArray.map(ex => {
+      const fullExercise = findExerciseById(ex.exerciseId);
+      if (!fullExercise) {
+        return '';
       }
-      return ''; // Handle cases where muscle data is missing
+      
+      const muscleIds = isSecondary ? fullExercise.muscles_secondary : fullExercise.muscles;
+      
+      return muscleIds.map(muscleId => {
+        const muscle = muscleData[muscleId - 1];
+        if (muscle && muscle.is_front === isFront) {
+          const folder = isSecondary ? 'secondary' : 'main';
+          return `<img src="assets/images/muscles/${folder}/muscle-${muscleId}.svg" alt="Muscle ${muscleId}" class="muscle-layer" />`;
+        }
+        return '';
+      }).join('');
     }).join('');
-  }).join('');
   }
-
-  function generateFrontImagesSecondary(myExercises, myMuscles) {
-  return myExercises.map(exercise => { 
-    // Fetch the full exercise object based on the exercise ID
-    const fullExercise = exercises.find(ex => ex.id === exercise.exerciseId);
-    //if (!fullExercise) {
-    //  return ''; // Or handle the error in a more appropriate way
-    //}
-    return fullExercise.muscles_secondary.map(muscleId => {
-      if (muscles[muscleId - 1] && muscles[muscleId - 1].is_front) {
-        return `<img src="assets/images/muscles/secondary/muscle-${muscleId}.svg" alt="Muscle ${muscleId}" class="muscle-layer" />`;
-      }
-      return ''; // Handle cases where muscle data is missing
-    }).join('');
-  }).join('');
-  }
-
-  function generateBackImages(myExercises, myMuscles) {
-  return myExercises.map(exercise => { 
-    // Fetch the full exercise object based on the exercise ID
-    const fullExercise = exercises.find(ex => ex.id === exercise.exerciseId);
-    //if (!fullExercise) {
-    //  return ''; // Or handle the error in a more appropriate way
-    //}
-    return fullExercise.muscles.map(muscleId => {
-      if (muscles[muscleId - 1] && !muscles[muscleId - 1].is_front) {
-        return `<img src="assets/images/muscles/main/muscle-${muscleId}.svg" alt="Muscle ${muscleId}" class="muscle-layer" />`;
-      }
-      return ''; // Handle cases where muscle data is missing
-    }).join('');
-  }).join('');
-  }
-
-  function generateBackImagesSecondary(myExercises, myMuscles) {
-  return myExercises.map(exercise => { 
-    // Fetch the full exercise object based on the exercise ID
-    const fullExercise = exercises.find(ex => ex.id === exercise.exerciseId);
-    //if (!fullExercise) {
-    //  return ''; // Or handle the error in a more appropriate way
-    //}
-    return fullExercise.muscles_secondary.map(muscleId => {
-      if (muscles[muscleId - 1] && !muscles[muscleId - 1].is_front) {
-        return `<img src="assets/images/muscles/secondary/muscle-${muscleId}.svg" alt="Muscle ${muscleId}" class="muscle-layer" />`;
-      }
-      return ''; // Handle cases where muscle data is missing
-    }).join('');
-  }).join('');
-  }
-
+  
   main.innerHTML = renderHeader() + `
     <div class="card">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
@@ -109,32 +116,30 @@ export async function renderProgramDetailsView(type, id) {
       </div>
       <h1>${program.name}</h1>
       <div class="program-details-content">
-        ${program.warmup && program.warmup.length > 0 ? `
-          <h3>Warmup:</h3>
-          <ul class="exercise-list">
-            ${program.warmup.map(ex => {
-              const exercise = exercises.find(e => String(e.id) === String(ex.exerciseId));
-              return `
-                <li class="exercise-item">
-                  <div class="exercise-info">
-                    <strong>${exercise ? exercise.name : 'Unknown Exercise'}</strong>
-                    <div class="exercise-details">
-                      Sets: ${ex.sets} | Reps: ${ex.reps} | Rest: ${ex.restTime}s
-                    </div>
-                  </div>
-                </li>
-              `;
-            }).join('')}
-          </ul>
-        ` : ''}
+        ${renderExerciseList(program.warmup, 'Warmup')}
         <h3>Exercises:</h3>
         <ul class="exercise-list">
-          ${((program.exercises || [])).map(ex => {
-            const exercise = exercises.find(e => String(e.id) === String(ex.exerciseId));
+          ${(program.exercises || []).map(ex => {
+            const exercise = findExerciseById(ex.exerciseId);
+            
+            // Get difficulty class based on exercise difficulty ID (1=beginner, 2=intermediate, 3=advanced)
+            let exerciseDifficultyClass = '';
+            if (exercise && exercise.difficulty) {
+              const difficulties = Array.isArray(exercise.difficulty) ? exercise.difficulty : [exercise.difficulty];
+              // Check for IDs: 3=advanced, 2=intermediate, 1=beginner
+              if (difficulties.includes(3)) {
+                exerciseDifficultyClass = 'difficulty-advanced';
+              } else if (difficulties.includes(2)) {
+                exerciseDifficultyClass = 'difficulty-intermediate';
+              } else if (difficulties.includes(1)) {
+                exerciseDifficultyClass = 'difficulty-beginner';
+              }
+            }
+            
             return `
-              <li class="exercise-item">
+              <li class="exercise-item ${exerciseDifficultyClass}">
                 <div class="exercise-info">
-                  <strong>${exercise ? exercise.name : 'Unknown Exercise'}</strong>
+                  <strong>${exercise ? exercise.name : 'Unknown Exercise (ID: ' + ex.exerciseId + ')'}</strong>
                   <div class="exercise-details">
                     Sets: ${ex.sets} | Reps: ${ex.reps} | Rest: ${ex.restTime}s
                   </div>
@@ -143,37 +148,22 @@ export async function renderProgramDetailsView(type, id) {
             `;
           }).join('')}
         </ul>
-        ${program.cooldown && program.cooldown.length > 0 ? `
-          <h3>Cooldown:</h3>
-          <ul class="exercise-list">
-            ${program.cooldown.map(ex => {
-              const exercise = exercises.find(e => String(e.id) === String(ex.exerciseId));
-              return `
-                <li class="exercise-item">
-                  <div class="exercise-info">
-                    <strong>${exercise ? exercise.name : 'Unknown Exercise'}</strong>
-                    <div class="exercise-details">
-                      Sets: ${ex.sets} | Reps: ${ex.reps} | Rest: ${ex.restTime}s
-                    </div>
-                  </div>
-                </li>
-              `;
-            }).join('')}
-          </ul>
-        ` : ''}
+        ${renderExerciseList(program.cooldown, 'Cooldown')}
+        
+        <!-- Muscle Diagrams -->
         <div class="muscle-container">
           <div class="muscle-diagram-front">
             <img src="./assets/images/muscles/muscular_system_front.svg" alt="Muscular System Front" class="base-image">
-            ${generateFrontImagesSecondary(program.exercises, muscles)}
-            ${generateFrontImages(program.exercises, muscles)}
-            
+            ${generateMuscleImages(program.exercises, muscles, true, true)}
+            ${generateMuscleImages(program.exercises, muscles, false, true)}
           </div>
           <div class="muscle-diagram-back">
             <img src="./assets/images/muscles/muscular_system_back.svg" alt="Muscular System Back" class="base-image">
-            ${generateBackImagesSecondary(program.exercises, muscles)}
-            ${generateBackImages(program.exercises, muscles)}
-            
+            ${generateMuscleImages(program.exercises, muscles, true, false)}
+            ${generateMuscleImages(program.exercises, muscles, false, false)}
           </div>
+        </div>
+        
         <div style="margin-top: 2rem;">
           <button class="btn" id="start-program-btn" data-type="${type}" data-id="${id}">
             Start Program
@@ -182,12 +172,11 @@ export async function renderProgramDetailsView(type, id) {
       </div>
     </div>
   `;
-
+  
   // Edit button handler
   const editBtn = main.querySelector('#edit-program-btn');
   if (editBtn) {
     editBtn.addEventListener('click', () => {
-      // Store the program data for editing
       updateState({
         editingProgram: {
           type,
@@ -203,7 +192,7 @@ export async function renderProgramDetailsView(type, id) {
       window.location.hash = '#builder';
     });
   }
-
+  
   // Delete routine button handler (only for custom routines)
   if (type === 'custom') {
     const deleteBtn = main.querySelector('#delete-routine-btn');
@@ -214,23 +203,19 @@ export async function renderProgramDetailsView(type, id) {
           const user = { ...state.user };
           user.customRoutines = user.customRoutines || [];
           
-          // Find and remove the routine by ID
           const routineIndex = user.customRoutines.findIndex(r => String(r.id) === String(id));
           if (routineIndex !== -1) {
             user.customRoutines.splice(routineIndex, 1);
           }
           
-          // Update state
           updateState({ user });
-          
-          // Navigate back to programs view
           alert('Routine deleted successfully!');
           window.location.hash = '#programs';
         }
       });
-    };
+    }
   }
-
+  
   // Start button handler
   const startBtn = main.querySelector('#start-program-btn');
   if (startBtn) {
@@ -271,8 +256,6 @@ export async function renderProgramDetailsView(type, id) {
     });
   }
 }
-
-
 
 // Export as object for wrapView compatibility
 export default { render: renderProgramDetailsView };
