@@ -10,68 +10,88 @@ export async function renderProgramsView() {
   const customRoutines = user.customRoutines || [];
   const { exercises } = getState();
   
+  // Render with improved visual hierarchy and semantic structure
   main.innerHTML = renderHeader() + `
     <div class="card">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <h1>Programs</h1>
-        <button class="btn" id="create-routine-btn">New Routine</button>
+      <!-- Header Section -->
+      <h1 class="section-title">Programs</h1>
+      
+      <div class="filter-section">
+        <button class="btn btn-primary" id="create-routine-btn">✨ Create New Routine</button>
       </div>
-      <ul>
-        ${allPrograms.map(p => {
-          return `
-            <li class="flex-container">
-              <div class="workout-card" data-type="program" data-id="${p.id}">
-                <h2 program-name-btn data-type="program" data-id="${p.id}" data-action="view">${p.name}</h2>
-                <p>
-                <div class="controls">
-                  <button class="view-btn program-name-btn" data-type="program" data-id="${p.id}" data-action="view">View</button>
-                  <button class="start-btn" data-type="program" data-id="${p.id}" data-action="start">Start</button>
-                  <button class="edit-btn" data-type="program" data-id="${p.id}" data-action="edit">Edit</button>
-                  <button class="delete-btn" data-type="program" data-id="${p.id}" data-action="delete">Delete</button>
-                </div>
+
+      <!-- Standard Programs List -->
+      <h2 class="card-title">Available Programs</h2>
+      ${allPrograms.length === 0 ? `
+        <div class="empty-state">
+          <h2>No Programs Available</h2>
+          <p>Create your first routine to get started with your workout journey!</p>
+          <button class="btn btn-primary" id="create-from-empty">✨ Create New Routine</button>
+        </div>
+      ` : `
+        <div class="list-container">
+          ${allPrograms.map(p => `
+            <div class="program-card" data-type="program" data-id="${p.id}">
+              <div class="program-header">
+                <h3 program-name-btn data-type="program" data-id="${p.id}" data-action="view">${p.name}</h3>
               </div>
-            </li>
-          `;
-        }).join('')}
-      </ul>
-      <h1>Custom Routines</h1>
-      <ul>
-        ${customRoutines.length === 0 ? '<li>No custom routines yet.</li>' : customRoutines.map((r) => {
-          // Get difficulty class based on exercise difficulty ID (1=beginner, 2=intermediate, 3=advanced)
-          let difficultyClass = '';
-          if (r.exercises && r.exercises.length > 0) {
-            const firstExId = r.exercises[0].exerciseId;
-            const ex = exercises.find(e => String(e.id) === String(firstExId));
-            if (ex && ex.difficulty) {
-              const difficulties = Array.isArray(ex.difficulty) ? ex.difficulty : [ex.difficulty];
-              // Check for IDs: 3=advanced, 2=intermediate, 1=beginner
-              if (difficulties.includes(3)) {
-                difficultyClass = 'difficulty-advanced';
-              } else if (difficulties.includes(2)) {
-                difficultyClass = 'difficulty-intermediate';
-              } else if (difficulties.includes(1)) {
-                difficultyClass = 'difficulty-beginner';
+              ${p.description ? `<p class="program-desc">${p.description}</p>` : ''}
+              <div class="program-actions">
+                <button class="btn btn-primary view-btn" data-type="program" data-id="${p.id}" data-action="view">View</button>
+                <button class="btn btn-success start-btn" data-type="program" data-id="${p.id}" data-action="start">Start</button>
+                <button class="btn btn-warning edit-btn" data-type="program" data-id="${p.id}" data-action="edit">Edit</button>
+                <button class="btn btn-danger delete-btn" data-type="program" data-id="${p.id}" data-action="delete">Delete</button>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `}
+
+      <!-- Custom Routines Section -->
+      <h2 class="card-title mt-2">My Custom Routines</h2>
+      ${customRoutines.length === 0 ? `
+        <div class="empty-state">
+          <h2>No Custom Routines Yet</h2>
+          <p>Create your first custom workout to track your progress!</p>
+          <button class="btn btn-primary" id="create-custom-empty">✨ Create Custom Routine</button>
+        </div>
+      ` : `
+        <div class="list-container">
+          ${customRoutines.map((r) => {
+            // Get difficulty class based on exercise difficulty ID (1=beginner, 2=intermediate, 3=advanced)
+            let difficultyClass = '';
+            if (r.exercises && r.exercises.length > 0) {
+              const firstExId = r.exercises[0].exerciseId;
+              const ex = exercises.find(e => String(e.id) === String(firstExId));
+              if (ex && ex.difficulty) {
+                const difficulties = Array.isArray(ex.difficulty) ? ex.difficulty : [ex.difficulty];
+                // Check for IDs: 3=advanced, 2=intermediate, 1=beginner
+                if (difficulties.includes(3)) {
+                  difficultyClass = 'difficulty-advanced';
+                } else if (difficulties.includes(2)) {
+                  difficultyClass = 'difficulty-intermediate';
+                } else if (difficulties.includes(1)) {
+                  difficultyClass = 'difficulty-beginner';
+                }
               }
             }
-          }
-          
-          return `
-            <li class="flex-container">
-              <div class="workout-card ${difficultyClass}" data-type="custom" data-id="${r.id}">
-                <h2 program-name-btn data-type="custom" data-id="${r.id}" data-action="view">${r.name}</h2>
-                
-                <div class="controls">
-                
-                  <button class="view-btn program-name-btn" data-type="custom" data-id="${r.id}" data-action="view">View</button>
-                  <button class="start-btn" data-type="custom" data-id="${r.id}" data-action="start">Start</button>
-                  <button class="edit-btn" data-type="custom" data-id="${r.id}" data-action="edit">Edit</button>
-                  <button class="delete-btn" data-type="custom" data-id="${r.id}" data-action="delete">Delete</button>
+            
+            return `
+              <div class="program-card ${difficultyClass}" data-type="custom" data-id="${r.id}">
+                <div class="program-header">
+                  <h3 program-name-btn data-type="custom" data-id="${r.id}" data-action="view">${r.name}</h3>
+                </div>
+                <div class="program-actions">
+                  <button class="btn btn-primary view-btn" data-type="custom" data-id="${r.id}" data-action="view">View</button>
+                  <button class="btn btn-success start-btn" data-type="custom" data-id="${r.id}" data-action="start">Start</button>
+                  <button class="btn btn-warning edit-btn" data-type="custom" data-id="${r.id}" data-action="edit">Edit</button>
+                  <button class="btn btn-danger delete-btn" data-type="custom" data-id="${r.id}" data-action="delete">Delete</button>
                 </div>
               </div>
-            </li>
-          `;
-        }).join('')}
-      </ul>
+            `;
+          }).join('')}
+        </div>
+      `}
     </div>
   `;
 
@@ -79,8 +99,42 @@ export async function renderProgramsView() {
   const createRoutineBtn = main.querySelector('#create-routine-btn');
   if (createRoutineBtn) {
     createRoutineBtn.addEventListener('click', () => {
-      // Clear any editing state and navigate to builder
-      updateState({ editingProgram: null, editingModule: null });
+      console.log('🔴 PROGRAMS-VIEW: Clicking Create New Routine button');
+      const newState = { 
+        createNewProgram: true, 
+        editingProgram: null, 
+        editingModule: null 
+      };
+      console.log('  Setting state:', newState);
+      updateState(newState);
+      console.log('  Navigating to #builder');
+      window.location.hash = '#builder';
+    });
+  }
+
+  // Empty state button handlers
+  const createFromEmptyBtn = main.querySelector('#create-from-empty');
+  if (createFromEmptyBtn) {
+    createFromEmptyBtn.addEventListener('click', () => {
+      const newState = { 
+        createNewProgram: true, 
+        editingProgram: null, 
+        editingModule: null 
+      };
+      updateState(newState);
+      window.location.hash = '#builder';
+    });
+  }
+
+  const createCustomEmptyBtn = main.querySelector('#create-custom-empty');
+  if (createCustomEmptyBtn) {
+    createCustomEmptyBtn.addEventListener('click', () => {
+      const newState = { 
+        createNewProgram: true, 
+        editingProgram: null, 
+        editingModule: null 
+      };
+      updateState(newState);
       window.location.hash = '#builder';
     });
   }
@@ -121,6 +175,17 @@ export async function renderProgramsView() {
           editingModule: null // Clear any previous module editing state
         });
         window.location.hash = '#builder';
+      });
+    }
+  });
+
+  // View button handler - navigate to details page
+  main.querySelectorAll('.view-btn').forEach(viewBtn => {
+    if (viewBtn) {
+      viewBtn.addEventListener('click', () => {
+        const type = viewBtn.getAttribute('data-type');
+        const id = viewBtn.getAttribute('data-id');
+        window.location.hash = `#program-details/${type}/${id}`;
       });
     }
   });
@@ -178,7 +243,6 @@ export async function renderProgramsView() {
 
 
 } 
-
 
 
 // Export as object for wrapView compatibility

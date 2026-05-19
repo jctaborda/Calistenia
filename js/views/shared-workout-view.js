@@ -1,5 +1,6 @@
 import { renderHeader } from '../components/header.js';
 import { getState } from '../services/state.js';
+import { formatWorkoutDate, formatDate } from '../utils/date-formatter.js';
 
 export async function renderSharedWorkoutView(workoutId) {
   const main = document.getElementById('app');
@@ -24,8 +25,7 @@ export async function renderSharedWorkoutView(workoutId) {
   const sharedComments = JSON.parse(localStorage.getItem(`sharedComments_${workoutId}`) || '[]');
 
   // Format date
-  const workoutDate = new Date(workout.date);
-  const formattedDate = workoutDate.toLocaleDateString() + ' at ' + workoutDate.toLocaleTimeString();
+  const formattedDate = formatWorkoutDate(workout.date, true);
 
   main.innerHTML = renderHeader() + `
     <div class="card">
@@ -36,7 +36,7 @@ export async function renderSharedWorkoutView(workoutId) {
       
       <div class="workout-details">
         ${workout.exercises.map((ex, index) => `
-          <div class="card" style="margin-bottom: 1rem;">
+          <div class="card shared-workout-card">
             <h3>${index + 1}. ${ex.exerciseName}</h3>
             <p><strong>Target:</strong> ${ex.targetSets} sets × ${ex.targetReps} reps</p>
             <p><strong>Completed:</strong> ${ex.actualReps ? ex.actualReps.join(', ') + ' reps per set' : 'Not logged'}</p>
@@ -45,26 +45,26 @@ export async function renderSharedWorkoutView(workoutId) {
       </div>
       
       <!-- Comment Section -->
-      <div style="margin-top: 2rem;">
+      <div class="comments-section">
         <h3>Comments</h3>
         
         ${sharedComments.length > 0 ? `
           <div class="comments-list">
             ${sharedComments.map(comment => `
-              <div class="comment" style="padding: 1rem; background: var(--gray-100); border-radius: 8px; margin-bottom: 1rem;">
+              <div class="comment">
                 <strong>${comment.name}</strong>
-                <p style="margin: 0.5rem 0;">${comment.text}</p>
-                <small style="color: var(--text-secondary);">${new Date(comment.date).toLocaleString()}</small>
+                <p>${comment.text}</p>
+                <small>${formatDate(comment.date)}</small>
               </div>
             `).join('')}
           </div>
         ` : '<p class="comments-empty">No comments yet. Be the first to comment!</p>'}
         
-        <form id="comment-form" style="margin-top: 1rem;">
+        <form id="comment-form" class="comment-form">
           <input type="text" id="comment-name" placeholder="Your name" required 
-                 style="width: 100%; margin-bottom: 0.5rem;">
+                 class="comment-input">
           <textarea id="comment-text" placeholder="Write a comment..." required 
-                    rows="3" style="width: 100%;"></textarea>
+                    rows="3" class="comment-input"></textarea>
           <button type="submit" class="btn">Post Comment</button>
         </form>
       </div>

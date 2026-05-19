@@ -2,6 +2,8 @@ import { getState } from '../services/state.js';
 import { renderHeader } from '../components/header.js';
 import { getExerciseProgressData } from '../utils/chart-helpers.js';
 import { ImageService } from '../services/image-service.js';
+import { formatDate } from '../utils/date-formatter.js';
+import { updateState } from '../services/state.js';
 
 export function renderExerciseView(exerciseId) {
   const main = document.getElementById('app');
@@ -12,6 +14,10 @@ export function renderExerciseView(exerciseId) {
   const equipment = getState().equipment || [];
   const difficulties = getState().difficulties || [];
   
+  // Get user's favorite exercise IDs from state
+  const user = getState().user || {};
+  const favoriteExerciseIds = user.favoriteExerciseIds || [];
+  
   const exercise = (exercises || []).find(e => String(e.id) === String(exerciseId));
   if (!exercise) {
     main.innerHTML = renderHeader() + '<div class="card"><p>Exercise not found.</p></div>';
@@ -21,7 +27,7 @@ export function renderExerciseView(exerciseId) {
   let progressRows = '';
   const progressData = getExerciseProgressData(exerciseId, history);
   if (progressData.length > 0) {
-    progressRows = progressData.map(d => `<tr><td>${new Date(d.date).toLocaleDateString()}</td><td>${d.totalReps}</td></tr>`).join('');
+    progressRows = progressData.map(d => `<tr><td>${formatDate(d.date)}</td><td>${d.totalReps}</td></tr>`).join('');
   } else {
     progressRows = '<tr><td colspan="2">No data</td></tr>';
   }
@@ -95,54 +101,246 @@ export function renderExerciseView(exerciseId) {
 
   main.innerHTML = renderHeader() + `
     <div class="card">
-      <h1>${exercise.name}</h1>
-      <p>${exercise.description}</p>
-      <h3>Common Mistakes</h3>
-      <p>${exercise.commonMistakes || ''}</p>
-      <h3>Form Cues</h3>
-      <p>${exercise.formCues || ''}</p>
-      <h3>Skill: </h3><p> ${exercise.skill || ''} </p>
-      <h3>Equipment: </h3><p> ${equipmentNames}</p>
-      <h3>Difficulty: </h3><p>${difficultyLabels}</p>
+  <div class="exercise-header-actions">
+  <h1 class="section-title">${exercise.name}</h1>
+  <button class="btn btn-icon favorite-toggle ${favoriteExerciseIds.includes(exercise.id) ? 'favorited' : ''}" 
+  onclick="toggleFavorite('${exercise.id}')">
+  ${favoriteExerciseIds.includes(exercise.id) ? '⭐' : '☆'} Favorite
+  </button>
+  </div>
+  <p class="description">${exercise.description}</p>
+  
+  <!-- Exercise Details Grid -->
+  <div class="content-block">
+  <div class="detail-row">
+  <span class="content-label">Skill Level: </span>
+  <span class="content-value">${difficultyLabels}</span>
+  </div>
+  <div class="detail-row">
+  <span class="content-label">Equipment: </span>
+  <span class="content-value">${equipmentNames || 'None specified'}</span>
+  </div>
+  <div class="detail-row">
+  <span class="content-label">Categories: </span>
+  <div class="tags">${categoryNames.split(',').map(cat => `<span class="tag">${cat.trim()}</span>`).join('')}</div>
+  </div>
+  <div class="detail-row">
+  <span class="content-label">Muscles Targeted: </span>
+  <p class="content-value">${muscleNames}${muscleSecNames ? ', ' + muscleSecNames : ''}</p>
+  </div>
+  </div>
 
-      ${ImageService.renderExternalMedia(exercise.image_url, 'image', exercise.name)}
-      ${exercise.video_url ? ImageService.renderExternalMedia(exercise.video_url, 'video', exercise.name) : ''}
+  <!-- Exercise Media -->
+  ${ImageService.renderExternalMedia(exercise.image_url, 'image', exercise.name)}
+  ${exercise.video_url ? ImageService.renderExternalMedia(exercise.video_url, 'video', exercise.name) : ''}
 
-      <h3>Categories: </h3>
-      <p>${categoryNames}</p>
+  <!-- Exercise Information -->
+  <h2 class="card-title">Exercise Information</h2>
+  
+  <div class="content-block">
+  <span class="content-label">Form Cues: </span>
+  <p class="content-value">${exercise.formCues || 'No form cues provided'}</p>
+  </div>
 
-      <h3>Muscles: </h3>
-      <p>${muscleNames}, ${muscleSecNames}</p>
+  <div class="content-block">
+  <span class="content-label">Common Mistakes to Avoid: </span>
+  <p class="content-value">${exercise.commonMistakes || 'No common mistakes noted'}</p>
+  </div>
 
-      <h3>Prerequisites: </h3>
-      <p>${prerequisitesLinks || 'None'}</p>
+  <!-- Progression Chain -->
+  <h2 class="card-title">Progression Chain</h2>
+  
+  <div class="content-block">
+  <span class="content-label">Prerequisites: </span>
+  <p class="content-value">${prerequisitesLinks || '<span class="text-muted">None - this is a starting exercise</span>'}</p>
+  </div>
 
-      <h3>Progressions: </h3>
-      <p>${progressionsLinks || 'None'}</p>
+  <div class="content-block">
+  <span class="content-label">Progressions (Next Steps): </span>
+  <p class="content-value">${progressionsLinks || `<span class="text-muted">None - you've mastered this exercise!</span>`}</p>
+  </div>
 
-      <h3>Progress: </h3>
-      <table>
-        <thead><tr><th>Date</th><th>Total Reps</th></tr></thead>
-        <tbody>${progressRows}</tbody>
-      </table>
+  <!-- Progress History -->
+  <h2 class="card-title">Performance History</h2>
+  
+  <div class="table-responsive">
+  <table class="progress-table">
+  <thead>
+  <tr>
+  <th>Date: </th>
+  <th>Total Reps: </th>
+  </tr>
+  </thead>
+  <tbody>${progressRows}</tbody>
+  </table>
+  </div>
 
-      <div class="muscle-container">
-      <div class="muscle-diagram-front">
-        <img src="./assets/images/muscles/muscular_system_front.svg" alt="Muscular System Front" class="base-image">
-        ${frontImagesSecondary}
-        ${frontImages} 
-      </div>
-      <div class="muscle-diagram-back">
-        <img src="./assets/images/muscles/muscular_system_back.svg" alt="Muscular System Back" class="base-image">
-        ${backImagesSecondary}
-        ${backImages} 
-      </div>
-      </div>
+  <!-- Muscle Diagrams -->
+  <h2 class="card-title">Muscle Engagement</h2>
+  
+  <div class="muscle-container">
+  <div class="muscle-diagram-section">
+  <h3 class="diagram-title">Front View</h3>
+  <div class="muscle-diagram-front">
+  <img src="./assets/images/muscles/muscular_system_front.svg" alt="Muscular System Front" class="base-image">
+  ${frontImagesSecondary}
+  ${frontImages} 
+  </div>
+  </div>
+  
+  <div class="muscle-diagram-section">
+  <h3 class="diagram-title">Back View</h3>
+  <div class="muscle-diagram-back">
+  <img src="./assets/images/muscles/muscular_system_back.svg" alt="Muscular System Back" class="base-image">
+  ${backImagesSecondary}
+  ${backImages} 
+  </div>
+  </div>
+  </div>
     </div>
+    
+    <style>
+  /* Card container - ensure it accommodates all content including muscle diagrams */
+  .card {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  min-height: calc(100vh - 120px); /* Ensure card is tall enough for content */
+  overflow: visible; /* Allow content to flow naturally */
+  display: flex;
+  flex-direction: column;
+  }
+
+.detail-row {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--gray-200);
+  }
+  
+  .detail-row:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  }
+  
+  .table-responsive {
+  overflow-x: auto;
+  margin-top: 1rem;
+  }
+  
+  .progress-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--white);
+  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  }
+  
+  .progress-table th,
+  .progress-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--gray-200);
+  }
+  
+  .progress-table th {
+  background: var(--gray-100);
+  font-weight: 600;
+  color: var(--primary);
+  }
+  
+  .progress-table tr:hover {
+  background: var(--gray-100);
+  }
+  
+  .muscle-diagram-section {
+  margin-bottom: 2rem;
+  }
+  
+  .diagram-title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  }
+  
+  @media (max-width: 768px) {
+  .muscle-container {
+  flex-direction: column;
+  }
+  
+  .muscle-diagram-front,
+  .muscle-diagram-back {
+  width: 100%;
+  margin-top: 1rem;
+  }
+  }
+  
+  /* Favorite toggle button */
+  .exercise-header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+  }
+  
+  .favorite-toggle {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+  background: var(--gray-100);
+  color: var(--gray-700);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  }
+  
+  .favorite-toggle:hover {
+  background: var(--gray-200);
+  }
+  
+  .favorite-toggle.favorited {
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+  color: white;
+  border-color: #FFA500;
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+  }
+  
+  .favorite-toggle.favorited:hover {
+  background: linear-gradient(135deg, #FFA500 0%, #FF8C00 100%);
+  }
+    </style>
   `;
 }
 
+// Toggle favorite for exercise - exposed globally for onclick handler
+// Toggle favorite for exercise - exposed globally for onclick handler
+export function toggleFavorite(exerciseId) {
+  const state = getState();
+  const user = state.user || {};
+  let favoriteExerciseIds = user.favoriteExerciseIds || [];
+  
+  // Toggle the exercise in favorites
+  if (favoriteExerciseIds.includes(exerciseId)) {
+    favoriteExerciseIds = favoriteExerciseIds.filter(id => id !== exerciseId);
+  } else {
+    favoriteExerciseIds.push(exerciseId);
+  }
+  
+  updateState({ user: { ...user, favoriteExerciseIds } });
+}
 
+// Expose globally for inline onclick handlers
+window.toggleFavorite = toggleFavorite;
 
 // Export as object for wrapView compatibility
 export default { render: renderExerciseView };

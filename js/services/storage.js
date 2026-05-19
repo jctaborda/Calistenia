@@ -19,8 +19,8 @@ export async function loadExercises() {
   try {
     const cached = await exercisesLoad();
     if (cached && cached.length > 0) {
-      exercisesCache = cached;
-      return cached;
+  exercisesCache = cached;
+  return cached;
     }
   } catch (error) {
     console.error('Error loading exercises from IndexedDB:', error);
@@ -45,11 +45,19 @@ export async function loadExercises() {
 
 export async function saveExercises(exercises) {
   try {
+    // Import validation service for sanitization
+    const validationService = await import('./validation.js');
+    
+    // Sanitize all user-generated content before saving to prevent XSS
+    const sanitizedExercises = Array.isArray(exercises) 
+  ? exercises.map(exercise => validationService.ValidationService.sanitizeExercise(exercise))
+  : exercises;
+    
     // Store in IndexedDB instead of localStorage
-    await storeExercises(exercises);
+    await storeExercises(sanitizedExercises);
     
     // Update cache
-    exercisesCache = exercises;
+    exercisesCache = sanitizedExercises;
     
     console.log('Exercises saved to IndexedDB');
     return { success: true, message: 'Saved to IndexedDB' };
@@ -87,7 +95,7 @@ export const ExerciseStore = {
     const index = exercises.findIndex(e => e.id === exercise.id);
     
     if (index === -1) {
-      throw new Error('Exercise not found');
+  throw new Error('Exercise not found');
     }
     
     exercises[index] = exercise;
@@ -101,7 +109,7 @@ export const ExerciseStore = {
     const filtered = exercises.filter(e => e.id !== id);
     
     if (filtered.length === exercises.length) {
-      throw new Error('Exercise not found');
+  throw new Error('Exercise not found');
     }
     
     await saveExercises(filtered);
@@ -114,33 +122,33 @@ export function createStore(name, filename) {
   // For now, just load from data.json (read-only for reference data)
   return {
     async getAll() {
-      try {
-        const response = await fetch('./data/data.json');
-        if (!response.ok) throw new Error('Failed to load data');
-        const data = await response.json();
-        return data[name] || [];
-      } catch (error) {
-        console.error(`Error loading ${name}:`, error);
-        return [];
-      }
+  try {
+  const response = await fetch('./data/data.json');
+  if (!response.ok) throw new Error('Failed to load data');
+  const data = await response.json();
+  return data[name] || [];
+  } catch (error) {
+  console.error(`Error loading ${name}:`, error);
+  return [];
+  }
     },
 
     async getById(id) {
-      const items = await this.getAll();
-      return items.find(item => item.id === id);
+  const items = await this.getAll();
+  return items.find(item => item.id === id);
     },
 
     // Note: Reference data (categories, equipment, etc.) is read-only from data.json
     async add(item) {
-      throw new Error('Cannot modify reference data. Edit data/data.json instead.');
+  throw new Error('Cannot modify reference data. Edit data/data.json instead.');
     },
 
     async update(item) {
-      throw new Error('Cannot modify reference data. Edit data/data.json instead.');
+  throw new Error('Cannot modify reference data. Edit data/data.json instead.');
     },
 
     async delete(id) {
-      throw new Error('Cannot modify reference data. Edit data/data.json instead.');
+  throw new Error('Cannot modify reference data. Edit data/data.json instead.');
     }
   };
 }

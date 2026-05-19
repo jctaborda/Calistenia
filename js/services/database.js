@@ -2,12 +2,18 @@
 // Avoids localStorage quota limits
 
 const DB_NAME = 'calisthenics-db';
-const DB_VERSION = 1;
+const DB_VERSION = 5; // Incremented to add deleted_items store for undo functionality
 const STORES = {
   EXERCISES: 'exercises',
   WORKOUTS: 'workouts',
   STATE: 'state',
-  MODULES: 'modules' // Add modules store
+  MODULES: 'modules',
+  PROGRAMS: 'programs',
+  CATEGORIES: 'categories',
+  EQUIPMENT: 'equipment',
+  MUSCLES: 'muscles',
+  DIFFICULTIES: 'difficulties',
+  DELETED_ITEMS: 'deleted_items' // For undo functionality
 };
 
 let db = null;
@@ -58,7 +64,73 @@ export function openDatabase() {
         moduleStore.createIndex('name', 'name', { unique: false });
         moduleStore.createIndex('category', 'category', { unique: false });
       }
+
+      // Create object store for programs
+      if (!database.objectStoreNames.contains(STORES.PROGRAMS)) {
+        database.createObjectStore(STORES.PROGRAMS, { keyPath: 'id' });
+      }
+
+      // Create object store for categories
+      if (!database.objectStoreNames.contains(STORES.CATEGORIES)) {
+        database.createObjectStore(STORES.CATEGORIES, { keyPath: 'id' });
+      }
+
+      // Create object store for equipment
+      if (!database.objectStoreNames.contains(STORES.EQUIPMENT)) {
+        database.createObjectStore(STORES.EQUIPMENT, { keyPath: 'id' });
+      }
+
+      // Create object store for muscles
+      if (!database.objectStoreNames.contains(STORES.MUSCLES)) {
+        database.createObjectStore(STORES.MUSCLES, { keyPath: 'id' });
+      }
+
+      // Create object store for difficulties
+      if (!database.objectStoreNames.contains(STORES.DIFFICULTIES)) {
+        database.createObjectStore(STORES.DIFFICULTIES, { keyPath: 'id' });
+      }
+
+      // Create object store for deleted items (undo functionality)
+      if (!database.objectStoreNames.contains(STORES.DELETED_ITEMS)) {
+        const deletedStore = database.createObjectStore(STORES.DELETED_ITEMS, { keyPath: 'id', autoIncrement: true });
+        deletedStore.createIndex('type', 'type', { unique: false });
+        deletedStore.createIndex('timestamp', 'timestamp', { unique: false });
+      }
     };
+
+    // onupgradeneeded handler ends here, close Promise constructor
+  });
+}
+
+// Programs operations
+export async function storePrograms(programsArray) {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.PROGRAMS], 'readwrite');
+  const store = transaction.objectStore(STORES.PROGRAMS);
+
+  // Clear existing and add all programs
+  await store.clear();
+
+  programsArray.forEach(program => {
+    store.put(program);
+  });
+
+  return new Promise((resolve, reject) => {
+    transaction.oncomplete = () => resolve({ success: true });
+    transaction.onerror = () => reject(transaction.error);
+  });
+}
+
+export async function programsLoad() {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.PROGRAMS], 'readonly');
+  const store = transaction.objectStore(STORES.PROGRAMS);
+
+  return new Promise((resolve, reject) => {
+    const request = store.getAll();
+
+    request.onsuccess = () => resolve(request.result || []);
+    request.onerror = () => reject(request.error);
   });
 }
 
@@ -287,4 +359,219 @@ export async function getDatabaseSize() {
     workoutCount,
     estimatedSize: 'IndexedDB (much larger than localStorage)'
   };
+}
+
+// Categories operations
+export async function storeCategories(categoriesArray) {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.CATEGORIES], 'readwrite');
+  const store = transaction.objectStore(STORES.CATEGORIES);
+  
+  await store.clear();
+  categoriesArray.forEach(category => {
+    store.put(category);
+  });
+  
+  return new Promise((resolve, reject) => {
+    transaction.oncomplete = () => resolve({ success: true });
+    transaction.onerror = () => reject(transaction.error);
+  });
+}
+
+export async function categoriesLoad() {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.CATEGORIES], 'readonly');
+  const store = transaction.objectStore(STORES.CATEGORIES);
+  
+  return new Promise((resolve, reject) => {
+    const request = store.getAll();
+    request.onsuccess = () => resolve(request.result || []);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+// Equipment operations
+export async function storeEquipment(equipmentArray) {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.EQUIPMENT], 'readwrite');
+  const store = transaction.objectStore(STORES.EQUIPMENT);
+  
+  await store.clear();
+  equipmentArray.forEach(item => {
+    store.put(item);
+  });
+  
+  return new Promise((resolve, reject) => {
+    transaction.oncomplete = () => resolve({ success: true });
+    transaction.onerror = () => reject(transaction.error);
+  });
+}
+
+export async function equipmentLoad() {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.EQUIPMENT], 'readonly');
+  const store = transaction.objectStore(STORES.EQUIPMENT);
+  
+  return new Promise((resolve, reject) => {
+    const request = store.getAll();
+    request.onsuccess = () => resolve(request.result || []);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+// Muscles operations
+export async function storeMuscles(musclesArray) {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.MUSCLES], 'readwrite');
+  const store = transaction.objectStore(STORES.MUSCLES);
+  
+  await store.clear();
+  musclesArray.forEach(muscle => {
+    store.put(muscle);
+  });
+  
+  return new Promise((resolve, reject) => {
+    transaction.oncomplete = () => resolve({ success: true });
+    transaction.onerror = () => reject(transaction.error);
+  });
+}
+
+export async function musclesLoad() {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.MUSCLES], 'readonly');
+  const store = transaction.objectStore(STORES.MUSCLES);
+  
+  return new Promise((resolve, reject) => {
+    const request = store.getAll();
+    request.onsuccess = () => resolve(request.result || []);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+// Difficulties operations
+export async function storeDifficulties(difficultiesArray) {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.DIFFICULTIES], 'readwrite');
+  const store = transaction.objectStore(STORES.DIFFICULTIES);
+  
+  await store.clear();
+  difficultiesArray.forEach(difficulty => {
+    store.put(difficulty);
+  });
+  
+  return new Promise((resolve, reject) => {
+    transaction.oncomplete = () => resolve({ success: true });
+    transaction.onerror = () => reject(transaction.error);
+  });
+}
+
+export async function difficultiesLoad() {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.DIFFICULTIES], 'readonly');
+  const store = transaction.objectStore(STORES.DIFFICULTIES);
+  
+  return new Promise((resolve, reject) => {
+    const request = store.getAll();
+    request.onsuccess = () => resolve(request.result || []);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+// Deleted Items operations (Undo functionality)
+export async function saveDeletedItem(type, item, originalId) {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.DELETED_ITEMS], 'readwrite');
+  const store = transaction.objectStore(STORES.DELETED_ITEMS);
+  
+  const deletedItem = {
+    type,
+    item,
+    originalId,
+    timestamp: Date.now()
+  };
+  
+  return new Promise((resolve, reject) => {
+    const request = store.add(deletedItem);
+    
+    request.onsuccess = () => resolve({ success: true, id: request.result });
+    request.onerror = () => reject(request.error);
+  });
+}
+
+export async function getDeletedItemsByType(type) {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.DELETED_ITEMS], 'readonly');
+  const store = transaction.objectStore(STORES.DELETED_ITEMS);
+  const index = store.index('type');
+  
+  return new Promise((resolve, reject) => {
+    const request = index.getAll(type);
+    
+    request.onsuccess = () => resolve(request.result || []);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+export async function deleteDeletedItem(id) {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.DELETED_ITEMS], 'readwrite');
+  const store = transaction.objectStore(STORES.DELETED_ITEMS);
+  
+  return new Promise((resolve, reject) => {
+    const request = store.delete(id);
+    
+    request.onsuccess = () => resolve({ success: true });
+    request.onerror = () => reject(request.error);
+  });
+}
+
+export async function clearExpiredDeletedItems(maxAgeMs) {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.DELETED_ITEMS], 'readwrite');
+  const store = transaction.objectStore(STORES.DELETED_ITEMS);
+  const index = store.index('timestamp');
+  
+  const cutoffTime = Date.now() - maxAgeMs;
+  
+  return new Promise((resolve, reject) => {
+    const request = index.openCursor();
+    let deletedCount = 0;
+    
+    request.onsuccess = (event) => {
+      const cursor = event.target.result;
+      if (cursor) {
+        if (cursor.value.timestamp < cutoffTime) {
+          // Expired - delete this entry
+          const deleteRequest = cursor.delete();
+          deleteRequest.onsuccess = () => {
+            deletedCount++;
+            cursor.continue();
+          };
+          deleteRequest.onerror = () => {
+            cursor.continue();
+          };
+        } else {
+          // Not expired yet - continue searching
+          cursor.continue();
+        }
+      } else {
+        resolve({ success: true, deletedCount });
+      }
+    };
+    
+    request.onerror = () => reject(transaction.error);
+  });
+}
+
+export async function getDeletedItemsCount() {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.DELETED_ITEMS], 'readonly');
+  const store = transaction.objectStore(STORES.DELETED_ITEMS);
+  
+  return new Promise((resolve, reject) => {
+    const request = store.count();
+    
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
 }

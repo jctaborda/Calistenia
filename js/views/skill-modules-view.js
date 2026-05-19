@@ -3,6 +3,7 @@ import { renderHeader } from '../components/header.js';
 import { getState, updateState } from '../services/state.js';
 import { fetchSkillModules } from '../services/api.js';
 import { ModuleStore } from '../services/modules-service.js';
+import { saveForUndo } from '../services/undo-service.js';
 
 export async function renderSkillModulesView() {
   const main = document.getElementById('app');
@@ -57,25 +58,25 @@ export async function renderSkillModulesView() {
   
   main.innerHTML = renderHeader() + `
     <div class="card">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <h1>Skill Modules</h1>
-        <div style="display: flex; gap: 0.5rem;">
+      <div class="view-header">
+        <h1 class="view-title">Skill Modules</h1>
+        <div class="view-actions">
           <button class="btn btn-secondary" id="skills-tree-btn">🌳 Skill Tree</button>
           <button class="btn btn-primary" id="create-module-btn">New Module</button>
         </div>
       </div>
       
-      <ul style="list-style: none; padding: 0;">
+      <ul class="modules-list">
         ${modulesData.map(module => {
           const progress = calculateModuleProgress(module);
           const isCompleted = progress === 100;
           
           return `
-            <li class="flex-container" style="margin-bottom: 2rem;">
-              <div class="workout-card">
-                <h3 style="margin: 0 0 0.5rem 0;">${module.name}</h3>
-                <p style="color: var(--text-secondary); margin: 0 0 1rem 0;">${module.description}</p>
-                <div class="tags" style="margin-bottom: 1rem;">
+            <li class="module-item">
+              <div class="workout-card module-card">
+                <h3 class="module-title">${module.name}</h3>
+                <p class="module-description">${module.description}</p>
+                <div class="module-tags">
                   <span class="tag">${module.category || 'Uncategorized'}</span>
                   <span class="tag difficulty-${module.difficulty}">${module.difficulty}</span>
                   <span class="tag">${module.exercises.length} Exercises</span>
@@ -83,7 +84,7 @@ export async function renderSkillModulesView() {
                 <div class="controls">
                   <button class="view-btn module-action-btn" data-type="view" data-id="${module.id}">View</button>
                   <button class="edit-btn module-action-btn" data-type="edit" data-id="${module.id}">Edit</button>
-                  ${isCompleted ? '<span style="color: #4CAF50; font-weight: bold;">✓ Completed</span>' : ''}
+                  ${isCompleted ? '<span class="completed-badge">✓ Completed</span>' : ''}
                 </div>
               </div>
             </li>
@@ -137,6 +138,9 @@ export async function renderSkillModulesView() {
           // Delete the module via service
           ModuleStore.delete(id)
             .then(() => {
+              // Save for undo before refreshing
+              saveForUndo('module', module, id);
+              
               // Reload modules to reflect changes
               fetchSkillModules().then(newModules => {
                 window.location.hash = '#skill-modules';

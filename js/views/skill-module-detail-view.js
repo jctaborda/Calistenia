@@ -29,11 +29,16 @@ export async function renderSkillModuleDetailView(moduleId) {
 
   // Load exercises from state (should be loaded by router)
   let allExercises = [];
+  let equipmentList = [];
+  let difficultiesList = [];
+  
   try {
     const state = getState();
     allExercises = state.exercises || [];
+    equipmentList = state.equipment || [];
+    difficultiesList = state.difficulties || [];
     
-    // Create a map for quick lookup
+    // Create maps for quick lookup
     window.exerciseMap = {};
     allExercises.forEach(ex => {
       window.exerciseMap[ex.id] = ex;
@@ -68,20 +73,20 @@ export async function renderSkillModuleDetailView(moduleId) {
   // Generate the HTML
   const htmlContent = renderHeader() + `
     <div class="card">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+      <div class="module-detail-header">
         <button class="btn btn-secondary" onclick="window.location.hash = '#skill-modules'">← Back to Modules</button>
-        <span style="font-size: 1.5rem; font-weight: bold;">${progress}%</span>
+        <span class="module-progress">${progress}%</span>
       </div>
 
-      <h1>${module.name}</h1>
-      <p>${module.description || 'No description available'}</p>
+      <h1 class="module-name">${module.name}</h1>
+      <p class="module-description-text">${module.description || 'No description available'}</p>
       <p><strong>Category:</strong> ${module.category || 'N/A'}</p>
       <p><strong>Difficulty:</strong> ${module.difficulty || 'mixed'}</p>
       <p><strong>Total Exercises:</strong> ${module.exercises.length}</p>
 
-      <div style="margin: 2rem 0;">
+      <div class="progression-section">
         <h3>Progression Path</h3>
-        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+        <p class="progression-description">
           Complete these exercises in order to master ${module.name}
         </p>
 
@@ -111,24 +116,40 @@ export async function renderSkillModuleDetailView(moduleId) {
               : (difficultyClass ? '' : '4px solid var(--gray-400)');
 
             return `
-              <div class="workout-card ${difficultyClass}" style="cursor: pointer; border-left: ${borderStyle};" onclick="window.location.hash = '#exercise/${exerciseId}'">
+              <div class="exercise-progression-card ${difficultyClass}" style="cursor: pointer; border-left: ${borderStyle};" onclick="window.location.hash = '#exercise/${exerciseId}'">
                 <div class="flex-container">
                   <div class="flex-1">
-                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-                      <strong style="font-size: 1.25rem;">${index + 1}. ${exerciseName}</strong>
-                      ${isCompleted ? '<span style="color: #4CAF50; font-weight: bold;">✓ Completed</span>' : ''}
+                    <div class="exercise-header">
+                      <strong class="exercise-number">${index + 1}. ${exerciseName}</strong>
+                      ${isCompleted ? '<span class="completed-indicator">✓ Completed</span>' : ''}
                     </div>
-                    <p style="margin-bottom: 0.5rem;">${description}</p>
+                   <p class="exercise-desc">${description}</p>
 
                     ${exerciseData ? `
-                      <div style="display: flex; gap: 1rem; margin-top: 0.75rem; font-size: 0.875rem; color: var(--text-secondary);">
-                        ${exerciseData.equipment ? `<span>Equipment: ${Array.isArray(exerciseData.equipment) ? exerciseData.equipment.join(', ') : exerciseData.equipment}</span>` : ''}
-                        <span>Difficulty: ${exerciseData.difficulty ? Array.isArray(exerciseData.difficulty) ? exerciseData.difficulty.join(', ') : exerciseData.difficulty : 'N/A'}</span>
+                      <div class="exercise-meta">
+                        ${exerciseData.equipment ? `
+                          <span>Equipment: 
+                            ${Array.isArray(exerciseData.equipment) 
+                              ? exerciseData.equipment.map(eqId => {
+                                  const equipment = equipmentList.find(e => e.id === eqId);
+                                  return equipment ? equipment.name : `Equipment ${eqId}`;
+                                }).join(', ') 
+                              : 'N/A'}
+                          </span>
+                        ` : ''}
+                        <span>Difficulty: 
+                          ${exerciseData.difficulty ? (Array.isArray(exerciseData.difficulty) 
+                            ? exerciseData.difficulty.map(diffId => {
+                                const difficulty = difficultiesList.find(d => d.id === diffId);
+                                return difficulty ? difficulty.label : `Difficulty ${diffId}`;
+                              }).join(', ') 
+                            : 'N/A') : 'N/A'}
+                        </span>
                       </div>
-                    ` : ''}
+                   ` : ''}
                   </div>
-                  <div class="flex-1" style="text-align: right;">
-                    <a href="#exercise/${exerciseId}" style="color: #2196F3; font-weight: bold;">View Details →</a>
+                  <div class="flex-1">
+                    <a href="#exercise/${exerciseId}" class="view-details-link">View Details →</a>
                   </div>
                 </div>
               </div>
@@ -138,7 +159,7 @@ export async function renderSkillModuleDetailView(moduleId) {
       </div>
 
       ${progress === 100 ? `
-        <div class="card" style="background: #C8E6C9;">
+        <div class="card completion-card">
           <h3>🎉 Congratulations!</h3>
           <p>You've completed all exercises in the ${module.name} progression. Great work on your dedication and progress!</p>
         </div>

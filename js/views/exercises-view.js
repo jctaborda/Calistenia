@@ -14,7 +14,13 @@ export async function renderExercisesView() {
   const exercises = (await getState().exercises) || [];
   const categories = (await getState().categories) || [];
   const difficulties = (await getState().difficulties) || [];
+  const muscles = (await getState().muscles) || [];
+  const equipment = (await getState().equipment) || [];
   const itemsPerPage = 10; // Number of exercises to display per page
+  
+  // Get user's favorite exercise IDs from state
+  const user = getState().user || {};
+  const favoriteExerciseIds = user.favoriteExerciseIds || [];
   
   // State management
   let currentPage = 1;
@@ -28,7 +34,12 @@ export async function renderExercisesView() {
     selectedCategories: [],
     selectedDifficulties: [],
     showAllCategories: true,
-    showAllDifficulties: true
+    showAllDifficulties: true,
+    selectedMuscles: [],
+    showAllMuscles: true,
+    selectedEquipment: [],
+    showAllEquipment: true,
+    showFavoritesOnly: false  // NEW: Favorites filter toggle
   };
   
   // Cache for optimized updates
@@ -67,6 +78,11 @@ export async function renderExercisesView() {
     // Debounce filter changes for better performance
     filterTimeout = setTimeout(() => {
       filteredExercises = exercises.filter(exercise => {
+        // Apply favorites filter first
+        if (currentFilters.showFavoritesOnly && !favoriteExerciseIds.includes(exercise.id)) {
+          return false;
+        }
+        
         const matchesSearch = currentFilters.searchText === '' || 
           exercise.name.toLowerCase().includes(currentFilters.searchText.toLowerCase());
         
@@ -84,7 +100,25 @@ export async function renderExercisesView() {
             exerciseDiffIds.includes(difficultyId));
         }
         
-        return matchesSearch && matchesCategory && matchesDifficulty;
+        // Check muscle filter
+        let matchesMuscle = true;
+        if (!currentFilters.showAllMuscles && currentFilters.selectedMuscles.length > 0) {
+          const exMuscles = Array.isArray(exercise.muscles) ? exercise.muscles : (exercise.muscles ? [exercise.muscles] : []);
+          const exSecondaryMuscles = Array.isArray(exercise.muscles_secondary) ? exercise.muscles_secondary : (exercise.muscles_secondary ? [exercise.muscles_secondary] : []);
+          const allMuscleIds = [...exMuscles, ...exSecondaryMuscles];
+          matchesMuscle = allMuscleIds.some(muscleId => 
+            currentFilters.selectedMuscles.includes(muscleId));
+        }
+        
+        // Check equipment filter
+        let matchesEquipment = true;
+        if (!currentFilters.showAllEquipment && currentFilters.selectedEquipment.length > 0) {
+          const exEquipment = Array.isArray(exercise.equipment) ? exercise.equipment : (exercise.equipment ? [exercise.equipment] : []);
+          matchesEquipment = exEquipment.some(eqId => 
+            currentFilters.selectedEquipment.includes(eqId));
+        }
+        
+        return matchesSearch && matchesCategory && matchesDifficulty && matchesMuscle && matchesEquipment;
       });
       
       totalItems = filteredExercises.length;
@@ -254,50 +288,102 @@ export async function renderExercisesView() {
     if (newPage >= 1 && newPage <= totalPages) {
       currentPage = newPage;
       
-      // Preserve scroll position
-      withScrollPreservation(main.querySelector('#exercises-grid'), () => {
-        const startIndex = (currentPage - 1) * itemsPerPage;
-        const exercisesToShow = filteredExercises.slice(startIndex, startIndex + itemsPerPage);
-        
-        // Use diff-based update instead of full re-render
-        const gridElement = main.querySelector('#exercises-grid');
+      const exercisesToShow = filteredExercises.slice(0, itemsPerPage);
+      
+      // Show/hide empty state
+      const gridElement = main.querySelector('#exercises-grid');
+      const emptyStateElement = main.querySelector('#empty-exercises-state');
+      
+      if (filteredExercises.length === 0) {
+        // Hide grid, show empty state
+        if (gridElement) gridElement.style.display = 'none';
+        if (emptyStateElement) emptyStateElement.style.display = 'block';
+      } else {
+        // Show grid, hide empty state
         if (gridElement) {
-          batchDomUpdates(() => {
-            diffUpdateGrid(gridElement, exercisesToShow, categories, cardCache);
+          gridElement.style.display = '';
+          withScrollPreservation(gridElement, () => {
+            batchDomUpdates(() => {
+              diffUpdateGrid(gridElement, exercisesToShow, categories, cardCache, difficulties);
+            });
           });
         }
-      });
+        if (emptyStateElement) emptyStateElement.style.display = 'none';
+      }
       
       // Update pagination efficiently
       updatePagination(currentPage, totalPages);
     }
   }
 
-  // Render main layout with optimized structure
+  // Render main layout with optimized structure and modern CSS classes
   main.innerHTML = renderHeader() + `
   <div class="card">
-    <h1>Exercises</h1>
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+    <h1 class="section-title">Exercises</h1>
+    
+    <!-- Filter Section -->
+    <div class="filter-section">
       <button class="btn btn-primary" id="add-exercise-btn">➕ Add Exercise</button>
-      <input type="text" id="exercise-filter" class="filter-input" style="width: 300px;"
+      <input type="text" id="exercise-filter" class="filter-input" 
         placeholder="Search exercises..." autocomplete="off">
+      
+      <!-- Favorites Toggle -->
+      <button class="btn btn-secondary" id="favorites-toggle">⭐ Favorites Only</button>
     </div>
-    <p>Filter by Category</p>
-  
-    <select id="category-filter" multiple size="0">
-      <option value="all" data-type="all">All Categories</option>
-      ${categories.map(category => `<option value="${category.id}">${category.name}</option>`).join('')}
-    </select>
 
-    <p>Filter by Difficulty</p>
-  
-    <select id="difficulty-filter" multiple size="0">
-      <option value="all" data-type="all">All Difficulties</option>
-      ${difficulties.map(diff => `<option value="${diff.id}">${diff.label}</option>`).join('')}
-    </select>
+    <!-- Category Filter -->
+    <div class="form-group">
+      <label for="category-filter">Filter by Category</label>
+      <select id="category-filter" multiple size="0">
+        <option value="all" data-type="all">All Categories</option>
+        ${categories.map(category => `<option value="${category.id}">${category.name}</option>`).join('')}
+      </select>
+    </div>
 
+    <!-- Muscle Filter -->
+    <div class="form-group">
+      <label for="muscle-filter">Filter by Muscle Group</label>
+      <select id="muscle-filter" multiple size="0">
+        <option value="all" data-type="all">All Muscles</option>
+        ${muscles.map(muscle => `<option value="${muscle.id}">${muscle.name_en || muscle.name}</option>`).join('')}
+      </select>
+    </div>
+
+    <!-- Equipment Filter -->
+    <div class="form-group">
+      <label for="equipment-filter">Filter by Equipment</label>
+      <select id="equipment-filter" multiple size="0">
+        <option value="all" data-type="all">All Equipment</option>
+        ${equipment.map(eq => `<option value="${eq.id}">${eq.name}</option>`).join('')}
+      </select>
+    </div>
+
+    <!-- Difficulty Filter -->
+    <div class="form-group">
+      <label for="difficulty-filter">Filter by Difficulty</label>
+      <select id="difficulty-filter" multiple size="0">
+        <option value="all" data-type="all">All Difficulties</option>
+        ${difficulties.map(diff => `<option value="${diff.id}">${diff.label}</option>`).join('')}
+      </select>
+    </div>
+
+    <!-- Clear Filters Button -->
+      <div class="form-group" style="text-align: center; margin-top: 1rem;">
+      <button id="clear-filters-btn" class="btn btn-secondary">🔄 Clear All Filters</button>
+    </div>
+
+    <!-- Exercises Grid -->
     <div id="exercises-grid" class="exercises-grid"></div>
     
+    ${filteredExercises.length === 0 ? `
+    <div class="empty-state" style="display: none;" id="empty-exercises-state">
+      <h2>No Exercises Found</h2>
+      <p>${currentFilters.searchText || currentFilters.showFavoritesOnly ? 'Try adjusting your filters or clearing them to see all exercises.' : 'No exercises match your current criteria.'}</p>
+      <button class="btn btn-primary" id="clear-filters-empty-state">🔄 Clear Filters</button>
+    </div>
+    ` : ''}
+    
+    <!-- Pagination -->
     <div class="pagination">
       <button class="pagination-nav-btn" data-action="prev" disabled title="Previous page"><<<</button>
       <div id="pagination-numbers-wrapper"></div>
@@ -328,6 +414,7 @@ export async function renderExercisesView() {
         const card = target.closest('.exercise-card');
         if (card) {
           const id = card.getAttribute('data-id');
+          console.log('[ExercisesView] Setting sessionStorage editingExerciseId:', id);
           sessionStorage.setItem('editingExerciseId', id);
           window.location.hash = '#exercise-form';
         }
@@ -357,6 +444,24 @@ export async function renderExercisesView() {
       else if (target.id === 'add-exercise-btn') {
         window.location.hash = '#exercise-form';
       }
+      
+      // Handle Favorites Toggle
+      else if (target.id === 'favorites-toggle') {
+        e.stopPropagation();
+        currentFilters.showFavoritesOnly = !currentFilters.showFavoritesOnly;
+        
+        // Update button styling based on state
+        const toggleBtn = main.querySelector('#favorites-toggle');
+        if (currentFilters.showFavoritesOnly) {
+          toggleBtn.classList.add('active');
+          toggleBtn.innerHTML = '⭐ Showing Favorites';
+        } else {
+          toggleBtn.classList.remove('active');
+          toggleBtn.innerHTML = '⭐ Favorites Only';
+        }
+        
+        applyFilters();
+      }
     });
   }
 
@@ -367,6 +472,9 @@ export async function renderExercisesView() {
   const filterInput = main.querySelector('#exercise-filter');
   const categoryFilter = main.querySelector('#category-filter');
   const difficultyFilter = main.querySelector('#difficulty-filter');
+  const muscleFilter = main.querySelector('#muscle-filter');
+  const equipmentFilter = main.querySelector('#equipment-filter');
+  const clearFiltersBtn = main.querySelector('#clear-filters-btn');
   
   if (filterInput) {
     filterInput.addEventListener('input', (e) => {
@@ -395,6 +503,46 @@ export async function renderExercisesView() {
     });
   }
   
+  if (muscleFilter) {
+    muscleFilter.addEventListener('change', (e) => {
+      const selectedMuscles = e.target.selectedOptions;
+      
+      const allSelected = Array.from(selectedMuscles).some(option => 
+        option.getAttribute('data-type') === 'all');
+      
+      if (allSelected) {
+        currentFilters.showAllMuscles = true;
+        currentFilters.selectedMuscles = [];
+      } else {
+        currentFilters.showAllMuscles = false;
+        currentFilters.selectedMuscles = Array.from(selectedMuscles).map(option => 
+          parseInt(option.value));
+      }
+      
+      applyFilters();
+    });
+  }
+  
+  if (equipmentFilter) {
+    equipmentFilter.addEventListener('change', (e) => {
+      const selectedEquipment = e.target.selectedOptions;
+      
+      const allSelected = Array.from(selectedEquipment).some(option => 
+        option.getAttribute('data-type') === 'all');
+      
+      if (allSelected) {
+        currentFilters.showAllEquipment = true;
+        currentFilters.selectedEquipment = [];
+      } else {
+        currentFilters.showAllEquipment = false;
+        currentFilters.selectedEquipment = Array.from(selectedEquipment).map(option => 
+          parseInt(option.value));
+      }
+      
+      applyFilters();
+    });
+  }
+  
   if (difficultyFilter) {
     difficultyFilter.addEventListener('change', (e) => {
       const selectedDifficulty = e.target.selectedOptions;
@@ -412,6 +560,60 @@ export async function renderExercisesView() {
       }
       
       applyFilters();
+    });
+  }
+  
+  // Clear all filters button
+  if (clearFiltersBtn) {
+    clearFiltersBtn.addEventListener('click', () => {
+      currentFilters = {
+        searchText: '',
+        selectedCategories: [],
+        selectedDifficulties: [],
+        showAllCategories: true,
+        showAllDifficulties: true,
+        selectedMuscles: [],
+        showAllMuscles: true,
+        selectedEquipment: [],
+        showAllEquipment: true,
+        showFavoritesOnly: false
+      };
+      
+      // Reset all filter inputs
+      if (filterInput) filterInput.value = '';
+      if (categoryFilter) {
+        categoryFilter.innerHTML = '<option value="all" data-type="all">All Categories</option>' + 
+          categories.map(category => `<option value="${category.id}">${category.name}</option>`).join('');
+      }
+      if (muscleFilter) {
+        muscleFilter.innerHTML = '<option value="all" data-type="all">All Muscles</option>' + 
+          muscles.map(muscle => `<option value="${muscle.id}">${muscle.name_en || muscle.name}</option>`).join('');
+      }
+      if (equipmentFilter) {
+        equipmentFilter.innerHTML = '<option value="all" data-type="all">All Equipment</option>' + 
+          equipment.map(eq => `<option value="${eq.id}">${eq.name}</option>`).join('');
+      }
+      if (difficultyFilter) {
+        difficultyFilter.innerHTML = '<option value="all" data-type="all">All Difficulties</option>' + 
+          difficulties.map(diff => `<option value="${diff.id}">${diff.label}</option>`).join('');
+      }
+      
+      // Reset favorites toggle button
+      const toggleBtn = main.querySelector('#favorites-toggle');
+      if (toggleBtn) {
+        toggleBtn.classList.remove('active');
+        toggleBtn.innerHTML = '⭐ Favorites Only';
+      }
+      
+      applyFilters();
+    });
+  }
+  
+  // Handle empty state clear filters button
+  const emptyStateClearBtn = main.querySelector('#clear-filters-empty-state');
+  if (emptyStateClearBtn) {
+    emptyStateClearBtn.addEventListener('click', () => {
+      clearFiltersBtn.click();
     });
   }
   

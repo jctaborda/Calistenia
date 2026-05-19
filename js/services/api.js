@@ -1,5 +1,13 @@
 // PWA Offline Data Loading - loads all data from single data.json file
 // No server endpoints needed - works offline as a progressive web app
+import { 
+  loadAllExercises, 
+  loadAllCategories, 
+  loadAllEquipment, 
+  loadAllMuscles, 
+  loadAllDifficulties,
+  loadAllPrograms
+} from './data-cache.js';
 
 let cachedData = null;
 
@@ -22,9 +30,8 @@ export async function fetchAllData() {
 
 export async function fetchExercises() {
   try {
-    // Use storage.js which loads from IndexedDB or data.json
-    const storage = await import('./storage.js');
-    return storage.loadExercises();
+    // Use data-cache.js which loads from IndexedDB or data.json
+    return await loadAllExercises();
   } catch (error) {
     console.error('Error fetching exercises:', error);
     throw error;
@@ -33,8 +40,8 @@ export async function fetchExercises() {
 
 export async function fetchPrograms() {
   try {
-    const data = await fetchAllData();
-    return data.programs;
+    // Use data-cache.js which loads from IndexedDB or data.json
+    return await loadAllPrograms();
   } catch (error) {
     console.error('Error fetching programs:', error);
     throw error;
@@ -43,8 +50,8 @@ export async function fetchPrograms() {
 
 export async function fetchMuscles() {
   try {
-    const data = await fetchAllData();
-    return data.muscles;
+    // Use data-cache.js which loads from IndexedDB or data.json
+    return await loadAllMuscles();
   } catch (error) {
     console.error('Error fetching muscles:', error);
     throw error;
@@ -53,8 +60,8 @@ export async function fetchMuscles() {
 
 export async function fetchCategories() {
   try {
-    const data = await fetchAllData();
-    return data.categories;
+    // Use data-cache.js which loads from IndexedDB or data.json
+    return await loadAllCategories();
   } catch (error) {
     console.error('Error fetching categories:', error);
     throw error;
@@ -63,8 +70,8 @@ export async function fetchCategories() {
 
 export async function fetchEquipment() {
   try {
-    const data = await fetchAllData();
-    return data.equipment;
+    // Use data-cache.js which loads from IndexedDB or data.json
+    return await loadAllEquipment();
   } catch (error) {
     console.error('Error fetching equipment:', error);
     throw error;
@@ -73,8 +80,8 @@ export async function fetchEquipment() {
 
 export async function fetchDifficulties() {
   try {
-    const data = await fetchAllData();
-    return data.difficulties;
+    // Use data-cache.js which loads from IndexedDB or data.json
+    return await loadAllDifficulties();
   } catch (error) {
     console.error('Error fetching difficulties:', error);
     throw error;

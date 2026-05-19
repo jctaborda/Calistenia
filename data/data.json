@@ -119,8 +119,8 @@
       "difficulty": [
         1
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/0662-I4hDWkc.jpg",
+      "video_url": "assets/videos/exercises/0662-I4hDWkc.gif",
       "categories": [
         11
       ],
@@ -131,9 +131,11 @@
       ],
       "prerequisites": [],
       "progressions": [
+        6,
         2,
         3,
-        4
+        4,
+        9
       ],
       "formCues": [
         "Keep your core tight throughout the movement",
@@ -205,8 +207,8 @@
       "difficulty": [
         2
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/0283-soIB2rj.jpg",
+      "video_url": "assets/videos/exercises/0283-soIB2rj.gif",
       "categories": [
         8
       ],
@@ -217,9 +219,7 @@
       "prerequisites": [
         1
       ],
-      "progressions": [
-        6
-      ],
+      "progressions": [],
       "formCues": [
         "Form diamond with thumbs and index fingers",
         "Keep elbows close to your ribs",
@@ -247,8 +247,8 @@
       "difficulty": [
         2
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/1273-wigSg76.jpg",
+      "video_url": "assets/videos/exercises/1273-wigSg76.gif",
       "categories": [
         11
       ],
@@ -261,7 +261,7 @@
         1
       ],
       "progressions": [
-        7
+        8
       ],
       "formCues": [
         "Explode up with maximum power",
@@ -291,8 +291,8 @@
       "difficulty": [
         3
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/3294-A9qxk2F.jpg",
+      "video_url": "assets/videos/exercises/3294-A9qxk2F.gif",
       "categories": [
         11
       ],
@@ -305,7 +305,8 @@
         2
       ],
       "progressions": [
-        8
+        8,
+        30
       ],
       "formCues": [
         "Widen hand stance significantly",
@@ -335,8 +336,8 @@
       "difficulty": [
         1
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/0493-B1EVP9F.jpg",
+      "video_url": "assets/videos/exercises/0493-B1EVP9F.gif",
       "categories": [
         11
       ],
@@ -345,10 +346,10 @@
         5,
         2
       ],
-      "prerequisites": [
-        3
+      "prerequisites": [],
+      "progressions": [
+        1
       ],
-      "progressions": [],
       "formCues": [
         "Hands elevated on stable surface",
         "Body forms straight line from head to heels",
@@ -376,8 +377,8 @@
       "difficulty": [
         2
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/0279-i5cEhka.jpg",
+      "video_url": "assets/videos/exercises/0279-i5cEhka.gif",
       "categories": [
         11
       ],
@@ -387,9 +388,10 @@
         2
       ],
       "prerequisites": [
-        4
+        1
       ],
       "progressions": [
+        35,
         9
       ],
       "formCues": [
@@ -419,8 +421,8 @@
       "difficulty": [
         2
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/1306-Snj1wSv.jpg",
+      "video_url": "assets/videos/exercises/1306-Snj1wSv.gif",
       "categories": [
         11
       ],
@@ -430,7 +432,8 @@
         2
       ],
       "prerequisites": [
-        5
+        4,
+        7
       ],
       "progressions": [
         10
@@ -474,7 +477,7 @@
         2
       ],
       "prerequisites": [
-        7
+        1
       ],
       "progressions": [],
       "formCues": [
@@ -547,8 +550,8 @@
       "difficulty": [
         2
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/0652-lBDjFxJ.jpg",
+      "video_url": "assets/videos/exercises/0652-lBDjFxJ.gif",
       "categories": [
         12
       ],
@@ -559,8 +562,8 @@
       ],
       "prerequisites": [],
       "progressions": [
-        19,
-        20
+        12,
+        13
       ],
       "formCues": [
         "Grab bar with overhand grip, slightly wider than shoulders",
@@ -590,8 +593,8 @@
       "difficulty": [
         2
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/1326-T2mxWqc.jpg",
+      "video_url": "assets/videos/exercises/1326-T2mxWqc.gif",
       "categories": [
         12
       ],
@@ -601,10 +604,10 @@
         13
       ],
       "prerequisites": [
-        11
+        1
       ],
       "progressions": [
-        13
+        11
       ],
       "formCues": [
         "Underhand grip, shoulder-width apart",
@@ -645,11 +648,9 @@
         13
       ],
       "prerequisites": [
-        12
+        11
       ],
-      "progressions": [
-        14
-      ],
+      "progressions": [],
       "formCues": [
         "Grip bar 1.5x shoulder width",
         "Keep core engaged",
@@ -678,8 +679,8 @@
       "difficulty": [
         3
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/3293-72BC5Za.jpg",
+      "video_url": "assets/videos/exercises/3293-72BC5Za.gif",
       "categories": [
         12
       ],
@@ -688,12 +689,8 @@
         1,
         13
       ],
-      "prerequisites": [
-        13
-      ],
-      "progressions": [
-        15
-      ],
+      "prerequisites": [],
+      "progressions": [],
       "formCues": [
         "Wide overhand grip",
         "Shift weight to one side on pull",
@@ -733,9 +730,7 @@
         1,
         13
       ],
-      "prerequisites": [
-        14
-      ],
+      "prerequisites": [],
       "progressions": [],
       "formCues": [
         "Master assisted variations first",
@@ -765,8 +760,8 @@
       "difficulty": [
         3
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/3296-PkCN2lv.jpg",
+      "video_url": "assets/videos/exercises/3296-PkCN2lv.gif",
       "categories": [
         12
       ],
@@ -776,9 +771,7 @@
         14
       ],
       "prerequisites": [],
-      "progressions": [
-        18
-      ],
+      "progressions": [],
       "formCues": [
         "Hang from bar with straight arms",
         "Engage lats and core tightly",
@@ -807,8 +800,8 @@
       "difficulty": [
         3
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/3297-GaSzzuh.jpg",
+      "video_url": "assets/videos/exercises/3297-GaSzzuh.gif",
       "categories": [
         16
       ],
@@ -856,9 +849,7 @@
         6,
         14
       ],
-      "prerequisites": [
-        16
-      ],
+      "prerequisites": [],
       "progressions": [],
       "formCues": [
         "Pull knees to chest while hanging",
@@ -899,9 +890,7 @@
         13
       ],
       "prerequisites": [],
-      "progressions": [
-        11
-      ],
+      "progressions": [],
       "formCues": [
         "Start at top position with chin over bar",
         "Lower as slowly as possible",
@@ -930,8 +919,8 @@
       "difficulty": [
         1
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/0017-kiJ4Z2K.jpg",
+      "video_url": "assets/videos/exercises/0017-kiJ4Z2K.gif",
       "categories": [
         12
       ],
@@ -941,9 +930,7 @@
         13
       ],
       "prerequisites": [],
-      "progressions": [
-        12
-      ],
+      "progressions": [],
       "formCues": [
         "Use band or machine for support",
         "Focus on proper form not just reps",
@@ -1053,8 +1040,8 @@
       "difficulty": [
         2
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/3302-XooAdhl.jpg",
+      "video_url": "assets/videos/exercises/3302-XooAdhl.gif",
       "categories": [
         13
       ],
@@ -1064,11 +1051,7 @@
         19
       ],
       "prerequisites": [],
-      "progressions": [
-        24,
-        25,
-        26
-      ],
+      "progressions": [],
       "formCues": [
         "Start with wall handstand for stability",
         "Keep wrists under shoulders",
@@ -1108,12 +1091,8 @@
         9,
         19
       ],
-      "prerequisites": [
-        23
-      ],
-      "progressions": [
-        27
-      ],
+      "prerequisites": [],
+      "progressions": [],
       "formCues": [
         "Master wall handstand first",
         "Practice against wall one arm at a time",
@@ -1153,12 +1132,8 @@
         18,
         4
       ],
-      "prerequisites": [
-        23
-      ],
-      "progressions": [
-        28
-      ],
+      "prerequisites": [],
+      "progressions": [],
       "formCues": [
         "Start in downward dog position",
         "Walk feet closer, lift hips high",
@@ -1186,8 +1161,8 @@
       "difficulty": [
         3
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/0471-rQxwMxO.jpg",
+      "video_url": "assets/videos/exercises/0471-rQxwMxO.gif",
       "categories": [
         13
       ],
@@ -1196,9 +1171,7 @@
         18,
         5
       ],
-      "prerequisites": [
-        23
-      ],
+      "prerequisites": [],
       "progressions": [],
       "formCues": [
         "Kick up to handstand against wall",
@@ -1240,12 +1213,8 @@
         5,
         18
       ],
-      "prerequisites": [
-        24
-      ],
-      "progressions": [
-        29
-      ],
+      "prerequisites": [],
+      "progressions": [],
       "formCues": [
         "Full planche - body parallel to ground",
         "Arms straight, hands pushing hard",
@@ -1285,9 +1254,7 @@
         5,
         18
       ],
-      "prerequisites": [
-        25
-      ],
+      "prerequisites": [],
       "progressions": [],
       "formCues": [
         "Start in push-up position, hands near hips",
@@ -1317,8 +1284,8 @@
       "difficulty": [
         3
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/3298-BL3GHeY.jpg",
+      "video_url": "assets/videos/exercises/3298-BL3GHeY.gif",
       "categories": [
         13
       ],
@@ -1328,9 +1295,7 @@
         5,
         18
       ],
-      "prerequisites": [
-        27
-      ],
+      "prerequisites": [],
       "progressions": [],
       "formCues": [
         "Start in push-up position with wide stance",
@@ -1401,8 +1366,8 @@
       "difficulty": [
         2
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/3699-yRpV5TC.jpg",
+      "video_url": "assets/videos/exercises/3699-yRpV5TC.gif",
       "categories": [
         10
       ],
@@ -1555,7 +1520,10 @@
       "muscles": [
         5
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        1,
+        8
+      ],
       "progressions": [],
       "formCues": [
         "Lean torso forward significantly",
@@ -1621,8 +1589,8 @@
       "difficulty": [
         2
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/0259-x6KpKpq.jpg",
+      "video_url": "assets/videos/exercises/0259-x6KpKpq.gif",
       "categories": [
         8
       ],
@@ -1732,8 +1700,8 @@
       "difficulty": [
         3
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/0638-HjdqmZa.jpg",
+      "video_url": "assets/videos/exercises/0638-HjdqmZa.gif",
       "categories": [
         12
       ],
@@ -1781,7 +1749,9 @@
         1,
         13
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        118
+      ],
       "progressions": [],
       "formCues": [
         "Stand tall, hold weight with underhand grip",
@@ -2036,8 +2006,8 @@
       "difficulty": [
         2
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/0472-I3tsCnC.jpg",
+      "video_url": "assets/videos/exercises/0472-I3tsCnC.gif",
       "categories": [
         10
       ],
@@ -2226,7 +2196,9 @@
         6
       ],
       "prerequisites": [],
-      "progressions": [],
+      "progressions": [
+        55
+      ],
       "formCues": [
         "Lie on back, knees bent",
         "Hands behind head or crossed on chest",
@@ -2289,16 +2261,20 @@
       "difficulty": [
         1
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/0687-XVDdcoj.jpg",
+      "video_url": "assets/videos/exercises/0687-XVDdcoj.gif",
       "categories": [
         10
       ],
       "muscles": [
         14
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        53
+      ],
+      "progressions": [
+        65
+      ],
       "formCues": [
         "Sit with knees bent, feet lifted",
         "Lean back slightly to engage core",
@@ -2334,8 +2310,12 @@
         6,
         14
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        53
+      ],
+      "progressions": [
+        65
+      ],
       "formCues": [
         "Grip pole or bar with one hand high, one low",
         "Leaning sideways horizontally",
@@ -2408,8 +2388,12 @@
         6,
         14
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        109
+      ],
+      "progressions": [
+        65
+      ],
       "formCues": [
         "Lie on back, arms out to sides",
         "Lift legs and bring to one side",
@@ -2434,15 +2418,18 @@
       "difficulty": [
         1
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/0276-iny3m5y.jpg",
+      "video_url": "assets/videos/exercises/0276-iny3m5y.gif",
       "categories": [
         10
       ],
       "muscles": [
         6
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        109,
+        58
+      ],
       "progressions": [],
       "formCues": [
         "Lie on back, arms extended up",
@@ -2480,7 +2467,10 @@
         14
       ],
       "prerequisites": [],
-      "progressions": [],
+      "progressions": [
+        61,
+        58
+      ],
       "formCues": [
         "Start in forearm plank",
         "Lift one leg without rotating hips",
@@ -2515,7 +2505,9 @@
       "muscles": [
         16
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        60
+      ],
       "progressions": [],
       "formCues": [
         "Start on hands and knees",
@@ -2556,7 +2548,9 @@
         12
       ],
       "prerequisites": [],
-      "progressions": [],
+      "progressions": [
+        63
+      ],
       "formCues": [
         "Lie face down, arms extended forward",
         "Lift chest and legs off ground",
@@ -2591,8 +2585,12 @@
       "muscles": [
         16
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        62
+      ],
+      "progressions": [
+        64
+      ],
       "formCues": [
         "Lie face down on hyperextension bench",
         "Cross arms or behind head",
@@ -2629,7 +2627,9 @@
         16,
         8
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        63
+      ],
       "progressions": [],
       "formCues": [
         "Lie prone, hold bar behind head",
@@ -2665,8 +2665,13 @@
       "muscles": [
         6
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        109,
+        58
+      ],
+      "progressions": [
+        66
+      ],
       "formCues": [
         "Lie on floor, hands under hips",
         "Keep legs straight and together",
@@ -2699,7 +2704,9 @@
       "muscles": [
         6
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        65
+      ],
       "progressions": [],
       "formCues": [
         "Hang from bar with straight arms",
@@ -2736,7 +2743,10 @@
         11
       ],
       "prerequisites": [],
-      "progressions": [],
+      "progressions": [
+        92,
+        72
+      ],
       "formCues": [
         "Feet shoulder-width apart",
         "Keep chest up, core tight",
@@ -2774,7 +2784,9 @@
         10,
         11
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        73
+      ],
       "progressions": [],
       "formCues": [
         "Stand on one leg, other extended forward",
@@ -2841,8 +2853,8 @@
       "difficulty": [
         2
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/0514-LIlE5Tn.jpg",
+      "video_url": "assets/videos/exercises/0514-LIlE5Tn.gif",
       "categories": [
         9
       ],
@@ -2890,8 +2902,13 @@
         10,
         11
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        72,
+        67
+      ],
+      "progressions": [
+        73
+      ],
       "formCues": [
         "One foot behind on bench or step",
         "Lower hips until front knee at 90 degrees",
@@ -2929,8 +2946,12 @@
         8,
         11
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        67
+      ],
+      "progressions": [
+        71
+      ],
       "formCues": [
         "Stand in front of box or step",
         "Drive through one foot to step up",
@@ -2967,8 +2988,12 @@
         10,
         11
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        71
+      ],
+      "progressions": [
+        68
+      ],
       "formCues": [
         "Hold onto support for balance",
         "Stand on one leg, other extended forward",
@@ -3004,8 +3029,13 @@
       "muscles": [
         11
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        79
+      ],
+      "progressions": [
+        76,
+        78
+      ],
       "formCues": [
         "Kneel, anchor feet under stable object",
         "Lower body with control using hamstrings",
@@ -3042,7 +3072,9 @@
         8,
         11
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        67
+      ],
       "progressions": [],
       "formCues": [
         "Stand on one leg, slight knee bend",
@@ -3071,8 +3103,8 @@
       "difficulty": [
         3
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/3193-Vvwjz6N.jpg",
+      "video_url": "assets/videos/exercises/3193-Vvwjz6N.gif",
       "categories": [
         9
       ],
@@ -3080,7 +3112,10 @@
         11,
         8
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        74,
+        78
+      ],
       "progressions": [],
       "formCues": [
         "Anchor feet under pads, knees on pad",
@@ -3117,7 +3152,9 @@
         11
       ],
       "prerequisites": [],
-      "progressions": [],
+      "progressions": [
+        78
+      ],
       "formCues": [
         "Attach band to ankle, anchor opposite end",
         "Lie prone or stand, curl heel toward glute",
@@ -3153,8 +3190,12 @@
         11,
         8
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        74
+      ],
+      "progressions": [
+        76
+      ],
       "formCues": [
         "Lie prone, anchor feet under furniture",
         "Pull body up using hamstrings and glutes",
@@ -3190,7 +3231,10 @@
         8
       ],
       "prerequisites": [],
-      "progressions": [],
+      "progressions": [
+        82,
+        80
+      ],
       "formCues": [
         "Lie on back, knees bent, feet flat",
         "Lift hips until shoulders to knees in line",
@@ -3226,8 +3270,12 @@
       "muscles": [
         8
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        79
+      ],
+      "progressions": [
+        81
+      ],
       "formCues": [
         "One leg extended, other bent",
         "Lift hips using standing leg",
@@ -3263,8 +3311,13 @@
       "muscles": [
         8
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        80,
+        79
+      ],
+      "progressions": [
+        83
+      ],
       "formCues": [
         "Upper back on bench, feet on ground",
         "Drive through heels to lift hips",
@@ -3301,7 +3354,9 @@
         8
       ],
       "prerequisites": [],
-      "progressions": [],
+      "progressions": [
+        79
+      ],
       "formCues": [
         "Start on hands and knees",
         "Lift one leg with knee bent at 90 degrees",
@@ -3336,7 +3391,9 @@
       "muscles": [
         8
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        81
+      ],
       "progressions": [],
       "formCues": [
         "Place weight plate on hips",
@@ -3374,7 +3431,10 @@
         7
       ],
       "prerequisites": [],
-      "progressions": [],
+      "progressions": [
+        85,
+        87
+      ],
       "formCues": [
         "Stand with feet shoulder-width apart",
         "Rise up onto toes as high as possible",
@@ -3407,8 +3467,12 @@
       "muscles": [
         7
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        84
+      ],
+      "progressions": [
+        86
+      ],
       "formCues": [
         "Stand on one leg, other slightly forward",
         "Rise up onto ball of standing foot",
@@ -3441,8 +3505,13 @@
       "muscles": [
         7
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        85
+      ],
+      "progressions": [
+        87,
+        88
+      ],
       "formCues": [
         "Stand on edge of bench with heels hanging",
         "Rise up onto balls of feet as high as possible",
@@ -3475,7 +3544,10 @@
       "muscles": [
         7
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        84,
+        86
+      ],
       "progressions": [],
       "formCues": [
         "Start on balls of feet",
@@ -3509,7 +3581,9 @@
       "muscles": [
         7
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        86
+      ],
       "progressions": [],
       "formCues": [
         "Hold dumbbell or plate in one hand",
@@ -3545,8 +3619,12 @@
         10,
         11
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        92
+      ],
+      "progressions": [
+        90
+      ],
       "formCues": [
         "Step out to one side into lunge",
         "Keep other leg straight",
@@ -3584,7 +3662,9 @@
         10,
         11
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        89
+      ],
       "progressions": [],
       "formCues": [
         "Stand wide, shift weight to one side",
@@ -3660,8 +3740,12 @@
         10,
         11
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        67
+      ],
+      "progressions": [
+        89
+      ],
       "formCues": [
         "Wide stance, toes pointed out",
         "Lower hips down and between legs",
@@ -3734,7 +3818,10 @@
         20
       ],
       "prerequisites": [],
-      "progressions": [],
+      "progressions": [
+        98,
+        96
+      ],
       "formCues": [
         "Lie on side, legs stacked",
         "Lift top leg keeping it straight",
@@ -3770,7 +3857,9 @@
         8
       ],
       "prerequisites": [],
-      "progressions": [],
+      "progressions": [
+        94
+      ],
       "formCues": [
         "Lie on side, knees bent at 90 degrees",
         "Keep feet together, lift top knee",
@@ -3803,8 +3892,13 @@
       "muscles": [
         8
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        94,
+        95
+      ],
+      "progressions": [
+        97
+      ],
       "formCues": [
         "Stand tall, band around ankles",
         "Lift one leg out to side keeping straight",
@@ -3837,7 +3931,9 @@
       "muscles": [
         8
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        96
+      ],
       "progressions": [],
       "formCues": [
         "Band around ankles, slight squat",
@@ -3871,7 +3967,9 @@
       "muscles": [
         8
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        94
+      ],
       "progressions": [],
       "formCues": [
         "Start on hands and knees",
@@ -3889,7 +3987,7 @@
     {
       "id": 99,
       "name": "Burpee",
-      "description": "Squat, jump back to plank, push-up, then jump up\u2014a full-body conditioning move.",
+      "description": "Squat, jump back to plank, push-up, then jump up—a full-body conditioning move.",
       "skill": "Hollow Body Hold",
       "equipment": [
         15
@@ -3897,8 +3995,8 @@
       "difficulty": [
         2
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/1160-dK9394r.jpg",
+      "video_url": "assets/videos/exercises/1160-dK9394r.gif",
       "categories": [
         9
       ],
@@ -3907,8 +4005,13 @@
         10,
         11
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        1
+      ],
+      "progressions": [
+        103,
+        104
+      ],
       "formCues": [
         "Start standing, drop into squat",
         "Kick feet back to plank",
@@ -3938,8 +4041,8 @@
       "difficulty": [
         2
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/0630-RJgzwny.jpg",
+      "video_url": "assets/videos/exercises/0630-RJgzwny.gif",
       "categories": [
         10
       ],
@@ -3978,8 +4081,8 @@
       "difficulty": [
         3
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/0631-yJUHKTn.jpg",
+      "video_url": "assets/videos/exercises/0631-yJUHKTn.gif",
       "categories": [
         12
       ],
@@ -3991,7 +4094,9 @@
         5,
         2
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        112
+      ],
       "progressions": [],
       "formCues": [
         "Start with kip or explosive pull-up",
@@ -4032,7 +4137,9 @@
         11
       ],
       "prerequisites": [],
-      "progressions": [],
+      "progressions": [
+        99
+      ],
       "formCues": [
         "Start standing feet together",
         "Jump feet out while raising arms",
@@ -4071,7 +4178,10 @@
         10,
         11
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        70,
+        99
+      ],
       "progressions": [],
       "formCues": [
         "Start standing",
@@ -4100,8 +4210,8 @@
       "difficulty": [
         2
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/3360-0Yz8WdV.jpg",
+      "video_url": "assets/videos/exercises/3360-0Yz8WdV.gif",
       "categories": [
         9
       ],
@@ -4110,7 +4220,9 @@
         10,
         11
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        60
+      ],
       "progressions": [],
       "formCues": [
         "Start on hands and feet, knees hovering",
@@ -4150,8 +4262,13 @@
         8,
         20
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        1,
+        60
+      ],
+      "progressions": [
+        106
+      ],
       "formCues": [
         "Squat low with hands on floor between feet",
         "Place knees on arms for support",
@@ -4187,7 +4304,9 @@
         6,
         19
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        105
+      ],
       "progressions": [],
       "formCues": [
         "Squat with hands shoulder-width apart",
@@ -4216,8 +4335,8 @@
       "difficulty": [
         2
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/3304-MSfvriJ.jpg",
+      "video_url": "assets/videos/exercises/3304-MSfvriJ.gif",
       "categories": [
         16
       ],
@@ -4226,7 +4345,9 @@
         "14"
       ],
       "prerequisites": [],
-      "progressions": [],
+      "progressions": [
+        114
+      ],
       "formCues": [
         "Hang from bar with rings or rig",
         "Walk feet forward while rotating body",
@@ -4261,7 +4382,9 @@
         9
       ],
       "prerequisites": [],
-      "progressions": [],
+      "progressions": [
+        119
+      ],
       "formCues": [
         "Hang from rings with arms extended",
         "Pull chest to rings",
@@ -4299,7 +4422,10 @@
         14
       ],
       "prerequisites": [],
-      "progressions": [],
+      "progressions": [
+        60,
+        58
+      ],
       "formCues": [
         "Start in hollow body position",
         "Rock forward and backward gently",
@@ -4333,7 +4459,9 @@
         6
       ],
       "prerequisites": [],
-      "progressions": [],
+      "progressions": [
+        65
+      ],
       "formCues": [
         "Lie on back, arms by sides",
         "Lift legs keeping them straight",
@@ -4409,7 +4537,10 @@
         5,
         2
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        1,
+        11
+      ],
       "progressions": [],
       "formCues": [
         "Start at top of muscle-up (dip position)",
@@ -4483,7 +4614,9 @@
         16
       ],
       "muscles": [],
-      "prerequisites": [],
+      "prerequisites": [
+        107
+      ],
       "progressions": [],
       "formCues": [
         "Start in front lever position",
@@ -4621,10 +4754,10 @@
       ],
       "muscles": [],
       "prerequisites": [
-        11
+        119
       ],
       "progressions": [
-        119
+        41
       ],
       "formCues": [
         "Bend over slightly with back flat",
@@ -4657,7 +4790,7 @@
       ],
       "muscles": [],
       "prerequisites": [
-        118
+        108
       ],
       "progressions": [
         120
@@ -4726,7 +4859,9 @@
         16
       ],
       "muscles": [],
-      "prerequisites": [],
+      "prerequisites": [
+        60
+      ],
       "progressions": [
         122,
         123
@@ -4864,7 +4999,8 @@
       ],
       "muscles": [],
       "prerequisites": [
-        124
+        124,
+        65
       ],
       "progressions": [
         126

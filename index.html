@@ -1,16 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calisthenics Mastery</title>
     <link rel="icon" href="assets/icons/favicon-32x32.png">
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#1976d2">
+    
+    <!-- Prevent FOUC: inline critical CSS and theme detection -->
+    <style>
+      /* Inline critical CSS to prevent flash of unstyled content */
+      body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+      #app { min-height: 100vh; background: #f5f5f5; }
+      .card { opacity: 1 !important; transition: none !important; }
+      
+      /* Loading spinner to hide content until loaded */
+      body.loading #app { visibility: hidden; }
+      body:not(.loading) #app { visibility: visible; }
+    </style>
+    
+    <!-- Apply theme BEFORE CSS loads to prevent flash -->
+    <script>
+      (function() {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        if (savedTheme === 'dark') {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+    
     <link rel="stylesheet" href="css/style.css">
   </head>
-  <body>
+  <body class="loading">
     <main id="app"></main>
     <script type="module" src="./js/main.js"></script>
+    <script>
+      // Show content when CSS is loaded
+      window.addEventListener('load', function() {
+        document.body.classList.remove('loading');
+      });
+      
+      // Fallback for browsers that don't support load event immediately
+      setTimeout(function() {
+        if (document.body.classList.contains('loading')) {
+          document.body.classList.remove('loading');
+        }
+      }, 50);
+    </script>
   </body>
 </html>

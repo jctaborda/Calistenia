@@ -53,6 +53,62 @@ export class ValidationService {
   }
 
   /**
+   * Validate image URL or relative path
+   * @param {string} url - Image URL or path to validate
+   * @returns {{valid: boolean, error: string|null}}
+   */
+  static isValidImageUrl(url) {
+    // Check if it's a valid absolute URL (http://, https://)
+    try {
+      if (url.startsWith('http://') || url.startsWith('https://')) {
+        new URL(url);
+        return { valid: true, error: null };
+      }
+    } catch (_) {
+      // Not a valid URL, check if it's a relative path
+    }
+
+    // Accept relative paths like:
+    // assets/images/exercises/image.jpg
+    // /assets/images/exercises/image.jpg
+    const relativePathPattern = /^[a-zA-Z0-9\/\.\-_]+$/;
+    
+    if (relativePathPattern.test(url)) {
+      return { valid: true, error: null };
+    }
+
+    return { valid: false, error: 'Please enter a valid URL or relative path' };
+  }
+
+  /**
+   * Validate video URL or relative path
+   * @param {string} url - Video URL or path to validate
+   * @returns {{valid: boolean, error: string|null}}
+   */
+  static isValidVideoUrl(url) {
+    // Check if it's a valid absolute URL (http://, https://)
+    try {
+      if (url.startsWith('http://') || url.startsWith('https://')) {
+        new URL(url);
+        return { valid: true, error: null };
+      }
+    } catch (_) {
+      // Not a valid URL, check if it's a relative path
+    }
+
+    // Accept relative paths like:
+    // assets/videos/exercises/video.mp4
+    // /assets/videos/exercises/video.mp4
+    const relativePathPattern = /^[a-zA-Z0-9\/\.\-_]+$/;
+    
+    if (relativePathPattern.test(url)) {
+      return { valid: true, error: null };
+    }
+
+    return { valid: false, error: 'Please enter a valid URL or relative path' };
+  }
+
+  /**
    * Validate form fields collectively
    * @param {FormData} formData - Form data object
    * @returns {{valid: boolean, errors: object}}
@@ -80,23 +136,23 @@ export class ValidationService {
       hasErrors = true;
     }
 
-    // Validate URL fields (optional but must be valid URLs)
+    // Validate URL fields (optional but must be valid URLs or relative paths)
     const image_url = formData.get('image_url');
     if (image_url && image_url.length > 0) {
-      try {
-        new URL(image_url);
-      } catch (_) {
-        errors.image_url = 'Please enter a valid URL';
+      // Accept both absolute URLs and relative paths
+      const isValidUrl = this.isValidImageUrl(image_url);
+      if (!isValidUrl.valid) {
+        errors.image_url = isValidUrl.error;
         hasErrors = true;
       }
     }
 
     const video_url = formData.get('video_url');
     if (video_url && video_url.length > 0) {
-      try {
-        new URL(video_url);
-      } catch (_) {
-        errors.video_url = 'Please enter a valid URL';
+      // Accept both absolute URLs and relative paths
+      const isValidUrl = this.isValidVideoUrl(video_url);
+      if (!isValidUrl.valid) {
+        errors.video_url = isValidUrl.error;
         hasErrors = true;
       }
     }
@@ -132,6 +188,46 @@ export class ValidationService {
     }
 
     return { valid: true, error: null };
+  }
+
+  /**
+   * Sanitize text by escaping HTML entities to prevent XSS attacks
+   * @param {string} text - Text to sanitize
+   * @returns {string} - Sanitized text safe for rendering in HTML
+   */
+  static sanitizeText(text) {
+    if (typeof text !== 'string') return '';
+    
+    // Create a temporary div element
+    const div = document.createElement('div');
+    // Set textContent to escape all HTML entities automatically
+    div.textContent = text;
+    // Return the escaped HTML
+    return div.innerHTML;
+  }
+
+  /**
+   * Sanitize an exercise object by escaping all user-controlled fields
+   * @param {Object} exercise - Exercise object to sanitize
+   * @returns {Object} - Sanitized exercise object
+   */
+  static sanitizeExercise(exercise) {
+    if (!exercise || typeof exercise !== 'object') return exercise;
+    
+    return {
+      ...exercise,
+      name: this.sanitizeText(exercise.name),
+      description: this.sanitizeText(exercise.description),
+      skill: this.sanitizeText(exercise.skill || ''),
+      image_url: this.sanitizeText(exercise.image_url || ''),
+      video_url: this.sanitizeText(exercise.video_url || ''),
+      formCues: Array.isArray(exercise.formCues) 
+        ? exercise.formCues.map(cue => this.sanitizeText(cue))
+        : '',
+      commonMistakes: Array.isArray(exercise.commonMistakes)
+        ? exercise.commonMistakes.map(mistake => this.sanitizeText(mistake))
+        : ''
+    };
   }
 
   /**

@@ -14,7 +14,7 @@
     <form id="exerciseForm">
       <div class="form-group">
         <label for="name">Exercise Name *</label>
-        <input type="text" id="name" name="name" required minlength="2" maxlength="100" placeholder="e.g., Push-Up" pattern="[a-zA-Z0-9\s\-\,\.\(\)]+" title="Minimum 2 characters, maximum 100. Letters, numbers, spaces only.">
+        <input type="text" id="name" name="name" required minlength="2" maxlength="100" placeholder="e.g., Push-Up" pattern="[a-zA-Z0-9\s\-,\.\(\)]+" title="Minimum 2 characters, maximum 100. Letters, numbers, spaces only.">
       </div>
 
       <div class="form-group">
@@ -24,7 +24,7 @@
 
       <div class="form-group">
         <label for="skill">Skill Category *</label>
-        <input type="text" id="skill" name="skill" required minlength="2" maxlength="100" placeholder="e.g., Push-Up Variations" pattern="[a-zA-Z0-9\s\-\,\.\(\)]+">
+        <input type="text" id="skill" name="skill" required minlength="2" maxlength="100" placeholder="e.g., Push-Up Variations" pattern="[a-zA-Z0-9\s\-,\.\(\)]+">
       </div>
 
       <div class="form-group">
@@ -41,12 +41,12 @@
 
       <div class="form-group">
         <label for="image_url">Image URL (optional)</label>
-        <input type="url" id="image_url" name="image_url" placeholder="https://..." maxlength="500" title="Must be a valid URL">
+        <input type="text" id="image_url" name="image_url" placeholder="assets/images/exercises/... or https://..." maxlength="500" title="Enter image path or URL">
       </div>
 
       <div class="form-group">
         <label for="video_url">Video URL (optional)</label>
-        <input type="url" id="video_url" name="video_url" placeholder="https://..." maxlength="500" title="Must be a valid URL">
+        <input type="text" id="video_url" name="video_url" placeholder="assets/videos/exercises/... or https://..." maxlength="500" title="Enter video path or URL">
       </div>
 
       <div class="form-group">
@@ -90,7 +90,7 @@
 
         <div class="form-group">
           <label for="editName">Exercise Name *</label>
-          <input type="text" id="editName" name="name" required minlength="2" maxlength="100" placeholder="e.g., Push-Up" pattern="[a-zA-Z0-9\s\-\,\.\(\)]+">
+          <input type="text" id="editName" name="name" required minlength="2" maxlength="100" placeholder="e.g., Push-Up" pattern="[a-zA-Z0-9\s\-,\.\(\)]+">
         </div>
 
         <div class="form-group">
@@ -100,7 +100,7 @@
 
         <div class="form-group">
           <label for="editSkill">Skill Category *</label>
-          <input type="text" id="editSkill" name="skill" required minlength="2" maxlength="100" pattern="[a-zA-Z0-9\s\-\,\.\(\)]+">
+          <input type="text" id="editSkill" name="skill" required minlength="2" maxlength="100" pattern="[a-zA-Z0-9\s\-,\.\(\)]+">
         </div>
 
         <div class="form-group">
@@ -117,12 +117,54 @@
 
         <div class="form-group">
           <label for="editImage_url">Image URL (optional)</label>
-          <input type="url" id="editImage_url" name="image_url" maxlength="500" title="Must be a valid URL">
+          <input type="text" id="editImage_url" name="image_url" maxlength="500" title="Enter image path or URL">
         </div>
 
         <div class="form-group">
           <label for="editVideo_url">Video URL (optional)</label>
-          <input type="url" id="editVideo_url" name="video_url" maxlength="500" title="Must be a valid URL">
+          <input type="text" id="editVideo_url" name="video_url" maxlength="500" title="Enter video path or URL">
+        </div>
+
+        <!-- Prerequisites: Select exercises that must be mastered before this one -->
+        <div class="form-group">
+          <label for="editPrerequisites">Prerequisites (exercises to master first)</label>
+          <select id="editPrerequisites" multiple size="6" style="width: 100%;">
+            <option value="">-- Select Prerequisites --</option>
+          </select>
+          <small class="form-hint">Hold Ctrl/Cmd to select multiple exercises that are prerequisites for this exercise.</small>
+        </div>
+
+        <!-- Progressions: Exercises that can be done after mastering this one -->
+        <div class="form-group">
+          <label for="editProgressions">Progressions (advanced variations)</label>
+          <select id="editProgressions" multiple size="6" style="width: 100%;">
+            <option value="">-- Select Progressions --</option>
+          </select>
+          <small class="form-hint">Hold Ctrl/Cmd to select multiple exercises that are progressions from this one.</small>
+        </div>
+
+        <!-- Form Cues: Dynamic list of technique cues -->
+        <div class="form-group">
+          <label for="editFormCues">Form Cues</label>
+          <div id="formCuesContainer" style="margin-bottom: 0.5rem;">
+            <div class="dynamic-list-item" id="formCue-1">
+              <input type="text" class="dynamic-list-input" placeholder="e.g., Keep your core tight">
+              <button type="button" class="btn btn-danger btn-sm remove-item" title="Remove">✕</button>
+            </div>
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm" id="addFormCueBtn">+ Add Form Cue</button>
+        </div>
+
+        <!-- Common Mistakes: Dynamic list of mistakes to avoid -->
+        <div class="form-group">
+          <label for="editCommonMistakes">Common Mistakes</label>
+          <div id="commonMistakesContainer" style="margin-bottom: 0.5rem;">
+            <div class="dynamic-list-item" id="mistake-1">
+              <input type="text" class="dynamic-list-input" placeholder="e.g., Don't let hips sag">
+              <button type="button" class="btn btn-danger btn-sm remove-item" title="Remove">✕</button>
+            </div>
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm" id="addMistakeBtn">+ Add Common Mistake</button>
         </div>
 
         <div class="form-group">
@@ -153,3 +195,41 @@
     </div>
   </div>
 </div>
+
+<!-- Inline styles for dynamic list items -->
+<style>
+  .dynamic-list-item {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    align-items: center;
+  }
+  
+  .dynamic-list-input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.95rem;
+  }
+  
+  .dynamic-list-input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+  }
+  
+  .btn-sm {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 0.25rem;
+  }
+  
+  .form-hint {
+    display: block;
+    margin-top: 0.35rem;
+    font-size: 0.875em;
+    color: #6c757d;
+  }
+</style>

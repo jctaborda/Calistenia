@@ -68,40 +68,42 @@ export class ImageService {
 
   /**
    * Generate safe HTML for external URLs (exercise images/videos)
-   * @param {string} url - External URL to render
-   * @param {'image'|'video'} type - Type of media
+   * @param {string} url - External URL to render (supports relative paths and absolute URLs)
+   * @param {'image'|'video'} type - Type of media ('video' expects actual video formats)
    * @param {string} alt - Alt text or caption
    * @returns {string|null} - Safe HTML or null if URL is invalid
    */
-  static renderExternalMedia(url, type = 'image', alt = '') {
+ static renderExternalMedia(url, type = 'image', alt = '') {
     if (!url || url.trim() === '') {
       return '';
     }
 
-    // Validate URL format
-    try {
-      new URL(url);
-    } catch (_) {
-      console.warn('Invalid external media URL:', url);
+    // Validate that URL is not empty (relative paths are valid)
+    if (url.includes('<') || url.includes('>')) {
+      console.warn('Invalid media URL contains HTML entities:', url);
       return '';
     }
 
-    if (type === 'image') {
-      return `
-        <img 
-          src="${url}" 
-          alt="${alt}" 
-          style="max-width: 200px; border-radius: 8px;"
-          onerror="this.style.display='none'; this.parentElement.innerHTML='<p class=\"warning\">Image unavailable</p>';"
-        >
-      `;
+    // Detect file extension to determine correct element type
+    const ext = url.split('.').pop().toLowerCase();
+    
+    // GIFs should always be displayed as images, not video tags
+    const isGif = ext === 'gif';
+    const useVideoTag = type === 'video' && !isGif;
+
+   if (!useVideoTag) {
+      // Use <img> tag for images and GIFs - no error handler to avoid display issues
+      return `<img src="${url}" alt="${alt}" style="max-width: 200px; border-radius: 8px;">`;
     } else if (type === 'video') {
-      return `
-        <video controls width="300" style="border-radius: 8px;">
-          <source src="${url}" type="video/mp4">
+      // Detect file extension to set correct MIME type for actual video files
+      const mimeType = ext === 'webm' ? 'video/webm' :
+                       ext === 'ogg' ? 'video/ogg' :
+                       ext === 'mp4' ? 'video/mp4' : 'video/mp4';
+      
+      return `<video controls width="300" style="border-radius: 8px;" loop autoplay muted playsinline>
+          <source src="${url}" type="${mimeType}">
           Your browser does not support the video tag.
-        </video>
-      `;
+        </video>`;
     }
 
     return '';

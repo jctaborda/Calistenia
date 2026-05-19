@@ -121,6 +121,9 @@ Los datos se almacenan en archivos JSON.
 ## 📝 Licencia
 
 Este proyecto es de uso personal y educativo. Los datos de ejercicios están basados en información pública de calistenia.
+- All exercise media (images, videos) belong to their respective copyright holders.
+**Commercial use is strictly prohibited.**
+-If you are a copyright owner and wish to have your content removed, please [open an issue](../../issues) or contact the repository owner.
 
 ## 👨‍💻 Autor
 
@@ -132,4 +135,4 @@ Proyecto desarrollado como aplicación de entrenamiento de calistenia personaliz
 
 - wger project (proyectos de fitness open source)
 - Calistenia community por el conocimiento compartido
-- Node.js y Express teams por el stack utilizado
+

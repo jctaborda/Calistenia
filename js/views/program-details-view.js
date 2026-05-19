@@ -1,6 +1,7 @@
 // views/program-details-view.js
 import { renderHeader } from '../components/header.js';
 import { setState, updateState, getState } from '../services/state.js';
+import { saveForUndo } from '../services/undo-service.js';
 
 export async function renderProgramDetailsView(type, id) {
   const main = document.getElementById('app');
@@ -31,13 +32,13 @@ export async function renderProgramDetailsView(type, id) {
     return exercises.find(e => String(e.id) === String(exerciseId));
   }
   
- // Render exercise list helper
+  // Render exercise list helper
   function renderExerciseList(exercisesArray, sectionName) {
     if (!exercisesArray || exercisesArray.length === 0) {
       return '';
     }
     
-        // Helper to get difficulty class based on exercise difficulty ID (1=beginner, 2=intermediate, 3=advanced)
+    // Helper to get difficulty class based on exercise difficulty ID (1=beginner, 2=intermediate, 3=advanced)
     function getDifficultyClass(exerciseId) {
       const exercise = findExerciseById(exerciseId);
       if (exercise && exercise.difficulty) {
@@ -50,25 +51,29 @@ export async function renderProgramDetailsView(type, id) {
       return '';
     }
     
+    const sectionItems = exercisesArray.map(ex => {
+      const exercise = findExerciseById(ex.exerciseId);
+      const difficultyClass = getDifficultyClass(ex.exerciseId);
+      
+      return `
+        <li class="exercise-item ${difficultyClass}">
+          <div class="exercise-info">
+            <strong>${exercise ? exercise.name : 'Unknown Exercise (ID: ' + ex.exerciseId + ')'}</strong>
+            <div class="exercise-details">
+              Sets: ${ex.sets} | Reps: ${ex.reps} | Rest: ${ex.restTime}s
+            </div>
+          </div>
+        </li>
+      `;
+    }).join('');
+    
     return `
-      <h3>${sectionName}:</h3>
-      <ul class="exercise-list">
-        ${exercisesArray.map(ex => {
-          const exercise = findExerciseById(ex.exerciseId);
-          const difficultyClass = getDifficultyClass(ex.exerciseId);
-          
-          return `
-            <li class="exercise-item ${difficultyClass}">
-              <div class="exercise-info">
-                <strong>${exercise ? exercise.name : 'Unknown Exercise (ID: ' + ex.exerciseId + ')'}</strong>
-                <div class="exercise-details">
-                  Sets: ${ex.sets} | Reps: ${ex.reps} | Rest: ${ex.restTime}s
-                </div>
-              </div>
-            </li>
-          `;
-        }).join('')}
-      </ul>
+      <div class="exercise-list-section">
+        <h3 class="section-title">${sectionName}</h3>
+        <ul class="exercise-list">
+          ${sectionItems}
+        </ul>
+      </div>
     `;
   }
   
@@ -99,11 +104,11 @@ export async function renderProgramDetailsView(type, id) {
   
   main.innerHTML = renderHeader() + `
     <div class="card">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <button class="btn btn-secondary" onclick="window.location.hash = '#programs'">
+      <div class="program-header">
+        <button class="back-button" onclick="window.location.hash = '#programs'">
           ← Back to Programs
         </button>
-        <div style="display: flex; gap: 0.5rem;">
+        <div class="program-actions">
           <button class="btn" id="edit-program-btn" data-type="${type}" data-id="${id}">
             Edit Program
           </button>
@@ -114,10 +119,11 @@ export async function renderProgramDetailsView(type, id) {
           ` : ''}
         </div>
       </div>
-      <h1>${program.name}</h1>
+      <h1 class="program-title">${program.name}</h1>
       <div class="program-details-content">
         ${renderExerciseList(program.warmup, 'Warmup')}
-        <h3>Exercises:</h3>
+        
+        <h3 class="section-title">Exercises</h3>
         <ul class="exercise-list">
           ${(program.exercises || []).map(ex => {
             const exercise = findExerciseById(ex.exerciseId);
@@ -148,27 +154,33 @@ export async function renderProgramDetailsView(type, id) {
             `;
           }).join('')}
         </ul>
+        
         ${renderExerciseList(program.cooldown, 'Cooldown')}
         
-        <!-- Muscle Diagrams -->
-        <div class="muscle-container">
-          <div class="muscle-diagram-front">
-            <img src="./assets/images/muscles/muscular_system_front.svg" alt="Muscular System Front" class="base-image">
-            ${generateMuscleImages(program.exercises, muscles, true, true)}
-            ${generateMuscleImages(program.exercises, muscles, false, true)}
-          </div>
-          <div class="muscle-diagram-back">
-            <img src="./assets/images/muscles/muscular_system_back.svg" alt="Muscular System Back" class="base-image">
-            ${generateMuscleImages(program.exercises, muscles, true, false)}
-            ${generateMuscleImages(program.exercises, muscles, false, false)}
-          </div>
-        </div>
-        
-        <div style="margin-top: 2rem;">
+	<div class="start-program-container">
           <button class="btn" id="start-program-btn" data-type="${type}" data-id="${id}">
             Start Program
           </button>
         </div>
+
+        <!-- Muscle Diagrams -->
+        <div class="program-muscle-section">
+          <h3 class="section-title">Target Muscles</h3>
+          <div class="muscle-container">
+            <div class="muscle-diagram-front">
+              <img src="./assets/images/muscles/muscular_system_front.svg" alt="Muscular System Front" class="base-image">
+              ${generateMuscleImages(program.exercises, muscles, true, true)}
+              ${generateMuscleImages(program.exercises, muscles, false, true)}
+            </div>
+            <div class="muscle-diagram-back">
+              <img src="./assets/images/muscles/muscular_system_back.svg" alt="Muscular System Back" class="base-image">
+              ${generateMuscleImages(program.exercises, muscles, true, false)}
+              ${generateMuscleImages(program.exercises, muscles, false, false)}
+            </div>
+          </div>
+        </div>
+        
+        
       </div>
     </div>
   `;
@@ -205,6 +217,10 @@ export async function renderProgramDetailsView(type, id) {
           
           const routineIndex = user.customRoutines.findIndex(r => String(r.id) === String(id));
           if (routineIndex !== -1) {
+            const deletedRoutine = user.customRoutines[routineIndex];
+            // Save for undo before deleting
+            saveForUndo('program', deletedRoutine, id);
+            
             user.customRoutines.splice(routineIndex, 1);
           }
           

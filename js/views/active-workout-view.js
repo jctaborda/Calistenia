@@ -110,11 +110,11 @@ function renderActiveWorkoutTemplate({
   return renderHeader() + `
     <div class="card">
       <h1>${program.name}</h1>
-      <p><span style="background: ${phaseColor}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.9em;">${phase.toUpperCase()}</span> Exercise ${currentExerciseIndex + 1} of ${totalExercises}</p>
+      <p><span class="phase-badge" style="background: ${phaseColor}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.9em;">${phase.toUpperCase()}</span> Exercise ${currentExerciseIndex + 1} of ${totalExercises}</p>
       
       ${isHiitWorkout ? workoutTimerService.renderHiitSection(hiitInterval) : ''}
       
-      <div class="card card-muted" id="current-exercise">
+      <div class="card card-muted current-exercise-card">
         <h2>${exercise.name}</h2>
         ${!isHiitWorkout ? `
           <p><strong>Set ${currentSetIndex + 1} of ${currentExerciseData.sets}</strong></p>
@@ -124,7 +124,7 @@ function renderActiveWorkoutTemplate({
       
       ${!isHiitWorkout ? '<div id="rest-timer"></div>' : ''}
       
-      <div class="flex-container" style="margin-top: 1rem;">
+      <div class="workout-actions">
         ${!isHiitWorkout ? `<button id="complete-set-btn" class="btn flex-1">Next Set</button>` : ''}
         <button id="adjust-btn" class="btn btn-secondary">⚙️ Adjust</button>
         <button id="swap-btn" class="btn btn-secondary">🔄 Swap</button>
@@ -320,7 +320,6 @@ function handleStateChange() {
 
 // Cleanup on unmount (if we had a dedicated cleanup function)
 // The view is automatically cleaned up when route changes
-
 
 
 // Export as object for wrapView compatibility

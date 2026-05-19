@@ -45,21 +45,22 @@ export function identifyChanges(oldIds, newIds) {
  * Create a card element from exercise data
  * @param {Object} exercise - Exercise data object
  * @param {Array} categories - Category reference array
+ * @param {Array} difficulties - Difficulty reference array
  * @returns {HTMLElement} - Created DOM element
  */
-export function createExerciseCard(exercise, categories) {
+export function createExerciseCard(exercise, categories, difficulties = []) {
   const card = document.createElement('div');
   
   // Add difficulty class based on exercise difficulty ID (1=beginner, 2=intermediate, 3=advanced)
   let difficultyClass = '';
   if (exercise.difficulty) {
-    const difficulties = Array.isArray(exercise.difficulty) ? exercise.difficulty : [exercise.difficulty];
+    const difficultiesIds = Array.isArray(exercise.difficulty) ? exercise.difficulty : [exercise.difficulty];
     // Check for IDs: 3=advanced, 2=intermediate, 1=beginner
-    if (difficulties.includes(3)) {
+    if (difficultiesIds.includes(3)) {
       difficultyClass = 'difficulty-advanced';
-    } else if (difficulties.includes(2)) {
+    } else if (difficultiesIds.includes(2)) {
       difficultyClass = 'difficulty-intermediate';
-    } else if (difficulties.includes(1)) {
+    } else if (difficultiesIds.includes(1)) {
       difficultyClass = 'difficulty-beginner';
     }
   }
@@ -97,10 +98,11 @@ export function createExerciseCard(exercise, categories) {
     : [exercise.difficulty];
   
   for (const diffId of difficultyIds) {
-    // We'll need to pass difficulty mapping separately
+    const difficulty = difficulties.find(d => d.id === diffId);
+    const diffLabel = difficulty ? difficulty.label : `Difficulty ${diffId}`;
     const diffTag = document.createElement('span');
     diffTag.className = 'tag difficulty-tag';
-    diffTag.textContent = `Difficulty ${diffId}`;
+    diffTag.textContent = diffLabel;
     tagsContainer.appendChild(diffTag);
   }
   
@@ -132,10 +134,12 @@ export function createExerciseCard(exercise, categories) {
  * Preserves scroll position and existing DOM elements
  * @param {HTMLElement} gridElement - Target grid container
  * @param {Array} exercises - Exercise data to render
+ * @param {Object} categories - Category reference array
  * @param {Object} cache - Cache of existing cards by ID
+ * @param {Array} difficulties - Difficulty reference array
  * @returns {Object} - Updated cache
  */
-export function diffUpdateGrid(gridElement, exercises, categories, cache = {}) {
+export function diffUpdateGrid(gridElement, exercises, categories, cache = {}, difficulties = []) {
   const currentIds = exercises.map(e => e.id);
   
   // Get previous IDs from cache or existing children
@@ -157,7 +161,7 @@ export function diffUpdateGrid(gridElement, exercises, categories, cache = {}) {
   // Create new items
   for (const exercise of exercises) {
     if (!cache[exercise.id]) {
-      const card = createExerciseCard(exercise, categories);
+      const card = createExerciseCard(exercise, categories, difficulties);
       gridElement.appendChild(card);
       cache[exercise.id] = card;
     }

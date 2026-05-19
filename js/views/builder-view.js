@@ -3,12 +3,20 @@ import { renderHeader } from '../components/header.js';
 import { getState, updateState } from '../services/state.js';
 import { fetchSkillModules } from '../services/api.js';
 import { ModuleStore } from '../services/modules-service.js';
+import { saveForUndo } from '../services/undo-service.js';
 
 export async function renderBuilderView() {
   const main = document.getElementById('app');
   const state = getState(); // Use getState() to retrieve current state, not updateState()
-  const exercises = state.exercises;
-  const categories = state.categories;
+  const exercises = state.exercises || [];
+  const categories = state.categories || [];
+  
+  console.log('🔧 BUILDER VIEW DEBUG:');
+  console.log('  createNewProgram flag:', state.createNewProgram);
+  console.log('  editingProgram:', state.editingProgram);
+  console.log('  editingModule:', state.editingModule);
+  console.log('  exercises count:', exercises.length);
+  console.log('  categories count:', categories.length);
 
   const editingProgram = state.editingProgram;
   const editingModule = state.editingModule;
@@ -18,6 +26,14 @@ export async function renderBuilderView() {
   let editingId = '';
   let editingModuleName = '';
   let selectedExercises = [];
+  let createNewProgram = false;
+
+  // Check if we should create a new program (not editing)
+  if (state.createNewProgram) {
+    createNewProgram = true;
+    isEditingProgram = false;
+    updateState({ createNewProgram: false }); // Clear the flag after reading
+  }
 
   // Check if we're editing a program FIRST (higher priority)
   if (editingProgram && editingProgram.program && editingProgram.program.exercises) {
@@ -57,38 +73,47 @@ export async function renderBuilderView() {
   main.innerHTML = renderHeader() + `
     <div class="card">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <button class="btn btn-secondary" onclick="window.location.hash = '${isEditingProgram ? '#programs' : '#skill-modules'}'">
-          Back to ${isEditingProgram ? 'Programs' : 'Modules'}
+        <button class="btn btn-secondary" onclick="window.location.hash = '${createNewProgram || isEditingProgram ? '#programs' : '#skill-modules'}'">
+          Back to ${createNewProgram || isEditingProgram ? 'Programs' : 'Modules'}
         </button>
-        <h1>${isEditingProgram ? (editingType === 'custom' ? 'Edit Routine' : 'Clone Program') : 'Edit Module'}</h1>
+        <h1>${createNewProgram ? 'Create New Routine' : isEditingProgram ? (editingType === 'custom' ? 'Edit Routine' : 'Clone Program') : 'Edit Module'}</h1>
       </div>
       <form id="builder-form">
-        <div class="card">
-          <h3>${isEditingProgram ? 'Routine Name' : 'Module Name'}</h3>
+        <div class="card margin-bottom-1">
+          <h3>${createNewProgram || isEditingProgram ? 'Routine Name' : 'Module Name'}</h3>
           <input 
             type="text" 
             id="routine-name" 
-            class="filter-input" 
+            class="filter-input routine-name-input" 
             placeholder="Enter name..." 
-            value="${isEditingProgram ? editingProgram.program.name : editingModuleName}"
+            value="${isEditingProgram ? editingProgram.program.name : createNewProgram ? '' : editingModuleName}"
             required
           >
         </div>
+        
         <div id="selected-exercises">
-          <h3>Selected Exercises <small>(drag to reorder)</small></h3>
+          <h3 class="exercises-heading">Selected Exercises (drag to reorder)</h3>
           <div id="exercise-list" class="draggable-list"></div>
         </div>
-        <div class="card">
-          <h3>Available Exercises</h3>
+        
+        ${selectedExercises.length === 0 ? `
+        <div class="empty-state">
+          <h2>No Exercises Selected Yet</h2>
+          <p>Select exercises from the list below to build your routine or module.</p>
+        </div>
+        ` : ''}
+        
+        <div class="card margin-bottom-1" style="margin-top: 2rem;">
+          <h3>Available Exercises (${exercises.length} exercises)</h3>
           <input 
             type="text" 
             id="available-exercise-filter" 
-            class="filter-input" 
+            class="filter-input exercise-filter" 
             placeholder="Search available exercises..." 
             autocomplete="off"
           >
           <ul id="available-exercises-list" class="checkbox-list">
-            ${exercises.map(e => {
+            ${exercises.length > 0 ? exercises.map(e => {
               const isSelected = selectedExercises.some(ex => ex.exerciseId === e.id);
               return `
                 <li data-exercise-name="${e.name.toLowerCase()}">
@@ -98,13 +123,14 @@ export async function renderBuilderView() {
                   </label>
                 </li>
               `;
-            }).join('')}
+            }).join('') : '<p>No exercises available</p>'}
           </ul>
         </div>
-        <button class="btn margin-top-1" type="submit">${isEditingProgram ? (editingType === 'custom' ? 'Update Routine' : 'Clone Program') : 'Save Module'}</button>
+        <button class="btn margin-top-1 form-submit-btn" type="submit">${createNewProgram ? 'Create Routine' : isEditingProgram ? (editingType === 'custom' ? 'Update Routine' : 'Clone Program') : 'Save Module'}</button>
       </form>
     </div>
   `;
+
 
   function updateExerciseList() {
     const exerciseList = main.querySelector('#exercise-list');
@@ -122,15 +148,15 @@ export async function renderBuilderView() {
 
       return `
         <div class="card margin-bottom-1 draggable-item" draggable="true" data-index="${index}">
-          <div class="drag-handle" style="cursor: move; padding: 0.5rem; background: #f5f5f5; border-radius: 4px; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+          <div class="drag-handle">
             <span>⋮⋮</span>
-            <span style="font-weight: 600;">${exerciseName}</span>
+            <span class="exercise-name">${exerciseName}</span>
           </div>
           <div class="exercise-form-grid">
             <label>Sets: <input type="number" min="1" max="10" value="${ex.sets}" data-index="${index}" data-field="sets"></label>
             <label>Reps: <input type="number" min="1" max="50" value="${ex.reps}" data-index="${index}" data-field="reps"></label>
             <label>Rest (s): <input type="number" min="15" max="300" step="15" value="${ex.restTime}" data-index="${index}" data-field="restTime"></label>
-            <button type="button" class="btn btn-danger" data-remove="${index}">Remove</button>
+            <button type="button" class="btn btn-danger remove-btn" data-remove="${index}">Remove</button>
           </div>
         </div>
       `;
@@ -146,8 +172,16 @@ export async function renderBuilderView() {
 
     exerciseList.querySelectorAll('button[data-remove]').forEach(btn => {
       btn.addEventListener('click', e => {
+        e.stopPropagation();
         const index = parseInt(e.target.dataset.remove);
         const exerciseId = selectedExercises[index].exerciseId;
+        
+        // Get exercise name for confirmation message
+        const exerciseName = selectedExercises[index].name || `Exercise ${index + 1}`;
+        
+        if (!confirm(`Are you sure you want to remove "${exerciseName}" from this routine? This will not delete the exercise itself.`)) {
+          return; // Cancelled
+        }
 
         const checkbox = main.querySelector(`input[type="checkbox"][data-exercise-id="${exerciseId}"]`);
         if (checkbox) {
@@ -237,6 +271,10 @@ export async function renderBuilderView() {
 
   const form = main.querySelector('#builder-form');
   if (form) {
+    console.log('✅ Form found, adding submit listener');
+    console.log('  createNewProgram:', createNewProgram);
+    console.log('  isEditingProgram:', isEditingProgram);
+    console.log('  selectedExercises count:', selectedExercises.length);
     form.addEventListener('submit', async e => {
       e.preventDefault();
 
@@ -255,7 +293,7 @@ export async function renderBuilderView() {
       }
 
       // For modules - save to IndexedDB via ModuleStore
-      if (!isEditingProgram) {
+      if (!isEditingProgram && !createNewProgram) {
         try {
           if (editingModule) {
             // Update existing module
@@ -301,6 +339,29 @@ export async function renderBuilderView() {
           console.error('Error saving module:', error);
           alert('Error saving module: ' + error.message);
         }
+      } else if (createNewProgram) {
+        // Create new custom program
+        const user = { ...state.user };
+        user.customRoutines = user.customRoutines || [];
+        user.customRoutines.push({
+          id: `${user.name}-${Date.now()}`,
+          name,
+          exercises: selectedExercises.map(ex => ({
+            exerciseId: ex.exerciseId,
+            sets: ex.sets,
+            reps: ex.reps,
+            restTime: ex.restTime
+          }))
+        });
+
+        updateState({ 
+          user, 
+          editingProgram: null,
+          editingModule: null,
+          createNewProgram: false
+        });
+        alert('New routine created successfully!');
+        window.location.hash = '#programs';
       } else {
         // Program editing (existing logic)
         const user = { ...state.user };

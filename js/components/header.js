@@ -1,5 +1,6 @@
 export function renderHeader() {
-  const isDarkMode = document.body.classList.contains('dark-mode');
+  // Check theme on documentElement to match index.html approach
+  const isDarkMode = document.documentElement.classList.contains('dark');
   
   return `
     <header id="app-header">
@@ -23,12 +24,7 @@ export function renderHeader() {
 
 // Theme toggle functionality - attach once DOM is ready using event delegation on header
 document.addEventListener('DOMContentLoaded', () => {
-  const savedTheme = localStorage.getItem('theme') || 'light';
-  
-  // Apply saved theme immediately
-  if (savedTheme === 'dark') {
-    document.body.classList.add('dark-mode');
-  }
+  // Theme is already applied in index.html before CSS loads
   
   // Use event delegation on a stable parent element (#app-header)
   document.addEventListener('click', (e) => {
@@ -37,7 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     e.preventDefault();
     
-    const isDarkMode = document.body.classList.toggle('dark-mode');
+    // Toggle on documentElement for consistency with index.html
+    const isDarkMode = document.documentElement.classList.toggle('dark');
     const newTheme = isDarkMode ? 'dark' : 'light';
     
     // Update button text

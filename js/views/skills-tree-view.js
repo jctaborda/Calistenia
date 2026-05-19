@@ -1,3 +1,4 @@
+// views/skills-tree-view.js - Exercise progression tree visualization
 import { renderHeader } from '../components/header.js';
 import { getState } from '../services/state.js';
 
@@ -336,23 +337,23 @@ export async function renderSkillsTreeView() {
         ${treeLayout.labels}
       </div>
       
-      <div class="card" style="margin-top: 2rem; background: var(--gray-100);">
+      <div class="card legend-card" style="margin-top: 2rem; background: var(--gray-100);">
         <h3>Legend</h3>
         <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
           <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <div style="width: 20px; height: 20px; border-radius: 50%; background: #C8E6C9; border: 3px solid #4CAF50;"></div>
+            <div class="legend-item completed"></div>
             <span>Completed</span>
           </div>
           <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <div style="width: 20px; height: 20px; border-radius: 50%; background: #FFF3E0; border: 2.5px solid #FF9800;"></div>
+            <div class="legend-item unlockable"></div>
             <span>Ready to Unlock</span>
           </div>
           <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <div style="width: 20px; height: 20px; border-radius: 50%; background: #E3F2FD; border: 2.5px solid #9E9E9E;"></div>
+            <div class="legend-item prereq-required"></div>
             <span>Prerequisites Required</span>
           </div>
           <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <div style="width: 20px; height: 20px; border-radius: 50%; background: #E3F2FD; border: 2.5px solid #2196F3;"></div>
+            <div class="legend-item available"></div>
             <span>Available</span>
           </div>
         </div>
