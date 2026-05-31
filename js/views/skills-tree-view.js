@@ -361,54 +361,6 @@ export async function renderSkillsTreeView() {
       
       <button class="btn" onclick="window.location.hash = '#skill-modules'" style="margin-top: 2rem;">Back to Modules List</button>
     </div>
-    
-    <style>
-      #skills-tree-svg {
-        border: 1px solid var(--gray-300);
-        border-radius: 8px;
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-      }
-      
-      .tree-label {
-        position: absolute;
-        transform-origin: center;
-        pointer-events: none;
-        width: 180px;
-        margin-left: -90px;
-        z-index: 10;
-      }
-      
-      .label-content {
-        background: white;
-        padding: 0.75rem;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-        font-size: 0.75rem;
-        line-height: 1.4;
-        text-align: center;
-        white-space: nowrap;
-      }
-      
-      .node:hover circle {
-        stroke: #FF9800 !important;
-        stroke-width: 3px !important;
-        cursor: pointer;
-      }
-      
-      /* Exercise name labels below circles */
-      .exercise-label {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-        text-shadow: 0 1px 2px rgba(255,255,255,0.8);
-        fill: #333 !important;
-        font-weight: 600;
-      }
-      
-      /* Ensure labels wrap nicely for long names */
-      text {
-        user-select: none;
-        -webkit-user-select: none;
-      }
-    </style>
   `;
 
   // Add click handlers for nodes

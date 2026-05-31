@@ -24,8 +24,6 @@ import { initializeDataCache, isCacheStale, syncDataCache } from './services/dat
 import { renderExportImportView } from './views/export-import-view.js';
 import { initUndoService, dismissAllUndoToasts } from './services/undo-service.js';
 import { initExerciseForm } from './services/exercise-form-service.js';
-import { renderWorkoutDetailView } from './views/workout-detail-view.js';
-
 initializeState();
 
 // Wait for complete cache initialization AND sync before starting router
@@ -294,7 +292,11 @@ async function router() {
     } else if (hash.startsWith('#workout-detail/')) {
       // Parse workout index from hash: #workout-detail/0, #workout-detail/1, etc.
       const workoutIndex = parseInt(hash.split('/')[1]);
-      renderWorkoutDetailView(workoutIndex);
+      const workoutDetailView = ErrorBoundaryService.wrapView(
+        await import('./views/workout-detail-view.js'), 
+        'Workout Detail'
+      );
+      await workoutDetailView.render(workoutIndex);
     } else if (hash === '#exercise-form') {
       loadExerciseForm();
     }
