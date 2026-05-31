@@ -1708,43 +1708,6 @@ html.dark .loading {
   border-radius: 4px;
 }
 
-/* Error View */
-.error-view {
-  text-align: center;
-  padding: 3rem 2rem;
-}
-
-.error-icon {
-  font-size: 4rem;
-  margin-bottom: 1rem;
-}
-
-.error-message {
-  color: var(--gray-700);
-  font-size: 1.1em;
-  margin-bottom: 2rem;
-}
-
-/* Additional Utility Classes */
-.hidden {
-  display: none !important;
-}
-
-.exercise-form-grid {
-  display: grid;
-  grid-template-columns: auto 1fr auto auto auto;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-.flex-container {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
 .draggable-list {
   min-height: 100px;
 }
