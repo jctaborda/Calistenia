@@ -13,7 +13,6 @@ const APP_SHELL = [
   './js/main.js',
   './js/services/api.js',
   './js/services/state.js',
-  './js/services/workout-engine.js',
   './js/views/home-view.js',
   './js/views/exercise-details-view.js',
   './js/views/programs-view.js',
