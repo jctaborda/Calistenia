@@ -155,7 +155,7 @@ export async function programsLoad() {
     request.onsuccess = () => resolve(request.result || []);
     request.onerror = () => {
       console.error('Error loading programs from IndexedDB:', request.error);
-      resolve([]); // Safe fallback
+      reject(request.error);
     };
   });
 }
@@ -193,7 +193,7 @@ export async function modulesLoad() {
     request.onsuccess = () => resolve(request.result || []);
     request.onerror = () => {
       console.error('Error loading modules from IndexedDB:', request.error);
-      resolve([]); // Safe fallback
+      reject(request.error);
     };
   });
 }
@@ -205,14 +205,14 @@ export async function getModuleById(id) {
   const store = transaction.objectStore(STORES.MODULES);
 
   return new Promise((resolve, reject) => {
-    const request = store.get(id);
-
-    request.onsuccess = () => resolve(request.result || null);
-    request.onerror = () => {
-      console.error('Error getting module from IndexedDB:', request.error);
-      resolve(null); // Safe fallback
-    };
-  });
+     const request = store.get(id);
+    
+     request.onsuccess = () => resolve(request.result || null);
+     request.onerror = () => {
+       console.error('Error getting module from IndexedDB:', request.error);
+       reject(request.error);
+     };
+   });
 }
 
 export async function deleteModule(id) {
@@ -265,7 +265,7 @@ export async function exercisesLoad() {
     request.onsuccess = () => resolve(request.result || []);
     request.onerror = () => {
       console.error('Error loading exercises from IndexedDB:', request.error);
-      resolve([]); // Safe fallback
+      reject(request.error);
     };
   });
 }
@@ -282,7 +282,7 @@ export async function getExerciseById(id) {
     request.onsuccess = () => resolve(request.result || null);
     request.onerror = () => {
       console.error('Error getting exercise from IndexedDB:', request.error);
-      resolve(null); // Safe fallback
+      reject(request.error);
     };
   });
 }
@@ -330,7 +330,7 @@ export async function loadWorkouts(userId = null) {
     request.onsuccess = () => resolve(request.result || []);
     request.onerror = () => {
       console.error('Error loading workouts from IndexedDB:', request.error);
-      resolve([]); // Safe fallback
+      reject(request.error);
     };
   });
 }
@@ -382,7 +382,7 @@ export async function loadState(key) {
     request.onsuccess = () => resolve(request.result?.value || null);
     request.onerror = () => {
       console.error('Error loading state from IndexedDB:', request.error);
-      resolve(null); // Safe fallback
+      reject(request.error);
     };
   });
 }
@@ -463,7 +463,7 @@ export async function categoriesLoad() {
     request.onsuccess = () => resolve(request.result || []);
     request.onerror = () => {
       console.error('Error loading categories from IndexedDB:', request.error);
-      resolve([]); // Safe fallback
+      reject(request.error);
     };
   });
 }
@@ -500,7 +500,7 @@ export async function equipmentLoad() {
     request.onsuccess = () => resolve(request.result || []);
     request.onerror = () => {
       console.error('Error loading equipment from IndexedDB:', request.error);
-      resolve([]); // Safe fallback
+      reject(request.error);
     };
   });
 }
@@ -537,7 +537,7 @@ export async function musclesLoad() {
     request.onsuccess = () => resolve(request.result || []);
     request.onerror = () => {
       console.error('Error loading muscles from IndexedDB:', request.error);
-      resolve([]); // Safe fallback
+      reject(request.error);
     };
   });
 }
@@ -574,7 +574,7 @@ export async function difficultiesLoad() {
     request.onsuccess = () => resolve(request.result || []);
     request.onerror = () => {
       console.error('Error loading difficulties from IndexedDB:', request.error);
-      resolve([]); // Safe fallback
+      reject(request.error);
     };
   });
 }
@@ -617,7 +617,7 @@ export async function getDeletedItemsByType(type) {
     request.onsuccess = () => resolve(request.result || []);
     request.onerror = () => {
       console.error('Error loading deleted items from IndexedDB:', request.error);
-      resolve([]); // Safe fallback
+      reject(request.error);
     };
   });
 }
@@ -676,7 +676,7 @@ export async function clearExpiredDeletedItems(maxAgeMs) {
     
     request.onerror = () => {
       console.error('Error clearing expired deleted items from IndexedDB:', transaction.error);
-      resolve({ success: true, deletedCount: 0 });
+      reject(transaction.error);
     };
   });
 }
@@ -693,7 +693,7 @@ export async function getDeletedItemsCount() {
     request.onsuccess = () => resolve(request.result);
     request.onerror = () => {
       console.error('Error counting deleted items from IndexedDB:', request.error);
-      resolve(0); // Safe fallback
+      reject(request.error);
     };
   });
 }
@@ -727,7 +727,7 @@ export async function loadDataVersion() {
     };
     request.onerror = () => {
       console.error('Error loading data version from IndexedDB:', request.error);
-      resolve(null);
+      reject(request.error);
     };
   });
 }
