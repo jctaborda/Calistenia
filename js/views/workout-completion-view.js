@@ -3,9 +3,10 @@ import { renderHeader } from '../components/header.js';
 import { checkAchievements } from '../services/achievements.js';
 import { show } from '../services/toast-service.js';
 
-export function renderWorkoutCompletionView() {
+export async function renderWorkoutCompletionView() {
   const main = document.getElementById('app');
-  const { activeWorkout, exercises, history = [] } = getState();
+  const state = await getState();
+  const { activeWorkout, exercises = [], history = [] } = state;
   
   if (!activeWorkout || !activeWorkout.program) {
     main.innerHTML = renderHeader() + '<div class="card"><p>No active workout to complete.</p></div>';

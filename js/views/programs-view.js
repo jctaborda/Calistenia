@@ -8,7 +8,7 @@ export async function renderProgramsView() {
   const allPrograms = (await getState().programs) || [];
   const user = getState().user || {};
   const customRoutines = user.customRoutines || [];
-  const { exercises } = getState();
+  const exercises = (await getState().exercises) || [];
   
   // Render with improved visual hierarchy and semantic structure
   main.innerHTML = renderHeader() + `

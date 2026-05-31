@@ -1,7 +1,7 @@
 import { initializeState, setState, getState, updateState } from './services/state.js';
 import { ErrorBoundaryService } from './services/error-boundary-service.js';
 import { renderHomeView } from './views/home-view.js';
-import { renderExerciseView } from './views/exercise-details-view.js';
+import { renderExerciseDetailsView } from './views/exercise-details-view.js';
 import { renderProgramsView } from './views/programs-view.js';
 import { renderActiveWorkoutView } from './views/active-workout-view.js';
 import { renderWorkoutSummaryView } from './views/workout-summary-view.js';

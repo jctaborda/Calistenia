@@ -6,12 +6,13 @@ import { formatDate } from '../utils/date-formatter.js';
 import { updateState } from '../services/state.js';
 import { ValidationService } from '../services/validation.js';
 
-export function renderExerciseView(exerciseId) {
+export async function renderExerciseDetailsView(exerciseId) {
   const main = document.getElementById('app');
-  const exercises = getState().exercises;
-  const history = getState().history;
-  const muscles = getState().muscles;
-  const categories = getState().categories;
+  const state = await getState();
+  const exercises = state.exercises || [];
+  const history = state.history || [];
+  const muscles = state.muscles || [];
+  const categories = state.categories || [];
   const equipment = getState().equipment || [];
   const difficulties = getState().difficulties || [];
   
@@ -430,4 +431,4 @@ export function toggleFavorite(exerciseId) {
 window.toggleFavorite = toggleFavorite;
 
 // Export as object for wrapView compatibility
-export default { render: renderExerciseView };
+export default { render: renderExerciseDetailsView };

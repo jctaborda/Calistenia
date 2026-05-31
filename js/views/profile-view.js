@@ -7,7 +7,8 @@ import { formatDate, formatWorkoutDate } from '../utils/date-formatter.js';
 
 export async function renderProfileView() {
   const main = document.getElementById('app');
-  const { user, history = [] } = getState();
+  const state = getState();
+  const { user = {}, history = [] } = state;
   const achievementStatus = getAllAchievementStatus();
 
   // Get body metrics from user state

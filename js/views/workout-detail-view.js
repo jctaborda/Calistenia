@@ -5,7 +5,8 @@ import { show } from '../services/toast-service.js';
 
 export function renderWorkoutDetailView(workoutIndex) {
   const main = document.getElementById('app');
-  const { history = [], exercises } = getState();
+  const state = getState();
+  const { history = [], exercises = [] } = state;
   const workout = history[workoutIndex];
 
   if (!workout) {
