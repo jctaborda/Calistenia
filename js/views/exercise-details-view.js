@@ -4,6 +4,7 @@ import { getExerciseProgressData } from '../utils/chart-helpers.js';
 import { ImageService } from '../services/image-service.js';
 import { formatDate } from '../utils/date-formatter.js';
 import { updateState } from '../services/state.js';
+import { ValidationService } from '../services/validation.js';
 
 export function renderExerciseView(exerciseId) {
   const main = document.getElementById('app');
@@ -24,18 +25,21 @@ export function renderExerciseView(exerciseId) {
     return;
   }
 
+  // Sanitize all user-generated content to prevent XSS
+  const safe = ValidationService.sanitizeExercise(exercise);
+
   let progressRows = '';
   const progressData = getExerciseProgressData(exerciseId, history);
   if (progressData.length > 0) {
-    progressRows = progressData.map(d => `<tr><td>${formatDate(d.date)}</td><td>${d.totalReps}</td></tr>`).join('');
+    progressRows = progressData.map(d => `<tr><td>${formatDate(d.date)}</td><td>${ValidationService.sanitizeText(String(d.totalReps))}</td></tr>`).join('');
   } else {
     progressRows = '<tr><td colspan="2">No data</td></tr>';
   }
 
-  // Helper function to get exercise name for prerequisites/progressions
+  // Helper function to get exercise name for prerequisites/progressions (sanitized)
   function getExerciseName(id) {
     const ex = (exercises || []).find(e => String(e.id) === String(id));
-    return ex ? ex.name : 'Unknown';
+    return ex ? ValidationService.sanitizeText(ex.name) : 'Unknown';
   }
 
   // Normalize values to arrays - handles null, undefined, empty strings, and single values
@@ -64,33 +68,33 @@ export function renderExerciseView(exerciseId) {
   
   const muscleNames = muscleIds.map(muscleId => {
     const muscle = muscles.find(m => m.id === muscleId);
-    return muscle ? muscle.name : 'Unknown';
+    return muscle ? ValidationService.sanitizeText(muscle.name || muscle.name_en || 'Unknown') : 'Unknown';
   }).join(', ');
   
   const muscleSecNames = muscleSecIds.map(muscleId => {
     const muscle = muscles.find(m => m.id === muscleId);
-    return muscle ? muscle.name : 'Unknown';
+    return muscle ? ValidationService.sanitizeText(muscle.name || muscle.name_en || 'Unknown') : 'Unknown';
   }).join(', ');
 
   // Fetch equipment names - handle both array and single value
   const equipmentIds = normalizeArray(exercise.equipment);
   const equipmentNames = equipmentIds.map(equipmentId => {
     const equip = equipment.find(e => e.id === equipmentId);
-    return equip ? equip.name : `Equipment ${equipmentId}`;
+    return equip ? ValidationService.sanitizeText(equip.name) : `Equipment ${equipmentId}`;
   }).join(', ');
 
   // Fetch difficulty labels - handle both array and single value
   const difficultyIds = normalizeArray(exercise.difficulty);
   const difficultyLabels = difficultyIds.map(diffId => {
     const diff = difficulties.find(d => d.id === diffId);
-    return diff ? diff.label : `Difficulty ${diffId}`;
+    return diff ? ValidationService.sanitizeText(diff.label) : `Difficulty ${diffId}`;
   }).join(', ');
 
   // Fetch category names - handle both array and single value
   const categoryIds = normalizeArray(exercise.categories);
   const categoryNames = categoryIds.map(categoryId => {
     const categ = categories.find(c => c.id === categoryId);
-    return categ ? categ.name : 'Unknown';
+    return categ ? ValidationService.sanitizeText(categ.name) : 'Unknown';
   }).join(', ');
 
   // Generate muscle images with ImageService for error handling
@@ -102,13 +106,13 @@ export function renderExerciseView(exerciseId) {
   main.innerHTML = renderHeader() + `
     <div class="card">
   <div class="exercise-header-actions">
-  <h1 class="section-title">${exercise.name}</h1>
-  <button class="btn btn-icon favorite-toggle ${favoriteExerciseIds.includes(exercise.id) ? 'favorited' : ''}" 
-  onclick="toggleFavorite('${exercise.id}')">
-  ${favoriteExerciseIds.includes(exercise.id) ? '⭐' : '☆'} Favorite
+  <h1 class="section-title">${safe.name}</h1>
+  <button class="btn btn-icon favorite-toggle ${favoriteExerciseIds.includes(safe.id) ? 'favorited' : ''}" 
+  onclick="toggleFavorite('${safe.id}')">
+  ${favoriteExerciseIds.includes(safe.id) ? '⭐' : '☆'} Favorite
   </button>
   </div>
-  <p class="description">${exercise.description}</p>
+  <p class="description">${safe.description}</p>
   
   <!-- Exercise Details Grid -->
   <div class="content-block">
@@ -131,20 +135,30 @@ export function renderExerciseView(exerciseId) {
   </div>
 
   <!-- Exercise Media -->
-  ${ImageService.renderExternalMedia(exercise.image_url, 'image', exercise.name)}
-  ${exercise.video_url ? ImageService.renderExternalMedia(exercise.video_url, 'video', exercise.name) : ''}
+  ${ImageService.renderExternalMedia(safe.image_url, 'image', safe.name)}
+  ${safe.video_url ? ImageService.renderExternalMedia(safe.video_url, 'video', safe.name) : ''}
 
   <!-- Exercise Information -->
   <h2 class="card-title">Exercise Information</h2>
   
   <div class="content-block">
   <span class="content-label">Form Cues: </span>
-  <p class="content-value">${exercise.formCues || 'No form cues provided'}</p>
+  ${(() => {
+    const cues = Array.isArray(safe.formCues) ? safe.formCues : (safe.formCues ? [safe.formCues] : []);
+    return cues.length > 0
+      ? `<ul class="form-cues-list">${cues.map(c => `<li>${c}</li>`).join('')}</ul>`
+      : '<p class="content-value text-muted">No form cues provided</p>';
+  })()}
   </div>
 
   <div class="content-block">
   <span class="content-label">Common Mistakes to Avoid: </span>
-  <p class="content-value">${exercise.commonMistakes || 'No common mistakes noted'}</p>
+  ${(() => {
+    const mistakes = Array.isArray(safe.commonMistakes) ? safe.commonMistakes : (safe.commonMistakes ? [safe.commonMistakes] : []);
+    return mistakes.length > 0
+      ? `<ul class="mistakes-list">${mistakes.map(m => `<li>${m}</li>`).join('')}</ul>`
+      : '<p class="content-value text-muted">No common mistakes noted</p>';
+  })()}
   </div>
 
   <!-- Progression Chain -->
@@ -182,7 +196,7 @@ export function renderExerciseView(exerciseId) {
   <div class="muscle-diagram-section">
   <h3 class="diagram-title">Front View</h3>
   <div class="muscle-diagram-front">
-  <img src="./assets/images/muscles/muscular_system_front.svg" alt="Muscular System Front" class="base-image">
+  <img src="./assets/images/muscles/muscular_system_front.svg" alt="Muscular System Front" class="base-image" loading="lazy">
   ${frontImagesSecondary}
   ${frontImages} 
   </div>
@@ -191,9 +205,10 @@ export function renderExerciseView(exerciseId) {
   <div class="muscle-diagram-section">
   <h3 class="diagram-title">Back View</h3>
   <div class="muscle-diagram-back">
-  <img src="./assets/images/muscles/muscular_system_back.svg" alt="Muscular System Back" class="base-image">
+  <img src="./assets/images/muscles/muscular_system_back.svg" alt="Muscular System Back" class="base-image" loading="lazy">
   ${backImagesSecondary}
   ${backImages} 
+  </div>
   </div>
   </div>
   </div>
@@ -259,6 +274,37 @@ export function renderExerciseView(exerciseId) {
   
   .muscle-diagram-section {
   margin-bottom: 2rem;
+  overflow: hidden; /* Ensure images don't overflow */
+  }
+  
+  .muscle-diagram-front,
+  .muscle-diagram-back {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  overflow: hidden;
+  height: 500px; /* FIXED HEIGHT critical for overlay positioning */
+  }
+  
+  .muscle-diagram-front .base-image, .muscle-diagram-back .base-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 1;
+  }
+  
+  .muscle-diagram-front .muscle-layer, .muscle-diagram-back .muscle-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 2;
   }
   
   .diagram-title {
@@ -276,7 +322,9 @@ export function renderExerciseView(exerciseId) {
   .muscle-diagram-front,
   .muscle-diagram-back {
   width: 100%;
-  margin-top: 1rem;
+  max-width: 400px;
+  margin: 0 auto;
+  position: relative;
   }
   }
   
@@ -317,6 +365,45 @@ export function renderExerciseView(exerciseId) {
   
   .favorite-toggle.favorited:hover {
   background: linear-gradient(135deg, #FFA500 0%, #FF8C00 100%);
+  }
+
+  /* Form cues and common mistakes lists */
+  .form-cues-list,
+  .mistakes-list {
+  margin: 0.5rem 0 0 1.5rem;
+  padding: 0;
+  }
+
+  .form-cues-list li {
+  margin-bottom: 0.25rem;
+  color: var(--primary);
+  }
+
+  .mistakes-list li {
+  margin-bottom: 0.25rem;
+  color: var(--error, #e74c3c);
+  }
+
+  .text-muted {
+  color: var(--gray-500);
+  font-style: italic;
+  }
+
+  /* Dark mode for exercise details */
+  html.dark .form-cues-list li {
+  color: #e0e0e0;
+  }
+
+  html.dark .mistakes-list li {
+  color: #ff6b6b;
+  }
+
+  html.dark .content-label {
+  color: #b0b0b0;
+  }
+
+  html.dark .content-value {
+  color: #e0e0e0;
   }
     </style>
   `;

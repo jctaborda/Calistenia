@@ -1,6 +1,7 @@
 // js/views/exercises-view.js
 import { renderHeader } from '../components/header.js';
 import { getState } from '../services/state.js';
+import { ValidationService } from '../services/validation.js';
 import { 
   diffUpdateGrid, 
   setupVirtualScroll,
@@ -53,7 +54,7 @@ export async function renderExercisesView() {
     return (diffId) => {
       if (!cache.has(diffId)) {
         const diff = difficulties.find(d => d.id === diffId);
-        cache.set(diffId, diff ? diff.label : `Difficulty ${diffId}`);
+        cache.set(diffId, diff ? ValidationService.sanitizeText(diff.label) : `Difficulty ${diffId}`);
       }
       return cache.get(diffId);
     };
@@ -77,9 +78,13 @@ export async function renderExercisesView() {
     
     // Debounce filter changes for better performance
     filterTimeout = setTimeout(() => {
+      // Get fresh state for favoriteExerciseIds
+      const user = getState().user || {};
+      const favoriteExerciseIds = user.favoriteExerciseIds || [];
+      
       filteredExercises = exercises.filter(exercise => {
         // Apply favorites filter first
-        if (currentFilters.showFavoritesOnly && !favoriteExerciseIds.includes(exercise.id)) {
+        if (currentFilters.showFavoritesOnly && !favoriteExerciseIds.includes(String(exercise.id))) {
           return false;
         }
         
@@ -239,17 +244,13 @@ export async function renderExercisesView() {
     
     const prevButton = paginationContainer.querySelector('.pagination-nav-btn[data-action="prev"]');
     const nextButton = paginationContainer.querySelector('.pagination-nav-btn[data-action="next"]');
-    const pageNumbersContainer = paginationContainer.querySelector('[id*="page-numbers"]') || 
-                                  document.createElement('div');
     
-    // Create or get page numbers container
-    let numbersWrapper = paginationContainer.querySelector('[id*="page-numbers"]');
+    // Get or create page numbers container (use fixed ID)
+    let numbersWrapper = paginationContainer.querySelector('#pagination-numbers-wrapper');
     if (!numbersWrapper) {
       numbersWrapper = document.createElement('div');
       numbersWrapper.id = 'pagination-numbers-wrapper';
-      const existingButtons = Array.from(paginationContainer.querySelectorAll('.pagination-btn'));
-      existingButtons.forEach(btn => btn.remove());
-      paginationContainer.insertBefore(numbersWrapper, paginationContainer.firstChild);
+      paginationContainer.appendChild(numbersWrapper);
     }
     
     // Only update the page numbers
@@ -288,7 +289,10 @@ export async function renderExercisesView() {
     if (newPage >= 1 && newPage <= totalPages) {
       currentPage = newPage;
       
-      const exercisesToShow = filteredExercises.slice(0, itemsPerPage);
+      // Calculate correct slice for current page
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      const exercisesToShow = filteredExercises.slice(startIndex, endIndex);
       
       // Show/hide empty state
       const gridElement = main.querySelector('#exercises-grid');
@@ -316,7 +320,7 @@ export async function renderExercisesView() {
     }
   }
 
-  // Render main layout with optimized structure and modern CSS classes
+ // Render main layout with optimized structure and modern CSS classes
   main.innerHTML = renderHeader() + `
   <div class="card">
     <h1 class="section-title">Exercises</h1>
@@ -329,47 +333,9 @@ export async function renderExercisesView() {
       
       <!-- Favorites Toggle -->
       <button class="btn btn-secondary" id="favorites-toggle">⭐ Favorites Only</button>
-    </div>
-
-    <!-- Category Filter -->
-    <div class="form-group">
-      <label for="category-filter">Filter by Category</label>
-      <select id="category-filter" multiple size="0">
-        <option value="all" data-type="all">All Categories</option>
-        ${categories.map(category => `<option value="${category.id}">${category.name}</option>`).join('')}
-      </select>
-    </div>
-
-    <!-- Muscle Filter -->
-    <div class="form-group">
-      <label for="muscle-filter">Filter by Muscle Group</label>
-      <select id="muscle-filter" multiple size="0">
-        <option value="all" data-type="all">All Muscles</option>
-        ${muscles.map(muscle => `<option value="${muscle.id}">${muscle.name_en || muscle.name}</option>`).join('')}
-      </select>
-    </div>
-
-    <!-- Equipment Filter -->
-    <div class="form-group">
-      <label for="equipment-filter">Filter by Equipment</label>
-      <select id="equipment-filter" multiple size="0">
-        <option value="all" data-type="all">All Equipment</option>
-        ${equipment.map(eq => `<option value="${eq.id}">${eq.name}</option>`).join('')}
-      </select>
-    </div>
-
-    <!-- Difficulty Filter -->
-    <div class="form-group">
-      <label for="difficulty-filter">Filter by Difficulty</label>
-      <select id="difficulty-filter" multiple size="0">
-        <option value="all" data-type="all">All Difficulties</option>
-        ${difficulties.map(diff => `<option value="${diff.id}">${diff.label}</option>`).join('')}
-      </select>
-    </div>
-
-    <!-- Clear Filters Button -->
-      <div class="form-group" style="text-align: center; margin-top: 1rem;">
-      <button id="clear-filters-btn" class="btn btn-secondary">🔄 Clear All Filters</button>
+      
+      <!-- Filter Bottom Sheet Toggle -->
+      <button class="btn btn-accent" id="open-filters-btn">🔍 Filters <span id="filter-count" style="display:none">(0)</span></button>
     </div>
 
     <!-- Exercises Grid -->
@@ -389,7 +355,194 @@ export async function renderExercisesView() {
       <div id="pagination-numbers-wrapper"></div>
       <button class="pagination-nav-btn" data-action="next" disabled title="Next page">>></button>
     </div>
+  </div>
+
+  <!-- Filter Bottom Sheet -->
+  <div class="bottom-sheet-overlay" id="filter-overlay" style="display:none;">
+    <div class="bottom-sheet" id="filter-bottom-sheet">
+      <div class="bottom-sheet-header">
+        <h3>Filter Exercises</h3>
+        <button class="bottom-sheet-close" id="close-filters-btn">&times;</button>
+      </div>
+      
+      <div class="bottom-sheet-content">
+        <!-- Categories -->
+        <div class="filter-group">
+          <h4>Categories</h4>
+          <div class="checkbox-list" id="filter-categories"></div>
+        </div>
+        
+        <!-- Muscles -->
+        <div class="filter-group">
+          <h4>Muscle Groups</h4>
+          <div class="checkbox-list" id="filter-muscles"></div>
+        </div>
+        
+        <!-- Equipment -->
+        <div class="filter-group">
+          <h4>Equipment</h4>
+          <div class="checkbox-list" id="filter-equipment"></div>
+        </div>
+        
+        <!-- Difficulties -->
+        <div class="filter-group">
+          <h4>Difficulty</h4>
+          <div class="checkbox-list" id="filter-difficulties"></div>
+        </div>
+      </div>
+      
+      <div class="bottom-sheet-footer">
+        <button class="btn btn-secondary" id="clear-filters-from-sheet">Clear All</button>
+        <button class="btn btn-primary" id="apply-filters-btn">Apply Filters</button>
+      </div>
+    </div>
   </div>`;
+
+  /**
+   * Render checkbox lists for each filter category
+   */
+  function renderFilterCheckboxes() {
+    const categoryList = main.querySelector('#filter-categories');
+    if (categoryList) {
+      categoryList.innerHTML = categories.map(cat => `
+        <label class="checkbox-item">
+          <input type="checkbox" value="${cat.id}" data-filter="category" ${currentFilters.selectedCategories.includes(cat.id) ? 'checked' : ''}>
+          <span>${ValidationService.sanitizeText(cat.name)}</span>
+        </label>
+      `).join('');
+    }
+
+    const muscleList = main.querySelector('#filter-muscles');
+    if (muscleList) {
+      muscleList.innerHTML = muscles.map(muscle => `
+        <label class="checkbox-item">
+          <input type="checkbox" value="${muscle.id}" data-filter="muscle" ${currentFilters.selectedMuscles.includes(muscle.id) ? 'checked' : ''}>
+          <span>${ValidationService.sanitizeText(muscle.name_en || muscle.name)}</span>
+        </label>
+      `).join('');
+    }
+
+    const equipmentList = main.querySelector('#filter-equipment');
+    if (equipmentList) {
+      equipmentList.innerHTML = equipment.map(eq => `
+        <label class="checkbox-item">
+          <input type="checkbox" value="${eq.id}" data-filter="equipment" ${currentFilters.selectedEquipment.includes(eq.id) ? 'checked' : ''}>
+          <span>${ValidationService.sanitizeText(eq.name)}</span>
+        </label>
+      `).join('');
+    }
+
+    const difficultyList = main.querySelector('#filter-difficulties');
+    if (difficultyList) {
+      difficultyList.innerHTML = difficulties.map(diff => `
+        <label class="checkbox-item">
+          <input type="checkbox" value="${diff.id}" data-filter="difficulty" ${currentFilters.selectedDifficulties.includes(diff.id) ? 'checked' : ''}>
+          <span>${ValidationService.sanitizeText(diff.label)}</span>
+        </label>
+      `).join('');
+    }
+  }
+
+  /**
+   * Update filter count badge
+   */
+  function updateFilterCount() {
+    const count = currentFilters.selectedCategories.length + 
+                  currentFilters.selectedMuscles.length + 
+                  currentFilters.selectedEquipment.length + 
+                  currentFilters.selectedDifficulties.length;
+    const countEl = main.querySelector('#filter-count');
+    if (countEl) {
+      if (count > 0) {
+        countEl.style.display = 'inline';
+        countEl.textContent = `(${count})`;
+      } else {
+        countEl.style.display = 'none';
+      }
+    }
+  }
+
+  /**
+   * Open the filter bottom sheet
+   */
+  function openFiltersSheet() {
+    renderFilterCheckboxes();
+    const overlay = main.querySelector('#filter-overlay');
+    const sheet = main.querySelector('#filter-bottom-sheet');
+    const content = main.querySelector('#filter-bottom-sheet .bottom-sheet-content');
+    
+    if (overlay && sheet) {
+      // Force display and positioning
+      overlay.style.display = 'flex';
+      overlay.style.position = 'fixed';
+      overlay.style.top = '0';
+      overlay.style.left = '0';
+      overlay.style.right = '0';
+      overlay.style.bottom = '0';
+      overlay.style.width = '100%';
+      overlay.style.height = '100%';
+      overlay.style.zIndex = '999999';
+      overlay.style.background = 'rgba(0, 0, 0, 0.9)';
+      overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+      
+      // Force bottom sheet styling
+      sheet.style.display = 'flex';
+      sheet.style.flexDirection = 'column';
+      sheet.style.width = '90%';
+      sheet.style.maxWidth = '600px';
+      sheet.style.margin = '0 auto';
+      sheet.style.position = 'relative';
+      sheet.style.height = '85vh';
+      sheet.style.maxHeight = '85vh';
+      sheet.style.background = '#ffffff';
+      sheet.style.border = '3px solid #333333';
+      sheet.style.borderRadius = '16px 16px 0 0';
+      sheet.style.boxShadow = '0 -8px 32px rgba(0, 0, 0, 0.4)';
+      
+      // Force content area to be scrollable
+      if (content) {
+        content.style.flex = '1';
+        content.style.overflowY = 'auto';
+        content.style.overflowX = 'hidden';
+        content.style.background = '#ffffff';
+        content.style.padding = '20px';
+        content.style.borderRadius = '0';
+      }
+      
+      // Force filter titles to be visible
+      const filterHeaders = sheet.querySelectorAll('.filter-group h4');
+      filterHeaders.forEach(header => {
+        header.style.color = '#1a1a1a';
+        header.style.fontWeight = '800';
+        header.style.fontSize = '20px';
+        header.style.textTransform = 'uppercase';
+        header.style.letterSpacing = '1px';
+        header.style.borderLeft = '4px solid #F6B17A';
+        header.style.paddingLeft = '8px';
+        header.style.marginBottom = '16px';
+      });
+      
+      // Force checkbox items to have white background
+      const checkboxItems = sheet.querySelectorAll('.checkbox-item');
+      checkboxItems.forEach(item => {
+        item.style.background = '#ffffff';
+        item.style.border = '1px solid #dddddd';
+      });
+      
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  /**
+   * Close the filter bottom sheet
+   */
+  function closeFiltersSheet() {
+    const overlay = main.querySelector('#filter-overlay');
+    if (overlay) {
+      overlay.style.display = 'none';
+      document.body.style.overflow = ''; // Restore scrolling
+    }
+  }
 
   /**
    * Initialize event listeners using event delegation (attached ONCE)
@@ -420,6 +573,18 @@ export async function renderExercisesView() {
         }
       }
 
+      // Handle favorite toggle buttons in exercise cards
+      else if (target.classList.contains('exercise-card-favorite')) {
+        e.stopPropagation();
+        const exerciseId = target.getAttribute('data-exercise-id');
+        if (exerciseId) {
+          // Toggle favorite using the global function
+          if (window.toggleFavorite) {
+            window.toggleFavorite(exerciseId);
+          }
+        }
+      }
+
       // Handle pagination number buttons
       else if (target.classList.contains('pagination-btn')) {
         e.stopPropagation();
@@ -441,26 +606,146 @@ export async function renderExercisesView() {
       }
 
       // Handle "Add Exercise" button
-      else if (target.id === 'add-exercise-btn') {
-        window.location.hash = '#exercise-form';
+      // Handle "Add Exercise" button
+            else if (target.closest('#add-exercise-btn')) {
+              window.location.hash = '#exercise-form';
+            }
+      
+            // Handle Favorites Toggle
+            else if (target.closest('#favorites-toggle')) {
+              e.stopPropagation();
+              currentFilters.showFavoritesOnly = !currentFilters.showFavoritesOnly;
+        
+              // Update button styling based on state
+              const toggleBtn = main.querySelector('#favorites-toggle');
+              if (currentFilters.showFavoritesOnly) {
+                toggleBtn.classList.add('active');
+                toggleBtn.innerHTML = '⭐ Showing Favorites';
+              } else {
+                toggleBtn.classList.remove('active');
+                toggleBtn.innerHTML = '⭐ Favorites Only';
+              }
+        
+              applyFilters();
+            }
+      
+            // Handle Open Filters button
+                  else if (target.closest('#open-filters-btn')) {
+                    e.stopPropagation();
+                    openFiltersSheet();
+                  }
+      
+            // Handle Close Filters button
+            else if (target.closest('#close-filters-btn')) {
+              e.stopPropagation();
+              closeFiltersSheet();
+            }
+      
+            // Handle Apply Filters button
+            else if (target.closest('#apply-filters-btn')) {
+              e.stopPropagation();
+              closeFiltersSheet();
+              applyFilters();
+              updateFilterCount();
+            }
+      
+            // Handle Clear Filters button from sheet
+            else if (target.closest('#clear-filters-from-sheet')) {
+              e.stopPropagation();
+              currentFilters = {
+                searchText: '',
+                selectedCategories: [],
+                selectedDifficulties: [],
+                showAllCategories: true,
+                showAllDifficulties: true,
+                selectedMuscles: [],
+                showAllMuscles: true,
+                selectedEquipment: [],
+                showAllEquipment: true,
+                showFavoritesOnly: false
+              };
+        
+              // Reset search input
+              if (filterInput) filterInput.value = '';
+        
+              // Reset favorites toggle
+              const toggleBtn = main.querySelector('#favorites-toggle');
+              if (toggleBtn) {
+                toggleBtn.classList.remove('active');
+                toggleBtn.innerHTML = '⭐ Favorites Only';
+              }
+        
+              applyFilters();
+              updateFilterCount();
+              renderFilterCheckboxes(); // Refresh checkboxes
+            }
+      
+      // Handle checkbox changes in filter sheet
+      else if (target.matches('.checkbox-list input[type="checkbox"]')) {
+        const checkbox = target;
+        const filterType = checkbox.getAttribute('data-filter');
+        const value = parseInt(checkbox.value);
+        
+        // Update filter state based on checkbox type
+        switch (filterType) {
+          case 'category':
+            if (checkbox.checked) {
+              if (!currentFilters.selectedCategories.includes(value)) {
+                currentFilters.selectedCategories.push(value);
+              }
+              currentFilters.showAllCategories = false;
+            } else {
+              currentFilters.selectedCategories = currentFilters.selectedCategories.filter(id => id !== value);
+              if (currentFilters.selectedCategories.length === 0) {
+                currentFilters.showAllCategories = true;
+              }
+            }
+            break;
+          case 'muscle':
+            if (checkbox.checked) {
+              if (!currentFilters.selectedMuscles.includes(value)) {
+                currentFilters.selectedMuscles.push(value);
+              }
+              currentFilters.showAllMuscles = false;
+            } else {
+              currentFilters.selectedMuscles = currentFilters.selectedMuscles.filter(id => id !== value);
+              if (currentFilters.selectedMuscles.length === 0) {
+                currentFilters.showAllMuscles = true;
+              }
+            }
+            break;
+          case 'equipment':
+            if (checkbox.checked) {
+              if (!currentFilters.selectedEquipment.includes(value)) {
+                currentFilters.selectedEquipment.push(value);
+              }
+              currentFilters.showAllEquipment = false;
+            } else {
+              currentFilters.selectedEquipment = currentFilters.selectedEquipment.filter(id => id !== value);
+              if (currentFilters.selectedEquipment.length === 0) {
+                currentFilters.showAllEquipment = true;
+              }
+            }
+            break;
+          case 'difficulty':
+            if (checkbox.checked) {
+              if (!currentFilters.selectedDifficulties.includes(value)) {
+                currentFilters.selectedDifficulties.push(value);
+              }
+              currentFilters.showAllDifficulties = false;
+            } else {
+              currentFilters.selectedDifficulties = currentFilters.selectedDifficulties.filter(id => id !== value);
+              if (currentFilters.selectedDifficulties.length === 0) {
+                currentFilters.showAllDifficulties = true;
+              }
+            }
+            break;
+        }
       }
       
-      // Handle Favorites Toggle
-      else if (target.id === 'favorites-toggle') {
-        e.stopPropagation();
-        currentFilters.showFavoritesOnly = !currentFilters.showFavoritesOnly;
-        
-        // Update button styling based on state
-        const toggleBtn = main.querySelector('#favorites-toggle');
-        if (currentFilters.showFavoritesOnly) {
-          toggleBtn.classList.add('active');
-          toggleBtn.innerHTML = '⭐ Showing Favorites';
-        } else {
-          toggleBtn.classList.remove('active');
-          toggleBtn.innerHTML = '⭐ Favorites Only';
-        }
-        
-        applyFilters();
+      // Handle overlay click (close on overlay)
+      else if (target.closest('#filter-overlay')) {
+        closeFiltersSheet();
       }
     });
   }
@@ -468,13 +753,25 @@ export async function renderExercisesView() {
   // Initial setup
   initializeEventDelegation();
   
-  // Set up filter listeners
+  // Listen for state changes to update favorite buttons
+  document.addEventListener('stateChange', () => {
+    updateFavoriteButtons();
+  });
+  
+  function updateFavoriteButtons() {
+    const user = getState().user || {};
+    const favoriteExerciseIds = user.favoriteExerciseIds || [];
+    
+    document.querySelectorAll('.exercise-card-favorite').forEach(btn => {
+      const exerciseId = btn.getAttribute('data-exercise-id');
+      const isFavorite = favoriteExerciseIds.includes(exerciseId);
+      btn.textContent = isFavorite ? '★' : '☆';
+      btn.className = `btn exercise-card-favorite ${isFavorite ? 'favorited' : ''}`;
+    });
+  }
+  
+  // Set up search filter listener
   const filterInput = main.querySelector('#exercise-filter');
-  const categoryFilter = main.querySelector('#category-filter');
-  const difficultyFilter = main.querySelector('#difficulty-filter');
-  const muscleFilter = main.querySelector('#muscle-filter');
-  const equipmentFilter = main.querySelector('#equipment-filter');
-  const clearFiltersBtn = main.querySelector('#clear-filters-btn');
   
   if (filterInput) {
     filterInput.addEventListener('input', (e) => {
@@ -483,142 +780,27 @@ export async function renderExercisesView() {
     });
   }
   
-  if (categoryFilter) {
-    categoryFilter.addEventListener('change', (e) => {
-      const selectedCategories = e.target.selectedOptions;
-      
-      const allSelected = Array.from(selectedCategories).some(option => 
-        option.getAttribute('data-type') === 'all');
-      
-      if (allSelected) {
-        currentFilters.showAllCategories = true;
-        currentFilters.selectedCategories = [];
-      } else {
-        currentFilters.showAllCategories = false;
-        currentFilters.selectedCategories = Array.from(selectedCategories).map(option => 
-          parseInt(option.value));
-      }
-      
-      applyFilters();
-    });
-  }
-  
-  if (muscleFilter) {
-    muscleFilter.addEventListener('change', (e) => {
-      const selectedMuscles = e.target.selectedOptions;
-      
-      const allSelected = Array.from(selectedMuscles).some(option => 
-        option.getAttribute('data-type') === 'all');
-      
-      if (allSelected) {
-        currentFilters.showAllMuscles = true;
-        currentFilters.selectedMuscles = [];
-      } else {
-        currentFilters.showAllMuscles = false;
-        currentFilters.selectedMuscles = Array.from(selectedMuscles).map(option => 
-          parseInt(option.value));
-      }
-      
-      applyFilters();
-    });
-  }
-  
-  if (equipmentFilter) {
-    equipmentFilter.addEventListener('change', (e) => {
-      const selectedEquipment = e.target.selectedOptions;
-      
-      const allSelected = Array.from(selectedEquipment).some(option => 
-        option.getAttribute('data-type') === 'all');
-      
-      if (allSelected) {
-        currentFilters.showAllEquipment = true;
-        currentFilters.selectedEquipment = [];
-      } else {
-        currentFilters.showAllEquipment = false;
-        currentFilters.selectedEquipment = Array.from(selectedEquipment).map(option => 
-          parseInt(option.value));
-      }
-      
-      applyFilters();
-    });
-  }
-  
-  if (difficultyFilter) {
-    difficultyFilter.addEventListener('change', (e) => {
-      const selectedDifficulty = e.target.selectedOptions;
-      
-      const allSelected = Array.from(selectedDifficulty).some(option => 
-        option.getAttribute('data-type') === 'all');
-      
-      if (allSelected) {
-        currentFilters.showAllDifficulties = true;
-        currentFilters.selectedDifficulties = [];
-      } else {
-        currentFilters.showAllDifficulties = false;
-        currentFilters.selectedDifficulties = Array.from(selectedDifficulty).map(option => 
-          parseInt(option.value));
-      }
-      
-      applyFilters();
-    });
-  }
-  
-  // Clear all filters button
-  if (clearFiltersBtn) {
-    clearFiltersBtn.addEventListener('click', () => {
-      currentFilters = {
-        searchText: '',
-        selectedCategories: [],
-        selectedDifficulties: [],
-        showAllCategories: true,
-        showAllDifficulties: true,
-        selectedMuscles: [],
-        showAllMuscles: true,
-        selectedEquipment: [],
-        showAllEquipment: true,
-        showFavoritesOnly: false
-      };
-      
-      // Reset all filter inputs
-      if (filterInput) filterInput.value = '';
-      if (categoryFilter) {
-        categoryFilter.innerHTML = '<option value="all" data-type="all">All Categories</option>' + 
-          categories.map(category => `<option value="${category.id}">${category.name}</option>`).join('');
-      }
-      if (muscleFilter) {
-        muscleFilter.innerHTML = '<option value="all" data-type="all">All Muscles</option>' + 
-          muscles.map(muscle => `<option value="${muscle.id}">${muscle.name_en || muscle.name}</option>`).join('');
-      }
-      if (equipmentFilter) {
-        equipmentFilter.innerHTML = '<option value="all" data-type="all">All Equipment</option>' + 
-          equipment.map(eq => `<option value="${eq.id}">${eq.name}</option>`).join('');
-      }
-      if (difficultyFilter) {
-        difficultyFilter.innerHTML = '<option value="all" data-type="all">All Difficulties</option>' + 
-          difficulties.map(diff => `<option value="${diff.id}">${diff.label}</option>`).join('');
-      }
-      
-      // Reset favorites toggle button
-      const toggleBtn = main.querySelector('#favorites-toggle');
-      if (toggleBtn) {
-        toggleBtn.classList.remove('active');
-        toggleBtn.innerHTML = '⭐ Favorites Only';
-      }
-      
-      applyFilters();
-    });
-  }
-  
   // Handle empty state clear filters button
   const emptyStateClearBtn = main.querySelector('#clear-filters-empty-state');
   if (emptyStateClearBtn) {
     emptyStateClearBtn.addEventListener('click', () => {
-      clearFiltersBtn.click();
+      const clearBtn = main.querySelector('#clear-filters-from-sheet');
+      if (clearBtn) clearBtn.click();
     });
   }
   
   // Initial render of first page
   updatePageView(1);
+  
+  // Force reload of CSS to ensure latest styles are applied
+  // This works around Service Worker caching issues
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+      for(let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
   
   // Setup lazy loading for any future images
   setupLazyLoadImages();

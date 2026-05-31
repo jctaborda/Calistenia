@@ -65,19 +65,26 @@ export function createExerciseCard(exercise, categories, difficulties = []) {
     }
   }
   
+  // Get favorite state from global state
+  const user = window.getState ? window.getState().user : window.state?.user;
+  const favoriteExerciseIds = user?.favoriteExerciseIds || [];
+  const isFavorite = favoriteExerciseIds.includes(exercise.id);
+  
   card.className = `exercise-card ${difficultyClass}`;
   card.setAttribute('data-id', exercise.id);
   card.setAttribute('data-exercise-name', exercise.name.toLowerCase());
   
   const nameEl = document.createElement('h3');
+  nameEl.className = 'exercise-card-name';
   nameEl.textContent = exercise.name;
   
   const descEl = document.createElement('p');
+  descEl.className = 'exercise-card-description';
   descEl.textContent = exercise.description;
   
   // Tags container
   const tagsContainer = document.createElement('div');
-  tagsContainer.className = 'tags';
+  tagsContainer.className = 'exercise-card-tags';
   
   // Category tags
   if (exercise.categories && exercise.categories.length > 0) {
@@ -106,9 +113,16 @@ export function createExerciseCard(exercise, categories, difficulties = []) {
     tagsContainer.appendChild(diffTag);
   }
   
+  // Favorite toggle button - moved to appear next to name
+  const favoriteBtn = document.createElement('button');
+  favoriteBtn.className = `btn exercise-card-favorite ${isFavorite ? 'favorited' : ''}`;
+  favoriteBtn.textContent = isFavorite ? '★' : '☆';
+  favoriteBtn.setAttribute('data-exercise-id', exercise.id);
+  favoriteBtn.setAttribute('aria-label', 'Toggle favorite');
+  
   // Controls
   const controls = document.createElement('div');
-  controls.style.marginTop = '1rem';
+  controls.className = 'exercise-card-controls';
   
   const viewBtn = document.createElement('button');
   viewBtn.className = 'btn view-btn';
@@ -122,6 +136,7 @@ export function createExerciseCard(exercise, categories, difficulties = []) {
   controls.appendChild(editBtn);
   
   card.appendChild(nameEl);
+  card.appendChild(favoriteBtn);
   card.appendChild(descEl);
   card.appendChild(tagsContainer);
   card.appendChild(controls);

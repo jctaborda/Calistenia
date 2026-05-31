@@ -20,16 +20,28 @@ import { renderErrorView } from './views/error-view.js';
 import { renderSpinner, hideSpinner } from './components/spinner.js';
 import { renderSkillsTreeView } from './views/skills-tree-view.js';
 import { renderHeader } from './components/header.js';
-import { initializeDataCache } from './services/data-cache.js';
+import { initializeDataCache, isCacheStale, syncDataCache } from './services/data-cache.js';
 import { renderExportImportView } from './views/export-import-view.js';
 import { initUndoService, dismissAllUndoToasts } from './services/undo-service.js';
 import { initExerciseForm } from './services/exercise-form-service.js';
+import { renderWorkoutDetailView } from './views/workout-detail-view.js';
 
 initializeState();
 
 // Initialize data cache from IndexedDB on first load
-const dataCacheInitialized = initializeDataCache().then(() => {
+const dataCacheInitialized = initializeDataCache().then(async () => {
   console.log('✅ Data cache ready');
+  
+  // Check if server data has changed since last sync
+  try {
+    if (await isCacheStale()) {
+      console.log('🔄 Server data changed — syncing cache...');
+      await syncDataCache();
+      console.log('✅ Cache synced — re-rendering with fresh data');
+    }
+  } catch (err) {
+    console.warn('⚠️ Cache sync check failed:', err);
+  }
 }).catch(err => {
   console.warn('⚠️ Failed to initialize data cache:', err);
 });
@@ -269,6 +281,10 @@ async function router() {
         'Shared Workout'
       );
       await sharedWorkoutView.render(workoutId);
+    } else if (hash.startsWith('#workout-detail/')) {
+      // Parse workout index from hash: #workout-detail/0, #workout-detail/1, etc.
+      const workoutIndex = parseInt(hash.split('/')[1]);
+      renderWorkoutDetailView(workoutIndex);
     } else if (hash === '#exercise-form') {
       loadExerciseForm();
     }

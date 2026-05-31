@@ -135,8 +135,8 @@ export async function initExerciseForm(editId, setStateFn) {
     if (container) {
       container.innerHTML = references.equipment.map(eq => 
         `<label class="checkbox-item">
-          <input type="checkbox" name="equipment" value="${eq.id}">
-          ${eq.name}
+          <input type="checkbox" name="equipment" value="${escapeHtml(String(eq.id))}">
+          ${escapeHtml(eq.name)}
         </label>`
       ).join('');
     }
@@ -146,8 +146,8 @@ export async function initExerciseForm(editId, setStateFn) {
     if (editContainer) {
       editContainer.innerHTML = references.equipment.map(eq => 
         `<label class="checkbox-item">
-          <input type="checkbox" name="equipment" value="${eq.id}">
-          ${eq.name}
+          <input type="checkbox" name="equipment" value="${escapeHtml(String(eq.id))}">
+          ${escapeHtml(eq.name)}
         </label>`
       ).join('');
     }
@@ -159,8 +159,8 @@ export async function initExerciseForm(editId, setStateFn) {
     if (container) {
       container.innerHTML = references.categories.map(cat => 
         `<label class="checkbox-item">
-          <input type="checkbox" name="categories" value="${cat.id}">
-          ${cat.name}
+          <input type="checkbox" name="categories" value="${escapeHtml(String(cat.id))}">
+          ${escapeHtml(cat.name)}
         </label>`
       ).join('');
     }
@@ -170,8 +170,8 @@ export async function initExerciseForm(editId, setStateFn) {
     if (editContainer) {
       editContainer.innerHTML = references.categories.map(cat => 
         `<label class="checkbox-item">
-          <input type="checkbox" name="categories" value="${cat.id}">
-          ${cat.name}
+          <input type="checkbox" name="categories" value="${escapeHtml(String(cat.id))}">
+          ${escapeHtml(cat.name)}
         </label>`
       ).join('');
     }
@@ -183,8 +183,8 @@ export async function initExerciseForm(editId, setStateFn) {
     if (musclesContainer) {
       musclesContainer.innerHTML = references.muscles.map(mus => 
         `<label class="checkbox-item">
-          <input type="checkbox" name="muscles" value="${mus.id}">
-          ${mus.name_en || mus.name}
+          <input type="checkbox" name="muscles" value="${escapeHtml(String(mus.id))}">
+          ${escapeHtml(mus.name_en || mus.name)}
         </label>`
       ).join('');
     }
@@ -194,8 +194,8 @@ export async function initExerciseForm(editId, setStateFn) {
     if (secondaryContainer) {
       secondaryContainer.innerHTML = references.muscles.map(mus => 
         `<label class="checkbox-item">
-          <input type="checkbox" name="muscles_secondary" value="${mus.id}">
-          ${mus.name_en || mus.name}
+          <input type="checkbox" name="muscles_secondary" value="${escapeHtml(String(mus.id))}">
+          ${escapeHtml(mus.name_en || mus.name)}
         </label>`
       ).join('');
     }
@@ -205,8 +205,8 @@ export async function initExerciseForm(editId, setStateFn) {
     if (editMusclesContainer) {
       editMusclesContainer.innerHTML = references.muscles.map(mus => 
         `<label class="checkbox-item">
-          <input type="checkbox" name="muscles" value="${mus.id}">
-          ${mus.name_en || mus.name}
+          <input type="checkbox" name="muscles" value="${escapeHtml(String(mus.id))}">
+          ${escapeHtml(mus.name_en || mus.name)}
         </label>`
       ).join('');
     }
@@ -216,8 +216,8 @@ export async function initExerciseForm(editId, setStateFn) {
     if (editSecondaryContainer) {
       editSecondaryContainer.innerHTML = references.muscles.map(mus => 
         `<label class="checkbox-item">
-          <input type="checkbox" name="muscles_secondary" value="${mus.id}">
-          ${mus.name_en || mus.name}
+          <input type="checkbox" name="muscles_secondary" value="${escapeHtml(String(mus.id))}">
+          ${escapeHtml(mus.name_en || mus.name)}
         </label>`
       ).join('');
     }
@@ -225,7 +225,7 @@ export async function initExerciseForm(editId, setStateFn) {
 
   function populateDifficultySelects(difficulties) {
     const difficultyOptions = difficulties.map(d => 
-      `<option value="${d.id}">${d.label || d.name}</option>`
+      `<option value="${escapeHtml(String(d.id))}">${escapeHtml(d.label || d.name)}</option>`
     ).join('');
     
     document.getElementById('difficulty').innerHTML = '<option value="">Select Difficulty...</option>' + difficultyOptions;

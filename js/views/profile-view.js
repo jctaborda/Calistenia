@@ -101,9 +101,22 @@ export async function renderProfileView() {
   </div>
   
   <div class="profile-section">
-  <h2>Workout History</h2>
-  ${history.length === 0 ? '<p>No workouts completed yet.</p>' : `\n          <ul class="workout-history-list">\n            ${history.map((w, index) => `\n              <li class="workout-item">\n                <div class="workout-info">\n                  <span class="workout-program">${w.program?.name || 'Custom Workout'}</span>\n                  <span class="workout-date">${formatWorkoutDate(w.date, false)}</span>\n                </div>\n                ${w.completedExercises ? `<span class="workout-count">${w.completedExercises.length} exercises</span>` : ''}\n                <button class="btn btn-danger btn-sm delete-history-btn" data-index="${index}" title="Delete this workout">×</button>\n              </li>\n            `).join('')}\n          </ul>\n        `}
-  </div>
+   <h2>Workout History</h2>
+   ${history.length === 0 ? '<p>No workouts completed yet.</p>' : `
+           <ul class="workout-history-list">
+             ${history.map((w, index) => `
+               <li class="workout-item" onclick="window.navigateToWorkoutDetail(${index})" style="cursor: pointer;">
+                 <div class="workout-info">
+                   <span class="workout-program">${w.program?.name || 'Custom Workout'}</span>
+                   <span class="workout-date">${formatWorkoutDate(w.date, false)}</span>
+                 </div>
+                 ${w.completedExercises ? `<span class="workout-count">${w.completedExercises.length} exercises</span>` : ''}
+                 <button class="btn btn-danger btn-sm delete-history-btn" data-index="${index}" title="Delete this workout">×</button>
+               </li>
+             `).join('')}
+           </ul>
+         `}
+   </div>
   
   <button class="btn back-to-home-btn" onclick="window.location.hash = '#home'" style="margin-top: 2rem;">Back to Home</button>
     </div>
@@ -204,6 +217,11 @@ export async function renderProfileView() {
     
     // Re-render the profile view
     renderProfileView();
+  };
+
+  // Make navigateToWorkoutDetail available globally
+  window.navigateToWorkoutDetail = function(index) {
+    window.location.hash = `#workout-detail/${index}`;
   };
 }
 

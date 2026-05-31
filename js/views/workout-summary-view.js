@@ -54,7 +54,7 @@ export function renderWorkoutSummaryView() {
   <div id="adaptive-suggestion" class="adaptive-suggestion hidden"></div>
   
   <div class="summary-actions">
-  <button class="btn share-workout-btn" onclick="shareWorkout()">📤 Share Workout</button>
+  <button class="btn share-workout-btn" onclick="shareWorkout()">📋 Copy to Clipboard</button>
   <button class="btn btn-secondary back-to-home-btn" onclick="window.location.hash = '#home'">Back to Home</button>
   <button class="btn btn-secondary view-profile-btn" onclick="window.location.hash = '#profile'">View Profile</button>
   </div>
@@ -89,44 +89,54 @@ window.shareWorkout = async function() {
   return;
     }
     
-    // Create a unique ID for this shared workout
-    const workoutId = 'shared-' + Date.now();
-    
-    // Get existing shared workouts or create new array
-    const sharedWorkouts = JSON.parse(localStorage.getItem('sharedWorkouts') || '[]');
-    sharedWorkouts.push({
-  ...lastWorkout,
-  id: workoutId
-    });
-    
-    // Save to localStorage
-    localStorage.setItem('sharedWorkouts', JSON.stringify(sharedWorkouts));
-    
-    // Generate shareable URL
-    const baseUrl = window.location.origin + window.location.pathname;
-    const shareUrl = `${baseUrl}#shared-workout/${workoutId}`;
+    // Format workout summary for social media/WhatsApp
+    const workoutText = formatWorkoutSummary(lastWorkout);
     
     // Try to copy to clipboard
     if (navigator.clipboard && navigator.clipboard.writeText) {
-  navigator.clipboard.writeText(shareUrl).then(() => {
-  alert('Workout link copied to clipboard!\n\n' + shareUrl);
+  navigator.clipboard.writeText(workoutText).then(() => {
+    alert('✅ Workout summary copied to clipboard!\n\nYou can now paste it in WhatsApp, social media, or any text message.');
   }).catch(() => {
-  alert('Share link:\n\n' + shareUrl + '\n\n(Copy it manually if clipboard failed)');
+    // Fallback: show text for manual copy
+    prompt('Copy the workout summary below:', workoutText);
   });
     } else {
   // Fallback for older browsers
   const textArea = document.createElement('textarea');
-  textArea.value = shareUrl;
+  textArea.value = workoutText;
   document.body.appendChild(textArea);
   textArea.select();
   try {
-  document.execCommand('copy');
-  alert('Workout link copied to clipboard!\n\n' + shareUrl);
+    document.execCommand('copy');
+    alert('✅ Workout summary copied to clipboard!\n\nYou can now paste it in WhatsApp, social media, or any text message.');
   } catch (err) {
-  alert('Share link:\n\n' + shareUrl + '\n\n(Copy it manually if clipboard failed)');
+    prompt('Copy the workout summary below:', workoutText);
   }
   document.body.removeChild(textArea);
     }
+  }
+  
+  // Format workout summary for social media/WhatsApp
+  function formatWorkoutSummary(workout) {
+    const program = workout.program;
+    const date = new Date(workout.date).toLocaleDateString();
+    
+    let summary = `💪 *Workout Summary*\n`;
+    summary += `━━━━━━━━━━━━━━━━━━━━\n\n`;
+    summary += `📅 *Date:* ${date}\n`;
+    summary += `🏋️ *Program:* ${program.name}\n\n`;
+    summary += `🔥 *Exercises Completed:*\n`;
+    
+    workout.exercises.forEach((exercise, index) => {
+      summary += `\n${index + 1}. *${exercise.exerciseName}*\n`;
+      summary += `   Target: ${exercise.targetSets} sets × ${exercise.targetReps} reps\n`;
+      summary += `   Actual: ${exercise.actualReps.join(' × ')} reps`;
+    });
+    
+    summary += `\n\n━━━━━━━━━━━━━━━━━━━━\n`;
+    summary += `Great job! Keep pushing your limits! 💯\n`;
+    
+    return summary;
   }
   
   function showAdaptiveSuggestion(rating) {

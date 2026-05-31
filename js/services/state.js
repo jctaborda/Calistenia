@@ -172,6 +172,19 @@ export function initializeState() {
         throw new Error('Invalid state structure');
       }
       
+      // Ensure user object exists with default preferences
+      if (!state.user) {
+        state.user = {
+          name: 'User',
+          autoAdvanceAfterRest: true, // Default to auto-advance
+          restTimerColorMode: 'both' // 'both' (green then red), 'red-only', 'green-only'
+        };
+      } else if (!state.user.autoAdvance) {
+        // Add default preferences if missing
+        state.user.autoAdvance = true;
+        state.user.restTimerColorMode = 'both';
+      }
+      
       // Freezing in development mode to catch mutations early
       if (typeof __DEV__ !== 'undefined' && __DEV__) {
         deepFreeze(state);
@@ -179,10 +192,10 @@ export function initializeState() {
     } catch (error) {
       console.error('Failed to parse saved state:', error);
       // Reset to default state on corruption
-      state = { user: null, activeWorkout: null };
+      state = { user: { name: 'User', autoAdvance: true, restTimerColorMode: 'both' }, activeWorkout: null };
     }
   } else {
-    state = { user: null, activeWorkout: null };
+    state = { user: { name: 'User', autoAdvance: true, restTimerColorMode: 'both' }, activeWorkout: null };
   }
   
   // Freeze in development mode

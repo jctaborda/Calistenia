@@ -1,6 +1,7 @@
 import { getState, setState, updateState } from './state.js';
+import { WorkoutStore } from './storage.js';
 
-export function logSet(reps, { deferAdvance = false } = {}) {
+export async function logSet(reps, { deferAdvance = false } = {}) {
   const { activeWorkout, user, history = [] } = getState();
   if (!activeWorkout) return;
   const programExercises = activeWorkout.program.exercises;
@@ -27,6 +28,8 @@ export function logSet(reps, { deferAdvance = false } = {}) {
       progress,
       date: new Date().toISOString(),
     };
+    // Persist completed workout to IndexedDB
+    await WorkoutStore.add(completedWorkout);
     updateState({
       history: [...(getState().history || []), completedWorkout],
       activeWorkout: null,

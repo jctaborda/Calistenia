@@ -10,80 +10,172 @@ export class WorkoutTimerService {
   }
 
   /**
-   * Display rest timer in the DOM
-   * @param {number} restTime - Rest time in seconds
-   * @param {HTMLElement} containerElement - Where to render the timer
-   * @returns {object} Timer controller with stop() and updateDisplay() methods
-   */
-  displayRestTimer(restTime, containerElement) {
-    if (!containerElement || restTime <= 0) return null;
+    * Display rest timer in the DOM (counts UP from 0, not countdown)
+    * @param {number} restTime - Rest time in seconds (target duration)
+    * @param {HTMLElement} containerElement - Where to render the timer
+    * @param {Function} onComplete - Callback when timer completes
+    * @param {number} setTime - Exercise time in seconds (for HIIT mode, optional)
+    * @returns {object} Timer controller with stop() and updateDisplay() methods
+    */
+   displayRestTimer(restTime, containerElement, onComplete = () => {}, setTime = null) {
+     if (!containerElement || restTime <= 0) {
+       // If no rest time, call onComplete immediately
+       if (onComplete) onComplete();
+       return null;
+     }
 
-    // Clear any existing content
-    containerElement.innerHTML = this._renderTimerHTML(restTime);
+     // Clear any existing content
+     containerElement.innerHTML = this._renderTimerHTML(restTime, setTime);
 
-    return this.startTimer(restTime, {
-      container: containerElement,
-      onTick: () => {},
-      onComplete: () => {}
-    });
-  }
+     // Start timer counting UP from 0
+     return this.startTimerCountingUp(restTime, {
+       container: containerElement,
+       onTick: (elapsed, targetRestTime) => {
+         // Update color based on time mode
+         const colorElement = containerElement.querySelector('.timer-display');
+         if (colorElement) {
+           // Green while within rest time, red after rest time ends
+           if (elapsed <= targetRestTime) {
+             colorElement.style.color = 'var(--success)'; // Green
+           } else {
+             colorElement.style.color = 'var(--danger)'; // Red
+           }
+         }
+       },
+       onComplete: () => {
+         // Don't show "Rest Complete!" message - just keep timer running
+         // User should click "Next" to advance
+       }
+     });
+   }
 
   /**
-   * Start a countdown timer
-   * @param {number} duration - Duration in seconds
-   * @param {object} options - Timer configuration
-   * @param {Function} options.onTick - Callback on each tick (remaining, total)
-   * @param {Function} options.onComplete - Callback when timer finishes
-   * @returns {object} Controller with stop() method
-   */
-  startTimer(duration, options = {}) {
-    const { onTick = () => {}, onComplete = () => {} } = options;
-    let remaining = duration;
-    const startTime = Date.now();
+      * Start a countdown timer using expected end timestamp (resumable on view re-render)
+      * @param {number} duration - Duration in seconds
+      * @param {object} options - Timer configuration
+      * @param {Function} options.onTick - Callback on each tick (elapsed, total)
+      * @param {Function} options.onComplete - Callback when timer finishes
+      * @param {number} options.startTime - Optional: start timestamp (for resume functionality)
+      * @param {number} options.expectedEndTime - Optional: expected end timestamp (for resume functionality)
+      * @returns {object} Controller with stop() and getState() methods
+      */
+     startTimer(duration, options = {}) {
+       const { onTick = () => {}, onComplete = () => {}, startTime = null, expectedEndTime = null } = options;
+       let remaining = duration;
+       const actualStartTime = startTime || Date.now();
+       const targetEndTime = expectedEndTime || (actualStartTime + duration * 1000);
 
-    // Clear any existing timer
-    this.stopTimer();
+       // Clear any existing timer
+       this.stopTimer();
 
-    this.activeTimer = {
-      duration,
-      remaining,
-      update: () => {
-        const elapsed = Math.floor((Date.now() - startTime) / 1000);
-        remaining = Math.max(0, duration - elapsed);
+       this.activeTimer = {
+         duration,
+         remaining,
+         expectedEndTime: targetEndTime,
+         actualStartTime,
+         update: () => {
+           const now = Date.now();
+           const elapsed = Math.floor((now - actualStartTime) / 1000);
+           remaining = Math.max(0, duration - elapsed);
 
-        // Update display elements if they exist
-        const secEl = document.getElementById('timer-seconds');
-        const progEl = document.getElementById('timer-progress');
+           // Update display elements if they exist
+           const secEl = document.getElementById('timer-seconds');
+           const progEl = document.getElementById('timer-progress');
 
-        if (secEl) {
-          secEl.textContent = remaining;
-        }
+           if (secEl) {
+             secEl.textContent = remaining;
+           }
 
-        if (progEl && duration > 0) {
-          const pct = Math.min(100, Math.max(0, ((duration - remaining) / duration) * 100));
-          progEl.style.width = pct + '%';
-        }
+           if (progEl && duration > 0) {
+             const pct = Math.min(100, Math.max(0, (elapsed / duration) * 100));
+             progEl.style.width = pct + '%';
+           }
 
-        onTick(remaining, duration);
+           // Pass elapsed time to onTick callback
+           onTick(elapsed, duration);
 
-        if (remaining <= 0) {
-          this.stopTimer();
-          onComplete();
-        }
-      }
-    };
+           if (remaining <= 0) {
+             this.stopTimer();
+             onComplete();
+           }
+         }
+       };
 
-    // Start interval (update every second)
-    this.timerInterval = setInterval(this.activeTimer.update, 1000);
+       // Start interval (update every second)
+       this.timerInterval = setInterval(this.activeTimer.update, 1000);
 
-    // Initial update
-    this.activeTimer.update();
+       // Initial update
+       this.activeTimer.update();
 
-    return {
-      stop: () => this.stopTimer(),
-      getState: () => ({ ...this.activeTimer })
-    };
-  }
+       return {
+         stop: () => this.stopTimer(),
+         getState: () => { 
+           return { 
+             ...this.activeTimer,
+             remaining 
+           }
+         }
+       };
+     }
+
+   /**
+      * Start a timer counting UP from 0 (for rest timer)
+      * @param {number} targetDuration - Target duration in seconds (for color change)
+      * @param {object} options - Timer configuration
+      * @param {HTMLElement} options.container - Container element
+      * @param {Function} options.onTick - Callback on each tick (elapsed, targetDuration)
+      * @param {Function} options.onComplete - Callback when timer finishes (optional)
+      * @returns {object} Controller with stop() and getState() methods
+      */
+     startTimerCountingUp(targetDuration, options = {}) {
+       const { container, onTick = () => {}, onComplete = () => {} } = options;
+       const actualStartTime = Date.now();
+
+       // Clear any existing timer
+       this.stopTimer();
+
+       this.activeTimer = {
+         targetDuration,
+         actualStartTime,
+         update: () => {
+           const now = Date.now();
+           const elapsed = Math.floor((now - actualStartTime) / 1000);
+
+           // Update display elements if they exist
+           const secEl = document.getElementById('timer-seconds');
+           const progEl = document.getElementById('timer-progress');
+
+           if (secEl) {
+             secEl.textContent = elapsed;
+           }
+
+           if (progEl && targetDuration > 0) {
+             const pct = Math.min(100, Math.max(0, (elapsed / targetDuration) * 100));
+             progEl.style.width = pct + '%';
+           }
+
+           // Pass elapsed time to onTick callback
+           onTick(elapsed, targetDuration);
+         }
+       };
+
+       // Start interval (update every second)
+       this.timerInterval = setInterval(this.activeTimer.update, 1000);
+
+       // Initial update
+       this.activeTimer.update();
+
+       return {
+         stop: () => this.stopTimer(),
+         getState: () => { 
+           const elapsed = Math.floor((Date.now() - this.activeTimer.actualStartTime) / 1000);
+           return { 
+             ...this.activeTimer,
+             elapsed 
+           }
+         }
+       };
+     }
 
   /**
    * Stop the currently active timer
@@ -196,23 +288,24 @@ export class WorkoutTimerService {
   // Private helper methods
 
   /**
-   * Render HTML for countdown timer with progress bar
-   * @param {number} duration - Duration in seconds
-   * @returns {string} HTML string
-   */
-  _renderTimerHTML(duration) {
-    return `
-      <div class="rest-timer-container">
-        <h3>Rest Time</h3>
-        <div class="timer-display">
-          <span id="timer-seconds">${duration}</span>s
-          <div class="timer-progress-bar">
-            <div id="timer-progress" style="width: 0%;"></div>
+       * Render HTML for elapsed time timer with progress bar
+       * @param {number} duration - Target duration in seconds (for progress bar)
+       * @param {number} setTime - Exercise time in seconds (for HIIT mode)
+       * @returns {string} HTML string
+       */
+      _renderTimerHTML(duration, setTime = null) {
+        return `
+          <div class="rest-timer-container">
+            <h3>Rest Time</h3>
+            <div class="timer-display" style="color: var(--success);">
+              <span id="timer-seconds">0</span>s
+              <div class="timer-progress-bar">
+                <div id="timer-progress" style="width: 0%;"></div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    `;
-  }
+        `;
+      }
 }
 
 // Export singleton instance

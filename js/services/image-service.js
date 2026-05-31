@@ -78,11 +78,19 @@ export class ImageService {
       return '';
     }
 
-    // Validate that URL is not empty (relative paths are valid)
-    if (url.includes('<') || url.includes('>')) {
+    // Block XSS vectors: HTML entities, javascript: URIs, data: URIs with script
+    if (url.includes('<') || url.includes('>') || url.includes("'") || url.includes('"')) {
       console.warn('Invalid media URL contains HTML entities:', url);
       return '';
     }
+    
+    const lowerUrl = url.toLowerCase().trim();
+    if (lowerUrl.startsWith('javascript:') || lowerUrl.startsWith('data:text/html')) {
+      console.warn('Blocked dangerous media URL:', url);
+      return '';
+    }
+
+    // Validate that URL is not empty (relative paths are valid)
 
     // Detect file extension to determine correct element type
     const ext = url.split('.').pop().toLowerCase();
@@ -140,6 +148,7 @@ export class ImageService {
       return '';
     }
 
+    // Return images joined together - they will be positioned absolutely by CSS
     return filtered.map(muscleId => 
       this.generateMuscleImageHTML(muscleId, type)
     ).join('');

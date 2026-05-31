@@ -91,17 +91,12 @@ export async function renderBuilderView() {
           >
         </div>
         
-        <div id="selected-exercises">
+        <div id="selected-exercises" style="${selectedExercises.length === 0 ? 'display: none;' : ''}">
           <h3 class="exercises-heading">Selected Exercises (drag to reorder)</h3>
           <div id="exercise-list" class="draggable-list"></div>
         </div>
         
-        ${selectedExercises.length === 0 ? `
-        <div class="empty-state">
-          <h2>No Exercises Selected Yet</h2>
-          <p>Select exercises from the list below to build your routine or module.</p>
-        </div>
-        ` : ''}
+        ${selectedExercises.length === 0 ? `\n        <div class="empty-state">\n          <h2>No Exercises Selected Yet</h2>\n          <p>Select exercises from the list below to build your routine or module.</p>\n        </div>\n        ` : ''}
         
         <div class="card margin-bottom-1" style="margin-top: 2rem;">
           <h3>Available Exercises (${exercises.length} exercises)</h3>
@@ -134,9 +129,27 @@ export async function renderBuilderView() {
 
   function updateExerciseList() {
     const exerciseList = main.querySelector('#exercise-list');
+    const selectedExercisesDiv = main.querySelector('#selected-exercises');
+    const emptyState = main.querySelector('.empty-state');
+    
     if (selectedExercises.length === 0) {
       exerciseList.innerHTML = '<p>No exercises selected yet.</p>';
+      // Hide selected exercises section and show empty state
+      if (selectedExercisesDiv) {
+        selectedExercisesDiv.style.display = 'none';
+      }
+      if (emptyState) {
+        emptyState.style.display = 'block';
+      }
       return;
+    } else {
+      // Show selected exercises section and hide empty state
+      if (selectedExercisesDiv) {
+        selectedExercisesDiv.style.display = 'block';
+      }
+      if (emptyState) {
+        emptyState.style.display = 'none';
+      }
     }
 
     exerciseList.innerHTML = selectedExercises.map((ex, index) => {

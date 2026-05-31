@@ -11,23 +11,52 @@ import {
   storeDifficulties,
   difficultiesLoad,
   storePrograms,
-  programsLoad
+  programsLoad,
+  storeDataVersion,
+  loadDataVersion
 } from './database.js';
 
 let cacheInitialized = false;
+let cacheInitializationPromise = null;
+
+/**
+ * Prevents concurrent runs of initializeDataCache().
+ * If called while initialization is in progress, returns the existing Promise.
+ */
+function getInitLock() {
+  if (cacheInitializationPromise === null) {
+    cacheInitializationPromise = (async () => {
+      try {
+        await initializeDataCacheInternal();
+      } finally {
+        cacheInitializationPromise = null;
+      }
+    })();
+  }
+  return cacheInitializationPromise;
+}
 
 export async function initializeDataCache() {
   if (cacheInitialized) return true;
   
+  // If another initialization is already in progress, wait for it
+  return getInitLock();
+}
+
+// Internal implementation (called only by getInitLock)
+async function initializeDataCacheInternal() {
+  if (cacheInitialized) return true;
+  
   try {
     // Load all reference data and cache to IndexedDB
-    const [exercises, categories, equipment, muscles, difficulties, programs] = await Promise.all([
+    const [exercises, categories, equipment, muscles, difficulties, programs, serverVersion] = await Promise.all([
       loadAllExercises(),
       loadAllCategories(),
       loadAllEquipment(),
       loadAllMuscles(),
       loadAllDifficulties(),
-      loadAllPrograms()
+      loadAllPrograms(),
+      fetchServerVersion()
     ]);
     
     // Store in IndexedDB for offline access
@@ -38,11 +67,83 @@ export async function initializeDataCache() {
     await storeDifficulties(difficulties);
     await storePrograms(programs);
     
+    // Store the server version for future sync checks
+    if (serverVersion) {
+      await storeDataVersion(serverVersion);
+    }
+    
     cacheInitialized = true;
     console.log('✅ Data cache initialized');
     return true;
   } catch (error) {
     console.error('Error initializing data cache:', error);
+    return false;
+  }
+}
+
+// Fetch the data version from data.json
+async function fetchServerVersion() {
+  try {
+    const response = await fetch('./data/data.json');
+    const data = await response.json();
+    return data.dataVersion || null;
+  } catch (error) {
+    console.warn('Could not fetch data version:', error);
+    return null;
+  }
+}
+
+// Check if cached data is stale compared to server
+export async function isCacheStale() {
+  try {
+    const [cachedVersion, serverVersion] = await Promise.all([
+      loadDataVersion(),
+      fetchServerVersion()
+    ]);
+    
+    // If no server version, cache is not stale
+    if (!serverVersion) return false;
+    
+    // If no cached version, cache is stale (first load)
+    if (!cachedVersion) return true;
+    
+    // Compare versions
+    const stale = cachedVersion !== serverVersion;
+    if (stale) {
+      console.log(`🔄 Cache stale: ${cachedVersion} → ${serverVersion}`);
+    }
+    return stale;
+  } catch (error) {
+    console.warn('Error checking cache freshness:', error);
+    return false;
+  }
+}
+
+// Force re-sync cache from data.json (clears and reloads all data)
+export async function syncDataCache() {
+  try {
+    console.log('🔄 Syncing data cache from server...');
+    
+    // Clear all cached data
+    await Promise.all([
+      storeExercises([]),
+      storeCategories([]),
+      storeEquipment([]),
+      storeMuscles([]),
+      storeDifficulties([]),
+      storePrograms([])
+    ]);
+    
+    // Reset initialization flag
+    cacheInitialized = false;
+    
+    // Re-initialize with fresh data
+    await initializeDataCacheInternal();
+    
+    console.log('✅ Data cache synced');
+    return true;
+  } catch (error) {
+    console.error('Error syncing data cache:', error);
     return false;
   }
 }

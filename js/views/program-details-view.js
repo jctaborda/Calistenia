@@ -109,14 +109,13 @@ export async function renderProgramDetailsView(type, id) {
           ← Back to Programs
         </button>
         <div class="program-actions">
-          <button class="btn" id="edit-program-btn" data-type="${type}" data-id="${id}">
+          <button class="btn btn-sm" id="edit-program-btn" data-type="${type}" data-id="${id}">
             Edit Program
           </button>
-          ${type === 'custom' ? `
-            <button class="btn btn-danger" id="delete-routine-btn" data-id="${id}">
-              Delete Routine
-            </button>
-          ` : ''}
+          <button class="btn btn-sm" id="copy-routine-btn" data-type="${type}" data-id="${id}">
+            📋 Copy Routine
+          </button>
+          ${type === 'custom' ? `\n            <button class="btn btn-danger btn-sm" id="delete-routine-btn" data-id="${id}">\n              Delete Routine\n            </button>\n          ` : ''}
         </div>
       </div>
       <h1 class="program-title">${program.name}</h1>
@@ -205,6 +204,46 @@ export async function renderProgramDetailsView(type, id) {
     });
   }
   
+  // Copy routine button handler
+  const copyBtn = main.querySelector('#copy-routine-btn');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', () => {
+      // Build routine text
+      let routineText = `*${program.name}*\\n\\n`;
+      
+      if (program.warmup && program.warmup.length > 0) {
+        routineText += '*Warmup*\\n';
+        program.warmup.forEach(ex => {
+          const exercise = findExerciseById(ex.exerciseId);
+          routineText += `- ${exercise ? exercise.name : 'Unknown'}: ${ex.sets} sets × ${ex.reps} reps (Rest: ${ex.restTime}s)\\n`;
+        });
+        routineText += '\\n';
+      }
+      
+      routineText += '*Exercises*\\n';
+      program.exercises.forEach(ex => {
+        const exercise = findExerciseById(ex.exerciseId);
+        routineText += `- ${exercise ? exercise.name : 'Unknown'}: ${ex.sets} sets × ${ex.reps} reps (Rest: ${ex.restTime}s)\\n`;
+      });
+      
+      if (program.cooldown && program.cooldown.length > 0) {
+        routineText += '\\n*Cooldown*\\n';
+        program.cooldown.forEach(ex => {
+          const exercise = findExerciseById(ex.exerciseId);
+          routineText += `- ${exercise ? exercise.name : 'Unknown'}: ${ex.sets} sets × ${ex.reps} reps (Rest: ${ex.restTime}s)\\n`;
+        });
+      }
+      
+      // Copy to clipboard
+      navigator.clipboard.writeText(routineText).then(() => {
+        alert('Routine copied to clipboard!');
+      }).catch(err => {
+        console.error('Failed to copy:', err);
+        alert('Failed to copy routine to clipboard.');
+      });
+    });
+  }
+  
   // Delete routine button handler (only for custom routines)
   if (type === 'custom') {
     const deleteBtn = main.querySelector('#delete-routine-btn');
@@ -232,44 +271,49 @@ export async function renderProgramDetailsView(type, id) {
     }
   }
   
-  // Start button handler
+  // Start button handler - start workout directly (manual mode only)
   const startBtn = main.querySelector('#start-program-btn');
   if (startBtn) {
     startBtn.addEventListener('click', () => {
-      if (type === 'program') {
-        const originalProgram = programs.find(p => String(p.id) === String(id));
-        if (originalProgram) {
-          updateState({
-            activeWorkout: {
-              program: originalProgram,
-              progress: {},
-              currentExerciseIndex: 0,
-              currentSetIndex: 0
-            }
-          });
-          window.location.hash = '#active-workout';
-        }
-      } else if (type === 'custom') {
-        const routine = customRoutines.find(r => String(r.id) === String(id));
-        if (routine) {
-          updateState({
-            activeWorkout: {
-              program: {
-                id: 'custom-' + id,
-                name: routine.name,
-                exercises: routine.exercises,
-                warmup: routine.warmup || [],
-                cooldown: routine.cooldown || []
-              },
-              progress: {},
-              currentExerciseIndex: 0,
-              currentSetIndex: 0
-            }
-          });
-          window.location.hash = '#active-workout';
-        }
+      startWorkout(type, id, programs, customRoutines);
+    });
+  }
+}
+
+/**
+ * Start workout directly (manual mode only)
+ */
+function startWorkout(type, id, programs, customRoutines) {
+  let program;
+  if (type === 'program') {
+    const originalProgram = programs.find(p => String(p.id) === String(id));
+    if (originalProgram) {
+      program = originalProgram;
+    }
+  } else if (type === 'custom') {
+    const routine = customRoutines.find(r => String(r.id) === String(id));
+    if (routine) {
+      program = {
+        id: 'custom-' + id,
+        name: routine.name,
+        exercises: routine.exercises,
+        warmup: routine.warmup || [],
+        cooldown: routine.cooldown || []
+      };
+    }
+  }
+  
+  if (program) {
+    updateState({
+      activeWorkout: {
+        program: program,
+        progress: {},
+        currentExerciseIndex: 0,
+        currentSetIndex: 0,
+        workoutMode: 'manual' // Always manual mode
       }
     });
+    window.location.hash = '#active-workout';
   }
 }
 

@@ -14,6 +14,9 @@ export function renderWorkoutCompletionView() {
 
   const program = activeWorkout.program;
   
+  // Calculate workout statistics from setHistory
+  const workoutStats = calculateWorkoutStats(activeWorkout);
+  
   // Check for new achievements after workout completion
   const newlyUnlockedAchievements = checkAchievements({ date: new Date().toISOString() });
   
@@ -28,6 +31,16 @@ export function renderWorkoutCompletionView() {
     <div class="card">
   <h1>Workout Complete!</h1>
   <h2>${program.name}</h2>
+  
+  ${workoutStats.totalDuration ? `
+  <div class="workout-stats">
+    <h3>📊 Workout Statistics</h3>
+    <p><strong>Total Duration:</strong> ${formatDuration(workoutStats.totalDuration)}</p>
+    <p><strong>Total Sets Completed:</strong> ${workoutStats.totalSets}</p>
+    <p><strong>Avg Rest Time:</strong> ${formatDuration(workoutStats.avgRestTime)}</p>
+  </div>
+  ` : ''}
+  
   <p>Great job! Now let's log the reps you actually completed for each set.</p>
   
   ${newlyUnlockedAchievements.length > 0 ? `
@@ -101,7 +114,9 @@ export function renderWorkoutCompletionView() {
   targetReps: exerciseData.reps,
   actualReps: sets
   };
-  })
+  }),
+  // Include setHistory for detailed timing statistics
+  setHistory: activeWorkout.setHistory || []
   };
   
   // Save to history
@@ -124,6 +139,52 @@ export function renderWorkoutCompletionView() {
   window.location.hash = '#summary';
     });
   }
+}
+
+/**
+ * Calculate workout statistics from setHistory
+ */
+function calculateWorkoutStats(activeWorkout) {
+  const setHistory = activeWorkout.setHistory || [];
+  
+  if (setHistory.length === 0) {
+    return { totalDuration: 0, totalSets: 0, avgRestTime: 0 };
+  }
+  
+  // Count only actual workout sets (exclude rest periods)
+  // Each set entry represents one workout set, rest times are stored as actualRestTime
+  const totalSets = setHistory.length;
+  
+  // Calculate total work time
+  const totalWorkTime = setHistory.reduce((sum, set) => sum + (set.duration || 0), 0);
+  
+  // Calculate total rest time (only count actual rest times, not the rest after the last set)
+  const totalRestTime = setHistory.reduce((sum, set) => {
+    // Only count rest time if it's not zero (last set won't have rest)
+    return sum + (set.actualRestTime || 0);
+  }, 0);
+  
+  const avgRestTime = totalSets > 0 ? totalRestTime / totalSets : 0;
+  
+  // Calculate total workout duration (work time + rest time)
+  const totalDuration = totalWorkTime + totalRestTime;
+  
+  return {
+    totalDuration,
+    totalSets,
+    avgRestTime,
+    totalWorkTime,
+    totalRestTime
+  };
+}
+
+/**
+ * Format duration in seconds to human-readable format
+ */
+function formatDuration(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${mins}m ${secs}s`;
 }
 
 // Export for router usage
