@@ -140,13 +140,19 @@ export function removeItemFromArray(path, index) {
 }
 
 /**
- * Legacy setState function - use updateState() instead
- * Kept for backward compatibility during migration
+ * Legacy setState function - DEPRECATED, use updateState() instead
+ * @deprecated Use updateState() for immutable state updates
+ * @param {Object} newState - State updates to apply
+ * @param {Object} options - Options object
+ * @param {boolean} options.silent - If true, don't dispatch stateChange event
  */
 export function setState(newState, options = {}) {
-  // Note: This legacy function remains for backward compatibility but is deprecated.
-  // All application code has been migrated to use updateState() instead.
-  // If you see this warning after migration, please check your imports.
+  console.warn(
+    '⚠️ setState() is deprecated and will be removed in a future version. ' +
+    'Please use updateState() instead:\n' +
+    '  ❌ setState({ user: { name: "New" } })\n' +
+    '  ✅ updateState({ user: { name: "New" } })'
+  );
   
   const { silent = false } = options;
   
@@ -163,39 +169,57 @@ export function setState(newState, options = {}) {
 
 export function initializeState() {
   const saved = localStorage.getItem('state');
+  
+  // Define default state structure
+  const defaultState = {
+    user: {
+      name: 'User',
+      autoAdvanceAfterRest: true,
+      restTimerColorMode: 'both'
+    },
+    activeWorkout: null,
+    history: [],
+    exercises: [],
+    programs: [],
+    categories: [],
+    equipment: [],
+    muscles: [],
+    difficulties: [],
+    modules: []
+  };
+  
   if (saved) {
     try {
-      state = JSON.parse(saved);
+      const parsed = JSON.parse(saved);
       
       // Validate structure
-      if (typeof state !== 'object' || state === null) {
+      if (typeof parsed !== 'object' || parsed === null) {
         throw new Error('Invalid state structure');
       }
       
-      // Ensure user object exists with default preferences
+      // Merge saved state with defaults, preserving existing values
+      state = { ...defaultState, ...parsed };
+      
+      // Ensure user object has all expected fields
       if (!state.user) {
-        state.user = {
-          name: 'User',
-          autoAdvanceAfterRest: true, // Default to auto-advance
-          restTimerColorMode: 'both' // 'both' (green then red), 'red-only', 'green-only'
-        };
-      } else if (!state.user.autoAdvance) {
-        // Add default preferences if missing
-        state.user.autoAdvance = true;
-        state.user.restTimerColorMode = 'both';
+        state.user = defaultState.user;
+      } else {
+        // Add missing user fields
+        state.user = { ...defaultState.user, ...state.user };
+        // Fix deprecated field name
+        if (state.user.autoAdvance) {
+          state.user.autoAdvanceAfterRest = state.user.autoAdvance;
+          delete state.user.autoAdvance;
+        }
       }
       
-      // Freezing in development mode to catch mutations early
-      if (typeof __DEV__ !== 'undefined' && __DEV__) {
-        deepFreeze(state);
-      }
     } catch (error) {
       console.error('Failed to parse saved state:', error);
       // Reset to default state on corruption
-      state = { user: { name: 'User', autoAdvance: true, restTimerColorMode: 'both' }, activeWorkout: null };
+      state = { ...defaultState };
     }
   } else {
-    state = { user: { name: 'User', autoAdvance: true, restTimerColorMode: 'both' }, activeWorkout: null };
+    state = { ...defaultState };
   }
   
   // Freeze in development mode

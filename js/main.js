@@ -1,4 +1,4 @@
-import { initializeState, setState, getState, updateState } from './services/state.js';
+import { initializeState, getState, updateState } from './services/state.js';
 import { ErrorBoundaryService } from './services/error-boundary-service.js';
 import { renderHomeView } from './views/home-view.js';
 import { renderExerciseDetailsView } from './views/exercise-details-view.js';
@@ -28,23 +28,33 @@ import { renderWorkoutDetailView } from './views/workout-detail-view.js';
 
 initializeState();
 
-// Initialize data cache from IndexedDB on first load
-const dataCacheInitialized = initializeDataCache().then(async () => {
-  console.log('✅ Data cache ready');
-  
-  // Check if server data has changed since last sync
+// Wait for complete cache initialization AND sync before starting router
+async function initializeApp() {
   try {
-    if (await isCacheStale()) {
-      console.log('🔄 Server data changed — syncing cache...');
-      await syncDataCache();
-      console.log('✅ Cache synced — re-rendering with fresh data');
+    console.log('🔄 Initializing data cache...');
+    await initializeDataCache();
+    console.log('✅ Data cache ready');
+    
+    // Check if server data has changed since last sync
+    try {
+      if (await isCacheStale()) {
+        console.log('🔄 Server data changed — syncing cache...');
+        await syncDataCache();
+        console.log('✅ Cache synced — re-rendering with fresh data');
+      }
+    } catch (err) {
+      console.warn('⚠️ Cache sync check failed:', err);
     }
   } catch (err) {
-    console.warn('⚠️ Cache sync check failed:', err);
+    console.warn('⚠️ Failed to initialize data cache:', err);
   }
-}).catch(err => {
-  console.warn('⚠️ Failed to initialize data cache:', err);
-});
+  
+  // Now that cache is fully initialized and synced, start the router
+  router();
+}
+
+// Initialize data cache from IndexedDB on first load
+initializeApp();
 
 async function ensureExercisesLoaded() {
   if (!getState().exercises) {
@@ -355,7 +365,7 @@ async function loadExerciseForm() {
       setTimeout(() => {
         const formDiv = document.querySelector('.exercise-form-container');
         if (formDiv && initExerciseFormService) {
-          initExerciseFormService(editId, setState);
+          initExerciseFormService(editId, updateState);
         }
       }, 50);
     })
