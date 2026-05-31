@@ -53,17 +53,16 @@ export function renderActiveWorkoutView() {
     return;
   }
   
-  // Start live set duration timer
-  // Always start the interval to ensure set duration is tracked
-  window.setDurationInterval = setInterval(() => {
-    if (currentSetStartTime) {
-      const elapsed = Math.floor((Date.now() - currentSetStartTime) / 1000);
+  // Start live set duration timer using service
+  const setDurationController = workoutTimerService.startTimerCountingUp(0, {
+    container: document.getElementById('set-timer-display'),
+    onTick: (elapsed) => {
       const durationEl = document.getElementById('set-duration');
       if (durationEl) {
         durationEl.textContent = elapsed;
       }
     }
-  }, 1000);
+  });
   
   // Get workout configuration
   const isHiitWorkout = workoutWorkflowService.isHIITWorkout(activeWorkout);
@@ -423,11 +422,8 @@ function handleStateChange() {
   if (window.location.hash === '#active-workout') {
     renderActiveWorkoutView();
   } else {
-    // Cleanup interval timer when leaving active workout view
-    if (window.setDurationInterval) {
-      clearInterval(window.setDurationInterval);
-      window.setDurationInterval = null;
-    }
+    // Cleanup timers when leaving active workout view
+      workoutTimerService.stopTimer();
   }
 }
 

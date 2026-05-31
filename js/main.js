@@ -23,6 +23,7 @@ import { renderHeader } from './components/header.js';
 import { initializeDataCache, isCacheStale, syncDataCache } from './services/data-cache.js';
 import { renderExportImportView } from './views/export-import-view.js';
 import { initUndoService, dismissAllUndoToasts } from './services/undo-service.js';
+import { renderExerciseForm } from './views/exercise-form-view.js';
 import { initExerciseForm } from './services/exercise-form-service.js';
 initializeState();
 
@@ -298,7 +299,7 @@ async function router() {
       );
       await workoutDetailView.render(workoutIndex);
     } else if (hash === '#exercise-form') {
-      loadExerciseForm();
+      await renderExerciseForm();
     }
     // else: do nothing for now
   } catch (error) {
@@ -322,60 +323,6 @@ async function saveAllExercises(exercises) {
 
 // Re-export exercise form service for backward compatibility
 window.initExerciseFormService = initExerciseForm;
-
-async function loadExerciseForm() {
-  const app = document.getElementById('app');
-  
-  // Check sessionStorage for edit ID first (from click handler), then URL params or hash
-  const editIdFromSession = sessionStorage.getItem('editingExerciseId');
-  const urlParams = new URLSearchParams(window.location.search);
-  const editIdParam = urlParams.get('edit');
-  
-  // Also check if hash contains edit parameter like #exercise-form?edit=5
-  let editId;
-  if (editIdFromSession) {
-    editId = editIdFromSession;
-  } else if (editIdParam) {
-    editId = editIdParam;
-  } else {
-    // Check hash for ?edit= parameter
-    const hashParts = window.location.hash.split('?');
-    if (hashParts.length > 1) {
-      const searchParams = new URLSearchParams(hashParts[1]);
-      editId = searchParams.get('edit');
-    }
-  }
-  
-  console.log('[loadExerciseForm] Edit ID:', editId, 'Session:', editIdFromSession, 'Param:', editIdParam);
-  
-  // Load the exercise form HTML
-  fetch('./exercise-form.html')
-    .then(response => response.text())
-    .then(html => {
-      // Extract just the body content (remove DOCTYPE, html, head, and body tags)
-      const doc = new DOMParser().parseFromString(html, 'text/html');
-      const bodyContent = doc.body.innerHTML;
-      
-      // Wrap with header and card structure
-      app.innerHTML = renderHeader() + `
-        <link href="./css/style.css" rel="stylesheet">
-        <div class="card">
-          ${bodyContent}
-        </div>`;
-      
-      // Manually trigger initialization since DOMContentLoaded won't fire again
-      setTimeout(() => {
-        const formDiv = document.querySelector('.exercise-form-container');
-        if (formDiv && initExerciseFormService) {
-          initExerciseFormService(editId, updateState);
-        }
-      }, 50);
-    })
-    .catch(error => {
-      console.error('Failed to load exercise form:', error);
-      renderErrorView('Failed to load the Exercise Manager page.');
-    });
-}
 
 window.addEventListener('hashchange', router);
 router();
