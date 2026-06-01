@@ -51,23 +51,11 @@ export async function renderBuilderView() {
       };
     });
   } else if (editingModule && editingModule.module && Array.isArray(editingModule.module.exercises)) {
-    // Only treat as module if program check failed and module has valid data
-    isEditingProgram = false;
-    editingType = 'module';
-    editingId = editingModule.id;
-    editingModuleName = editingModule.module.name || '';
-
-    const moduleData = editingModule.module;
-    selectedExercises = (moduleData.exercises || []).map(exerciseId => {
-      const exercise = exercises.find(e => String(e.id) === String(exerciseId));
-      return {
-        exerciseId: parseInt(exerciseId),
-        name: exercise ? exercise.name : 'Unknown Exercise',
-        sets: 3,
-        reps: 8,
-        restTime: 60
-      };
-    });
+    // DEPRECATED: Module editing via builder is no longer supported
+    // Redirect to new module admin view
+    console.warn('[BuilderView] Module editing is deprecated. Redirecting to module admin view.');
+    window.location.hash = `#module-admin/${editingModule.id}`;
+    return; // Exit early to prevent rendering
   }
 
   main.innerHTML = renderHeader() + `

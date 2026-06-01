@@ -1,6 +1,6 @@
 import { fetchPrograms } from '../services/api.js';
 import { renderHeader } from '../components/header.js';
-import { setState, getState, updateState } from '../services/state.js';
+import { getState, updateState } from '../services/state.js';
 
 
 export async function renderProgramsView() {
@@ -9,6 +9,13 @@ export async function renderProgramsView() {
   const user = getState().user || {};
   const customRoutines = user.customRoutines || [];
   const exercises = (await getState().exercises) || [];
+  
+  // Remove any existing event listeners to prevent duplicates
+  if (main.dataset.programsViewListener === 'true') {
+    main.removeEventListener('click', main._handleProgramsViewClick);
+    delete main.dataset.programsViewListener;
+    delete main._handleProgramsViewClick;
+  }
   
   // Render with improved visual hierarchy and semantic structure
   main.innerHTML = renderHeader() + `
@@ -230,6 +237,8 @@ export async function renderProgramsView() {
   
   // Add single event listener to main element
   main.addEventListener('click', handleProgramsViewClick);
+  main.dataset.programsViewListener = 'true';
+  main._handleProgramsViewClick = handleProgramsViewClick;
   
 } 
 

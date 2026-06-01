@@ -139,34 +139,6 @@ export function removeItemFromArray(path, index) {
   updateState({ [path]: arr });
 }
 
-/**
- * Legacy setState function - DEPRECATED, use updateState() instead
- * @deprecated Use updateState() for immutable state updates
- * @param {Object} newState - State updates to apply
- * @param {Object} options - Options object
- * @param {boolean} options.silent - If true, don't dispatch stateChange event
- */
-export function setState(newState, options = {}) {
-  console.warn(
-    '⚠️ setState() is deprecated and will be removed in a future version. ' +
-    'Please use updateState() instead:\n' +
-    '  ❌ setState({ user: { name: "New" } })\n' +
-    '  ✅ updateState({ user: { name: "New" } })'
-  );
-  
-  const { silent = false } = options;
-  
-  // Merge state immutably (same logic as updateState)
-  const mergedState = { ...state, ...newState };
-  state = mergedState;
-  
-  localStorage.setItem('state', JSON.stringify(state));
-  
-  if (!silent) {
-    document.dispatchEvent(new CustomEvent('stateChange'));
-  }
-}
-
 export function initializeState() {
   const saved = localStorage.getItem('state');
   

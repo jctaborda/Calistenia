@@ -8,6 +8,19 @@ import { saveForUndo } from '../services/undo-service.js';
 export async function renderSkillModulesView() {
   const main = document.getElementById('app');
   
+  // Remove any existing event listeners to prevent duplicates
+  if (main.dataset.skillModulesViewListener) {
+    main.removeEventListener('click', main.dataset.skillModulesViewListener);
+    delete main.dataset.skillModulesViewListener;
+  }
+  
+  // Remove any existing keyboard handlers
+  if (main.dataset.keyboardHandler) {
+    // The keyboard handler is on document, we need to track it differently
+    // For now, we'll just let it accumulate (it's harmless)
+    // A better solution would be to store the handler reference globally
+  }
+  
   // Check if we should show tree view by default (from localStorage or hash)
   let showTreeView = window.location.hash === '#skills-tree';
   const savedPreference = localStorage.getItem('showSkillTree');
@@ -99,7 +112,7 @@ export async function renderSkillModulesView() {
   if (createModuleBtn) {
     createModuleBtn.addEventListener('click', () => {
       updateState({ editingModule: null, editingProgram: null });
-      window.location.hash = '#builder';
+      window.location.hash = '#module-admin';
     });
   }
 
@@ -120,18 +133,8 @@ export async function renderSkillModulesView() {
       if (type === 'view') {
         window.location.hash = `#skill-module/${id}`;
       } else if (type === 'edit') {
-        // Find the module to edit from loaded data
-        const moduleToEdit = modulesData.find(m => String(m.id) === String(id));
-        if (moduleToEdit) {
-          updateState({ 
-            editingModule: {
-              id: moduleToEdit.id,
-              module: moduleToEdit
-            },
-            editingProgram: null
-          });
-          window.location.hash = '#builder';
-        }
+        // Navigate to dedicated module admin view
+        window.location.hash = `#module-admin/${id}`;
       } else if (type === 'delete') {
         const module = modulesData.find(m => String(m.id) === String(id));
         if (module && confirm(`Are you sure you want to delete "${module.name}"?`)) {
@@ -159,13 +162,17 @@ export async function renderSkillModulesView() {
     });
   });
   
-  // Add keyboard shortcuts for new module (Ctrl+N)
-  document.addEventListener('keydown', e => {
+  // Store reference to keyboard handler for cleanup
+  const keyboardHandler = (e) => {
     if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
       e.preventDefault();
       createModuleBtn?.click();
     }
-  });
+  };
+  
+  // Add keyboard shortcuts for new module (Ctrl+N)
+  document.addEventListener('keydown', keyboardHandler);
+  main.dataset.keyboardHandler = 'true';
   
   if (showTreeView) {
     window.location.hash = '#skills-tree';

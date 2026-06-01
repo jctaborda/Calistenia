@@ -174,7 +174,28 @@ async function handleImportFile(event) {
         window.location.hash = '#home';
       }, 3000);
     } else {
-      throw new Error(result.error);
+      // Handle validation errors with detailed messages
+      importStatus.style.display = 'block';
+      importStatus.className = 'status-box error';
+      
+      let errorHtml = `<p><strong>❌ Import Failed:</strong></p>`;
+      
+      if (result.error) {
+        errorHtml += `<p>${result.error}</p>`;
+      }
+      
+      if (result.validationErrors && result.validationErrors.length > 0) {
+        errorHtml += `
+          <div class="validation-errors">
+            <p><strong>Validation Errors:</strong></p>
+            <ul>
+              ${result.validationErrors.map(err => `<li>${err}</li>`).join('')}
+            </ul>
+          </div>
+        `;
+      }
+      
+      importStatus.innerHTML = errorHtml;
     }
     
   } catch (error) {

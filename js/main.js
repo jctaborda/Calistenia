@@ -25,6 +25,7 @@ import { renderExportImportView } from './views/export-import-view.js';
 import { initUndoService, dismissAllUndoToasts } from './services/undo-service.js';
 import { renderExerciseForm } from './views/exercise-form-view.js';
 import { initExerciseForm } from './services/exercise-form-service.js';
+import { renderModuleAdminView } from './views/module-admin-view.js';
 initializeState();
 
 // Wait for complete cache initialization AND sync before starting router
@@ -300,6 +301,17 @@ async function router() {
       await workoutDetailView.render(workoutIndex);
     } else if (hash === '#exercise-form') {
       await renderExerciseForm();
+    } else if (hash === '#module-admin' || hash.startsWith('#module-admin/')) {
+      // Module admin view: #module-admin (create) or #module-admin/{id} (edit)
+      if (hash === '#module-admin') {
+        // Create new module
+        await renderModuleAdminView(null);
+      } else {
+        // Edit existing module: #module-admin/{id}
+        const parts = hash.split('/'); // ['#module-admin', '5'] for '#module-admin/5'
+        const moduleId = parts.length > 1 && parts[1] ? parseInt(parts[1]) : null;
+        await renderModuleAdminView(moduleId);
+      }
     }
     // else: do nothing for now
   } catch (error) {

@@ -1,6 +1,6 @@
 // views/program-details-view.js
 import { renderHeader } from '../components/header.js';
-import { setState, updateState, getState } from '../services/state.js';
+import { updateState, getState } from '../services/state.js';
 import { saveForUndo } from '../services/undo-service.js';
 
 export async function renderProgramDetailsView(type, id) {

@@ -1,4 +1,4 @@
-import { getState, setState, updateState } from '../services/state.js';
+import { getState, updateState } from '../services/state.js';
 import { renderHeader } from '../components/header.js';
 import { getUnlockedAchievements } from '../services/achievements.js';
 

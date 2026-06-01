@@ -15,6 +15,194 @@ const EXPORT_VERSION = '1.0';
 const EXPORT_TIMESTAMP = new Date().toISOString();
 
 /**
+ * JSON Schema definition for data export/import validation
+ */
+const DATA_SCHEMA = {
+  version: {
+    type: 'string',
+    required: true,
+    allowedValues: ['1.0']
+  },
+  exportedAt: {
+    type: 'string',
+    required: true,
+    format: 'iso-date'
+  },
+  appVersion: {
+    type: 'string',
+    required: false
+  },
+  workouts: {
+    type: 'array',
+    required: true,
+    itemSchema: {
+      id: { type: 'string|number', required: true },
+      program: { type: 'object', required: true },
+      date: { type: 'string', required: true, format: 'iso-date' },
+      exercises: { 
+        type: 'array', 
+        required: true,
+        itemSchema: {
+          exerciseId: { type: 'string|number', required: true },
+          exerciseName: { type: 'string', required: true },
+          targetSets: { type: 'number', required: true, min: 1 },
+          targetReps: { type: 'number', required: true, min: 0 },
+          actualReps: { type: 'array', required: false, itemSchema: { type: 'number' } }
+        }
+      },
+      setHistory: { type: 'array', required: false }
+    }
+  },
+  programs: {
+    type: 'array',
+    required: false,
+    itemSchema: {
+      id: { type: 'string|number', required: true },
+      name: { type: 'string', required: true },
+      exercises: { type: 'array', required: true },
+      warmup: { type: 'object', required: false },
+      cooldown: { type: 'object', required: false }
+    }
+  },
+  skillModules: {
+    type: 'array',
+    required: false,
+    itemSchema: {
+      id: { type: 'string|number', required: true },
+      name: { type: 'string', required: true },
+      category: { type: 'string', required: true },
+      description: { type: 'string', required: true },
+      requirements: { type: 'array', required: true },
+      unlocked: { type: 'boolean', required: false }
+    }
+  }
+};
+
+/**
+ * Validate data against JSON schema
+ * @param {object} data - Data to validate
+ * @param {object} schema - Schema definition
+ * @param {string} path - Current path in data structure (for error messages)
+ * @returns {object} Validation result with success flag and errors array
+ */
+function validateSchema(data, schema, path = 'root') {
+  const errors = [];
+  
+  // Check required fields
+  if (schema.required) {
+    if (data === undefined || data === null) {
+      errors.push(`${path}: Required field is missing`);
+      return { success: false, errors };
+    }
+  }
+  
+  // Type checking
+  if (data !== undefined && data !== null && schema.type) {
+    const actualType = Array.isArray(data) ? 'array' : typeof data;
+    
+    if (schema.type.includes('|')) {
+      // Multiple allowed types (e.g., 'string|number')
+      const allowedTypes = schema.type.split('|');
+      if (!allowedTypes.includes(actualType)) {
+        errors.push(`${path}: Expected ${schema.type}, got ${actualType}`);
+        return { success: false, errors };
+      }
+    } else {
+      if (schema.type !== actualType) {
+        errors.push(`${path}: Expected ${schema.type}, got ${actualType}`);
+        return { success: false, errors };
+      }
+    }
+  }
+  
+  // Format validation (e.g., ISO date)
+  if (schema.format === 'iso-date') {
+    const dateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/;
+    if (!dateRegex.test(data)) {
+      errors.push(`${path}: Invalid ISO date format`);
+      return { success: false, errors };
+    }
+  }
+  
+  // Allowed values check
+  if (schema.allowedValues && !schema.allowedValues.includes(data)) {
+    errors.push(`${path}: Value '${data}' not in allowed list: [${schema.allowedValues.join(', ')}]`);
+    return { success: false, errors };
+  }
+  
+  // Min value check for numbers
+  if (schema.type === 'number' && schema.min !== undefined && data < schema.min) {
+    errors.push(`${path}: Value ${data} is less than minimum ${schema.min}`);
+    return { success: false, errors };
+  }
+  
+  // Array item validation
+  if (schema.type === 'array' && schema.itemSchema && Array.isArray(data)) {
+    data.forEach((item, index) => {
+      const itemPath = `${path}[${index}]`;
+      const itemValidation = validateSchema(item, schema.itemSchema, itemPath);
+      if (!itemValidation.success) {
+        errors.push(...itemValidation.errors);
+      }
+    });
+  }
+  
+  // Object field validation
+  if (schema.type === 'object' && schema.fieldSchema && typeof data === 'object') {
+    for (const [field, fieldSchema] of Object.entries(schema.fieldSchema)) {
+      const fieldPath = `${path}.${field}`;
+      const fieldValue = data[field];
+      const fieldValidation = validateSchema(fieldValue, fieldSchema, fieldPath);
+      if (!fieldValidation.success) {
+        errors.push(...fieldValidation.errors);
+      }
+    }
+  }
+  
+  return { success: errors.length === 0, errors };
+}
+
+/**
+ * Validate import data against the schema
+ * @param {object} importData - Data to validate
+ * @returns {object} Validation result with success flag and detailed errors
+ */
+function validateImportData(importData) {
+  const validation = validateSchema(importData, DATA_SCHEMA);
+  
+  // Additional custom validations
+  if (validation.success) {
+    // Check version compatibility
+    if (importData.version !== EXPORT_VERSION) {
+      validation.errors.push(
+        `Version mismatch: File version '${importData.version}' not compatible with app version '${EXPORT_VERSION}'`
+      );
+      validation.success = false;
+    }
+    
+    // Validate workouts array is not empty if required
+    if (importData.workouts && !Array.isArray(importData.workouts)) {
+      validation.errors.push('workouts must be an array');
+      validation.success = false;
+    }
+    
+    // Validate programs array if present
+    if (importData.programs !== undefined && !Array.isArray(importData.programs)) {
+      validation.errors.push('programs must be an array');
+      validation.success = false;
+    }
+    
+    // Validate skillModules array if present
+    if (importData.skillModules !== undefined && !Array.isArray(importData.skillModules)) {
+      validation.errors.push('skillModules must be an array');
+      validation.success = false;
+    }
+  }
+  
+  return validation;
+}
+
+/**
  * Export all user data to JSON format
  * Includes: workouts, programs (custom routines), skill modules
  */
@@ -52,9 +240,18 @@ export async function importUserData(jsonData) {
       ? JSON.parse(jsonData) 
       : jsonData;
 
-    // Validate import format
-    if (!importData.version || !importData.workouts || !Array.isArray(importData.workouts)) {
-      throw new Error('Invalid import file format');
+    // Validate import data against schema
+    const validation = validateImportData(importData);
+    
+    if (!validation.success) {
+      const errorMsg = validation.errors.join('\n');
+      console.error('Import validation failed:', validation.errors);
+      return {
+        success: false,
+        error: 'Invalid import file: ' + errorMsg,
+        validationErrors: validation.errors,
+        stats: null
+      };
     }
 
     const stats = {
@@ -76,7 +273,9 @@ export async function importUserData(jsonData) {
           await storeWorkout(workout);
           stats.workouts.imported++;
         } catch (error) {
-          stats.errors.push(`Failed to import workout ${workout.id}: ${error.message}`);
+          const errorMsg = `Failed to import workout ${workout.id}: ${error.message}`;
+          stats.errors.push(errorMsg);
+          console.error(errorMsg, error);
         }
       }
     }
@@ -94,7 +293,9 @@ export async function importUserData(jsonData) {
             await storePrograms([...existingPrograms, program]);
             stats.programs.imported++;
           } catch (error) {
-            stats.errors.push(`Failed to import program ${program.id}: ${error.message}`);
+            const errorMsg = `Failed to import program ${program.id}: ${error.message}`;
+            stats.errors.push(errorMsg);
+            console.error(errorMsg, error);
           }
         }
       }
@@ -113,7 +314,9 @@ export async function importUserData(jsonData) {
             await storeModules([...existingModules, module]);
             stats.skillModules.imported++;
           } catch (error) {
-            stats.errors.push(`Failed to import module ${module.id}: ${error.message}`);
+            const errorMsg = `Failed to import module ${module.id}: ${error.message}`;
+            stats.errors.push(errorMsg);
+            console.error(errorMsg, error);
           }
         }
       }
@@ -131,9 +334,21 @@ export async function importUserData(jsonData) {
     };
   } catch (error) {
     console.error('Error importing data:', error);
+    
+    // Check if it's a JSON parse error
+    if (error instanceof SyntaxError) {
+      return {
+        success: false,
+        error: 'Invalid JSON format: ' + error.message,
+        validationErrors: [`JSON parse error: ${error.message}`],
+        stats: null
+      };
+    }
+    
     return {
       success: false,
       error: error.message || 'Failed to import data',
+      validationErrors: [],
       stats: null
     };
   }

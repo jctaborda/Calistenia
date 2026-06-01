@@ -5,7 +5,7 @@
  * Flow: Set duration counting → User clicks "Next Set" → Rest timer counting → User clicks "Next Set" → Next set/exercise
  */
 
-import { getState, setState, updateState } from '../services/state.js';
+import { getState, updateState } from '../services/state.js';
 import { renderHeader } from '../components/header.js';
 import { workoutTimerService } from '../services/workout-timer-service.js';
 import { workoutModalsService } from '../services/workout-modals-service.js';

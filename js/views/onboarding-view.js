@@ -1,5 +1,5 @@
 import { renderHeader } from '../components/header.js';
-import { setState, getState, updateState } from '../services/state.js';
+import { getState, updateState } from '../services/state.js';
 import { ValidationService } from '../services/validation.js';
 
 export function renderOnboardingView() {
