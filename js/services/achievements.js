@@ -155,16 +155,28 @@ function checkWeeklyConsistency(history) {
 
 /**
  * Calculate total push-ups from workout history
+ * Uses multiple heuristics to identify push-up exercises:
+ * 1. Exercise name contains "push-up" (case insensitive)
+ * 2. Skill category is "Push-Up Variations"
+ * 3. Exercise ID is 1-13 (based on data.json ordering)
  */
 function calculateTotalPushups(history) {
   let total = 0;
   
-  // Find push-up exercise ID (assuming it's in exercises.json with name containing "push-up")
-  // We'll need to pass exercises data or use a simpler heuristic
   for (const workout of history) {
     if (workout.exercises) {
       for (const ex of workout.exercises) {
-        if (ex.exerciseName && ex.exerciseName.toLowerCase().includes('push-up')) {
+        // Heuristic 1: Check exercise name for "push-up"
+        const nameMatch = ex.exerciseName && ex.exerciseName.toLowerCase().includes('push-up');
+        
+        // Heuristic 2: Check if skill category is "Push-Up Variations"
+        const skillMatch = ex.skill && ex.skill.toLowerCase().includes('push-up');
+        
+        // Heuristic 3: Check exercise ID range (1-13 are push-up variations in data.json)
+        const idMatch = ex.exerciseId && parseInt(ex.exerciseId) >= 1 && parseInt(ex.exerciseId) <= 13;
+        
+        // Count if any heuristic matches
+        if (nameMatch || skillMatch || idMatch) {
           if (ex.actualReps && Array.isArray(ex.actualReps)) {
             total += ex.actualReps.reduce((sum, reps) => sum + reps, 0);
           }

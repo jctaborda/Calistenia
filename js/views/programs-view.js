@@ -95,27 +95,14 @@ export async function renderProgramsView() {
     </div>
   `;
 
-  // Create New Routine button handler
-  const createRoutineBtn = main.querySelector('#create-routine-btn');
-  if (createRoutineBtn) {
-    createRoutineBtn.addEventListener('click', () => {
-      console.log('🔴 PROGRAMS-VIEW: Clicking Create New Routine button');
-      const newState = { 
-        createNewProgram: true, 
-        editingProgram: null, 
-        editingModule: null 
-      };
-      console.log('  Setting state:', newState);
-      updateState(newState);
-      console.log('  Navigating to #builder');
-      window.location.hash = '#builder';
-    });
-  }
-
-  // Empty state button handlers
-  const createFromEmptyBtn = main.querySelector('#create-from-empty');
-  if (createFromEmptyBtn) {
-    createFromEmptyBtn.addEventListener('click', () => {
+  // Event delegation handler for all button interactions
+  const handleProgramsViewClick = (e) => {
+    const target = e.target;
+    
+    // Create New Routine buttons
+    if (target.id === 'create-routine-btn' || 
+        target.id === 'create-from-empty' || 
+        target.id === 'create-custom-empty') {
       const newState = { 
         createNewProgram: true, 
         editingProgram: null, 
@@ -123,108 +110,107 @@ export async function renderProgramsView() {
       };
       updateState(newState);
       window.location.hash = '#builder';
-    });
-  }
-
-  const createCustomEmptyBtn = main.querySelector('#create-custom-empty');
-  if (createCustomEmptyBtn) {
-    createCustomEmptyBtn.addEventListener('click', () => {
-      const newState = { 
-        createNewProgram: true, 
-        editingProgram: null, 
-        editingModule: null 
-      };
-      updateState(newState);
-      window.location.hash = '#builder';
-    });
-  }
-
-  // View click handlers - navigate to details page
-  main.querySelectorAll('.program-name-btn').forEach(btn => {
-    btn.addEventListener('click', e => {
+      return;
+    }
+    
+    // View handlers - program name or view button
+    if (target.closest('[data-action="view"]')) {
+      const btn = target.closest('[data-action="view"]');
       const type = btn.getAttribute('data-type');
       const id = btn.getAttribute('data-id');
       window.location.hash = `#program-details/${type}/${id}`;
-    });
-  });
-
-  // Edit button handler
-  main.querySelectorAll('.edit-btn').forEach(editBtn =>{
-    if (editBtn) {
-      editBtn.addEventListener('click', () => {
-        // Store the program data for editing
-        const type = editBtn.getAttribute('data-type');
-        const id = editBtn.getAttribute('data-id');
-        let program;
-          if (type === 'program') {
-            program = allPrograms.find(p => String(p.id) === String(id));
-          } else if (type === 'custom') {
-            const routine = customRoutines.find(r => String(r.id)==String(id));
-            program = { id: id, name: routine.name, exercises: routine.exercises };
-          }
+      return;
+    }
     
-        updateState({
-          editingProgram: {
-            type,
-            id,
-            program: {
-              name: program.name,
-              exercises: program.exercises
-            }
-          },
-          editingModule: null // Clear any previous module editing state
-        });
-        window.location.hash = '#builder';
+    // Edit button handler
+    const editBtn = target.closest('.edit-btn');
+    if (editBtn) {
+      const type = editBtn.getAttribute('data-type');
+      const id = editBtn.getAttribute('data-id');
+      
+      // Guard: only process if this is a program edit button (has data-type attribute)
+      // Exercise edit buttons don't have data-type, so skip them
+      if (!type || !id) {
+        return;
+      }
+      
+      let program;
+      
+      if (type === 'program') {
+        program = allPrograms.find(p => String(p.id) === String(id));
+      } else if (type === 'custom') {
+        const routine = customRoutines.find(r => String(r.id) === String(id));
+        if (routine) {
+          program = { id: id, name: routine.name, exercises: routine.exercises };
+        }
+      }
+      
+      // Guard: only proceed if program was found
+      if (!program) {
+        console.error(`Program or routine not found: type=${type}, id=${id}`);
+        alert('Program not found. Please refresh the page.');
+        return;
+      }
+    
+      updateState({
+        editingProgram: {
+          type,
+          id,
+          program: {
+            name: program.name,
+            exercises: program.exercises
+          }
+        },
+        editingModule: null // Clear any previous module editing state
       });
+      window.location.hash = '#builder';
+      return;
     }
-  });
-
-  // View button handler - navigate to details page
-  main.querySelectorAll('.view-btn').forEach(viewBtn => {
-    if (viewBtn) {
-      viewBtn.addEventListener('click', () => {
-        const type = viewBtn.getAttribute('data-type');
-        const id = viewBtn.getAttribute('data-id');
-        window.location.hash = `#program-details/${type}/${id}`;
-      });
-    }
-  });
-
-  // Delete routine button handler (only for custom routines)
-  main.querySelectorAll('.delete-btn').forEach(deleteBtn => {
-    if (deleteBtn) { 
-      deleteBtn.addEventListener('click', () => {
-        const type = deleteBtn.getAttribute('data-type');
-        const id = String(deleteBtn.getAttribute('data-id'));
-        let program;
-        if (type === 'custom') {
-          const routine = customRoutines.find(r => String(r.id) === String(id));
-          if (routine) {
-            const programName = routine.name;
-            if (confirm(`Are you sure you want to delete "${programName}"? This action cannot be undone.`)) {
-              const state = getState();
-              const user = { ...state.user };
-              user.customRoutines = user.customRoutines || [];
-              const routineIndex = user.customRoutines.findIndex(r => String(r.id) === String(id));
-              if (routineIndex !== -1) {
-                user.customRoutines.splice(routineIndex, 1);
-              }
-              updateState({ user });
-              alert('Routine deleted successfully!');
-              renderProgramsView();
+    
+    // Delete routine button handler (only for custom routines)
+    const deleteBtn = target.closest('.delete-btn');
+    if (deleteBtn) {
+      const type = deleteBtn.getAttribute('data-type');
+      const id = String(deleteBtn.getAttribute('data-id'));
+      
+      // Guard: only process if this is a program delete button (has data-type attribute)
+      if (!type || !id) {
+        return;
+      }
+      
+      // Only handle delete for custom routines
+      if (type === 'custom') {
+        const routine = customRoutines.find(r => String(r.id) === String(id));
+        if (routine) {
+          const programName = routine.name;
+          if (confirm(`Are you sure you want to delete "${programName}"? This action cannot be undone.`)) {
+            const state = getState();
+            const user = { ...state.user };
+            user.customRoutines = user.customRoutines || [];
+            const routineIndex = user.customRoutines.findIndex(r => String(r.id) === String(id));
+            if (routineIndex !== -1) {
+              user.customRoutines.splice(routineIndex, 1);
             }
+            updateState({ user });
+            alert('Routine deleted successfully!');
+            renderProgramsView();
           }
         }
-      });
+      }
+      return;
     }
-  });
-
-  
-  // Start button logic
-  main.querySelectorAll('button[data-action="start"]').forEach(btn => {
-    btn.addEventListener('click', e => {
-      const type = btn.getAttribute('data-type');
-      const id = btn.getAttribute('data-id');
+    
+    // Start button logic
+    const startBtn = target.closest('.start-btn');
+    if (startBtn) {
+      const type = startBtn.getAttribute('data-type');
+      const id = startBtn.getAttribute('data-id');
+      
+      // Guard: only process if this is a program start button
+      if (!type || !id) {
+        return;
+      }
+      
       if (type === 'program') {
         const program = allPrograms.find(p => String(p.id) === String(id));
         if (program) {
@@ -232,16 +218,19 @@ export async function renderProgramsView() {
           window.location.hash = '#active-workout';
         }
       } else if (type === 'custom') {
-        const routine = customRoutines.find(r => String(r.id)==String(id));
+        const routine = customRoutines.find(r => String(r.id) === String(id));
         if (routine) {
           updateState({ activeWorkout: { program: { id: id, name: routine.name, exercises: routine.exercises, warmup: routine.warmup || [], cooldown: routine.cooldown || [] }, progress: {}, currentExerciseIndex: 0, currentSetIndex: 0 } });
           window.location.hash = '#active-workout';
         }
       }
-    });
-  });
-
-
+      return;
+    }
+  };
+  
+  // Add single event listener to main element
+  main.addEventListener('click', handleProgramsViewClick);
+  
 } 
 
 

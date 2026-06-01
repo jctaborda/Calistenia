@@ -64,16 +64,28 @@ function isWorkoutCompleted(workout) {
 }
 
 // Helper function to calculate total push-ups from workout history
+// Uses multiple heuristics to identify push-up exercises
 function calculateTotalPushUps(history) {
   if (!history || !Array.isArray(history)) return 0;
   
   let total = 0;
   history.forEach(workout => {
+    // Check progress array
     if (workout.progress && Array.isArray(workout.progress)) {
       workout.progress.forEach(set => {
-        // Assuming push-up related exercises have "pushup" in their name or id
         const exerciseName = (set.exercise?.name || set.exercise?.id || '').toLowerCase();
-        if (exerciseName.includes('pushup') || exerciseName.includes('push-up')) {
+        const exerciseSkill = (set.exercise?.skill || '').toLowerCase();
+        
+        // Heuristic 1: Name contains "pushup" or "push-up"
+        const nameMatch = exerciseName.includes('pushup') || exerciseName.includes('push-up');
+        
+        // Heuristic 2: Skill category contains "push-up"
+        const skillMatch = exerciseSkill.includes('push-up');
+        
+        // Heuristic 3: Exercise ID in push-up range (1-13)
+        const idMatch = set.exercise?.id && parseInt(set.exercise.id) >= 1 && parseInt(set.exercise.id) <= 13;
+        
+        if (nameMatch || skillMatch || idMatch) {
           const reps = parseInt(set.reps) || 0;
           const sets = parseInt(set.sets) || 0;
           total += (reps * sets);

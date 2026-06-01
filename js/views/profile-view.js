@@ -4,6 +4,7 @@ import { getState, updateState } from '../services/state.js';
 import { saveForUndo } from '../services/undo-service.js';
 import { getAllAchievementStatus } from '../services/achievements.js';
 import { formatDate, formatWorkoutDate } from '../utils/date-formatter.js';
+import { ValidationService } from '../services/validation.js';
 
 export async function renderProfileView() {
   const main = document.getElementById('app');
@@ -143,9 +144,25 @@ export async function renderProfileView() {
   const weight = parseFloat(weightInput.value);
   const bodyFat = bodyFatInput.value ? parseFloat(bodyFatInput.value) : null;
   
-  if (!weight || isNaN(weight)) {
-  alert('Please enter a valid weight.');
-  return;
+  // Validate weight
+  const weightValidation = ValidationService.validateNumber(weight.toString());
+  if (!weightValidation.valid) {
+    alert(weightValidation.error);
+    return;
+  }
+  
+  // Validate body fat if provided
+  if (bodyFatInput.value && bodyFatInput.value.trim() !== '') {
+    const bodyFatValidation = ValidationService.validateNumber(bodyFatInput.value);
+    if (!bodyFatValidation.valid) {
+      alert(bodyFatValidation.error);
+      return;
+    }
+    // Body fat should be between 0-100%
+    if (bodyFat < 0 || bodyFat > 100) {
+      alert('Body fat percentage must be between 0 and 100');
+      return;
+    }
   }
   
   // Add metric to user state
