@@ -1,7 +1,7 @@
 // Service Worker with dynamic cache versioning and auto-cleanup
 // Cache name includes git commit hash + timestamp for reliable invalidation
 
-const VERSION = 'commit-3ea41c-v2'; // Updated by: npm run update-sw
+const VERSION = 'commit-3ea41c-v7'; // Updated by: npm run update-sw
 const CACHE_NAME = `calisthenics-app-${VERSION}`;
 const MAX_CACHES_TO_KEEP = 5; // Keep last 5 cache versions for rollback safety
 

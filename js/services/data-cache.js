@@ -150,19 +150,34 @@ export async function syncDataCache() {
 
 // Load exercises from cache or file
 export async function loadAllExercises() {
+  console.log('DEBUG loadAllExercises: Starting...');
   try {
     const cached = await exercisesLoad();
-    if (cached && cached.length > 0) {
+    console.log(`DEBUG: exercisesLoad returned ${cached?.length || 0} items, type: ${typeof cached}, isArray: ${Array.isArray(cached)}`);
+    if (cached && Array.isArray(cached) && cached.length > 0) {
       console.log('📦 Loaded exercises from IndexedDB');
       return cached;
     }
+    console.log('DEBUG: No exercises in IndexedDB (cached.length=' + (cached?.length || 0) + '), will load from file');
   } catch (error) {
-    console.warn('No cached exercises, loading from file');
+    console.warn('No cached exercises, loading from file:', error);
   }
   
   // Load from data.json as fallback
+  console.log('DEBUG: Fetching data.json...');
   const response = await fetch('./data/data.json');
+  if (!response.ok) {
+    throw new Error(`Failed to fetch data.json: ${response.status} ${response.statusText}`);
+  }
   const data = await response.json();
+  console.log(`DEBUG: data.json has ${data.exercises?.length || 0} exercises`);
+  // Save to IndexedDB for future loads
+  if (data.exercises && Array.isArray(data.exercises) && data.exercises.length > 0) {
+    console.log('DEBUG: Saving to IndexedDB...');
+    await storeExercises(data.exercises);
+    console.log('DEBUG: Save complete');
+  }
+  console.log('DEBUG loadAllExercises: Returning ' + (data.exercises?.length || 0) + ' exercises');
   return data.exercises || [];
 }
 
@@ -180,6 +195,10 @@ export async function loadAllCategories() {
   
   const response = await fetch('./data/data.json');
   const data = await response.json();
+  // Save to IndexedDB for future loads
+  if (data.categories && data.categories.length > 0) {
+    await storeCategories(data.categories);
+  }
   return data.categories || [];
 }
 
@@ -197,6 +216,10 @@ export async function loadAllEquipment() {
   
   const response = await fetch('./data/data.json');
   const data = await response.json();
+  // Save to IndexedDB for future loads
+  if (data.equipment && data.equipment.length > 0) {
+    await storeEquipment(data.equipment);
+  }
   return data.equipment || [];
 }
 
@@ -214,6 +237,10 @@ export async function loadAllMuscles() {
   
   const response = await fetch('./data/data.json');
   const data = await response.json();
+  // Save to IndexedDB for future loads
+  if (data.muscles && data.muscles.length > 0) {
+    await storeMuscles(data.muscles);
+  }
   return data.muscles || [];
 }
 
@@ -231,6 +258,10 @@ export async function loadAllDifficulties() {
   
   const response = await fetch('./data/data.json');
   const data = await response.json();
+  // Save to IndexedDB for future loads
+  if (data.difficulties && data.difficulties.length > 0) {
+    await storeDifficulties(data.difficulties);
+  }
   return data.difficulties || [];
 }
 
@@ -248,6 +279,10 @@ export async function loadAllPrograms() {
   
   const response = await fetch('./data/data.json');
   const data = await response.json();
+  // Save to IndexedDB for future loads
+  if (data.programs && data.programs.length > 0) {
+    await storePrograms(data.programs);
+  }
   return data.programs || [];
 }
 

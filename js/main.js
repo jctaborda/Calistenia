@@ -57,7 +57,7 @@ async function initializeApp() {
 initializeApp();
 
 async function ensureExercisesLoaded() {
-  if (!getState().exercises) {
+  if (!getState().exercises || getState().exercises.length === 0) {
     try {
       const exercises = await fetchExercises();
       updateState({ exercises });
@@ -69,7 +69,7 @@ async function ensureExercisesLoaded() {
 }
 
 async function ensureProgramsLoaded(){
-  if (!getState().programs){
+  if (!getState().programs || getState().programs.length === 0){
     try {
       const programs = await fetchPrograms();
       updateState({ programs });
@@ -139,7 +139,7 @@ async function ensureDifficultiesLoaded(){
 
 async function router() {
   // Show loading spinner for initial data loads
-  if (!getState().exercises || !getState().programs) {
+  if (!getState().exercises || getState().exercises.length === 0 || !getState().programs || getState().programs.length === 0) {
     document.getElementById('app').innerHTML = renderSpinner();
     await Promise.all([
       ensureExercisesLoaded(),
