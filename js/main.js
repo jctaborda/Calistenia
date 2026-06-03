@@ -51,10 +51,16 @@ async function initializeApp() {
   
   // Now that cache is fully initialized and synced, start the router
   router();
+  
+  // Mark that initialization is complete to prevent double calls
+  window.appInitialized = true;
 }
 
 // Initialize data cache from IndexedDB on first load
-initializeApp();
+// Only initialize if not already done
+if (!window.appInitialized) {
+  initializeApp();
+}
 
 async function ensureExercisesLoaded() {
   if (!getState().exercises || getState().exercises.length === 0) {
@@ -94,66 +100,97 @@ async function ensureModulesLoaded(){
 }
 
 async function ensureCategoriesLoaded(){
-  if (!getState().categories){
+  if (!getState().categories || getState().categories.length === 0){
     try {
       const categories = await fetchCategories();
       updateState({ categories });
+      console.log(`[Main] Loaded ${categories.length} categories into state`);
     } catch (error) {
       console.error('Failed to load categories:', error);
     }
+  } else {
+    console.log(`[Main] Categories already in state: ${getState().categories.length} items`);
   }
 }
 
 async function ensureEquipmentLoaded(){
-  if (!getState().equipment){
+  if (!getState().equipment || getState().equipment.length === 0){
     try {
       const equipment = await fetchEquipment();
       updateState({ equipment });
+      console.log(`[Main] Loaded ${equipment.length} equipment into state`);
     } catch (error) {
       console.error('Failed to load equipment:', error);
     }
+  } else {
+    console.log(`[Main] Equipment already in state: ${getState().equipment.length} items`);
   }
 }
 
 async function ensureMusclesLoaded(){
-  if (!getState().muscles){
+  if (!getState().muscles || getState().muscles.length === 0){
     try {
       const muscles = await fetchMuscles();
       updateState({ muscles });
+      console.log(`[Main] Loaded ${muscles.length} muscles into state`);
     } catch (error) {
       console.error('Failed to load muscles:', error);
     }
+  } else {
+    console.log(`[Main] Muscles already in state: ${getState().muscles.length} items`);
   }
 }
 
 async function ensureDifficultiesLoaded(){
-  if (!getState().difficulties){
+  if (!getState().difficulties || getState().difficulties.length === 0){
     try {
       const difficulties = await fetchDifficulties();
       updateState({ difficulties });
+      console.log(`[Main] Loaded ${difficulties.length} difficulties into state`);
     } catch (error) {
       console.error('Failed to load difficulties:', error);
     }
+  } else {
+    console.log(`[Main] Difficulties already in state: ${getState().difficulties.length} items`);
   }
 }
 
 async function router() {
-  // Show loading spinner for initial data loads
-  if (!getState().exercises || getState().exercises.length === 0 || !getState().programs || getState().programs.length === 0) {
+  console.log('[Router] Checking if data is loaded...');
+  
+  const state = getState();
+  const needsInitialLoad = !state.exercises || state.exercises.length === 0 || 
+                           !state.programs || state.programs.length === 0;
+  
+  // If data is not loaded, show spinner and load it
+  if (needsInitialLoad) {
+    console.log('[Router#initial] Loading initial data...');
     document.getElementById('app').innerHTML = renderSpinner();
+    
     await Promise.all([
       ensureExercisesLoaded(),
       ensureProgramsLoaded(),
-      ensureModulesLoaded(), // Add modules loading
+      ensureModulesLoaded(),
       ensureCategoriesLoaded(),
       ensureEquipmentLoaded(),
       ensureMusclesLoaded(),
       ensureDifficultiesLoaded()
     ]);
+    
+    console.log('[Router#initial] Data loaded:', {
+      exercises: state.exercises?.length || 0,
+      programs: state.programs?.length || 0,
+      categories: state.categories?.length || 0,
+      equipment: state.equipment?.length || 0,
+      muscles: state.muscles?.length || 0,
+      difficulties: state.difficulties?.length || 0
+    });
+    
     hideSpinner();
+  } else {
+    console.log('[Router#skip] Data already loaded, skipping initial load');
   }
 
-  const state = getState();
   const hash = window.location.hash;
 
   // Handle unauthenticated users
@@ -248,6 +285,7 @@ async function router() {
       await exportImportView.render();
     } else if (hash === '#builder') {
       // Ensure all data is loaded before rendering builder
+      console.log('[Router#builder] Ensuring data is loaded...');
       await Promise.all([
         ensureExercisesLoaded(),
         ensureModulesLoaded(),
@@ -336,8 +374,8 @@ async function saveAllExercises(exercises) {
 // Re-export exercise form service for backward compatibility
 window.initExerciseFormService = initExerciseForm;
 
+// Listen for hash changes and route accordingly
 window.addEventListener('hashchange', router);
-router();
 
 // Initialize undo service after main app is ready
 initUndoService();

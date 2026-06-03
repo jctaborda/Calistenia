@@ -11,13 +11,22 @@ import {
 } from '../utils/dom-optimizer.js';
 
 export async function renderExercisesView() {
-  const main = document.getElementById('app');
-  const exercises = (await getState().exercises) || [];
-  const categories = (await getState().categories) || [];
-  const difficulties = (await getState().difficulties) || [];
-  const muscles = (await getState().muscles) || [];
-  const equipment = (await getState().equipment) || [];
+  const state = getState();
+  const exercises = state.exercises || [];
+  const categories = state.categories || [];
+  const difficulties = state.difficulties || [];
+  const muscles = state.muscles || [];
+  const equipment = state.equipment || [];
   const itemsPerPage = 10; // Number of exercises to display per page
+  
+  // Log data status for debugging
+  console.log('[ExercisesView] Rendering with data:', {
+    exercises: exercises.length,
+    categories: categories.length,
+    equipment: equipment.length,
+    muscles: muscles.length,
+    difficulties: difficulties.length
+  });
   
   // Get user's favorite exercise IDs from state
   const user = getState().user || {};
@@ -45,6 +54,8 @@ export async function renderExercisesView() {
   
   // Cache for optimized updates
   const cardCache = new Map();
+  
+  const main = document.getElementById('app');
 
   /**
    * Get difficulty label from ID (with caching for performance)
@@ -405,40 +416,48 @@ export async function renderExercisesView() {
     const categoryList = main.querySelector('#filter-categories');
     if (categoryList) {
       categoryList.innerHTML = categories.map(cat => `
-        <label class="checkbox-item">
-          <input type="checkbox" value="${cat.id}" data-filter="category" ${currentFilters.selectedCategories.includes(cat.id) ? 'checked' : ''}>
-          <span>${ValidationService.sanitizeText(cat.name)}</span>
-        </label>
+        <li>
+          <label class="checkbox-item">
+            <input type="checkbox" value="${cat.id}" data-filter="category" ${currentFilters.selectedCategories.includes(cat.id) ? 'checked' : ''}>
+            <span>${ValidationService.sanitizeText(cat.name)}</span>
+          </label>
+        </li>
       `).join('');
     }
 
     const muscleList = main.querySelector('#filter-muscles');
     if (muscleList) {
       muscleList.innerHTML = muscles.map(muscle => `
-        <label class="checkbox-item">
-          <input type="checkbox" value="${muscle.id}" data-filter="muscle" ${currentFilters.selectedMuscles.includes(muscle.id) ? 'checked' : ''}>
-          <span>${ValidationService.sanitizeText(muscle.name_en || muscle.name)}</span>
-        </label>
+        <li>
+          <label class="checkbox-item">
+            <input type="checkbox" value="${muscle.id}" data-filter="muscle" ${currentFilters.selectedMuscles.includes(muscle.id) ? 'checked' : ''}>
+            <span>${ValidationService.sanitizeText(muscle.name_en || muscle.name)}</span>
+          </label>
+        </li>
       `).join('');
     }
 
     const equipmentList = main.querySelector('#filter-equipment');
     if (equipmentList) {
       equipmentList.innerHTML = equipment.map(eq => `
-        <label class="checkbox-item">
-          <input type="checkbox" value="${eq.id}" data-filter="equipment" ${currentFilters.selectedEquipment.includes(eq.id) ? 'checked' : ''}>
-          <span>${ValidationService.sanitizeText(eq.name)}</span>
-        </label>
+        <li>
+          <label class="checkbox-item">
+            <input type="checkbox" value="${eq.id}" data-filter="equipment" ${currentFilters.selectedEquipment.includes(eq.id) ? 'checked' : ''}>
+            <span>${ValidationService.sanitizeText(eq.name)}</span>
+          </label>
+        </li>
       `).join('');
     }
 
     const difficultyList = main.querySelector('#filter-difficulties');
     if (difficultyList) {
       difficultyList.innerHTML = difficulties.map(diff => `
-        <label class="checkbox-item">
-          <input type="checkbox" value="${diff.id}" data-filter="difficulty" ${currentFilters.selectedDifficulties.includes(diff.id) ? 'checked' : ''}>
-          <span>${ValidationService.sanitizeText(diff.label)}</span>
-        </label>
+        <li>
+          <label class="checkbox-item">
+            <input type="checkbox" value="${diff.id}" data-filter="difficulty" ${currentFilters.selectedDifficulties.includes(diff.id) ? 'checked' : ''}>
+            <span>${ValidationService.sanitizeText(diff.label)}</span>
+          </label>
+        </li>
       `).join('');
     }
   }
