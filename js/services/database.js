@@ -2,7 +2,28 @@
 // Avoids localStorage quota limits
 
 const DB_NAME = 'calisthenics-db';
-const DB_VERSION = 6; // Incremented to add data_version store for cache sync
+
+/**
+ * DATABASE VERSION CHANGELLOG
+ * 
+ * Each DB_VERSION increment documents schema changes for migration tracking.
+ * When adding new stores or modifying existing ones, increment this version.
+ * 
+ * Version History:
+ * - v1: Initial schema - exercises, workouts, state stores
+ * - v2: Added modules, programs, categories, equipment, muscles, difficulties stores
+ * - v3: Added deleted_items store for undo functionality
+ * - v4: Added data_version store for cache sync tracking
+ * - v5: [No changes - reserved]
+ * - v6: [No changes - reserved]
+ * 
+ * Migration Guide:
+ * 1. Increment DB_VERSION at top of file
+ * 2. Add migration logic in onupgradeneeded handler below current version
+ * 3. Test on fresh install and existing DB
+ * 4. Update this changelog with new version details
+ */
+const DB_VERSION = 6;
 const STORES = {
   EXERCISES: 'exercises',
   WORKOUTS: 'workouts',
