@@ -6,8 +6,9 @@ import {
   loadAllEquipment, 
   loadAllMuscles, 
   loadAllDifficulties,
-  loadAllPrograms
+  loadAllRoutines
 } from './data-cache.js';
+import { updateRoutines as dbUpdateRoutines, deleteRoutine as dbDeleteRoutine } from './database.js';
 
 let cachedData = null;
 
@@ -38,12 +39,12 @@ export async function fetchExercises() {
   }
 }
 
-export async function fetchPrograms() {
+export async function fetchRoutines() {
   try {
     // Use data-cache.js which loads from IndexedDB or data.json
-    return await loadAllPrograms();
+    return await loadAllRoutines();
   } catch (error) {
-    console.error('Error fetching programs:', error);
+    console.error('Error fetching routines:', error);
     throw error;
   }
 }
@@ -145,4 +146,23 @@ export { ModuleStore } from './modules-service.js';
 // Clear cache to force reload from file
 export function clearDataCache() {
   cachedData = null;
+}
+
+// Routine CRUD operations
+export async function updateRoutineInDatabase(routine) {
+  try {
+    return await dbUpdateRoutines(routine);
+  } catch (error) {
+    console.error('Error updating routine:', error);
+    throw error;
+  }
+}
+
+export async function deleteRoutineFromDatabase(routineId) {
+  try {
+    return await dbDeleteRoutine(routineId);
+  } catch (error) {
+    console.error('Error deleting routine:', error);
+    throw error;
+  }
 }

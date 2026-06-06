@@ -592,18 +592,6 @@ export async function renderExercisesView() {
         }
       }
 
-      // Handle favorite toggle buttons in exercise cards
-      else if (target.classList.contains('exercise-card-favorite')) {
-        e.stopPropagation();
-        const exerciseId = target.getAttribute('data-exercise-id');
-        if (exerciseId) {
-          // Toggle favorite using the global function
-          if (window.toggleFavorite) {
-            window.toggleFavorite(exerciseId);
-          }
-        }
-      }
-
       // Handle pagination number buttons
       else if (target.classList.contains('pagination-btn')) {
         e.stopPropagation();
@@ -772,23 +760,6 @@ export async function renderExercisesView() {
   // Initial setup
   initializeEventDelegation();
   
-  // Listen for state changes to update favorite buttons
-  document.addEventListener('stateChange', () => {
-    updateFavoriteButtons();
-  });
-  
-  function updateFavoriteButtons() {
-    const user = getState().user || {};
-    const favoriteExerciseIds = user.favoriteExerciseIds || [];
-    
-    document.querySelectorAll('.exercise-card-favorite').forEach(btn => {
-      const exerciseId = btn.getAttribute('data-exercise-id');
-      const isFavorite = favoriteExerciseIds.includes(exerciseId);
-      btn.textContent = isFavorite ? '★' : '☆';
-      btn.className = `btn exercise-card-favorite ${isFavorite ? 'favorited' : ''}`;
-    });
-  }
-  
   // Set up search filter listener
   const filterInput = main.querySelector('#exercise-filter');
   
@@ -811,6 +782,26 @@ export async function renderExercisesView() {
   // Initial render of first page
   updatePageView(1);
   
+  // Update favorite buttons when state changes (once, not on every render)
+  // This is safe because we're only updating button text, not triggering state changes
+  const updateFavoriteButtons = () => {
+    const user = getState().user || {};
+    const favoriteExerciseIds = user.favoriteExerciseIds || [];
+    
+    document.querySelectorAll('.exercise-card-favorite').forEach(btn => {
+      const exerciseId = btn.getAttribute('data-exercise-id');
+      const isFavorite = favoriteExerciseIds.includes(exerciseId);
+      btn.textContent = isFavorite ? '★' : '☆';
+      btn.className = `btn exercise-card-favorite ${isFavorite ? 'favorited' : ''}`;
+    });
+  };
+  
+  // Only add the listener once by checking if it's already been added
+  if (!main.dataset.favoriteListenerAdded) {
+    document.addEventListener('stateChange', updateFavoriteButtons);
+    main.dataset.favoriteListenerAdded = 'true';
+  }
+  
   // Force reload of CSS to ensure latest styles are applied
   // This works around Service Worker caching issues
   if ('serviceWorker' in navigator) {
@@ -825,5 +816,5 @@ export async function renderExercisesView() {
   setupLazyLoadImages();
 }
 
-// Export as object for wrapView compatibility
+// Named + default export for maximum flexibility (Pattern 3)
 export default { render: renderExercisesView };

@@ -11,7 +11,7 @@ import { renderHeader } from '../components/header.js';
 export function renderExportImportView() {
   const state = getState();
   const hasWorkouts = (state.workouts?.length || 0) > 0;
-  const hasPrograms = (state.programs?.length || 0) > 0;
+  const hasPrograms = (state.routines?.length || 0) > 0;
 
   return `
     <div class="view-container">
@@ -63,7 +63,7 @@ export function renderExportImportView() {
         ${hasWorkouts || hasPrograms ? `
         <section class="card danger-section">
           <h3>🗑️ Clear User Data</h3>
-          <p class="description">Permanently delete all your workouts, custom programs, and skill modules from this device.</p>
+          <p class="description">Permanently delete all your workouts, custom routines, and skill modules from this device.</p>
           
           <button id="btn-clear-data" class="btn btn-danger btn-large">
             <span class="icon">🗑️</span> Clear All My Data
@@ -84,6 +84,9 @@ export async function render() {
   // Setup event listeners
   setupEventListeners();
 }
+
+// Named + default export for maximum flexibility (Pattern 3)
+export default { render };
 
 function setupEventListeners() {
   // Download export button
@@ -123,7 +126,7 @@ async function handleDownloadExport() {
     exportInfo.style.display = 'block';
     document.getElementById('export-timestamp').textContent = new Date(metadata.exportedAt).toLocaleString();
     document.getElementById('export-counts').textContent = 
-      `${metadata.workoutCount} workouts, ${metadata.programCount} programs, ${metadata.moduleCount} modules`;
+      `${metadata.workoutCount} workouts, ${metadata.routineCount} routines, ${metadata.moduleCount} modules`;
     
     downloadBtn.innerHTML = '<span class="icon">✓</span> Backup Downloaded';
     
@@ -161,7 +164,7 @@ async function handleImportFile(event) {
         <p><strong>✅ Import Complete!</strong></p>
         <ul>
           ${stats.workouts.imported > 0 ? `<li>Workouts: ${stats.workouts.imported} imported, ${stats.workouts.skipped} skipped</li>` : ''}
-          ${stats.programs.imported > 0 ? `<li>Programs: ${stats.programs.imported} imported, ${stats.programs.skipped} skipped</li>` : ''}
+          ${stats.routines.imported > 0 ? `<li>Routines: ${stats.routines.imported} imported, ${stats.routines.skipped} skipped</li>` : ''}
           ${stats.skillModules.imported > 0 ? `<li>Skill Modules: ${stats.skillModules.imported} imported, ${stats.skillModules.skipped} skipped</li>` : ''}
         </ul>
         ${result.stats.errors.length > 0 
@@ -213,7 +216,7 @@ async function handleClearData() {
   const clearStatus = document.getElementById('clear-status');
   const clearBtn = document.getElementById('btn-clear-data');
   
-  if (!confirm('Are you sure you want to delete ALL your workout history, custom programs, and skill modules? This cannot be undone.')) {
+  if (!confirm('Are you sure you want to delete ALL your workout history, custom routines, and skill modules? This cannot be undone.')) {
     return;
   }
 
@@ -229,7 +232,7 @@ async function handleClearData() {
       <p><strong>✅ Data Cleared!</strong></p>
       <ul>
         <li>${result.deleted.workouts} workouts deleted</li>
-        <li>${result.deleted.programs} programs deleted</li>
+        <li>${result.deleted.routines} routines deleted</li>
         <li>${result.deleted.modules} skill modules deleted</li>
       </ul>
     `;

@@ -179,5 +179,5 @@ export async function renderSkillModulesView() {
   }
 }
 
-// Export as object for wrapView compatibility
+// Named + default export for maximum flexibility (Pattern 3)
 export default { render: renderSkillModulesView };

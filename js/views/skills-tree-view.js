@@ -359,7 +359,7 @@ export async function renderSkillsTreeView() {
         </div>
       </div>
       
-      <button class="btn" onclick="window.location.hash = '#skill-modules'" style="margin-top: 2rem;">Back to Modules List</button>
+      <button class="btn" data-nav="#skill-modules" style="margin-top: 2rem;">Back to Modules List</button>
     </div>
   `;
 
@@ -380,5 +380,5 @@ export async function renderSkillsTreeView() {
 window.renderSkillsTreeView = renderSkillsTreeView;
 
 
-// Export as object for wrapView compatibility
+// Named + default export for maximum flexibility (Pattern 3)
 export default { render: renderSkillsTreeView };

@@ -74,7 +74,7 @@ export async function renderSkillModuleDetailView(moduleId) {
   const htmlContent = renderHeader() + `
     <div class="card">
       <div class="module-detail-header">
-        <button class="btn btn-secondary" onclick="window.location.hash = '#skill-modules'">← Back to Modules</button>
+        <button class="btn btn-secondary" data-nav="#skill-modules">← Back to Modules</button>
         <span class="module-progress">${progress}%</span>
       </div>
 
@@ -116,7 +116,7 @@ export async function renderSkillModuleDetailView(moduleId) {
               : (difficultyClass ? '' : '4px solid var(--gray-400)');
 
             return `
-              <div class="exercise-progression-card ${difficultyClass}" style="cursor: pointer; border-left: ${borderStyle};" onclick="window.location.hash = '#exercise/${exerciseId}'">
+              <div class="exercise-progression-card ${difficultyClass}" style="cursor: pointer; border-left: ${borderStyle};" data-exercise-id="${exerciseId}">
                 <div class="flex-container">
                   <div class="flex-1">
                     <div class="exercise-header">
@@ -165,7 +165,7 @@ export async function renderSkillModuleDetailView(moduleId) {
         </div>
       ` : ''}
 
-      <button class="btn" onclick="window.location.hash = '#skill-modules'" style="margin-top: 2rem;">Back to Modules</button>
+      <button class="btn" data-nav="#skill-modules" style="margin-top: 2rem;">Back to Modules</button>
     </div>
   `;
 
@@ -175,5 +175,5 @@ export async function renderSkillModuleDetailView(moduleId) {
 // Export for router usage
 window.renderSkillModuleDetailView = renderSkillModuleDetailView;
 
-// Export as object for wrapView compatibility
+// Named + default export for maximum flexibility (Pattern 3)
 export default { render: renderSkillModuleDetailView };

@@ -91,8 +91,8 @@
 
 @font-face {
   font-family: 'OpenSans';
-  font-weight: 600; /* <weight>: Use a value from 300 to 800 */
-  src: url('OpenSans.ttf') format('truetype');
+  font-weight: 600;
+  src: url('./OpenSans.ttf') format('truetype');
   font-optical-sizing: auto;
   font-style: normal;
   font-variation-settings: "wdth" 100;
@@ -505,10 +505,12 @@ li {
 .muscle-diagram-front, .muscle-diagram-back{
   flex:1;
   position: relative;
-  width: 300px; /* auto Adjust as needed */
-  max-width: 100%;
+  width: 100%;
+  max-width: 400px;
   margin-top: 20px;
   margin-bottom: 1rem;
+  height: 500px;
+  overflow: hidden;
 }
 
 .muscle-diagram-front img, .muscle-diagram-back img {
@@ -516,8 +518,7 @@ li {
   top: 0;
   left: 0;
   width: 100%;
-  height: auto;
-  max-height: 500px;
+  height: 100%;
   object-fit: contain;
 }
 
@@ -532,6 +533,7 @@ li {
 /* Pagination styles */
 .pagination {
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
@@ -551,6 +553,7 @@ li {
   transition: all 0.2s ease;
   min-width: 2.5rem;
   text-align: center;
+  display: inline-block;
 }
 
 .pagination-btn:hover {
@@ -570,6 +573,7 @@ li {
   font-weight: 600;
   min-width: 2.5rem;
   text-align: center;
+  display: inline-block;
 }
 
 .pagination-ellipsis {
@@ -591,6 +595,7 @@ li {
   transition: all 0.2s ease;
   min-width: 2.5rem;
   text-align: center;
+  display: inline-block;
 }
 
 .pagination-nav-btn:hover:not(.disabled) {
@@ -1189,12 +1194,12 @@ html.dark .loading {
 
 
 
-/* Additional styles for program-details-view */
-.program-details-content {
+/* Additional styles for routine-details-view */
+.routine-details-content {
   padding: 0;
 }
 
-.program-header {
+.routine-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1221,14 +1226,14 @@ html.dark .loading {
   background: var(--btn-secondary-hover);
 }
 
-.program-title {
+.routine-title {
   margin: 0 0 1.5rem 0;
   font-size: 1.8rem;
   font-weight: 600;
   color: var(--text-primary);
 }
 
-.program-actions {
+.routine-actions {
   display: flex;
   gap: 0.5rem;
   align-items: center;
@@ -1245,23 +1250,23 @@ html.dark .loading {
   margin-bottom: 2rem;
 }
 
-.program-muscle-section {
+.routine-muscle-section {
   margin: 2rem 0 3rem;
 }
 
-.start-program-container {
+.start-routine-container {
   margin-top: 2rem;
   text-align: center;
 }
 
-/* Responsive adjustments for program-details-view */
+/* Responsive adjustments for routine-details-view */
 @media (max-width: 600px) {
-  .program-header {
+  .routine-header {
     flex-direction: column;
     align-items: stretch;
   }
   
-  .program-actions {
+  .routine-actions {
     justify-content: space-between;
   }
   
@@ -2021,7 +2026,7 @@ small {
   flex: 1;
 }
 
-.workout-program {
+.workout-routine {
   font-weight: 600;
   color: var(--primary);
   font-size: 1rem;
@@ -2268,7 +2273,7 @@ small {
   color: var(--gray-600);
 }
 
-/* Featured Programs */
+/* Featured Routines? */
 .programs-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -2276,7 +2281,7 @@ small {
   margin-bottom: 3rem;
 }
 
-.program-card {
+.routine-card {
   background: white;
   color: var(--gray-800);
   padding: 1.5rem;
@@ -2285,19 +2290,19 @@ small {
   transition: transform 0.3s ease;
 }
 
-.program-card:hover {
+.routine-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
 }
 
-.program-header {
+.routine-header {
   display: flex;
   justify-content: space-between;
   align-items: start;
   margin-bottom: 0.5rem;
 }
 
-.program-header h3 {
+.routine-header h3 {
   color: var(--primary);
   font-size: 1.2rem;
   margin: 0;
@@ -2315,14 +2320,34 @@ small {
 .difficulty-intermediate { background: var(--diff-intermediate-bg); color: var(--diff-intermediate-text); }
 .difficulty-advanced { background: var(--diff-advanced-bg); color: var(--diff-advanced-text); }
 
-.program-desc {
+.routine-desc {
   color: var(--gray-600);
   font-size: 0.9rem;
   margin-bottom: 1rem;
   line-height: 1.4;
 }
 
-.program-stats {
+.routine-meta {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.routine-meta-item {
+  background: var(--gray-100);
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  color: var(--gray-700);
+}
+
+html.dark .routine-meta-item {
+  background: var(--gray-700);
+  color: var(--gray-200);
+}
+
+.routine-stats {
   display: flex;
   gap: 1rem;
   margin-bottom: 1rem;
@@ -2423,7 +2448,7 @@ small {
 html.dark .home-container,
 html.dark .stat-card,
 html.dark .action-card,
-html.dark .program-card,
+html.dark .routine-card,
 html.dark .workout-item,
 html.dark .no-data {
   background: var(--dark-card-bg);
@@ -2447,13 +2472,13 @@ html.dark .action-desc {
   color: var(--dark-text-muted);
 }
 
-html.dark .program-header h3,
+html.dark .routine-header h3,
 html.dark .workout-title {
   color: var(--white);
 }
 
-html.dark .program-desc,
-html.dark .program-stats,
+html.dark .routine-desc,
+html.dark .routine-stats,
 html.dark .workout-date {
   color: var(--dark-text-muted);
 }

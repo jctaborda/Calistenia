@@ -1,47 +1,53 @@
-// views/builder-view.js - Updated with proper module CRUD operations
+// views/builder-view.js - Routine builder (no more custom routines)
 import { renderHeader } from '../components/header.js';
 import { getState, updateState } from '../services/state.js';
 import { fetchSkillModules } from '../services/api.js';
 import { ModuleStore } from '../services/modules-service.js';
 import { saveForUndo } from '../services/undo-service.js';
+import { storeRoutines, routinesLoad } from '../services/database.js';
 
 export async function renderBuilderView() {
   const main = document.getElementById('app');
-  const state = getState(); // Use getState() to retrieve current state, not updateState()
+  const state = getState();
   const exercises = state.exercises || [];
   const categories = state.categories || [];
+  const difficulties = state.difficulties || [];
   
-  console.log('🔧 BUILDER VIEW DEBUG:');
-  console.log('  createNewProgram flag:', state.createNewProgram);
-  console.log('  editingProgram:', state.editingProgram);
-  console.log('  editingModule:', state.editingModule);
-  console.log('  exercises count:', exercises.length);
-  console.log('  categories count:', categories.length);
-
-  const editingProgram = state.editingProgram;
+  let editingRoutine = state.editingRoutine;
   const editingModule = state.editingModule;
 
-  let isEditingProgram = false;
+  let isEditingRoutine = false;
   let editingType = '';
   let editingId = '';
   let editingModuleName = '';
   let selectedExercises = [];
-  let createNewProgram = false;
+  let createNewRoutine = false;
 
-  // Check if we should create a new program (not editing)
-  if (state.createNewProgram) {
-    createNewProgram = true;
-    isEditingProgram = false;
-    updateState({ createNewProgram: false }); // Clear the flag after reading
+  // Check if we should create a new routine (not editing)
+  if (state.createNewRoutine) {
+    createNewRoutine = true;
+    isEditingRoutine = false;
+    editingRoutine = null; // Clear editingRoutine to prevent loading old data
+    updateState({ createNewRoutine: false }); // Clear the flag after reading
   }
 
-  // Check if we're editing a program FIRST (higher priority)
-  if (editingProgram && editingProgram.program && editingProgram.program.exercises) {
-    isEditingProgram = true;
-    editingType = editingProgram.type || 'custom';
-    editingId = editingProgram.id;
+  // Check if we're editing a routine
+  if (editingRoutine && editingRoutine.routine && editingRoutine.routine.exercises) {
+    isEditingRoutine = true;
+    editingType = editingRoutine.type || 'routine';
+    editingId = editingRoutine.id;
     
-    let loadedExercises = editingProgram.program.exercises || [];
+    // Debug log
+    console.log('[BuilderView] Editing routine:', {
+      id: editingId,
+      name: editingRoutine.routine?.name,
+      category: editingRoutine.routine?.category,
+      categoryType: typeof editingRoutine.routine?.category,
+      difficulties: editingRoutine.routine?.difficulty,
+      duration: editingRoutine.routine?.duration
+    });
+    
+    let loadedExercises = editingRoutine.routine.exercises || [];
     
     selectedExercises = loadedExercises.map(ex => {
       const exercise = exercises.find(e => String(e.id) === String(ex.exerciseId));
@@ -61,32 +67,132 @@ export async function renderBuilderView() {
   main.innerHTML = renderHeader() + `
     <div class="card">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <button class="btn btn-secondary" onclick="window.location.hash = '${createNewProgram || isEditingProgram ? '#programs' : '#skill-modules'}'">
-          Back to ${createNewProgram || isEditingProgram ? 'Programs' : 'Modules'}
+        <button class="btn btn-secondary" data-nav="${createNewRoutine || isEditingRoutine ? '#routines' : '#skill-modules'}">
+          Back to ${createNewRoutine || isEditingRoutine ? 'Routines' : 'Modules'}
         </button>
-        <h1>${createNewProgram ? 'Create New Routine' : isEditingProgram ? (editingType === 'custom' ? 'Edit Routine' : 'Clone Program') : 'Edit Module'}</h1>
+        <h1>${createNewRoutine ? 'Create New Routine' : isEditingRoutine ? 'Edit Routine' : 'Edit Module'}</h1>
       </div>
       <form id="builder-form">
         <div class="card margin-bottom-1">
-          <h3>${createNewProgram || isEditingProgram ? 'Routine Name' : 'Module Name'}</h3>
+          <h3>${createNewRoutine || isEditingRoutine ? 'Routine Name' : 'Module Name'}</h3>
           <input 
             type="text" 
             id="routine-name" 
             class="filter-input routine-name-input" 
             placeholder="Enter name..." 
-            value="${isEditingProgram ? editingProgram.program.name : createNewProgram ? '' : editingModuleName}"
+            value="${isEditingRoutine ? editingRoutine.routine.name : createNewRoutine ? '' : editingModuleName}"
             required
           >
         </div>
+        
+        ${createNewRoutine || isEditingRoutine ? `
+        <div class="card margin-bottom-1" style="margin-top: 2rem;">
+          <h3>Routine Details</h3>
+          
+          <div class="form-group">
+            <label for="routine-description">Description *</label>
+            <textarea 
+              id="routine-description" 
+              name="description" 
+              required 
+              maxlength="2000" 
+              placeholder="Describe this routine..."
+              style="width: 100%; padding: 0.5rem; border: 1px solid var(--accent); border-radius: 4px; min-height: 80px;"
+            >${isEditingRoutine && editingRoutine.routine?.description ? editingRoutine.routine.description : ''}</textarea>
+          </div>
+          
+          <div class="form-group">
+            <label for="routine-category">Category</label>
+            <select id="routine-category" name="category" style="width: 100%; padding: 0.5rem; border: 1px solid var(--accent); border-radius: 4px;">
+              <option value="">Select Category...</option>
+              ${categories.map(cat => `
+                <option value="${cat.id}" ${isEditingRoutine && String(editingRoutine.routine?.category) === String(cat.id) ? 'selected' : ''}>
+                  ${cat.name}
+                </option>
+              `).join('')}
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="routine-difficulty">Difficulty Level</label>
+            <select id="routine-difficulty" name="difficulty" style="width: 100%; padding: 0.5rem; border: 1px solid var(--accent); border-radius: 4px;">
+              <option value="">Select Difficulty...</option>
+              ${difficulties.map(diff => `\n                <option value="${diff.label}" ${isEditingRoutine && String(editingRoutine.routine?.difficulty).toLowerCase() === String(diff.label).toLowerCase() ? 'selected' : ''}>
+                  ${diff.label}
+                </option>
+              `).join('')}
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="routine-duration">Duration (minutes)</label>
+            <input 
+              type="number" 
+              id="routine-duration" 
+              name="duration" 
+              min="5" 
+              max="300" 
+              placeholder="30"
+              value="${isEditingRoutine && editingRoutine.routine?.duration ? editingRoutine.routine.duration : '30'}"
+              style="width: 100%; padding: 0.5rem; border: 1px solid var(--accent); border-radius: 4px;"
+            >
+          </div>
+        </div>
+        ` : `
+        <div class="card margin-bottom-1" style="margin-top: 2rem;">
+          <h3>Module Details</h3>
+          
+          <div class="form-group">
+            <label for="routine-description">Description *</label>
+            <textarea 
+              id="routine-description" 
+              name="description" 
+              required 
+              maxlength="2000" 
+              placeholder="Describe this module..."
+              style="width: 100%; padding: 0.5rem; border: 1px solid var(--accent); border-radius: 4px; min-height: 80px;"
+            >${editingModule?.module?.description || ''}</textarea>
+          </div>
+          
+          <div class="form-group">
+            <label for="routine-category">Category</label>
+            <select id="routine-category" name="category" style="width: 100%; padding: 0.5rem; border: 1px solid var(--accent); border-radius: 4px;">
+              <option value="">Select Category...</option>
+              ${categories.map(cat => `
+                <option value="${cat.id}" ${(!isEditingRoutine && !createNewRoutine && String(editingModule?.module?.category) === String(cat.id)) ? 'selected' : ''}>
+                  ${cat.name}
+                </option>
+              `).join('')}
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="routine-difficulty">Difficulty Level</label>
+            <select id="routine-difficulty" name="difficulty" style="width: 100%; padding: 0.5rem; border: 1px solid var(--accent); border-radius: 4px;">
+              <option value="">Select Difficulty...</option>
+              ${difficulties.map(diff => `
+                <option value="${diff.label}" ${(!isEditingRoutine && !createNewRoutine && editingModule?.module?.difficulty === diff.label.toLowerCase()) ? 'selected' : ''}>
+                  ${diff.label}
+                </option>
+              `).join('')}
+            </select>
+          </div>
+        </div>
+        `}
         
         <div id="selected-exercises" style="${selectedExercises.length === 0 ? 'display: none;' : ''}">
           <h3 class="exercises-heading">Selected Exercises (drag to reorder)</h3>
           <div id="exercise-list" class="draggable-list"></div>
         </div>
         
-        ${selectedExercises.length === 0 ? `\n        <div class="empty-state">\n          <h2>No Exercises Selected Yet</h2>\n          <p>Select exercises from the list below to build your routine or module.</p>\n        </div>\n        ` : ''}
+        ${selectedExercises.length === 0 ? `
+        <div class="empty-state">
+          <h2>No Exercises Selected Yet</h2>
+          <p>Select exercises from the list below to build your routine or module.</p>
+        </div>
+        ` : ''}
         
-        <div class="card margin-bottom-1" style="margin-top: 2rem;">
+        <div class="card margin-bottom-1" style="margin-top: 2rem; max-height: 350px; overflow-y: auto; padding-right: 0.5rem;">
           <h3>Available Exercises (${exercises.length} exercises)</h3>
           <input 
             type="text" 
@@ -109,11 +215,10 @@ export async function renderBuilderView() {
             }).join('') : '<p>No exercises available</p>'}
           </ul>
         </div>
-        <button class="btn margin-top-1 form-submit-btn" type="submit">${createNewProgram ? 'Create Routine' : isEditingProgram ? (editingType === 'custom' ? 'Update Routine' : 'Clone Program') : 'Save Module'}</button>
+        <button class="btn margin-top-1 form-submit-btn" type="submit">${createNewRoutine ? 'Create Routine' : isEditingRoutine ? 'Update Routine' : 'Save Module'}</button>
       </form>
     </div>
   `;
-
 
   function updateExerciseList() {
     const exerciseList = main.querySelector('#exercise-list');
@@ -122,7 +227,6 @@ export async function renderBuilderView() {
     
     if (selectedExercises.length === 0) {
       exerciseList.innerHTML = '<p>No exercises selected yet.</p>';
-      // Hide selected exercises section and show empty state
       if (selectedExercisesDiv) {
         selectedExercisesDiv.style.display = 'none';
       }
@@ -131,7 +235,6 @@ export async function renderBuilderView() {
       }
       return;
     } else {
-      // Show selected exercises section and hide empty state
       if (selectedExercisesDiv) {
         selectedExercisesDiv.style.display = 'block';
       }
@@ -177,11 +280,10 @@ export async function renderBuilderView() {
         const index = parseInt(e.target.dataset.remove);
         const exerciseId = selectedExercises[index].exerciseId;
         
-        // Get exercise name for confirmation message
         const exerciseName = selectedExercises[index].name || `Exercise ${index + 1}`;
         
         if (!confirm(`Are you sure you want to remove "${exerciseName}" from this routine? This will not delete the exercise itself.`)) {
-          return; // Cancelled
+          return;
         }
 
         const checkbox = main.querySelector(`input[type="checkbox"][data-exercise-id="${exerciseId}"]`);
@@ -273,8 +375,8 @@ export async function renderBuilderView() {
   const form = main.querySelector('#builder-form');
   if (form) {
     console.log('✅ Form found, adding submit listener');
-    console.log('  createNewProgram:', createNewProgram);
-    console.log('  isEditingProgram:', isEditingProgram);
+    console.log('  createNewRoutine:', createNewRoutine);
+    console.log('  isEditingRoutine:', isEditingRoutine);
     console.log('  selectedExercises count:', selectedExercises.length);
     form.addEventListener('submit', async e => {
       e.preventDefault();
@@ -292,45 +394,68 @@ export async function renderBuilderView() {
         alert('Please select at least one exercise.');
         return;
       }
+      
+      // Get routine details (only for routines, not modules)
+      let routineDetails = {};
+      if (createNewRoutine || isEditingRoutine) {
+        const description = main.querySelector('#routine-description')?.value.trim() || '';
+        const category = main.querySelector('#routine-category')?.value;
+        const difficulty = main.querySelector('#routine-difficulty')?.value;
+        const duration = main.querySelector('#routine-duration')?.value || '30';
+        
+        if (!description) {
+          alert('Please enter a description for the routine.');
+          return;
+        }
+        
+        routineDetails = {
+          description,
+          category,
+          difficulty,
+          duration: parseInt(duration) || 30
+        };
+      }
 
       // For modules - save to IndexedDB via ModuleStore
-      if (!isEditingProgram && !createNewProgram) {
+      if (!isEditingRoutine && !createNewRoutine) {
         try {
+          const moduleDescription = main.querySelector('#routine-description')?.value.trim() || '';
+          const moduleCategory = main.querySelector('#routine-category')?.value;
+          const moduleDifficulty = main.querySelector('#routine-difficulty')?.value;
+          
           if (editingModule) {
-            // Update existing module
             const updatedModule = {
               id: editingId,
               name,
               exercises: selectedExercises.map(ex => ex.exerciseId),
-              description: 'Updated from builder', // Keep existing description or get it from state
-              difficulty: 'mixed',
-              category: 'General'
+              description: moduleDescription,
+              difficulty: moduleDifficulty?.toLowerCase() || 'beginner',
+              category: moduleCategory || ''
             };
 
             await ModuleStore.update(updatedModule);
             
             updateState({ 
               editingModule: null,
-              editingProgram: null
+              editingRoutine: null
             });
             
             alert('Module updated successfully!');
             window.location.hash = '#skill-modules';
           } else {
-            // Create new module
             const newModule = {
               name,
               exercises: selectedExercises.map(ex => ex.exerciseId),
-              description: 'Created from builder',
-              difficulty: 'beginner',
-              category: 'General'
+              description: moduleDescription,
+              difficulty: moduleDifficulty?.toLowerCase() || 'beginner',
+              category: moduleCategory || ''
             };
 
             await ModuleStore.add(newModule);
             
             updateState({ 
-              editingProgram: null,
-              editingModule: null // Clear both to prevent conflicts
+              editingRoutine: null,
+              editingModule: null
             });
             
             alert('New module created successfully!');
@@ -340,74 +465,82 @@ export async function renderBuilderView() {
           console.error('Error saving module:', error);
           alert('Error saving module: ' + error.message);
         }
-      } else if (createNewProgram) {
-        // Create new custom program
-        const user = { ...state.user };
-        user.customRoutines = user.customRoutines || [];
-        user.customRoutines.push({
-          id: `${user.name}-${Date.now()}`,
-          name,
-          exercises: selectedExercises.map(ex => ({
-            exerciseId: ex.exerciseId,
-            sets: ex.sets,
-            reps: ex.reps,
-            restTime: ex.restTime
-          }))
-        });
-
-        updateState({ 
-          user, 
-          editingProgram: null,
-          editingModule: null,
-          createNewProgram: false
-        });
-        alert('New routine created successfully!');
-        window.location.hash = '#programs';
-      } else {
-        // Program editing (existing logic)
-        const user = { ...state.user };
-
-        if (editingType === 'custom') {
-          user.customRoutines = user.customRoutines || [];
-          const routineIndex = user.customRoutines.findIndex(r => r.id === editingId);
-          if (routineIndex !== -1) {
-            user.customRoutines[routineIndex] = {
-              id: editingId,
-              name,
-              exercises: selectedExercises.map(ex => ({
-                exerciseId: ex.exerciseId,
-                sets: ex.sets,
-                reps: ex.reps,
-                restTime: ex.restTime
-              }))
-            };
-          }
-        } else {
-          // Clone program as new custom routine
-          user.customRoutines = user.customRoutines || [];
-          user.customRoutines.push({
-            id: `${user.name}-${Date.now()}`,
-            name: name + ' (Modified)',
+      } else if (createNewRoutine) {
+        // Create new routine - load existing, add new, save all
+        try {
+          // Load existing routines from IndexedDB
+          const existingRoutines = await routinesLoad();
+          
+          const newRoutine = {
+            id: existingRoutines.length + 1,
+            name,
+            ...routineDetails,
             exercises: selectedExercises.map(ex => ({
               exerciseId: ex.exerciseId,
               sets: ex.sets,
               reps: ex.reps,
               restTime: ex.restTime
             }))
-          });
+          };
+          
+          // Get all routines from IndexedDB and add new one
+          const allRoutines = [...existingRoutines, newRoutine];
+          
+          // Save to IndexedDB using storeRoutines
+          await storeRoutines(allRoutines);
+          
+          // Update state to reflect the new routines
+          updateState({ routines: allRoutines });
+          
+          alert('New routine created and saved successfully!');
+          window.location.hash = '#routines';
+        } catch (error) {
+          console.error('Error creating routine:', error);
+          console.error('Error details:', error.message);
+          alert('Error creating routine: ' + error.message);
         }
-
-        updateState({ 
-          user, 
-          editingProgram: null,
-          editingModule: null // Clear both to prevent conflicts
-        });
-        alert('Changes saved!');
-        window.location.hash = '#programs';
+      } else {
+        // Update existing routine - load, modify, save all
+        try {
+          // Load routines from IndexedDB
+          const allRoutines = await routinesLoad();
+          
+          const routineIndex = allRoutines.findIndex(p => String(p.id) === String(editingId));
+          if (routineIndex === -1) {
+            alert('Routine not found!');
+            return;
+          }
+          
+          const updatedRoutine = {
+            id: editingId,
+            name,
+            ...routineDetails,
+            exercises: selectedExercises.map(ex => ({
+              exerciseId: ex.exerciseId,
+              sets: ex.sets,
+              reps: ex.reps,
+              restTime: ex.restTime
+            }))
+          };
+          
+          allRoutines[routineIndex] = updatedRoutine;
+          
+          // Save to IndexedDB using storeRoutines
+          await storeRoutines(allRoutines);
+          
+          // Update state to reflect the changes
+          updateState({ routines: allRoutines });
+          
+          alert('Routine updated successfully!');
+          window.location.hash = '#routine-details/' + editingId;
+        } catch (error) {
+          console.error('Error updating routine:', error);
+          alert('Error updating routine: ' + error.message);
+        }
       }
     });
   }
 }
 
-// Export as object for wrapView compatibility
+// Named + default export for maximum flexibility (Pattern 3)
 export default { render: renderBuilderView };

@@ -13,7 +13,7 @@ export function renderHeader() {
       </div>
       <nav class="flex-container" aria-label="Main navigation">
         <a href="#home">Home</a>
-        <a href="#programs">Programs</a>
+        <a href="#routines">Routines</a>
         <a href="#exercises">Exercises</a>
         <a href="#skill-modules">Skills</a>
         <a href="#profile">Profile</a>

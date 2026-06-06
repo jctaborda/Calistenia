@@ -22,7 +22,7 @@ export async function renderProfileView() {
   <!-- Export/Import Section -->
   <div class="profile-section">
   <h2>Data Management</h2>
-  <p><strong>Backup & Restore:</strong> Export your workout history and custom routines, or restore from a backup file.</p>
+  <p><strong>Backup & Restore:</strong> Export your workout history and routines, or restore from a backup file.</p>
   <a href="#export-import" class="btn btn-primary">
   📤 Export / Import Data
   </a>
@@ -63,7 +63,7 @@ export async function renderProfileView() {
   <td>${formatDate(metric.date)}</td>
   <td>${metric.weight}</td>
   <td>${metric.bodyFat || '-'}</td>
-  <td><button class="btn btn-danger btn-sm" data-index="${metric.index}" onclick="deleteMetric(this)">Delete</button></td>
+  <td><button class="btn btn-danger btn-sm" data-delete-metric data-index="${metric.index}">Delete</button></td>
   </tr>
   `).join('')}
   </tbody>
@@ -107,31 +107,22 @@ export async function renderProfileView() {
    ${history.length === 0 ? '<p>No workouts completed yet.</p>' : `
            <ul class="workout-history-list">
              ${history.map((w, index) => `
-               <li class="workout-item" onclick="window.navigateToWorkoutDetail(${index})" style="cursor: pointer;">
+               <li class="workout-item" data-workout-item data-index="${index}" style="cursor: pointer;">
                  <div class="workout-info">
-                   <span class="workout-program">${w.program?.name || 'Custom Workout'}</span>
+                   <span class="workout-routine">${w.routine?.name || 'Custom Workout'}</span>
                    <span class="workout-date">${formatWorkoutDate(w.date, false)}</span>
                  </div>
                  ${w.completedExercises ? `<span class="workout-count">${w.completedExercises.length} exercises</span>` : ''}
-                 <button class="btn btn-danger btn-sm delete-history-btn" data-index="${index}" title="Delete this workout">×</button>
+                 <button class="btn btn-danger btn-sm" data-delete-workout data-index="${index}" title="Delete this workout">×</button>
                </li>
              `).join('')}
            </ul>
          `}
    </div>
   
-  <button class="btn back-to-home-btn" onclick="window.location.hash = '#home'" style="margin-top: 2rem;">Back to Home</button>
+  <button class="btn back-to-home-btn" data-nav="#home" style="margin-top: 2rem;">Back to Home</button>
     </div>
   `;
-
-  // Set up event delegation for delete buttons
-  const deleteBtnHandler = (e) => {
-    if (e.target.classList.contains('delete-history-btn')) {
-  window.deleteWorkoutHistory(e.target);
-    }
-  };
-
-  main.addEventListener('click', deleteBtnHandler);
 
   // Handle body metrics form submission
   const form = main.querySelector('#body-metrics-form');
@@ -186,63 +177,7 @@ export async function renderProfileView() {
   renderProfileView();
     });
   }
-
-  // Make deleteMetric available globally
-  window.deleteMetric = function(button) {
-    const index = parseInt(button.getAttribute('data-index'));
-    
-    if (!confirm('Delete this metric?')) return;
-    
-    const state = getState();
-    const user = { ...state.user };
-    user.bodyMetrics = user.bodyMetrics || [];
-    
-    // Find the metric before removing it (for undo)
-    const metricToDelete = user.bodyMetrics[index];
-    if (metricToDelete) {
-  saveForUndo('body-metric', metricToDelete, index);
-    }
-    
-    // Remove the metric
-    user.bodyMetrics.splice(index, 1);
-    
-    // Renumber remaining indices
-    user.bodyMetrics = user.bodyMetrics.map((metric, i) => ({
-  ...metric,
-  index: i
-    }));
-    
-    updateState({ user });
-    renderProfileView();
-  };
-  
-  // Make deleteWorkoutHistory available globally
-  window.deleteWorkoutHistory = function(button) {
-    const index = parseInt(button.getAttribute('data-index'));
-    const state = getState();
-    const historyItem = state.history[index];
-    
-    if (!historyItem) return;
-    
-    if (!confirm('Delete this workout from history?')) return;
-    
-    // Save for undo before deleting
-    saveForUndo('workout-history', historyItem, index);
-    
-    // Remove from history immutably
-    const newHistory = state.history.filter((_, i) => i !== index);
-    updateState({ history: newHistory });
-    
-    // Re-render the profile view
-    renderProfileView();
-  };
-
-  // Make navigateToWorkoutDetail available globally
-  window.navigateToWorkoutDetail = function(index) {
-    window.location.hash = `#workout-detail/${index}`;
-  };
 }
 
-
-// Export as object for wrapView compatibility
+// Named + default export for maximum flexibility (Pattern 3)
 export default { render: renderProfileView };

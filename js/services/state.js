@@ -152,7 +152,7 @@ export function initializeState() {
     activeWorkout: null,
     history: [],
     exercises: [],
-    programs: [],
+    routines: [],
     categories: [],
     equipment: [],
     muscles: [],

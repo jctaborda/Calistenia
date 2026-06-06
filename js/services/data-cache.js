@@ -10,8 +10,8 @@ import {
   musclesLoad,
   storeDifficulties,
   difficultiesLoad,
-  storePrograms,
-  programsLoad,
+  storeRoutines,
+  routinesLoad,
   storeDataVersion,
   loadDataVersion
 } from './database.js';
@@ -49,13 +49,13 @@ async function initializeDataCacheInternal() {
   
   try {
     // Load all reference data and cache to IndexedDB
-    const [exercises, categories, equipment, muscles, difficulties, programs, serverVersion] = await Promise.all([
+    const [exercises, categories, equipment, muscles, difficulties, routines, serverVersion] = await Promise.all([
       loadAllExercises(),
       loadAllCategories(),
       loadAllEquipment(),
       loadAllMuscles(),
       loadAllDifficulties(),
-      loadAllPrograms(),
+      loadAllRoutines(),
       fetchServerVersion()
     ]);
     
@@ -65,7 +65,7 @@ async function initializeDataCacheInternal() {
     await storeEquipment(equipment);
     await storeMuscles(muscles);
     await storeDifficulties(difficulties);
-    await storePrograms(programs);
+    await storeRoutines(routines);
     
     // Store the server version for future sync checks
     if (serverVersion) {
@@ -131,7 +131,7 @@ export async function syncDataCache() {
       storeEquipment([]),
       storeMuscles([]),
       storeDifficulties([]),
-      storePrograms([])
+      storeRoutines([])
     ]);
     
     // Reset initialization flag
@@ -265,25 +265,25 @@ export async function loadAllDifficulties() {
   return data.difficulties || [];
 }
 
-// Load programs from cache or file
-export async function loadAllPrograms() {
+// Load routines from cache or file
+export async function loadAllRoutines() {
   try {
-    const cached = await programsLoad();
+    const cached = await routinesLoad();
     if (cached && cached.length > 0) {
-      console.log('📦 Loaded programs from IndexedDB');
+      console.log('📦 Loaded routines from IndexedDB');
       return cached;
     }
   } catch (error) {
-    console.warn('No cached programs, loading from file');
+    console.warn('No cached routines, loading from file');
   }
   
   const response = await fetch('./data/data.json');
   const data = await response.json();
   // Save to IndexedDB for future loads
-  if (data.programs && data.programs.length > 0) {
-    await storePrograms(data.programs);
+  if (data.routines && data.routines.length > 0) {
+    await storeRoutines(data.routines);
   }
-  return data.programs || [];
+  return data.routines || [];
 }
 
 // Clear all data cache (for debugging/testing)
@@ -295,7 +295,7 @@ export async function clearDataCache() {
       storeEquipment([]),
       storeMuscles([]),
       storeDifficulties([]),
-      storePrograms([])
+      storeRoutines([])
     ]);
     cacheInitialized = false;
     console.log('🗑️ Data cache cleared');

@@ -2,7 +2,7 @@ import { initializeState, getState, updateState } from './services/state.js';
 import { ErrorBoundaryService } from './services/error-boundary-service.js';
 import { renderHomeView } from './views/home-view.js';
 import { renderExerciseDetailsView } from './views/exercise-details-view.js';
-import { renderProgramsView } from './views/programs-view.js';
+import { renderRoutinesView } from './views/routines-view.js';
 import { renderActiveWorkoutView } from './views/active-workout-view.js';
 import { renderWorkoutSummaryView } from './views/workout-summary-view.js';
 import { renderWorkoutCompletionView } from './views/workout-completion-view.js';
@@ -10,8 +10,8 @@ import { renderOnboardingView } from './views/onboarding-view.js';
 import { renderProfileView } from './views/profile-view.js';
 import { renderBuilderView } from './views/builder-view.js';
 import { renderExercisesView } from './views/exercises-view.js';
-import { renderProgramDetailsView } from './views/program-details-view.js';
-import { fetchExercises, fetchPrograms, fetchCategories, fetchEquipment, fetchMuscles, fetchDifficulties, fetchSkillModules } from './services/api.js';
+import { renderRoutineDetailsView } from './views/routine-details-view.js';
+import { fetchExercises, fetchRoutines, fetchCategories, fetchEquipment, fetchMuscles, fetchDifficulties, fetchSkillModules } from './services/api.js';
 import { getExerciseProgressData } from './utils/chart-helpers.js';
 import { renderSkillModulesView } from './views/skill-modules-view.js';
 import { renderSkillModuleDetailView } from './views/skill-module-detail-view.js';
@@ -26,6 +26,7 @@ import { initUndoService, dismissAllUndoToasts } from './services/undo-service.j
 import { renderExerciseForm } from './views/exercise-form-view.js';
 import { initExerciseForm } from './services/exercise-form-service.js';
 import { renderModuleAdminView } from './views/module-admin-view.js';
+import { initializeEventDelegation, exposeToggleFavorite } from './services/event-delegation.js';
 initializeState();
 
 // Wait for complete cache initialization AND sync before starting router
@@ -52,6 +53,16 @@ async function initializeApp() {
   // Now that cache is fully initialized and synced, start the router
   router();
   
+  // Initialize event delegation after router is set up
+  setTimeout(() => {
+    const main = document.getElementById('app');
+    if (main) {
+      initializeEventDelegation(main);
+      exposeToggleFavorite();
+      console.log('✅ Event delegation initialized');
+    }
+  }, 100);
+  
   // Mark that initialization is complete to prevent double calls
   window.appInitialized = true;
 }
@@ -74,14 +85,14 @@ async function ensureExercisesLoaded() {
   }
 }
 
-async function ensureProgramsLoaded(){
-  if (!getState().programs || getState().programs.length === 0){
+async function ensureRoutinesLoaded(){
+  if (!getState().routines || getState().routines.length === 0){
     try {
-      const programs = await fetchPrograms();
-      updateState({ programs });
+      const routines = await fetchRoutines();
+      updateState({ routines });
     } catch (error) {
-      console.error('Failed to load programs:', error);
-      renderErrorView('Failed to load programs. Please check your connection.');
+      console.error('Failed to load routines:', error);
+      renderErrorView('Failed to load routines. Please check your connection.');
     }
   }
 }
@@ -93,7 +104,7 @@ async function ensureModulesLoaded(){
       updateState({ modules });
     } catch (error) {
       console.error('Failed to load skill modules:', error);
-      // Don't render error view, just log - modules are less critical than programs
+      // Don't render error view, just log - modules are less critical than routines
       console.warn('Skill modules will be loaded on demand');
     }
   }
@@ -160,7 +171,7 @@ async function router() {
   
   const state = getState();
   const needsInitialLoad = !state.exercises || state.exercises.length === 0 || 
-                           !state.programs || state.programs.length === 0;
+                           !state.routines || state.routines.length === 0;
   
   // If data is not loaded, show spinner and load it
   if (needsInitialLoad) {
@@ -169,7 +180,7 @@ async function router() {
     
     await Promise.all([
       ensureExercisesLoaded(),
-      ensureProgramsLoaded(),
+      ensureRoutinesLoaded(),
       ensureModulesLoaded(),
       ensureCategoriesLoaded(),
       ensureEquipmentLoaded(),
@@ -179,7 +190,7 @@ async function router() {
     
     console.log('[Router#initial] Data loaded:', {
       exercises: state.exercises?.length || 0,
-      programs: state.programs?.length || 0,
+      routines: state.routines?.length || 0,
       categories: state.categories?.length || 0,
       equipment: state.equipment?.length || 0,
       muscles: state.muscles?.length || 0,
@@ -220,33 +231,33 @@ async function router() {
         'Exercise Details'
       );
       exerciseView.render(id);
-    } else if (hash === '#programs') {
-      const programsView = ErrorBoundaryService.wrapView(
-        await import('./views/programs-view.js'), 
-        'Programs'
+    } else if (hash === '#routines') {
+      const routinesView = ErrorBoundaryService.wrapView(
+        await import('./views/routines-view.js'), 
+        'Routines'
       );
-      await programsView.render();
-    } else if (hash.startsWith('#program-details/')) {
-      // Fix: Parse hash correctly - can be #program-details/type/id or #program-details/id
-      const cleanHash = hash.replace('#', '');  // "program-details/program/1" or "program-details/1"
-      const parts = cleanHash.split('/');       // ["program-details", "program", "1"] or ["program-details", "1"]
+      await routinesView.render();
+    } else if (hash.startsWith('#routine-details/')) {
+      // Fix: Parse hash correctly - can be #routine-details/type/id or #routine-details/id
+      const cleanHash = hash.replace('#', '');  // "routine-details/routine/1" or "routine-details/1"
+      const parts = cleanHash.split('/');       // ["routine-details", "routine", "1"] or ["routine-details", "1"]
       
       let type, id;
       if (parts.length === 3) {
-        // Format: #program-details/type/id
-        type = parts[1];           // 'program' or 'custom'
+        // Format: #routine-details/type/id
+        type = parts[1];           // 'routine' or 'custom'
         id = parts[2];             // ID
       } else {
-        // Format: #program-details/id (backward compatibility)
-        type = 'program';          // Default to program if not specified
+        // Format: #routine-details/id (backward compatibility)
+        type = 'routine';          // Default to routine if not specified
         id = parts[1];             // ID
       }
       
-      const programDetailsView = ErrorBoundaryService.wrapView(
-        await import('./views/program-details-view.js'), 
-        'Program Details'
+      const routineDetailsView = ErrorBoundaryService.wrapView(
+        await import('./views/routine-details-view.js'), 
+        'Routine Details'
       );
-      programDetailsView.render(type, id);
+      routineDetailsView.render(type, id);
     } else if (hash === '#active-workout') {
       const activeWorkoutView = ErrorBoundaryService.wrapView(
         await import('./views/active-workout-view.js'), 
@@ -380,7 +391,8 @@ window.addEventListener('hashchange', router);
 // Initialize undo service after main app is ready
 initUndoService();
 
-// Expose updateState globally for inline onclick handlers
+// Expose state functions globally for event delegation service
+window.getState = getState;
 window.updateState = updateState;
 
 // Clean up undo toasts on page unload

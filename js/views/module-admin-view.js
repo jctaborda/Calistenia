@@ -72,7 +72,7 @@ export async function renderModuleAdminView(editId = null) {
   main.innerHTML = renderHeader() + `
     <div class="card">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <button class="btn btn-secondary" onclick="window.location.hash = '#skill-modules'">
+        <button class="btn btn-secondary" data-nav="#skill-modules">
           ← Back to Modules
         </button>
         <h1>${editId ? 'Edit Skill Module' : 'Create New Skill Module'}</h1>
@@ -147,7 +147,7 @@ export async function renderModuleAdminView(editId = null) {
         <div class="card margin-bottom-1">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
             <h3>Module Exercises (${selectedExerciseIds.length} selected)</h3>
-            <button type="button" class="btn btn-secondary btn-sm" onclick="resetExerciseSelection()" ${selectedExerciseIds.length === 0 ? 'disabled' : ''}>
+            <button type="button" class="btn btn-secondary btn-sm" data-reset-exercises ${selectedExerciseIds.length === 0 ? 'disabled' : ''}>
               Clear All
             </button>
           </div>
@@ -200,11 +200,11 @@ export async function renderModuleAdminView(editId = null) {
             ${editId ? 'Update Module' : 'Create Module'}
           </button>
           ${editId ? `
-            <button type="button" class="btn btn-danger" onclick="confirmDelete()">
+            <button type="button" class="btn btn-danger" data-confirm-delete data-edit-id="${editId}">
               Delete Module
             </button>
           ` : ''}
-          <button type="button" class="btn btn-secondary" onclick="window.location.hash = '#skill-modules'">
+          <button type="button" class="btn btn-secondary" data-nav="#skill-modules">
             Cancel
           </button>
         </div>
@@ -415,39 +415,15 @@ export async function renderModuleAdminView(editId = null) {
   
   // ==================== EXPOSED FUNCTIONS ====================
   
-  // Expose to window for onclick handlers
-  window.resetExerciseSelection = function() {
-    selectedExerciseIds = [];
-    updateSelectedExercisesUI();
-  };
-  
-  window.confirmDelete = function() {
-    if (!editingModule) return;
-    
-    const confirmAction = window.confirm(
-      `Are you sure you want to delete the module "${editingModule.name}"?\\n\\n` +
-      `This action will save the module for possible undo for 30 days.`
-    );
-    
-    if (confirmAction) {
-      ModuleStore.delete(editId)
-        .then(() => {
-          saveForUndo('module', editingModule, editId);
-          alert('Module deleted successfully!');
-          window.location.hash = '#skill-modules';
-        })
-        .catch(error => {
-          console.error('Error deleting module:', error);
-          alert('Error deleting module: ' + error.message);
-        });
-    }
-  };
+  // Removed - now handled by event delegation service
+  // window.resetExerciseSelection = function() {...}
+  // window.confirmDelete = function() {...}
   
   // Export for router
   window.renderModuleAdminView = renderModuleAdminView;
 }
 
-// Export as object for wrapView compatibility
+// Named + default export for maximum flexibility (Pattern 3)
 export default { render: renderModuleAdminView };
 
 // ==================== UTILITY FUNCTIONS ====================

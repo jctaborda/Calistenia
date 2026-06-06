@@ -45,12 +45,12 @@ export class WorkoutModalsService {
 
   /**
    * Show modal to adjust number of sets for current exercise
-   * @param {number} exerciseIndex - Index of exercise in program
+   * @param {number} exerciseIndex - Index of exercise in routine
    * @param {object} exerciseData - Current exercise data (has sets property)
    * @param {object} activeWorkout - Current workout state
-   * @param {object} program - Program object with exercises array
+   * @param {object} routine - Routine object with exercises array
    */
-  showAdjustSetsModal(exerciseIndex, exerciseData, activeWorkout, program) {
+  showAdjustSetsModal(exerciseIndex, exerciseData, activeWorkout, routine) {
     const currentSets = exerciseData.sets;
 
     const content = `
@@ -100,10 +100,10 @@ export class WorkoutModalsService {
     // Apply changes when closing modal
     if (closeBtn) {
       closeBtn.addEventListener('click', () => {
-        // Update the program with new set count for this exercise
-        const updatedProgram = {
-          ...program,
-          exercises: program.exercises.map((ex, idx) => 
+        // Update the routine with new set count for this exercise
+        const updatedRoutine = {
+          ...routine,
+          exercises: routine.exercises.map((ex, idx) => 
             idx === exerciseIndex ? { ...ex, sets: setsCount } : ex
           )
         };
@@ -113,7 +113,7 @@ export class WorkoutModalsService {
           detail: {
             exerciseIndex,
             newSetCount: setsCount,
-            program: updatedProgram
+            routine: updatedRoutine
           }
         }));
       });
@@ -123,61 +123,61 @@ export class WorkoutModalsService {
   }
 
   /**
-   * Show modal to swap current exercise with another
-   * @param {number} exerciseIndex - Index of current exercise in program
-   * @param {number} originalExerciseId - ID of the exercise being replaced
-   * @param {object} activeWorkout - Current workout state
-   * @param {object} program - Program object
-   * @param {Array} exercises - Array of all available exercises
-   */
-  showSwapExerciseModal(exerciseIndex, originalExerciseId, activeWorkout, program, exercises) {
-    // Build exercise list (skip current exercise to avoid swapping with itself)
-    const exerciseList = exercises
-      .filter((_, idx) => idx !== exerciseIndex) // Don't include current exercise
-      .map((e, idx) => `<option value="${idx}">${e.name}</option>`)
-      .join('');
+   /**
+      * Show modal to swap current exercise with another
+      * @param {number} exerciseIndex - Index of current exercise in routine
+      * @param {number} originalExerciseId - ID of the exercise being replaced
+      * @param {object} activeWorkout - Current workout state
+      * @param {object} routine - Routine object
+      * @param {Array} exercises - Array of all available exercises
+      */
+     showSwapExerciseModal(exerciseIndex, originalExerciseId, activeWorkout, routine, exercises) {
+       // Build exercise list (skip current exercise to avoid swapping with itself)
+       const exerciseList = exercises
+         .filter((_, idx) => idx !== exerciseIndex) // Don't include current exercise
+         .map((e, idx) => `<option value="${idx}">${e.name}</option>`).join('');
 
-    const content = `
-      <label for="exercise-select">Select a replacement exercise:</label>
-      <select id="exercise-select" class="form-control" style="margin-top: 0.5rem;">
-        <option value="">-- Select Exercise --</option>
-        ${exerciseList}
-      </select>
-    `;
+       const content = `
+         <label for="exercise-select">Select a replacement exercise:</label>
+         <select id="exercise-select" class="form-control" style="margin-top: 0.5rem;">
+           <option value="">-- Select Exercise --</option>
+           ${exerciseList}
+         </select>
+       `;
 
-    const modalController = this.show('Swap Exercise', content);
-    const closeBtn = modalController.element.querySelector('.close-modal');
-    const selectEl = document.getElementById('exercise-select');
+       const modalController = this.show('Swap Exercise', content);
+       const closeBtn = modalController.element.querySelector('.close-modal');
+       const selectEl = document.getElementById('exercise-select');
 
-    if (closeBtn) {
-      closeBtn.addEventListener('click', () => {
-        const selectedIndex = selectEl.selectedIndex;
+       if (closeBtn) {
+         closeBtn.addEventListener('click', () => {
+           const selectedIndex = selectEl.selectedIndex;
 
-        if (selectedIndex > 0) { // Must select an actual exercise
-          const newExercise = exercises[parseInt(selectEl.value)];
+           if (selectedIndex > 0) { // Must select an actual exercise
+             const newExercise = exercises[parseInt(selectEl.value)];
 
-          // Create updated program with swapped exercise
-          const updatedProgram = {
-            ...program,
-            exercises: program.exercises.map((ex, idx) => 
-              idx === exerciseIndex ? { ...ex, exerciseId: newExercise.id } : ex
-            )
-          };
+             // Create updated routine with swapped exercise
+             const updatedRoutine = {
+               ...routine,
+               exercises: routine.exercises.map((ex, idx) => 
+                 idx === exerciseIndex ? { ...ex, exerciseId: newExercise.id } : ex
+               )
+             };
 
-          // Dispatch event for state update
-          document.dispatchEvent(new CustomEvent('workoutExerciseSwapped', {
-            detail: {
-              exerciseIndex,
-              newExerciseId: newExercise.id,
-              program: updatedProgram
-            }
-          }));
-        }
-      });
-    }
+             // Dispatch event for state update
+             document.dispatchEvent(new CustomEvent('workoutExerciseSwapped', {
+               detail: {
+                 exerciseIndex,
+                 newExerciseId: newExercise.id,
+                 routine: updatedRoutine
+               }
+             }));
+           }
+         });
+       }
 
-    return modalController;
-  }
+       return modalController;
+     }
 
   /**
    * Show success toast/message

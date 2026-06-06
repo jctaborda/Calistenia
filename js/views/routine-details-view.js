@@ -1,29 +1,24 @@
-// views/program-details-view.js
+// views/routine-details-view.js
 import { renderHeader } from '../components/header.js';
 import { updateState, getState } from '../services/state.js';
-import { saveForUndo } from '../services/undo-service.js';
 
-export async function renderProgramDetailsView(type, id) {
+export async function renderRoutineDetailsView(type, id) {
   const main = document.getElementById('app');
   
   // Get state values (these are synchronous but data must be loaded first)
   const state = getState();
-  const programs = state.programs || [];
+  const routines = state.routines || [];
   const muscles = state.muscles || [];
   const exercises = state.exercises || [];
-  const user = state.user || {};
-  const customRoutines = user.customRoutines || [];
+  const categories = state.categories || [];
   
-  let program;
-  if (type === 'program') {
-    program = programs.find(p => String(p.id) === String(id));
-  } else if (type === 'custom') {
-    const routine = customRoutines.find(r => String(r.id) === String(id));
-    program = { id: 'custom-' + id, name: routine.name, exercises: routine.exercises };
+  let routine;
+  if (type === 'routine') {
+    routine = routines.find(p => String(p.id) === String(id));
   }
   
-  if (!program) {
-    window.location.hash = '#programs';
+  if (!routine) {
+    window.location.hash = '#routines';
     return;
   }
   
@@ -104,27 +99,35 @@ export async function renderProgramDetailsView(type, id) {
   
   main.innerHTML = renderHeader() + `
     <div class="card">
-      <div class="program-header">
-        <button class="back-button" onclick="window.location.hash = '#programs'">
-          ← Back to Programs
+      <div class="routine-header">
+        <button class="back-button" data-nav="#routines">
+          ← Back to Routines
         </button>
-        <div class="program-actions">
-          <button class="btn btn-sm" id="edit-program-btn" data-type="${type}" data-id="${id}">
-            Edit Program
+        <div class="routine-actions">
+          <button class="btn btn-sm" id="edit-routine-btn" data-type="${type}" data-id="${id}">
+            Edit Routine
           </button>
           <button class="btn btn-sm" id="copy-routine-btn" data-type="${type}" data-id="${id}">
             📋 Copy Routine
           </button>
-          ${type === 'custom' ? `\n            <button class="btn btn-danger btn-sm" id="delete-routine-btn" data-id="${id}">\n              Delete Routine\n            </button>\n          ` : ''}
+          <button class="btn btn-danger btn-sm" id="delete-routine-btn" data-type="${type}" data-id="${id}">
+            Delete Routine
+          </button>
         </div>
       </div>
-      <h1 class="program-title">${program.name}</h1>
-      <div class="program-details-content">
-        ${renderExerciseList(program.warmup, 'Warmup')}
+      <h1 class="routine-title">${routine.name}</h1>
+      <div class="routine-details-content">
+        ${routine.difficulty ? `<span class="difficulty-badge difficulty-${routine.difficulty.toLowerCase()}">${routine.difficulty}</span>` : ''}
+        ${routine.description ? `<p class="routine-desc">${routine.description}</p>` : ''}
+        <div class="routine-meta">
+          ${routine.category ? `<span class="routine-meta-item">📁 ${categories.find(c => String(c.id) === String(routine.category))?.name || routine.category}</span>` : ''}
+          ${routine.duration ? `<span class="routine-meta-item">⏱️ ${routine.duration} min</span>` : ''}
+        </div>
+        ${renderExerciseList(routine.warmup, 'Warmup')}
         
         <h3 class="section-title">Exercises</h3>
         <ul class="exercise-list">
-          ${(program.exercises || []).map(ex => {
+          ${(routine.exercises || []).map(ex => {
             const exercise = findExerciseById(ex.exerciseId);
             
             // Get difficulty class based on exercise difficulty ID (1=beginner, 2=intermediate, 3=advanced)
@@ -154,49 +157,52 @@ export async function renderProgramDetailsView(type, id) {
           }).join('')}
         </ul>
         
-        ${renderExerciseList(program.cooldown, 'Cooldown')}
+        ${renderExerciseList(routine.cooldown, 'Cooldown')}
         
-	<div class="start-program-container">
-          <button class="btn" id="start-program-btn" data-type="${type}" data-id="${id}">
-            Start Program
+        <div class="start-routine-container">
+          <button class="btn" id="start-routine-btn" data-type="${type}" data-id="${id}">
+            Start Routine
           </button>
         </div>
 
         <!-- Muscle Diagrams -->
-        <div class="program-muscle-section">
+        <div class="routine-muscle-section">
           <h3 class="section-title">Target Muscles</h3>
           <div class="muscle-container">
             <div class="muscle-diagram-front">
               <img src="./assets/images/muscles/muscular_system_front.svg" alt="Muscular System Front" class="base-image">
-              ${generateMuscleImages(program.exercises, muscles, true, true)}
-              ${generateMuscleImages(program.exercises, muscles, false, true)}
+              ${generateMuscleImages(routine.exercises, muscles, true, true)}
+              ${generateMuscleImages(routine.exercises, muscles, false, true)}
             </div>
             <div class="muscle-diagram-back">
               <img src="./assets/images/muscles/muscular_system_back.svg" alt="Muscular System Back" class="base-image">
-              ${generateMuscleImages(program.exercises, muscles, true, false)}
-              ${generateMuscleImages(program.exercises, muscles, false, false)}
+              ${generateMuscleImages(routine.exercises, muscles, true, false)}
+              ${generateMuscleImages(routine.exercises, muscles, false, false)}
             </div>
           </div>
         </div>
-        
         
       </div>
     </div>
   `;
   
   // Edit button handler
-  const editBtn = main.querySelector('#edit-program-btn');
+  const editBtn = main.querySelector('#edit-routine-btn');
   if (editBtn) {
     editBtn.addEventListener('click', () => {
       updateState({
-        editingProgram: {
+        editingRoutine: {
           type,
           id,
-          program: {
-            name: program.name,
-            exercises: program.exercises,
-            warmup: program.warmup || [],
-            cooldown: program.cooldown || []
+          routine: {
+            name: routine.name,
+            exercises: routine.exercises,
+            warmup: routine.warmup || [],
+            cooldown: routine.cooldown || [],
+            description: routine.description || '',
+            category: routine.category || '',
+            difficulty: routine.difficulty || '',
+            duration: routine.duration || 30
           }
         } 
       });
@@ -209,28 +215,28 @@ export async function renderProgramDetailsView(type, id) {
   if (copyBtn) {
     copyBtn.addEventListener('click', () => {
       // Build routine text
-      let routineText = `*${program.name}*\\n\\n`;
+      let routineText = `*${routine.name}*\n\n`;
       
-      if (program.warmup && program.warmup.length > 0) {
-        routineText += '*Warmup*\\n';
-        program.warmup.forEach(ex => {
+      if (routine.warmup && routine.warmup.length > 0) {
+        routineText += '*Warmup*\n';
+        routine.warmup.forEach(ex => {
           const exercise = findExerciseById(ex.exerciseId);
-          routineText += `- ${exercise ? exercise.name : 'Unknown'}: ${ex.sets} sets × ${ex.reps} reps (Rest: ${ex.restTime}s)\\n`;
+          routineText += `- ${exercise ? exercise.name : 'Unknown'}: ${ex.sets} sets × ${ex.reps} reps (Rest: ${ex.restTime}s)\n`;
         });
-        routineText += '\\n';
+        routineText += '\n';
       }
       
-      routineText += '*Exercises*\\n';
-      program.exercises.forEach(ex => {
+      routineText += '*Exercises*\n';
+      routine.exercises.forEach(ex => {
         const exercise = findExerciseById(ex.exerciseId);
-        routineText += `- ${exercise ? exercise.name : 'Unknown'}: ${ex.sets} sets × ${ex.reps} reps (Rest: ${ex.restTime}s)\\n`;
+        routineText += `- ${exercise ? exercise.name : 'Unknown'}: ${ex.sets} sets × ${ex.reps} reps (Rest: ${ex.restTime}s)\n`;
       });
       
-      if (program.cooldown && program.cooldown.length > 0) {
-        routineText += '\\n*Cooldown*\\n';
-        program.cooldown.forEach(ex => {
+      if (routine.cooldown && routine.cooldown.length > 0) {
+        routineText += '\n*Cooldown*\n';
+        routine.cooldown.forEach(ex => {
           const exercise = findExerciseById(ex.exerciseId);
-          routineText += `- ${exercise ? exercise.name : 'Unknown'}: ${ex.sets} sets × ${ex.reps} reps (Rest: ${ex.restTime}s)\\n`;
+          routineText += `- ${exercise ? exercise.name : 'Unknown'}: ${ex.sets} sets × ${ex.reps} reps (Rest: ${ex.restTime}s)\n`;
         });
       }
       
@@ -244,69 +250,61 @@ export async function renderProgramDetailsView(type, id) {
     });
   }
   
-  // Delete routine button handler (only for custom routines)
-  if (type === 'custom') {
-    const deleteBtn = main.querySelector('#delete-routine-btn');
-    if (deleteBtn) {
-      deleteBtn.addEventListener('click', () => {
-        if (confirm(`Are you sure you want to delete "${program.name}"? This action cannot be undone.`)) {
-          const state = getState();
-          const user = { ...state.user };
-          user.customRoutines = user.customRoutines || [];
+  // Delete routine button handler
+  const deleteBtn = main.querySelector('#delete-routine-btn');
+  if (deleteBtn) {
+    deleteBtn.addEventListener('click', async () => {
+      if (confirm(`Are you sure you want to delete "${routine.name}"? This action cannot be undone.`)) {
+        try {
+          // Load routines from IndexedDB
+          const allRoutines = await import('../services/database.js').then(db => db.routinesLoad());
           
-          const routineIndex = user.customRoutines.findIndex(r => String(r.id) === String(id));
-          if (routineIndex !== -1) {
-            const deletedRoutine = user.customRoutines[routineIndex];
-            // Save for undo before deleting
-            saveForUndo('program', deletedRoutine, id);
-            
-            user.customRoutines.splice(routineIndex, 1);
-          }
+          // Filter out the routine to delete
+          const remainingRoutines = allRoutines.filter(r => String(r.id) !== String(id));
           
-          updateState({ user });
+          // Save back to IndexedDB
+          await import('../services/database.js').then(db => db.storeRoutines(remainingRoutines));
+          
+          // Update state with correct property name
+          updateState({ routines: remainingRoutines });
+          
           alert('Routine deleted successfully!');
-          window.location.hash = '#programs';
+          window.location.hash = '#routines';
+        } catch (error) {
+          console.error('Error deleting routine:', error);
+          alert('Error deleting routine: ' + error.message);
         }
-      });
-    }
+      }
+    });
   }
   
   // Start button handler - start workout directly (manual mode only)
-  const startBtn = main.querySelector('#start-program-btn');
+  const startBtn = main.querySelector('#start-routine-btn');
   if (startBtn) {
-    startBtn.addEventListener('click', () => {
-      startWorkout(type, id, programs, customRoutines);
+    startBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const type = startBtn.dataset.type;
+      const id = startBtn.dataset.id;
+      handleStartRoutine(type, id);
     });
   }
 }
 
 /**
- * Start workout directly (manual mode only)
+ * Start workout directly (manual mode only) - now handled by event delegation
  */
-function startWorkout(type, id, programs, customRoutines) {
-  let program;
-  if (type === 'program') {
-    const originalProgram = programs.find(p => String(p.id) === String(id));
-    if (originalProgram) {
-      program = originalProgram;
-    }
-  } else if (type === 'custom') {
-    const routine = customRoutines.find(r => String(r.id) === String(id));
-    if (routine) {
-      program = {
-        id: 'custom-' + id,
-        name: routine.name,
-        exercises: routine.exercises,
-        warmup: routine.warmup || [],
-        cooldown: routine.cooldown || []
-      };
-    }
+function handleStartRoutine(type, id) {
+  let routine;
+  const state = getState();
+  
+  if (type === 'routine') {
+    routine = state.routines.find(p => String(p.id) === String(id));
   }
   
-  if (program) {
+  if (routine) {
     updateState({
       activeWorkout: {
-        program: program,
+        routine: routine,
         progress: {},
         currentExerciseIndex: 0,
         currentSetIndex: 0,
@@ -317,5 +315,5 @@ function startWorkout(type, id, programs, customRoutines) {
   }
 }
 
-// Export as object for wrapView compatibility
-export default { render: renderProgramDetailsView };
+// Named + default export for maximum flexibility (Pattern 3)
+export default { render: renderRoutineDetailsView };

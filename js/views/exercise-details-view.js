@@ -109,7 +109,7 @@ export async function renderExerciseDetailsView(exerciseId) {
   <div class="exercise-header-actions">
   <h1 class="section-title">${safe.name}</h1>
   <button class="btn btn-icon favorite-toggle ${favoriteExerciseIds.includes(safe.id) ? 'favorited' : ''}" 
-  onclick="toggleFavorite('${safe.id}')">
+  data-favorite="${safe.id}">
   ${favoriteExerciseIds.includes(safe.id) ? '⭐' : '☆'} Favorite
   </button>
   </div>
@@ -218,25 +218,6 @@ export async function renderExerciseDetailsView(exerciseId) {
   `;
 }
 
-// Toggle favorite for exercise - exposed globally for onclick handler
-// Toggle favorite for exercise - exposed globally for onclick handler
-export function toggleFavorite(exerciseId) {
-  const state = getState();
-  const user = state.user || {};
-  let favoriteExerciseIds = user.favoriteExerciseIds || [];
-  
-  // Toggle the exercise in favorites
-  if (favoriteExerciseIds.includes(exerciseId)) {
-    favoriteExerciseIds = favoriteExerciseIds.filter(id => id !== exerciseId);
-  } else {
-    favoriteExerciseIds.push(exerciseId);
-  }
-  
-  updateState({ user: { ...user, favoriteExerciseIds } });
-}
-
-// Expose globally for inline onclick handlers
-window.toggleFavorite = toggleFavorite;
-
-// Export as object for wrapView compatibility
+// Toggle favorite for exercise - handled by event delegation
+// Named + default export for maximum flexibility (Pattern 3)
 export default { render: renderExerciseDetailsView };

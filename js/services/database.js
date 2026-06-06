@@ -11,7 +11,7 @@ const DB_NAME = 'calisthenics-db';
  * 
  * Version History:
  * - v1: Initial schema - exercises, workouts, state stores
- * - v2: Added modules, programs, categories, equipment, muscles, difficulties stores
+ * - v2: Added modules, routines, categories, equipment, muscles, difficulties stores
  * - v3: Added deleted_items store for undo functionality
  * - v4: Added data_version store for cache sync tracking
  * - v5: [No changes - reserved]
@@ -29,7 +29,7 @@ const STORES = {
   WORKOUTS: 'workouts',
   STATE: 'state',
   MODULES: 'modules',
-  PROGRAMS: 'programs',
+  ROUTINES: 'routines',
   CATEGORIES: 'categories',
   EQUIPMENT: 'equipment',
   MUSCLES: 'muscles',
@@ -101,9 +101,9 @@ export function openDatabase() {
         moduleStore.createIndex('category', 'category', { unique: false });
       }
 
-      // Create object store for programs
-      if (!database.objectStoreNames.contains(STORES.PROGRAMS)) {
-        database.createObjectStore(STORES.PROGRAMS, { keyPath: 'id' });
+      // Create object store for routines
+      if (!database.objectStoreNames.contains(STORES.ROUTINES)) {
+        database.createObjectStore(STORES.ROUTINES, { keyPath: 'id' });
       }
 
       // Create object store for categories
@@ -143,19 +143,19 @@ export function openDatabase() {
   });
 }
 
-// Programs operations
-export async function storePrograms(programsArray) {
+// Routines operations
+export async function storeRoutines(routinesArray) {
   const database = await openDatabase();
-  const transaction = database.transaction([STORES.PROGRAMS], 'readwrite');
+  const transaction = database.transaction([STORES.ROUTINES], 'readwrite');
   attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.PROGRAMS);
+  const store = transaction.objectStore(STORES.ROUTINES);
 
   const clearRequest = store.clear();
-  clearRequest.onerror = () => console.error('Error clearing programs store:', clearRequest.error);
+  clearRequest.onerror = () => console.error('Error clearing routines store:', clearRequest.error);
 
-  programsArray.forEach(program => {
-    const putRequest = store.put(program);
-    putRequest.onerror = () => console.error('Error storing program:', putRequest.error);
+  routinesArray.forEach(routine => {
+    const putRequest = store.put(routine);
+    putRequest.onerror = () => console.error('Error storing routine:', putRequest.error);
   });
 
   return new Promise((resolve, reject) => {
@@ -164,21 +164,355 @@ export async function storePrograms(programsArray) {
   });
 }
 
-export async function programsLoad() {
+export async function updateRoutines(updatedRoutine) {
   const database = await openDatabase();
-  const transaction = database.transaction([STORES.PROGRAMS], 'readonly');
+  const transaction = database.transaction([STORES.ROUTINES], 'readwrite');
   attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.PROGRAMS);
+  const store = transaction.objectStore(STORES.ROUTINES);
+
+  const putRequest = store.put(updatedRoutine);
+  
+  return new Promise((resolve, reject) => {
+    putRequest.onsuccess = () => resolve({ success: true });
+    putRequest.onerror = () => reject(putRequest.error);
+  });
+}
+
+// Delete routine
+export async function deleteRoutine(routineId) {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.ROUTINES], 'readwrite');
+  attachTransactionError(transaction);
+  const store = transaction.objectStore(STORES.ROUTINES);
+
+  const request = store.delete(routineId);
+
+  return new Promise((resolve, reject) => {
+    request.onsuccess = () => resolve({ success: true });
+    request.onerror = () => reject(request.error);
+  });
+}
+
+export async function routinesLoad() {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.ROUTINES], 'readonly');
+  attachTransactionError(transaction);
+  const store = transaction.objectStore(STORES.ROUTINES);
 
   return new Promise((resolve, reject) => {
     const request = store.getAll();
 
     request.onsuccess = () => resolve(request.result || []);
     request.onerror = () => {
-      console.error('Error loading programs from IndexedDB:', request.error);
+      console.error('Error loading routines from IndexedDB:', request.error);
       reject(request.error);
     };
   });
+}
+
+// Exercises operations
+export async function storeExercises(exercisesArray) {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.EXERCISES], 'readwrite');
+  attachTransactionError(transaction);
+  const store = transaction.objectStore(STORES.EXERCISES);
+
+  const clearRequest = store.clear();
+  clearRequest.onerror = () => console.error('Error clearing exercises store:', clearRequest.error);
+
+  exercisesArray.forEach(exercise => {
+    const putRequest = store.put(exercise);
+    putRequest.onerror = () => console.error('Error storing exercise:', putRequest.error);
+  });
+
+  return new Promise((resolve, reject) => {
+    transaction.oncomplete = () => resolve({ success: true });
+    transaction.onerror = () => reject(transaction.error);
+  });
+}
+
+export async function exercisesLoad() {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.EXERCISES], 'readonly');
+  attachTransactionError(transaction);
+  const store = transaction.objectStore(STORES.EXERCISES);
+
+  return new Promise((resolve, reject) => {
+    const request = store.getAll();
+
+    request.onsuccess = () => resolve(request.result || []);
+    request.onerror = () => {
+      console.error('Error loading exercises from IndexedDB:', request.error);
+      reject(request.error);
+    };
+  });
+}
+
+// Categories operations
+export async function storeCategories(categoriesArray) {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.CATEGORIES], 'readwrite');
+  attachTransactionError(transaction);
+  const store = transaction.objectStore(STORES.CATEGORIES);
+
+  const clearRequest = store.clear();
+  clearRequest.onerror = () => console.error('Error clearing categories store:', clearRequest.error);
+
+  categoriesArray.forEach(category => {
+    const putRequest = store.put(category);
+    putRequest.onerror = () => console.error('Error storing category:', putRequest.error);
+  });
+
+  return new Promise((resolve, reject) => {
+    transaction.oncomplete = () => resolve({ success: true });
+    transaction.onerror = () => reject(transaction.error);
+  });
+}
+
+export async function categoriesLoad() {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.CATEGORIES], 'readonly');
+  attachTransactionError(transaction);
+  const store = transaction.objectStore(STORES.CATEGORIES);
+
+  return new Promise((resolve, reject) => {
+    const request = store.getAll();
+
+    request.onsuccess = () => resolve(request.result || []);
+    request.onerror = () => {
+      console.error('Error loading categories from IndexedDB:', request.error);
+      reject(request.error);
+    };
+  });
+}
+
+// Equipment operations
+export async function storeEquipment(equipmentArray) {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.EQUIPMENT], 'readwrite');
+  attachTransactionError(transaction);
+  const store = transaction.objectStore(STORES.EQUIPMENT);
+
+  const clearRequest = store.clear();
+  clearRequest.onerror = () => console.error('Error clearing equipment store:', clearRequest.error);
+
+  equipmentArray.forEach(item => {
+    const putRequest = store.put(item);
+    putRequest.onerror = () => console.error('Error storing equipment:', putRequest.error);
+  });
+
+  return new Promise((resolve, reject) => {
+    transaction.oncomplete = () => resolve({ success: true });
+    transaction.onerror = () => reject(transaction.error);
+  });
+}
+
+export async function equipmentLoad() {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.EQUIPMENT], 'readonly');
+  attachTransactionError(transaction);
+  const store = transaction.objectStore(STORES.EQUIPMENT);
+
+  return new Promise((resolve, reject) => {
+    const request = store.getAll();
+
+    request.onsuccess = () => resolve(request.result || []);
+    request.onerror = () => {
+      console.error('Error loading equipment from IndexedDB:', request.error);
+      reject(request.error);
+    };
+  });
+}
+
+// Muscles operations
+export async function storeMuscles(musclesArray) {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.MUSCLES], 'readwrite');
+  attachTransactionError(transaction);
+  const store = transaction.objectStore(STORES.MUSCLES);
+
+  const clearRequest = store.clear();
+  clearRequest.onerror = () => console.error('Error clearing muscles store:', clearRequest.error);
+
+  musclesArray.forEach(muscle => {
+    const putRequest = store.put(muscle);
+    putRequest.onerror = () => console.error('Error storing muscle:', putRequest.error);
+  });
+
+  return new Promise((resolve, reject) => {
+    transaction.oncomplete = () => resolve({ success: true });
+    transaction.onerror = () => reject(transaction.error);
+  });
+}
+
+export async function musclesLoad() {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.MUSCLES], 'readonly');
+  attachTransactionError(transaction);
+  const store = transaction.objectStore(STORES.MUSCLES);
+
+  return new Promise((resolve, reject) => {
+    const request = store.getAll();
+
+    request.onsuccess = () => resolve(request.result || []);
+    request.onerror = () => {
+      console.error('Error loading muscles from IndexedDB:', request.error);
+      reject(request.error);
+    };
+  });
+}
+
+// Difficulties operations
+export async function storeDifficulties(difficultiesArray) {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.DIFFICULTIES], 'readwrite');
+  attachTransactionError(transaction);
+  const store = transaction.objectStore(STORES.DIFFICULTIES);
+
+  const clearRequest = store.clear();
+  clearRequest.onerror = () => console.error('Error clearing difficulties store:', clearRequest.error);
+
+  difficultiesArray.forEach(difficulty => {
+    const putRequest = store.put(difficulty);
+    putRequest.onerror = () => console.error('Error storing difficulty:', putRequest.error);
+  });
+
+  return new Promise((resolve, reject) => {
+    transaction.oncomplete = () => resolve({ success: true });
+    transaction.onerror = () => reject(transaction.error);
+  });
+}
+
+export async function difficultiesLoad() {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.DIFFICULTIES], 'readonly');
+  attachTransactionError(transaction);
+  const store = transaction.objectStore(STORES.DIFFICULTIES);
+
+  return new Promise((resolve, reject) => {
+    const request = store.getAll();
+
+    request.onsuccess = () => resolve(request.result || []);
+    request.onerror = () => {
+      console.error('Error loading difficulties from IndexedDB:', request.error);
+      reject(request.error);
+    };
+  });
+}
+
+// Data version operations
+export async function storeDataVersion(version) {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.DATA_VERSION], 'readwrite');
+  attachTransactionError(transaction);
+  const store = transaction.objectStore(STORES.DATA_VERSION);
+
+  const putRequest = store.put({ key: 'dataVersion', version });
+
+  return new Promise((resolve, reject) => {
+    putRequest.onsuccess = () => resolve({ success: true });
+    putRequest.onerror = () => reject(putRequest.error);
+  });
+}
+
+export async function loadDataVersion() {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.DATA_VERSION], 'readonly');
+  attachTransactionError(transaction);
+  const store = transaction.objectStore(STORES.DATA_VERSION);
+
+  return new Promise((resolve, reject) => {
+    const request = store.get('dataVersion');
+
+    request.onsuccess = () => resolve(request.result?.version || null);
+    request.onerror = () => {
+      console.error('Error loading data version from IndexedDB:', request.error);
+      reject(request.error);
+    };
+  });
+}
+
+// Load workouts
+export async function loadWorkouts() {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.WORKOUTS], 'readonly');
+  attachTransactionError(transaction);
+  const store = transaction.objectStore(STORES.WORKOUTS);
+
+  return new Promise((resolve, reject) => {
+    const request = store.getAll();
+
+    request.onsuccess = () => resolve(request.result || []);
+    request.onerror = () => {
+      console.error('Error loading workouts from IndexedDB:', request.error);
+      reject(request.error);
+    };
+  });
+}
+
+// Store workout
+export async function storeWorkout(workout) {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.WORKOUTS], 'readwrite');
+  attachTransactionError(transaction);
+  const store = transaction.objectStore(STORES.WORKOUTS);
+
+  const putRequest = store.put(workout);
+
+  return new Promise((resolve, reject) => {
+    putRequest.onsuccess = () => resolve({ success: true });
+    putRequest.onerror = () => reject(putRequest.error);
+  });
+}
+
+// Delete workout
+export async function deleteWorkout(workoutId) {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.WORKOUTS], 'readwrite');
+  attachTransactionError(transaction);
+  const store = transaction.objectStore(STORES.WORKOUTS);
+
+  const deleteRequest = store.delete(workoutId);
+
+  return new Promise((resolve, reject) => {
+    deleteRequest.onsuccess = () => resolve({ success: true });
+    deleteRequest.onerror = () => reject(deleteRequest.error);
+  });
+}
+
+// Clear database
+export async function clearDatabase() {
+  const database = await openDatabase();
+  const transaction = database.transaction([...Object.values(STORES)], 'readwrite');
+  attachTransactionError(transaction);
+
+  for (const storeName of Object.values(STORES)) {
+    const store = transaction.objectStore(storeName);
+    const clearRequest = store.clear();
+    clearRequest.onerror = () => console.error(`Error clearing ${storeName}:`, clearRequest.error);
+  }
+
+  return new Promise((resolve, reject) => {
+    transaction.oncomplete = () => resolve({ success: true });
+    transaction.onerror = () => reject(transaction.error);
+  });
+}
+
+// Get database size
+export async function getDatabaseSize() {
+  const database = await openDatabase();
+  
+  const workoutCount = await new Promise((resolve, reject) => {
+    const transaction = database.transaction([STORES.WORKOUTS], 'readonly');
+    attachTransactionError(transaction);
+    const store = transaction.objectStore(STORES.WORKOUTS);
+    const request = store.count();
+    
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+
+  return { workoutCount };
 }
 
 // Modules operations
@@ -219,409 +553,45 @@ export async function modulesLoad() {
   });
 }
 
-export async function getModuleById(id) {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.MODULES], 'readonly');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.MODULES);
-
-  return new Promise((resolve, reject) => {
-     const request = store.get(id);
-    
-     request.onsuccess = () => resolve(request.result || null);
-     request.onerror = () => {
-       console.error('Error getting module from IndexedDB:', request.error);
-       reject(request.error);
-     };
-   });
-}
-
 export async function deleteModule(id) {
   const database = await openDatabase();
   const transaction = database.transaction([STORES.MODULES], 'readwrite');
   attachTransactionError(transaction);
   const store = transaction.objectStore(STORES.MODULES);
 
-  return new Promise((resolve, reject) => {
-    const request = store.delete(id);
+  const deleteRequest = store.delete(id);
 
-    request.onsuccess = () => resolve({ success: true });
-    request.onerror = () => {
-      console.error('Error deleting module from IndexedDB:', request.error);
-      reject(request.error);
-    };
+  return new Promise((resolve, reject) => {
+    deleteRequest.onsuccess = () => resolve({ success: true });
+    deleteRequest.onerror = () => reject(deleteRequest.error);
   });
 }
 
-// Exercises operations
-export async function storeExercises(exercisesArray) {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.EXERCISES], 'readwrite');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.EXERCISES);
-
-  const clearRequest = store.clear();
-  clearRequest.onerror = () => console.error('Error clearing exercises store:', clearRequest.error);
-  
-  exercisesArray.forEach(exercise => {
-    const putRequest = store.put(exercise);
-    putRequest.onerror = () => console.error('Error storing exercise:', putRequest.error);
-  });
-
-  return new Promise((resolve, reject) => {
-    transaction.oncomplete = () => resolve({ success: true });
-    transaction.onerror = () => reject(transaction.error);
-  });
-}
-
-export async function exercisesLoad() {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.EXERCISES], 'readonly');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.EXERCISES);
-  
-  return new Promise((resolve, reject) => {
-    const request = store.getAll();
-    
-    request.onsuccess = () => resolve(request.result || []);
-    request.onerror = () => {
-      console.error('Error loading exercises from IndexedDB:', request.error);
-      reject(request.error);
-    };
-  });
-}
-
+// Helper function to get exercise by ID
 export async function getExerciseById(id) {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.EXERCISES], 'readonly');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.EXERCISES);
-  
-  return new Promise((resolve, reject) => {
-    const request = store.get(id);
-    
-    request.onsuccess = () => resolve(request.result || null);
-    request.onerror = () => {
-      console.error('Error getting exercise from IndexedDB:', request.error);
-      reject(request.error);
-    };
-  });
+  const exercises = await exercisesLoad();
+  return exercises.find(exercise => String(exercise.id) === String(id)) || null;
 }
 
-// Workouts operations
-export async function storeWorkout(workout) {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.WORKOUTS], 'readwrite');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.WORKOUTS);
-  
-  return new Promise((resolve, reject) => {
-    const request = store.add(workout);
-    
-    request.onsuccess = () => resolve({ success: true, id: request.result });
-    request.onerror = (event) => {
-      if (event.target.error && event.target.error.name === 'ConstraintError') {
-        // Workout exists, update it
-        const updateRequest = store.put(workout);
-        updateRequest.onsuccess = () => resolve({ success: true });
-        updateRequest.onerror = () => reject(updateRequest.error);
-      } else {
-        reject(request.error);
-      }
-    };
-  });
-}
-
-export async function loadWorkouts(userId = null) {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.WORKOUTS], 'readonly');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.WORKOUTS);
-  
-  return new Promise((resolve, reject) => {
-    let request;
-    
-    if (userId) {
-      const index = store.index('userId');
-      request = index.getAll(userId);
-    } else {
-      request = store.getAll();
-    }
-    
-    request.onsuccess = () => resolve(request.result || []);
-    request.onerror = () => {
-      console.error('Error loading workouts from IndexedDB:', request.error);
-      reject(request.error);
-    };
-  });
-}
-
-export async function deleteWorkout(id) {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.WORKOUTS], 'readwrite');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.WORKOUTS);
-  
-  return new Promise((resolve, reject) => {
-    const request = store.delete(id);
-    
-    request.onsuccess = () => resolve({ success: true });
-    request.onerror = () => {
-      console.error('Error deleting workout from IndexedDB:', request.error);
-      reject(request.error);
-    };
-  });
-}
-
-// State operations (metadata only, not full exercises)
-export async function storeState(key, value) {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.STATE], 'readwrite');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.STATE);
-  
-  return new Promise((resolve, reject) => {
-    const request = store.put({ key, value });
-    
-    request.onsuccess = () => resolve({ success: true });
-    request.onerror = () => {
-      console.error('Error storing state to IndexedDB:', request.error);
-      reject(request.error);
-    };
-  });
-}
-
-export async function loadState(key) {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.STATE], 'readonly');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.STATE);
-  
-  return new Promise((resolve, reject) => {
-    const request = store.get(key);
-    
-    request.onsuccess = () => resolve(request.result?.value || null);
-    request.onerror = () => {
-      console.error('Error loading state from IndexedDB:', request.error);
-      reject(request.error);
-    };
-  });
-}
-
-// Clear database (for testing/debugging)
-export async function clearDatabase() {
-  const database = await openDatabase();
-  const transaction = database.transaction(Object.values(STORES), 'readwrite');
-  attachTransactionError(transaction);
-  
-  Object.values(STORES).forEach(storeName => {
-    const store = transaction.objectStore(storeName);
-    const clearReq = store.clear();
-    clearReq.onerror = () => console.error(`Error clearing store ${storeName}:`, clearReq.error);
-  });
-
-  return new Promise((resolve, reject) => {
-    transaction.oncomplete = () => resolve({ success: true });
-    transaction.onerror = () => reject(transaction.error);
-  });
-}
-
-// Get database size (for debugging)
-export async function getDatabaseSize() {
-  const database = await openDatabase();
-  
-  // Estimate by counting records in each store
-  const exerciseCount = await new Promise(resolve => {
-    const transaction = database.transaction([STORES.EXERCISES], 'readonly');
-    const count = transaction.objectStore(STORES.EXERCISES).count();
-    count.onsuccess = () => resolve(count.result);
-    count.onerror = () => resolve(0);
-  });
-
-  const workoutCount = await new Promise(resolve => {
-    const transaction = database.transaction([STORES.WORKOUTS], 'readonly');
-    const count = transaction.objectStore(STORES.WORKOUTS).count();
-    count.onsuccess = () => resolve(count.result);
-    count.onerror = () => resolve(0);
-  });
-
-  return {
-    exerciseCount,
-    workoutCount,
-    estimatedSize: 'IndexedDB (much larger than localStorage)'
-  };
-}
-
-// Categories operations
-export async function storeCategories(categoriesArray) {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.CATEGORIES], 'readwrite');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.CATEGORIES);
-  
-  const clearRequest = store.clear();
-  clearRequest.onerror = () => console.error('Error clearing categories store:', clearRequest.error);
-  
-  categoriesArray.forEach(category => {
-    const putRequest = store.put(category);
-    putRequest.onerror = () => console.error('Error storing category:', putRequest.error);
-  });
-  
-  return new Promise((resolve, reject) => {
-    transaction.oncomplete = () => resolve({ success: true });
-    transaction.onerror = () => reject(transaction.error);
-  });
-}
-
-export async function categoriesLoad() {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.CATEGORIES], 'readonly');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.CATEGORIES);
-  
-  return new Promise((resolve, reject) => {
-    const request = store.getAll();
-    request.onsuccess = () => resolve(request.result || []);
-    request.onerror = () => {
-      console.error('Error loading categories from IndexedDB:', request.error);
-      reject(request.error);
-    };
-  });
-}
-
-// Equipment operations
-export async function storeEquipment(equipmentArray) {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.EQUIPMENT], 'readwrite');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.EQUIPMENT);
-  
-  const clearRequest = store.clear();
-  clearRequest.onerror = () => console.error('Error clearing equipment store:', clearRequest.error);
-  
-  equipmentArray.forEach(item => {
-    const putRequest = store.put(item);
-    putRequest.onerror = () => console.error('Error storing equipment:', putRequest.error);
-  });
-  
-  return new Promise((resolve, reject) => {
-    transaction.oncomplete = () => resolve({ success: true });
-    transaction.onerror = () => reject(transaction.error);
-  });
-}
-
-export async function equipmentLoad() {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.EQUIPMENT], 'readonly');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.EQUIPMENT);
-  
-  return new Promise((resolve, reject) => {
-    const request = store.getAll();
-    request.onsuccess = () => resolve(request.result || []);
-    request.onerror = () => {
-      console.error('Error loading equipment from IndexedDB:', request.error);
-      reject(request.error);
-    };
-  });
-}
-
-// Muscles operations
-export async function storeMuscles(musclesArray) {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.MUSCLES], 'readwrite');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.MUSCLES);
-  
-  const clearRequest = store.clear();
-  clearRequest.onerror = () => console.error('Error clearing muscles store:', clearRequest.error);
-  
-  musclesArray.forEach(muscle => {
-    const putRequest = store.put(muscle);
-    putRequest.onerror = () => console.error('Error storing muscle:', putRequest.error);
-  });
-  
-  return new Promise((resolve, reject) => {
-    transaction.oncomplete = () => resolve({ success: true });
-    transaction.onerror = () => reject(transaction.error);
-  });
-}
-
-export async function musclesLoad() {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.MUSCLES], 'readonly');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.MUSCLES);
-  
-  return new Promise((resolve, reject) => {
-    const request = store.getAll();
-    request.onsuccess = () => resolve(request.result || []);
-    request.onerror = () => {
-      console.error('Error loading muscles from IndexedDB:', request.error);
-      reject(request.error);
-    };
-  });
-}
-
-// Difficulties operations
-export async function storeDifficulties(difficultiesArray) {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.DIFFICULTIES], 'readwrite');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.DIFFICULTIES);
-  
-  const clearRequest = store.clear();
-  clearRequest.onerror = () => console.error('Error clearing difficulties store:', clearRequest.error);
-  
-  difficultiesArray.forEach(difficulty => {
-    const putRequest = store.put(difficulty);
-    putRequest.onerror = () => console.error('Error storing difficulty:', putRequest.error);
-  });
-  
-  return new Promise((resolve, reject) => {
-    transaction.oncomplete = () => resolve({ success: true });
-    transaction.onerror = () => reject(transaction.error);
-  });
-}
-
-export async function difficultiesLoad() {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.DIFFICULTIES], 'readonly');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.DIFFICULTIES);
-  
-  return new Promise((resolve, reject) => {
-    const request = store.getAll();
-    request.onsuccess = () => resolve(request.result || []);
-    request.onerror = () => {
-      console.error('Error loading difficulties from IndexedDB:', request.error);
-      reject(request.error);
-    };
-  });
-}
-
-// Deleted Items operations (Undo functionality)
+// Deleted items operations (for undo functionality)
 export async function saveDeletedItem(type, item, originalId) {
   const database = await openDatabase();
   const transaction = database.transaction([STORES.DELETED_ITEMS], 'readwrite');
   attachTransactionError(transaction);
   const store = transaction.objectStore(STORES.DELETED_ITEMS);
-  
-  const deletedItem = {
+
+  const itemData = {
     type,
     item,
     originalId,
     timestamp: Date.now()
   };
-  
+
+  const putRequest = store.put(itemData);
+
   return new Promise((resolve, reject) => {
-    const request = store.add(deletedItem);
-    
-    request.onsuccess = () => resolve({ success: true, id: request.result });
-    request.onerror = () => {
-      console.error('Error saving deleted item to IndexedDB:', request.error);
-      reject(request.error);
-    };
+    putRequest.onsuccess = () => resolve({ success: true, id: putRequest.result });
+    putRequest.onerror = () => reject(putRequest.error);
   });
 }
 
@@ -630,12 +600,15 @@ export async function getDeletedItemsByType(type) {
   const transaction = database.transaction([STORES.DELETED_ITEMS], 'readonly');
   attachTransactionError(transaction);
   const store = transaction.objectStore(STORES.DELETED_ITEMS);
-  const index = store.index('type');
-  
+
   return new Promise((resolve, reject) => {
-    const request = index.getAll(type);
-    
-    request.onsuccess = () => resolve(request.result || []);
+    const request = store.getAll();
+
+    request.onsuccess = () => {
+      const allItems = request.result || [];
+      const filtered = allItems.filter(item => item.type === type);
+      resolve(filtered);
+    };
     request.onerror = () => {
       console.error('Error loading deleted items from IndexedDB:', request.error);
       reject(request.error);
@@ -648,106 +621,44 @@ export async function deleteDeletedItem(id) {
   const transaction = database.transaction([STORES.DELETED_ITEMS], 'readwrite');
   attachTransactionError(transaction);
   const store = transaction.objectStore(STORES.DELETED_ITEMS);
-  
+
+  const deleteRequest = store.delete(id);
+
   return new Promise((resolve, reject) => {
-    const request = store.delete(id);
-    
-    request.onsuccess = () => resolve({ success: true });
-    request.onerror = () => {
-      console.error('Error deleting deleted item from IndexedDB:', request.error);
-      reject(request.error);
-    };
+    deleteRequest.onsuccess = () => resolve({ success: true });
+    deleteRequest.onerror = () => reject(deleteRequest.error);
   });
 }
 
-export async function clearExpiredDeletedItems(maxAgeMs) {
+export async function clearExpiredDeletedItems(retentionMs) {
   const database = await openDatabase();
   const transaction = database.transaction([STORES.DELETED_ITEMS], 'readwrite');
   attachTransactionError(transaction);
   const store = transaction.objectStore(STORES.DELETED_ITEMS);
-  const index = store.index('timestamp');
-  
-  const cutoffTime = Date.now() - maxAgeMs;
-  
-  return new Promise((resolve, reject) => {
-    const request = index.openCursor();
-    let deletedCount = 0;
-    
-    request.onsuccess = (event) => {
-      const cursor = event.target.result;
-      if (cursor) {
-        if (cursor.value.timestamp < cutoffTime) {
-          // Expired - delete this entry
-          const deleteRequest = cursor.delete();
-          deleteRequest.onsuccess = () => {
-            deletedCount++;
-            cursor.continue();
-          };
-          deleteRequest.onerror = () => {
-            cursor.continue();
-          };
-        } else {
-          // Not expired yet - continue searching
-          cursor.continue();
-        }
-      } else {
-        resolve({ success: true, deletedCount });
-      }
-    };
-    
-    request.onerror = () => {
-      console.error('Error clearing expired deleted items from IndexedDB:', transaction.error);
-      reject(transaction.error);
-    };
-  });
-}
 
-export async function getDeletedItemsCount() {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.DELETED_ITEMS], 'readonly');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.DELETED_ITEMS);
-  
-  return new Promise((resolve, reject) => {
-    const request = store.count();
-    
-    request.onsuccess = () => resolve(request.result);
-    request.onerror = () => {
-      console.error('Error counting deleted items from IndexedDB:', request.error);
-      reject(request.error);
-    };
-  });
-}
+  const cutoffTime = Date.now() - retentionMs;
+  let deletedCount = 0;
 
-// ==================== DATA VERSION TRACKING ====================
-
-export async function storeDataVersion(version) {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.DATA_VERSION], 'readwrite');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.DATA_VERSION);
-  
   return new Promise((resolve, reject) => {
-    const request = store.put({ key: 'data_version', value: version, updatedAt: new Date().toISOString() });
-    request.onsuccess = () => resolve(true);
-    request.onerror = () => reject(request.error);
-  });
-}
+    const request = store.getAll();
 
-export async function loadDataVersion() {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.DATA_VERSION], 'readonly');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.DATA_VERSION);
-  
-  return new Promise((resolve, reject) => {
-    const request = store.get('data_version');
     request.onsuccess = () => {
-      const result = request.result;
-      resolve(result ? result.value : null);
+      const allItems = request.result || [];
+      const expiredIds = allItems
+        .filter(item => item.timestamp < cutoffTime)
+        .map(item => item.id);
+
+      if (expiredIds.length > 0) {
+        expiredIds.forEach(id => {
+          store.delete(id);
+          deletedCount++;
+        });
+      }
+
+      resolve({ deletedCount });
     };
     request.onerror = () => {
-      console.error('Error loading data version from IndexedDB:', request.error);
+      console.error('Error clearing expired deleted items:', request.error);
       reject(request.error);
     };
   });

@@ -6,7 +6,7 @@ export function renderErrorView(message = 'An unexpected error occurred. Please 
       <div class="error-icon">⚠️</div>
       <h1>Error</h1>
       <p class="error-message">${message}</p>
-      <button class="btn" onclick="window.location.hash = '#home'">Go Home</button>
+      <button class="btn" data-nav="#home">Go Home</button>
     </div>
   `;
 }
@@ -15,5 +15,5 @@ export function renderErrorView(message = 'An unexpected error occurred. Please 
 window.renderErrorView = renderErrorView;
 
 
-// Export as object for wrapView compatibility
+// Named + default export for maximum flexibility (Pattern 3)
 export default { render: renderErrorView };

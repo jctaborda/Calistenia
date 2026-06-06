@@ -152,10 +152,10 @@ function getRatingLabel(rating) {
 }
 
 // Helper function to start workout from home button
-function startWorkoutFromHome(program) {
+function startWorkoutFromHome(routine) {
   updateState({
     activeWorkout: {
-      program: program,
+      routine: routine,
       progress: {},
       currentExerciseIndex: 0,
       currentSetIndex: 0,
@@ -248,23 +248,22 @@ async function renderHomeView() {
   <section class="quick-actions">
   <h2 class="card-title">Quick Actions</h2>
   <div class="action-grid">
-  <button class="action-card" onclick="window.location.hash='#programs'">
+  <button class="action-card" data-nav="#routines">
   <svg class="action-icon" viewBox="0 0 24 24" fill="currentColor">
     <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
   </svg>
-  <span class="action-title">Start Program</span>
+  <span class="action-title">Start Routine</span>
   <span class="action-desc">Choose from pre-made routines</span>
   </button>
   
-  <button class="action-card" onclick="window.location.hash='#builder'; updateState({ editingProgram: null, editingModule: null, createNewProgram: true })">
+  <button class="action-card" data-action="create-routine">
   <svg class="action-icon" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 2L9.1 8.6 2 9.3l5.5 4.2L5.8 20 12 16.3 18.2 20l-1.7-6.5L22 9.3l-7.1-.7z"/>
+    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
   </svg>
   <span class="action-title">Create Routine</span>
   <span class="action-desc">Build your custom workout</span>
   </button>
-  
-  <button class="action-card" onclick="window.location.hash='#skills-tree'">
+  <button class="action-card" data-nav="#skills-tree">
   <svg class="action-icon" viewBox="0 0 24 24" fill="currentColor">
     <path d="M12 17.3l6.18-3.73L21 12l-5.5-4.33L17 4l-5 3-5-3-.5 3.67L3 12l2.82 1.57z"/>
   </svg>
@@ -272,7 +271,7 @@ async function renderHomeView() {
   <span class="action-desc">Track your skill progression</span>
   </button>
   
-  <button class="action-card" onclick="window.location.hash='#exercises'">
+  <button class="action-card" data-nav="#exercises">
   <svg class="action-icon" viewBox="0 0 24 24" fill="currentColor">
     <path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.8-.7"/>
   </svg>
@@ -282,23 +281,24 @@ async function renderHomeView() {
   </div>
   </section>
 
-  <!-- Featured Programs -->
-  ${state.programs && state.programs.length > 0 ? `
+  <!-- Featured Routines -->
+  ${state.routines && state.routines.length > 0 ? `
   <section class="featured-section">
-  <h2 class="card-title">Featured Programs</h2>
+  <h2 class="card-title">Featured Routines</h2>
   <div class="programs-grid">
-  ${state.programs.slice(0, 3).map(program => `
-  <div class="program-card">
-  <div class="program-header">
-  <h3>${program.name}</h3>
-  <span class="difficulty-badge difficulty-${getDifficultyColor(program.difficulty)}">${program.difficulty || 'Intermediate'}</span>
+  ${state.routines.slice(0, 3).map(routine => `
+  <div class="routine-card">
+  <div class="routine-header">
+  <h3>${routine.name}</h3>
+  <span class="difficulty-badge difficulty-${getDifficultyColor(routine.difficulty)}">${routine.difficulty || 'Intermediate'}</span>
   </div>
-  <p class="program-desc">${program.description || 'A comprehensive workout program'}</p>
-  <div class="program-stats">
-  <span>📅 ${program.duration || '30 min'}</span>
-  <span>💪 ${program.exercises?.length || 0} exercises</span>
+  <p class="routine-desc">${routine.description || 'A comprehensive workout routine'}</p>
+  <div class="routine-stats">
+  <span>📅 ${routine.duration || '30 min'}</span>
+  <span>💪 ${routine.exercises?.length || 0} exercises</span>
+  ${routine.category ? `<span class="routine-meta-item">📁 ${state.categories?.find(c => String(c.id) === String(routine.category))?.name || routine.category}</span>` : ''}
   </div>
-  <button class="btn btn-primary" onclick="startWorkoutFromHome(${JSON.stringify(program).replace(/"/g, '&quot;')})">Start Now</button>
+  <button class="btn btn-primary" data-start-routine data-routine-index="${state.routines.indexOf(routine)}">Start Now</button>
   </div>
   `).join('')}
   </div>
@@ -313,7 +313,7 @@ async function renderHomeView() {
   ${recentWorkouts.map(workout => `
   <div class="workout-item">
   <div class="workout-header">
-  <span class="workout-title">${workout.program?.name || 'Custom Workout'}</span>
+  <span class="workout-title">${workout.routine?.name || 'Custom Workout'}</span>
   <span class="workout-date">${formatDate(workout.date)}</span>
   </div>
   <div class="workout-details">
@@ -326,7 +326,7 @@ async function renderHomeView() {
   ` : `
   <div class="no-data">
   <p>No workouts completed yet. Start your first workout to see activity here!</p>
-  <button class="btn btn-primary" onclick="window.location.hash='#programs'">Start Workout</button>
+  <button class="btn btn-primary" data-nav="#routines">Start Workout</button>
   </div>
   `}
   </section>
@@ -343,6 +343,3 @@ async function renderHomeView() {
 // Export as function for direct imports AND add render property for wrapView compatibility
 export { renderHomeView };
 export default { render: renderHomeView };
-
-// Expose globally for inline onclick handlers
-window.startWorkoutFromHome = startWorkoutFromHome;

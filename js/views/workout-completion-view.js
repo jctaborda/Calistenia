@@ -8,12 +8,12 @@ export async function renderWorkoutCompletionView() {
   const state = await getState();
   const { activeWorkout, exercises = [], history = [] } = state;
   
-  if (!activeWorkout || !activeWorkout.program) {
+  if (!activeWorkout || !activeWorkout.routine) {
     main.innerHTML = renderHeader() + '<div class="card"><p>No active workout to complete.</p></div>';
     return;
   }
 
-  const program = activeWorkout.program;
+  const routine = activeWorkout.routine;
   
   // Calculate workout statistics from setHistory
   const workoutStats = calculateWorkoutStats(activeWorkout);
@@ -31,7 +31,7 @@ export async function renderWorkoutCompletionView() {
   main.innerHTML = renderHeader() + `
     <div class="card">
   <h1>Workout Complete!</h1>
-  <h2>${program.name}</h2>
+  <h2>${routine.name}</h2>
   
   ${workoutStats.totalDuration ? `
   <div class="workout-stats">
@@ -60,7 +60,7 @@ export async function renderWorkoutCompletionView() {
   ` : ''}
   
   <form id="workout-completion-form">
-  ${program.exercises.map((exerciseData, exerciseIndex) => {
+  ${routine.exercises.map((exerciseData, exerciseIndex) => {
   const exercise = exercises.find(e => String(e.id) === String(exerciseData.exerciseId));
   return `
   <div class="card completion-exercise-card">
@@ -98,10 +98,10 @@ export async function renderWorkoutCompletionView() {
   e.preventDefault();
   
   // Collect all the rep data
-  const workoutLog = {
-  program: program,
-  date: new Date().toISOString(),
-  exercises: program.exercises.map((exerciseData, exerciseIndex) => {
+   const workoutLog = {
+     routine: routine,
+     date: new Date().toISOString(),
+     exercises: routine.exercises.map((exerciseData, exerciseIndex) => {
   const exercise = exercises.find(e => String(e.id) === String(exerciseData.exerciseId));
   const sets = Array.from({ length: exerciseData.sets }, (_, setIndex) => {
   const input = form.querySelector(`input[name="exercise-${exerciseIndex}-set-${setIndex}"]`);
@@ -192,5 +192,5 @@ function formatDuration(seconds) {
 window.renderWorkoutCompletionView = renderWorkoutCompletionView;
 
 
-// Export as object for wrapView compatibility
+// Named + default export for maximum flexibility (Pattern 3)
 export default { render: renderWorkoutCompletionView };

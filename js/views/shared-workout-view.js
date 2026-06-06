@@ -14,7 +14,7 @@ export async function renderSharedWorkoutView(workoutId) {
       <div class="card">
         <h1>Workout Not Found</h1>
         <p>The shared workout you're looking for doesn't exist or has been removed.</p>
-        <button class="btn" onclick="window.location.hash = '#home'">Go Home</button>
+        <button class="btn" data-nav="#home">Go Home</button>
       </div>
     `;
     return;
@@ -32,7 +32,7 @@ export async function renderSharedWorkoutView(workoutId) {
       <h1>Shared Workout</h1>
       <p>Shared on ${formattedDate}</p>
       
-      <h2>${workout.program.name}</h2>
+      <h2>${workout.routine.name}</h2>
       
       <div class="workout-details">
         ${workout.exercises.map((ex, index) => `
@@ -70,7 +70,7 @@ export async function renderSharedWorkoutView(workoutId) {
       </div>
       
       <div style="margin-top: 2rem;">
-        <button class="btn btn-secondary" onclick="window.location.hash = '#home'">Back to Home</button>
+        <button class="btn btn-secondary" data-nav="#home">Back to Home</button>
       </div>
     </div>
   `;
@@ -114,5 +114,5 @@ export async function renderSharedWorkoutView(workoutId) {
 window.renderSharedWorkoutView = renderSharedWorkoutView;
 
 
-// Export as object for wrapView compatibility
+// Named + default export for maximum flexibility (Pattern 3)
 export default { render: renderSharedWorkoutView };

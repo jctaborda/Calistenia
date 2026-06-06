@@ -1,14 +1,14 @@
 // Undo Service - Handles temporary storage of deleted items and restore functionality
 import { saveDeletedItem, getDeletedItemsByType, deleteDeletedItem, clearExpiredDeletedItems } from './database.js';
 import { loadExercises } from './storage.js';
-import { modulesLoad, programsLoad, storeExercises, storeModules, storePrograms } from './database.js';
+import { modulesLoad, routinesLoad, storeExercises, storeModules, storeRoutines } from './database.js';
 import { show } from './toast-service.js';
 const UNDO_RETENTION_MS = 30 * 24 * 60 * 60 * 1000; // 30 days in milliseconds
 const TOAST_DURATION = 8000; // 8 seconds for user to react
 let undoToasts = new Map(); // Track active undo toast notifications
 /**
 * Save a deleted item for potential undo
-* @param {string} type - Type of item (exercise, module, program)
+* @param {string} type - Type of item (exercise, module, routine)
 * @param {Object} item - The full item data that was deleted
 * @param {string|number} originalId - The original ID of the deleted item
 */
@@ -36,7 +36,7 @@ dismissUndoToast(type);
   const actionLabels = {
 exercise: 'Exercise',
 module: 'Module',
-program: 'Program'
+routine: 'Routine'
 };
   const label = actionLabels[type] || 'Item';
   // Create toast element
@@ -119,18 +119,18 @@ modules.push(deletedItem.item);
 success = true;
 }
 break;
-  case 'program':
-const programs = await programsLoad();
-if (!programs.find(p => p.id === deletedItem.originalId)) {
-programs.push(deletedItem.item);
-// Note: In a full implementation, you'd call storage.storePrograms(programs)
+  case 'routine':
+const routines = await routinesLoad();
+if (!routines.find(r => r.id === deletedItem.originalId)) {
+routines.push(deletedItem.item);
+// Note: In a full implementation, you'd call storage.storeRoutines(routines)
 success = true;
 }
 break;
   case 'body-metric':
 // Body metrics are part of user state stored in localStorage
 // Full implementation would require storing bodyMetrics in IndexedDB
-show('Body metric deleted (30-day undo available for exercises/modules/programs only)', 'info');
+show('Body metric deleted (30-day undo available for exercises/modules/routines only)', 'info');
 // In a full implementation, you'd need to restore from deletedItem.item back to user.bodyMetrics
 success = true;
 break;

@@ -10,16 +10,16 @@ export class WorkoutWorkflowService {
    * @param {number} currentExerciseIndex - Index of current exercise
    * @param {number} currentSetIndex - Current set index
    * @param {object} currentExerciseData - Exercise data for current exercise
-   * @param {object} program - Program object
+   * @param {object} routine - Routine object
    * @returns {object} Result object with next state and action to take
    */
-  completeSet(activeWorkout, currentExerciseIndex, currentSetIndex, currentExerciseData, program) {
+  completeSet(activeWorkout, currentExerciseIndex, currentSetIndex, currentExerciseData, routine) {
     const newSetIndex = currentSetIndex + 1;
 
     // Determine workout phases
-    const warmupLength = (program.warmup && program.warmup.length) ? program.warmup.length : 0;
-    const mainExercisesLength = program.exercises.length;
-    const cooldownLength = (program.cooldown && program.cooldown.length) ? program.cooldown.length : 0;
+    const warmupLength = (routine.warmup && routine.warmup.length) ? routine.warmup.length : 0;
+    const mainExercisesLength = routine.exercises.length;
+    const cooldownLength = (routine.cooldown && routine.cooldown.length) ? routine.cooldown.length : 0;
     const totalExercises = warmupLength + mainExercisesLength + cooldownLength;
 
     let nextState = { ...activeWorkout };
@@ -59,12 +59,12 @@ export class WorkoutWorkflowService {
   /**
    * Determine current phase (warmup, main, or cooldown)
    * @param {number} exerciseIndex - Current exercise index
-   * @param {object} program - Program object
+   * @param {object} routine - Routine object
    * @returns {string} Phase name: 'warmup', 'main', or 'cooldown'
    */
-  getCurrentPhase(exerciseIndex, program) {
-    const warmupLength = (program.warmup && program.warmup.length) ? program.warmup.length : 0;
-    const mainExercisesLength = program.exercises.length;
+  getCurrentPhase(exerciseIndex, routine) {
+    const warmupLength = (routine.warmup && routine.warmup.length) ? routine.warmup.length : 0;
+    const mainExercisesLength = routine.exercises.length;
 
     if (exerciseIndex < warmupLength) {
       return 'warmup';
@@ -78,12 +78,12 @@ export class WorkoutWorkflowService {
   /**
    * Get the actual exercise index within a phase
    * @param {number} globalExerciseIndex - Index in the full workout
-   * @param {object} program - Program object
+   * @param {object} routine - Routine object
    * @returns {object} Object with phase and local index
    */
-  getPhaseInfo(globalExerciseIndex, program) {
-    const warmupLength = (program.warmup && program.warmup.length) ? program.warmup.length : 0;
-    const mainExercisesLength = program.exercises.length;
+  getPhaseInfo(globalExerciseIndex, routine) {
+    const warmupLength = (routine.warmup && routine.warmup.length) ? routine.warmup.length : 0;
+    const mainExercisesLength = routine.exercises.length;
 
     if (globalExerciseIndex < warmupLength) {
       return { phase: 'warmup', localIndex: globalExerciseIndex };
@@ -103,19 +103,19 @@ export class WorkoutWorkflowService {
   /**
    * Get exercise data based on phase and index
    * @param {number} globalIndex - Global exercise index
-   * @param {object} program - Program object
+   * @param {object} routine - Routine object
    * @returns {object|null} Exercise data or null if not found
    */
-  getExerciseData(globalIndex, program) {
-    const { phase, localIndex } = this.getPhaseInfo(globalIndex, program);
+  getExerciseData(globalIndex, routine) {
+    const { phase, localIndex } = this.getPhaseInfo(globalIndex, routine);
 
     let exercisesArray;
     if (phase === 'warmup') {
-      exercisesArray = program.warmup || [];
+      exercisesArray = routine.warmup || [];
     } else if (phase === 'cooldown') {
-      exercisesArray = program.cooldown || [];
+      exercisesArray = routine.cooldown || [];
     } else {
-      exercisesArray = program.exercises;
+      exercisesArray = routine.exercises;
     }
 
     return exercisesArray[localIndex] || null;
@@ -133,19 +133,19 @@ export class WorkoutWorkflowService {
   /**
    * Check if current exercise is the last one in its phase
    * @param {number} exerciseIndex - Current exercise index
-   * @param {object} program - Program object
+   * @param {object} routine - Routine object
    * @returns {boolean} True if last exercise
    */
-  isLastExercise(exerciseIndex, program) {
-    const { phase, localIndex } = this.getPhaseInfo(exerciseIndex, program);
+  isLastExercise(exerciseIndex, routine) {
+    const { phase, localIndex } = this.getPhaseInfo(exerciseIndex, routine);
 
     let totalInPhase;
     if (phase === 'warmup') {
-      totalInPhase = (program.warmup && program.warmup.length) ? program.warmup.length : 0;
+      totalInPhase = (routine.warmup && routine.warmup.length) ? routine.warmup.length : 0;
     } else if (phase === 'cooldown') {
-      totalInPhase = (program.cooldown && program.cooldown.length) ? program.cooldown.length : 0;
+      totalInPhase = (routine.cooldown && routine.cooldown.length) ? routine.cooldown.length : 0;
     } else {
-      totalInPhase = program.exercises.length;
+      totalInPhase = routine.exercises.length;
     }
 
     return localIndex >= totalInPhase - 1;

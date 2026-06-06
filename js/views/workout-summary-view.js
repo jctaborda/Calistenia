@@ -17,7 +17,7 @@ export function renderWorkoutSummaryView() {
   <h1>Workout Complete!</h1>
   
   ${lastWorkout ? `
-  <h2>${lastWorkout.program.name}</h2>
+  <h2>${lastWorkout.routine.name}</h2>
   <p>You completed ${lastWorkout.exercises.length} exercises today! Great work!</p>
   ` : ''}
   
@@ -54,9 +54,9 @@ export function renderWorkoutSummaryView() {
   <div id="adaptive-suggestion" class="adaptive-suggestion hidden"></div>
   
   <div class="summary-actions">
-  <button class="btn share-workout-btn" onclick="shareWorkout()">📋 Copy to Clipboard</button>
-  <button class="btn btn-secondary back-to-home-btn" onclick="window.location.hash = '#home'">Back to Home</button>
-  <button class="btn btn-secondary view-profile-btn" onclick="window.location.hash = '#profile'">View Profile</button>
+  <button class="btn share-workout-btn" data-share-workout>📋 Copy to Clipboard</button>
+  <button class="btn btn-secondary back-to-home-btn" data-nav="#home">Back to Home</button>
+  <button class="btn btn-secondary view-profile-btn" data-nav="#profile">View Profile</button>
   </div>
     </div>
   `;
@@ -81,69 +81,38 @@ export function renderWorkoutSummaryView() {
     });
   });
 
-// Expose shareWorkout globally for onclick handler
-window.shareWorkout = async function() {
-  // Also export as window variable for legacy compatibility
-    if (!lastWorkout) {
-  alert('No workout to share.');
-  return;
-    }
-    
-    // Format workout summary for social media/WhatsApp
-    const workoutText = formatWorkoutSummary(lastWorkout);
-    
-    // Try to copy to clipboard
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-  navigator.clipboard.writeText(workoutText).then(() => {
-    alert('✅ Workout summary copied to clipboard!\n\nYou can now paste it in WhatsApp, social media, or any text message.');
-  }).catch(() => {
-    // Fallback: show text for manual copy
-    prompt('Copy the workout summary below:', workoutText);
+  // Export for router usage
+  window.renderWorkoutSummaryView = renderWorkoutSummaryView;
+}
+
+// Format workout summary for social media/WhatsApp - now in event delegation service
+function formatWorkoutSummary(workout) {
+  const routine = workout.routine;
+  const date = new Date(workout.date).toLocaleDateString();
+  
+  let summary = `💪 *Workout Summary*\n`;
+  summary += `━━━━━━━━━━━━━━━━━━━━\n\n`;
+  summary += `📅 *Date:* ${date}\n`;
+  summary += `🏋️ *Routine:* ${routine.name}\n\n`;
+  summary += `🔥 *Exercises Completed:*\n`;
+  
+  workout.exercises.forEach((exercise, index) => {
+    summary += `\n${index + 1}. *${exercise.exerciseName}*\n`;
+    summary += `   Target: ${exercise.targetSets} sets × ${exercise.targetReps} reps\n`;
+    summary += `   Actual: ${exercise.actualReps.join(' × ')} reps`;
   });
-    } else {
-  // Fallback for older browsers
-  const textArea = document.createElement('textarea');
-  textArea.value = workoutText;
-  document.body.appendChild(textArea);
-  textArea.select();
-  try {
-    document.execCommand('copy');
-    alert('✅ Workout summary copied to clipboard!\n\nYou can now paste it in WhatsApp, social media, or any text message.');
-  } catch (err) {
-    prompt('Copy the workout summary below:', workoutText);
-  }
-  document.body.removeChild(textArea);
-    }
-  }
   
-  // Format workout summary for social media/WhatsApp
-  function formatWorkoutSummary(workout) {
-    const program = workout.program;
-    const date = new Date(workout.date).toLocaleDateString();
-    
-    let summary = `💪 *Workout Summary*\n`;
-    summary += `━━━━━━━━━━━━━━━━━━━━\n\n`;
-    summary += `📅 *Date:* ${date}\n`;
-    summary += `🏋️ *Program:* ${program.name}\n\n`;
-    summary += `🔥 *Exercises Completed:*\n`;
-    
-    workout.exercises.forEach((exercise, index) => {
-      summary += `\n${index + 1}. *${exercise.exerciseName}*\n`;
-      summary += `   Target: ${exercise.targetSets} sets × ${exercise.targetReps} reps\n`;
-      summary += `   Actual: ${exercise.actualReps.join(' × ')} reps`;
-    });
-    
-    summary += `\n\n━━━━━━━━━━━━━━━━━━━━\n`;
-    summary += `Great job! Keep pushing your limits! 💯\n`;
-    
-    return summary;
-  }
+  summary += `\n\n━━━━━━━━━━━━━━━━━━━━\n`;
+  summary += `Great job! Keep pushing your limits! 💯\n`;
   
-  function showAdaptiveSuggestion(rating) {
-    const suggestionEl = main.querySelector('#adaptive-suggestion');
-    let message;
-    
-    switch (rating) {
+  return summary;
+}
+
+function showAdaptiveSuggestion(rating) {
+  const suggestionEl = document.getElementById('app').querySelector('#adaptive-suggestion');
+  let message;
+  
+  switch (rating) {
   case 'too_easy':
   message = `
   <div class="suggestion-card">
@@ -153,7 +122,7 @@ window.shareWorkout = async function() {
   <li>Adding more sets or reps to your exercises</li>
   <li>Reducing rest time between sets (e.g., from 60s to 45s)</li>
   <li>Progressing to a harder variation of exercises</li>
-  <li>Moving to an intermediate program next time</li>
+  <li>Moving to an intermediate routine next time</li>
   </ul>
   </div>
   `;
@@ -163,7 +132,7 @@ window.shareWorkout = async function() {
   message = `
   <div class="suggestion-card">
   <h4>👍 Perfect! Keep This Up!</h4>
-  <p>Your current program seems well-suited to your fitness level. Continue with it for the next 2-3 weeks, then consider progressing to a slightly harder routine or adding volume.</p>
+  <p>Your current routine seems well-suited to your fitness level. Continue with it for the next 2-3 weeks, then consider progressing to a slightly harder routine or adding volume.</p>
   </div>
   `;
   break;
@@ -177,21 +146,16 @@ window.shareWorkout = async function() {
   <li>Reducing the number of sets (e.g., from 3 to 2)</li>
   <li>Using easier exercise variations</li>
   <li>Increasing rest time between sets</li>
-  <li>Moving to a beginner program for now</li>
+  <li>Moving to a beginner routine for now</li>
   </ul>
   </div>
   `;
   break;
-    }
-    
-    suggestionEl.innerHTML = message;
-    suggestionEl.classList.remove('hidden');
   }
+  
+  suggestionEl.innerHTML = message;
+  suggestionEl.classList.remove('hidden');
 }
 
-// Export for router usage
-window.renderWorkoutSummaryView = renderWorkoutSummaryView;
-
-
-// Export as object for wrapView compatibility
+// Named + default export for maximum flexibility (Pattern 3)
 export default { render: renderWorkoutSummaryView };

@@ -28,18 +28,18 @@ export function renderActiveWorkoutView() {
   const { activeWorkout, exercises } = getState();
   
   // Validate workout exists
-  if (!activeWorkout || !activeWorkout.program) {
+  if (!activeWorkout || !activeWorkout.routine) {
     main.innerHTML = renderHeader() + '<div class="card"><p>No active workout.</p></div>';
     return;
   }
   
-  const program = activeWorkout.program;
+  const routine = activeWorkout.routine;
   const currentExerciseIndex = activeWorkout.currentExerciseIndex || 0;
   const currentSetIndex = activeWorkout.currentSetIndex || 0;
   
   // Get phase information and exercise data
-  const { phase, localIndex } = workoutWorkflowService.getPhaseInfo(currentExerciseIndex, program);
-  const currentExerciseData = workoutWorkflowService.getExerciseData(currentExerciseIndex, program);
+  const { phase, localIndex } = workoutWorkflowService.getPhaseInfo(currentExerciseIndex, routine);
+  const currentExerciseData = workoutWorkflowService.getExerciseData(currentExerciseIndex, routine);
   
   if (!currentExerciseData) {
     main.innerHTML = renderHeader() + '<div class="card"><p>Exercise data not found.</p></div>';
@@ -67,11 +67,11 @@ export function renderActiveWorkoutView() {
   // Get workout configuration
   const isHiitWorkout = workoutWorkflowService.isHIITWorkout(activeWorkout);
   const hiitInterval = activeWorkout.intervalTime || 30;
-  const totalExercises = (program.warmup?.length || 0) + program.exercises.length + (program.cooldown?.length || 0);
+  const totalExercises = (routine.warmup?.length || 0) + routine.exercises.length + (routine.cooldown?.length || 0);
   
   // Render the view
   main.innerHTML = renderActiveWorkoutTemplate({
-    program,
+    routine,
     phase,
     currentExerciseIndex,
     totalExercises,
@@ -89,7 +89,7 @@ export function renderActiveWorkoutView() {
     currentExerciseIndex,
     currentSetIndex,
     currentExerciseData,
-    program,
+    routine,
     isHiitWorkout,
     hiitInterval,
     totalExercises,
@@ -109,7 +109,7 @@ export function renderActiveWorkoutView() {
  * Render HTML template for active workout view
  */
 function renderActiveWorkoutTemplate({
-  program,
+  routine,
   phase,
   currentExerciseIndex,
   totalExercises,
@@ -124,7 +124,7 @@ function renderActiveWorkoutTemplate({
   
   return renderHeader() + `
     <div class="card">
-      <h1>${program.name}</h1>
+      <h1>${routine.name}</h1>
       <p><span class="phase-badge" style="background: ${phaseColor}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.9em;">${phase.toUpperCase()}</span> Exercise ${currentExerciseIndex + 1} of ${totalExercises}</p>
       
       ${isHiitWorkout ? workoutTimerService.renderHiitSection(hiitInterval) : ''}
@@ -161,7 +161,7 @@ function wireUpEventHandlers({
   currentExerciseIndex,
   currentSetIndex,
   currentExerciseData,
-  program,
+  routine,
   isHiitWorkout,
   hiitInterval,
   totalExercises,
@@ -180,25 +180,25 @@ function wireUpEventHandlers({
       exerciseIndex: currentExerciseIndex,
       exerciseData: currentExerciseData,
       activeWorkout,
-      program
+      routine
     }));
   }
   
-  // Swap button - open modal to swap exercise
+  // Swap button - open exercise to swap exercise
   const swapBtn = main.querySelector('#swap-btn');
   if (swapBtn) {
     swapBtn.addEventListener('click', () => handleSwapExercise({
       currentExerciseIndex,
       exerciseId: currentExerciseData.exerciseId,
       activeWorkout,
-      program,
+      routine,
       exercises
     }));
   }
   
   // Handle HIIT timer if applicable
   if (isHiitWorkout) {
-    handleHIITTimer({ hiitInterval, currentExerciseIndex, currentExerciseData });
+    handleHIITTimer({ hiitInterval, currentExerciseIndex, currentExerciseData, routine });
   }
   
   // Wire up "Next Set" button
@@ -216,11 +216,11 @@ function handleNextSetClick() {
   const { activeWorkout, exercises } = getState();
   const currentExerciseIndex = activeWorkout.currentExerciseIndex || 0;
   const currentSetIndex = activeWorkout.currentSetIndex || 0;
-  const program = activeWorkout.program;
+  const routine = activeWorkout.routine;
   
   // Get current exercise data
-  const { phase, localIndex } = workoutWorkflowService.getPhaseInfo(currentExerciseIndex, program);
-  const currentExerciseData = workoutWorkflowService.getExerciseData(currentExerciseIndex, program);
+  const { phase, localIndex } = workoutWorkflowService.getPhaseInfo(currentExerciseIndex, routine);
+  const currentExerciseData = workoutWorkflowService.getExerciseData(currentExerciseIndex, routine);
   
   if (!currentExerciseData) return;
   
@@ -254,10 +254,10 @@ function handleNextSetClick() {
     isShowingRestTimer = false; // Clear the flag before advancing
     
     // Advance to next set/exercise
-    advanceWorkout(currentExerciseIndex, currentSetIndex, program);
+    advanceWorkout(currentExerciseIndex, currentSetIndex, routine);
   } else {
     // User clicked after set duration - check if this is the last set of the last exercise
-    const totalExercises = (program.warmup?.length || 0) + program.exercises.length + (program.cooldown?.length || 0);
+    const totalExercises = (routine.warmup?.length || 0) + routine.exercises.length + (routine.cooldown?.length || 0);
     const isLastExercise = currentExerciseIndex >= totalExercises - 1;
     const isLastSet = currentSetIndex >= currentExerciseData.sets - 1;
     
@@ -321,8 +321,8 @@ function handleNextSetClick() {
 /**
  * Check if this is the last set of the last exercise in the workout
  */
-function isLastSetOfLastExercise(currentExerciseIndex, currentSetIndex, currentExerciseData, program) {
-  const totalExercises = (program.warmup?.length || 0) + program.exercises.length + (program.cooldown?.length || 0);
+function isLastSetOfLastExercise(currentExerciseIndex, currentSetIndex, currentExerciseData, routine) {
+  const totalExercises = (routine.warmup?.length || 0) + routine.exercises.length + (routine.cooldown?.length || 0);
   
   // Check if this is the last exercise
   const isLastExercise = currentExerciseIndex >= totalExercises - 1;
@@ -339,13 +339,13 @@ function isLastSetOfLastExercise(currentExerciseIndex, currentSetIndex, currentE
  * Advance workout to next set or exercise
  * When moving to a new exercise, we still need to show rest before starting the new set
  */
-function advanceWorkout(currentExerciseIndex, currentSetIndex, program) {
+function advanceWorkout(currentExerciseIndex, currentSetIndex, routine) {
   const result = workoutWorkflowService.completeSet(
     getState().activeWorkout,
     currentExerciseIndex,
     currentSetIndex,
-    workoutWorkflowService.getExerciseData(currentExerciseIndex, program),
-    program
+    workoutWorkflowService.getExerciseData(currentExerciseIndex, routine),
+    routine
   );
   
   // Check if we're completing the workout (after final rest)
@@ -430,15 +430,15 @@ function handleStateChange() {
 /**
  * Event handlers
  */
-function handleAdjustSets({ exerciseIndex, exerciseData, activeWorkout, program }) {
-  workoutModalsService.showAdjustSetsModal(exerciseIndex, exerciseData, activeWorkout, program);
+function handleAdjustSets({ exerciseIndex, exerciseData, activeWorkout, routine }) {
+  workoutModalsService.showAdjustSetsModal(exerciseIndex, exerciseData, activeWorkout, routine);
   
   const handler = (e) => {
-    const { exerciseIndex: idx, newSetCount, program: updatedProgram } = e.detail;
+    const { exerciseIndex: idx, newSetCount, routine: updatedRoutine } = e.detail;
     
     if (idx === exerciseIndex) {
       updateState({
-        activeWorkout: { ...activeWorkout, program: updatedProgram },
+        activeWorkout: { ...activeWorkout, routine: updatedRoutine },
         stateChange: true
       });
     }
@@ -449,21 +449,21 @@ function handleAdjustSets({ exerciseIndex, exerciseData, activeWorkout, program 
   document.addEventListener('workoutSetsAdjusted', handler);
 }
 
-function handleSwapExercise({ currentExerciseIndex, exerciseId, activeWorkout, program, exercises }) {
+function handleSwapExercise({ currentExerciseIndex, exerciseId, activeWorkout, routine, exercises }) {
   workoutModalsService.showSwapExerciseModal(
     currentExerciseIndex,
     exerciseId,
     activeWorkout,
-    program,
+    routine,
     exercises
   );
   
   const handler = (e) => {
-    const { exerciseIndex: idx, newExerciseId, program: updatedProgram } = e.detail;
+    const { exerciseIndex: idx, newExerciseId, routine: updatedRoutine } = e.detail;
     
     if (idx === currentExerciseIndex) {
       updateState({
-        activeWorkout: { ...activeWorkout, program: updatedProgram },
+        activeWorkout: { ...activeWorkout, routine: updatedRoutine },
         stateChange: true
       });
     }
@@ -474,7 +474,7 @@ function handleSwapExercise({ currentExerciseIndex, exerciseId, activeWorkout, p
   document.addEventListener('workoutExerciseSwapped', handler);
 }
 
-function handleHIITTimer({ hiitInterval, currentExerciseIndex, currentExerciseData }) {
+function handleHIITTimer({ hiitInterval, currentExerciseIndex, currentExerciseData, routine }) {
   workoutTimerService.startHIITTimer(hiitInterval, {
     onWorkStart: () => {
       workoutModalsService.showToast('Work time!', 'success');
@@ -491,5 +491,5 @@ function handleHIITTimer({ hiitInterval, currentExerciseIndex, currentExerciseDa
 // Export for router usage
 window.renderActiveWorkoutView = renderActiveWorkoutView;
 
-// Export as object for wrapView compatibility
+// Named + default export for maximum flexibility (Pattern 3)
 export default { render: renderActiveWorkoutView };

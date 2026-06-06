@@ -49,12 +49,12 @@ function renderHeader() {
   return `
     <header class="app-header">
       <div class="header-content">
-        <button class="back-btn" onclick="window.history.back()" aria-label="Go back">
+        <button class="back-btn" aria-label="Go back" data-nav="back">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M19 12H5M12 19l-7-7 7-7"/>
           </svg>
         </button>
-        <h1 class="header-title">Exercise Manager</h1>
+        <h1 class="header-title">Exercise Editor</h1>
         <div style="width: 40px;"></div>
       </div>
     </header>`;
@@ -63,8 +63,6 @@ function renderHeader() {
 function getFormHTML() {
   return `
     <div class="exercise-form-container">
-      <h1>Exercise Manager</h1>
-
       <div id="message" class="message"></div>
 
       <div class="form-tabs">
@@ -259,3 +257,6 @@ function getFormHTML() {
       </div>
     </div>`;
 }
+
+// Named + default export for maximum flexibility (Pattern 3)
+export default { render: renderExerciseForm };

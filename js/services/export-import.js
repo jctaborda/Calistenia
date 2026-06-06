@@ -4,8 +4,8 @@ import {
   storeWorkout, 
   deleteWorkout,
   clearDatabase,
-  programsLoad,
-  storePrograms,
+  routinesLoad,
+  storeRoutines,
   modulesLoad,
   storeModules,
   getDatabaseSize
@@ -37,7 +37,7 @@ const DATA_SCHEMA = {
     required: true,
     itemSchema: {
       id: { type: 'string|number', required: true },
-      program: { type: 'object', required: true },
+      routine: { type: 'object', required: true },
       date: { type: 'string', required: true, format: 'iso-date' },
       exercises: { 
         type: 'array', 
@@ -53,7 +53,7 @@ const DATA_SCHEMA = {
       setHistory: { type: 'array', required: false }
     }
   },
-  programs: {
+  routines: {
     type: 'array',
     required: false,
     itemSchema: {
@@ -186,9 +186,9 @@ function validateImportData(importData) {
       validation.success = false;
     }
     
-    // Validate programs array if present
-    if (importData.programs !== undefined && !Array.isArray(importData.programs)) {
-      validation.errors.push('programs must be an array');
+    // Validate routines array if present
+    if (importData.routines !== undefined && !Array.isArray(importData.routines)) {
+      validation.errors.push('routines must be an array');
       validation.success = false;
     }
     
@@ -204,13 +204,13 @@ function validateImportData(importData) {
 
 /**
  * Export all user data to JSON format
- * Includes: workouts, programs (custom routines), skill modules
+ * Includes: workouts, routines, skill modules
  */
 export async function exportUserData() {
   try {
-    const [workouts, programs, modules] = await Promise.all([
+    const [workouts, routines, modules] = await Promise.all([
       loadWorkouts(),
-      programsLoad(),
+      routinesLoad(),
       modulesLoad()
     ]);
 
@@ -219,7 +219,7 @@ export async function exportUserData() {
       exportedAt: EXPORT_TIMESTAMP,
       appVersion: 'Calisthenics Mastery v1.0',
       workouts: workouts,
-      programs: programs,
+      routines: routines,
       skillModules: modules
     };
 
@@ -256,7 +256,7 @@ export async function importUserData(jsonData) {
 
     const stats = {
       workouts: { imported: 0, skipped: 0 },
-      programs: { imported: 0, skipped: 0 },
+      routines: { imported: 0, skipped: 0 },
       skillModules: { imported: 0, skipped: 0 },
       errors: []
     };
@@ -280,20 +280,20 @@ export async function importUserData(jsonData) {
       }
     }
 
-    // Import programs (custom routines)
-    if (importData.programs && Array.isArray(importData.programs)) {
-      const existingPrograms = await programsLoad();
-      const existingProgramIds = new Set(existingPrograms.map(p => String(p.id)));
+    // Import routines
+    if (importData.routines && Array.isArray(importData.routines)) {
+      const existingRoutines = await routinesLoad();
+      const existingRoutinesIds = new Set(existingRoutines.map(p => String(p.id)));
 
-      for (const program of importData.programs) {
-        if (existingProgramIds.has(String(program.id))) {
-          stats.programs.skipped++;
+      for (const routine of importData.routines) {
+        if (existingRoutinesIds.has(String(routine.id))) {
+          stats.routines.skipped++;
         } else {
           try {
-            await storePrograms([...existingPrograms, program]);
-            stats.programs.imported++;
+            await storeRoutines([...existingRoutines, routine]);
+            stats.routines.imported++;
           } catch (error) {
-            const errorMsg = `Failed to import program ${program.id}: ${error.message}`;
+            const errorMsg = `Failed to import routine ${routine.id}: ${error.message}`;
             stats.errors.push(errorMsg);
             console.error(errorMsg, error);
           }
@@ -428,7 +428,7 @@ export async function getExportMetadata() {
       version: data.version,
       exportedAt: data.exportedAt,
       workoutCount: data.workouts.length,
-      programCount: data.programs.length,
+      programCount: data.routines.length,
       moduleCount: data.skillModules.length,
       fileSize: new Blob([jsonData]).size
     };
@@ -439,13 +439,13 @@ export async function getExportMetadata() {
 }
 
 /**
- * Delete all user data (workouts, custom programs, modules)
+ * Delete all user data (workouts, custom routines, modules)
  * Keeps app settings and reference data intact
  */
 export async function clearUserData() {
   try {
     const workouts = await loadWorkouts();
-    const programs = await programsLoad();
+    const routines = await routinesLoad();
     const modules = await modulesLoad();
 
     // Delete all workouts
@@ -453,15 +453,15 @@ export async function clearUserData() {
       await deleteWorkout(workout.id);
     }
 
-    // Clear programs and modules (keep reference data in database.js)
-    await storePrograms([]);
+    // Clear routines and modules (keep reference data in database.js)
+    await storeRoutines([]);
     await storeModules([]);
 
     return {
       success: true,
       deleted: {
         workouts: workouts.length,
-        programs: programs.length,
+        routines: routines.length,
         modules: modules.length
       }
     };

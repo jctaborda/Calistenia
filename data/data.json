@@ -1,5 +1,5 @@
 {
-  "dataVersion": "2026-05-26T21:13:16Z",
+  "dataVersion": "2026-06-03T22:50:33Z",
   "categories": [
     {
       "id": 8,
@@ -36,6 +36,21 @@
     {
       "id": 16,
       "name": "Undefined"
+    },
+    {
+      "id": 17,
+      "name": "Push",
+      "color": "#e74c3c"
+    },
+    {
+      "id": 18,
+      "name": "Pull",
+      "color": "#3498db"
+    },
+    {
+      "id": 19,
+      "name": "Full Body",
+      "color": "#2ecc71"
     }
   ],
   "equipment": [
@@ -5199,7 +5214,7 @@
       "label": "Advanced"
     }
   ],
-  "programs": [
+  "routines": [
     {
       "id": 1,
       "name": "Push Training",
@@ -5292,7 +5307,11 @@
           "reps": 8,
           "restTime": 45
         }
-      ]
+      ],
+      "description": "Entrenamiento enfocado en músculos de empuje: pecho, hombros y tríceps",
+      "difficulty": "beginner",
+      "category": 17,
+      "duration": 45
     },
     {
       "id": 2,
@@ -5392,7 +5411,11 @@
           "reps": 6,
           "restTime": 45
         }
-      ]
+      ],
+      "description": "Entrenamiento enfocado en músculos de jalón: espalda, bíceps y antebrazos",
+      "difficulty": "beginner",
+      "category": 18,
+      "duration": 45
     },
     {
       "id": 3,
@@ -5486,7 +5509,11 @@
           "reps": 6,
           "restTime": 45
         }
-      ]
+      ],
+      "description": "Entrenamiento específico para fortalecer el core: abdominales, lumbares y estabilidad",
+      "difficulty": "intermediate",
+      "category": 19,
+      "duration": 50
     }
   ]
 }
