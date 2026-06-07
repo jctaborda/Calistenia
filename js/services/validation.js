@@ -333,6 +333,5 @@ function showMessage(text, type) {
     }, 5000);
   } else {
     // Fallback: alert (shouldn't happen in normal usage)
-    console.log(`[${type.toUpperCase()}] ${text}`);
   }
 }

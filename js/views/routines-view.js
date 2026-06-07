@@ -70,14 +70,6 @@ export async function renderRoutinesView() {
         return;
       }
       
-      // Debug log
-      console.log('[RoutinesView] Editing routine:', {
-        id,
-        name: routine.name,
-        category: routine.category,
-        difficulty: routine.difficulty,
-        duration: routine.duration
-      });
     
       updateState({
         editingRoutine: {

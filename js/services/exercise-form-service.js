@@ -20,7 +20,6 @@ export async function initExerciseForm(editId, setStateFn) {
   let formCueItems = 0;
   let mistakeItems = 0;
   
-  console.log('[initExerciseForm] Called with editId:', editId);
   
   // Setup event listeners
   setupTabs();
@@ -31,12 +30,10 @@ export async function initExerciseForm(editId, setStateFn) {
   
   // If editing, load the exercise
   if (editId) {
-    console.log('[initExerciseForm] Found editId:', editId);
     sessionStorage.removeItem('editingExerciseId');
     document.querySelector('[data-tab="edit"]').click();
     await loadExerciseForEditById(editId);
   } else {
-    console.log('[initExerciseForm] No editId - showing add form');
   }
 
   // ==================== HELPER FUNCTIONS ====================
@@ -473,7 +470,6 @@ export async function initExerciseForm(editId, setStateFn) {
   }
 
    async function handleEditExercise(setStateFn, e) {
-    console.log('handleEditExercise called with editingExerciseId:', editingExerciseId);
     e.preventDefault();
     e.stopPropagation();
     
@@ -501,11 +497,9 @@ export async function initExerciseForm(editId, setStateFn) {
         }
       }
     } catch (err) {
-      console.log('Validation service not available, skipping validation:', err.message);
     }
     
     if (!validationPassed) {
-      console.log('Validation failed, aborting update');
       return;
     }
     
@@ -530,7 +524,6 @@ export async function initExerciseForm(editId, setStateFn) {
     const difficultyValue = formData.get('difficulty');
     data.difficulty = difficultyValue ? [parseInt(difficultyValue)] : [];
     
-    console.log('Preparing to save exercise:', data);
     
     try {
       const index = references.exercises.findIndex(ex => ex.id === editingExerciseId);
@@ -538,12 +531,9 @@ export async function initExerciseForm(editId, setStateFn) {
         throw new Error('Exercise not found with ID: ' + editingExerciseId);
       }
       
-      console.log('Found exercise at index:', index, 'Updating...');
       references.exercises[index] = data;
       
-      console.log('Saving exercises...');
       await saveAllExercises(references.exercises);
-      console.log('Exercises saved successfully');
       
       setStateFn({ exercises: references.exercises });
       

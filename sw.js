@@ -72,13 +72,11 @@ const APP_SHELL = [
 
 // Install event: cache app shell resources
 self.addEventListener('install', event => {
-  console.log(`[Service Worker] Install - Version: ${VERSION}`);
   
   event.waitUntil(
     (async () => {
       try {
         const cache = await caches.open(CACHE_NAME);
-        console.log(`[Service Worker] Caching app shell (${APP_SHELL.length} resources)`);
         
         // Cache all app shell resources with error handling for each
         const cachedResponses = await Promise.allSettled(
@@ -101,7 +99,6 @@ self.addEventListener('install', event => {
         const successCount = cachedResponses.filter(r => r.status === 'fulfilled').length;
         const failCount = cachedResponses.filter(r => r.status === 'rejected').length;
         
-        console.log(`[Service Worker] App shell cached: ${successCount} success, ${failCount} warnings`);
         
         // Skip waiting to activate immediately
         self.skipWaiting();
@@ -146,7 +143,6 @@ self.addEventListener('fetch', event => {
         const cachedResponse = await caches.match(request);
         
         if (cachedResponse) {
-          console.log(`[Service Worker] Serving from cache: ${url.pathname}`);
           return cachedResponse;
         }
         
@@ -173,7 +169,6 @@ self.addEventListener('fetch', event => {
 
 // Activate event: cleanup old caches and take control
 self.addEventListener('activate', event => {
-  console.log(`[Service Worker] Activate - Version: ${VERSION}`);
   
   event.waitUntil(
     (async () => {
@@ -210,24 +205,19 @@ self.addEventListener('activate', event => {
         
         // Delete old caches
         if (cachesToDelete.length > 0) {
-          console.log(`[Service Worker] Cleaning up ${cachesToDelete.length} old cache(s)`);
           
           const deletionResults = await Promise.allSettled(
             cachesToDelete.map(cacheName => {
-              console.log(`[Service Worker] Deleting old cache: ${cacheName}`);
               return caches.delete(cacheName);
             })
           );
           
           const deletedCount = deletionResults.filter(r => r.status === 'fulfilled').length;
-          console.log(`[Service Worker] Successfully deleted ${deletedCount} old cache(s)`);
         } else {
-          console.log('[Service Worker] No old caches to clean up');
         }
         
         // Claim all clients immediately
         await self.clients.claim();
-        console.log('[Service Worker] Activated and controlling all clients');
       } catch (error) {
         console.error('[Service Worker] Activation failed:', error);
       }
@@ -239,7 +229,6 @@ self.addEventListener('activate', event => {
 self.addEventListener('message', event => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
-    console.log('[Service Worker] Skip waiting triggered');
   }
   
   if (event.data && event.data.type === 'GET_VERSION') {
@@ -288,7 +277,6 @@ self.addEventListener('sync', event => {
   if (event.tag === 'sync-workout') {
     event.waitUntil(
       (async () => {
-        console.log('[Service Worker] Sync event triggered: workout data ready to sync');
         
         // Get synced workout data from storage
         // Note: This requires additional state management in your app
@@ -338,4 +326,3 @@ self.addEventListener('notificationclick', event => {
   );
 });
 
-console.log('[Service Worker] Registered with version:', VERSION);

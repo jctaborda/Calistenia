@@ -28,7 +28,6 @@ export async function renderExerciseForm(editId) {
     }
   }
   
-  console.log('[ExerciseFormView] Render with editId:', actualEditId);
   
   app.innerHTML = renderHeader() + `
     <link href="./css/style.css" rel="stylesheet">

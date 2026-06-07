@@ -53,7 +53,6 @@ export async function saveModules(modules) {
   try {
     await storeModules(modules);
     modulesCache = modules;
-    console.log('Skill modules saved to IndexedDB');
     return { success: true, message: 'Saved to IndexedDB' };
   } catch (error) {
     console.error('Error saving skill modules:', error);

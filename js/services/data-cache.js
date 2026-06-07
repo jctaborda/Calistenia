@@ -73,7 +73,6 @@ async function initializeDataCacheInternal() {
     }
     
     cacheInitialized = true;
-    console.log('✅ Data cache initialized');
     return true;
   } catch (error) {
     console.error('Error initializing data cache:', error);
@@ -110,7 +109,6 @@ export async function isCacheStale() {
     // Compare versions
     const stale = cachedVersion !== serverVersion;
     if (stale) {
-      console.log(`🔄 Cache stale: ${cachedVersion} → ${serverVersion}`);
     }
     return stale;
   } catch (error) {
@@ -122,7 +120,6 @@ export async function isCacheStale() {
 // Force re-sync cache from data.json (clears and reloads all data)
 export async function syncDataCache() {
   try {
-    console.log('🔄 Syncing data cache from server...');
     
     // Clear all cached data
     await Promise.all([
@@ -140,7 +137,6 @@ export async function syncDataCache() {
     // Re-initialize with fresh data
     await initializeDataCacheInternal();
     
-    console.log('✅ Data cache synced');
     return true;
   } catch (error) {
     console.error('Error syncing data cache:', error);
@@ -150,34 +146,25 @@ export async function syncDataCache() {
 
 // Load exercises from cache or file
 export async function loadAllExercises() {
-  console.log('DEBUG loadAllExercises: Starting...');
   try {
     const cached = await exercisesLoad();
-    console.log(`DEBUG: exercisesLoad returned ${cached?.length || 0} items, type: ${typeof cached}, isArray: ${Array.isArray(cached)}`);
     if (cached && Array.isArray(cached) && cached.length > 0) {
-      console.log('📦 Loaded exercises from IndexedDB');
       return cached;
     }
-    console.log('DEBUG: No exercises in IndexedDB (cached.length=' + (cached?.length || 0) + '), will load from file');
   } catch (error) {
     console.warn('No cached exercises, loading from file:', error);
   }
   
   // Load from data.json as fallback
-  console.log('DEBUG: Fetching data.json...');
   const response = await fetch('./data/data.json');
   if (!response.ok) {
     throw new Error(`Failed to fetch data.json: ${response.status} ${response.statusText}`);
   }
   const data = await response.json();
-  console.log(`DEBUG: data.json has ${data.exercises?.length || 0} exercises`);
   // Save to IndexedDB for future loads
   if (data.exercises && Array.isArray(data.exercises) && data.exercises.length > 0) {
-    console.log('DEBUG: Saving to IndexedDB...');
     await storeExercises(data.exercises);
-    console.log('DEBUG: Save complete');
   }
-  console.log('DEBUG loadAllExercises: Returning ' + (data.exercises?.length || 0) + ' exercises');
   return data.exercises || [];
 }
 
@@ -186,7 +173,6 @@ export async function loadAllCategories() {
   try {
     const cached = await categoriesLoad();
     if (cached && cached.length > 0) {
-      console.log('📦 Loaded categories from IndexedDB');
       return cached;
     }
   } catch (error) {
@@ -207,7 +193,6 @@ export async function loadAllEquipment() {
   try {
     const cached = await equipmentLoad();
     if (cached && cached.length > 0) {
-      console.log('📦 Loaded equipment from IndexedDB');
       return cached;
     }
   } catch (error) {
@@ -228,7 +213,6 @@ export async function loadAllMuscles() {
   try {
     const cached = await musclesLoad();
     if (cached && cached.length > 0) {
-      console.log('📦 Loaded muscles from IndexedDB');
       return cached;
     }
   } catch (error) {
@@ -249,7 +233,6 @@ export async function loadAllDifficulties() {
   try {
     const cached = await difficultiesLoad();
     if (cached && cached.length > 0) {
-      console.log('📦 Loaded difficulties from IndexedDB');
       return cached;
     }
   } catch (error) {
@@ -270,7 +253,6 @@ export async function loadAllRoutines() {
   try {
     const cached = await routinesLoad();
     if (cached && cached.length > 0) {
-      console.log('📦 Loaded routines from IndexedDB');
       return cached;
     }
   } catch (error) {
@@ -298,7 +280,6 @@ export async function clearDataCache() {
       storeRoutines([])
     ]);
     cacheInitialized = false;
-    console.log('🗑️ Data cache cleared');
   } catch (error) {
     console.error('Error clearing data cache:', error);
   }

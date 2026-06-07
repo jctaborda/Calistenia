@@ -59,7 +59,6 @@ export async function saveExercises(exercises) {
     // Update cache
     exercisesCache = sanitizedExercises;
     
-    console.log('Exercises saved to IndexedDB');
     return { success: true, message: 'Saved to IndexedDB' };
   } catch (error) {
     console.error('Error saving exercises:', error);
@@ -180,7 +179,6 @@ export async function clearExerciseData() {
   try {
     await clearDatabase();
     exercisesCache = null;
-    console.log('IndexedDB cleared');
     return { success: true };
   } catch (error) {
     console.error('Error clearing database:', error);

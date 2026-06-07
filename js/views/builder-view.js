@@ -37,15 +37,6 @@ export async function renderBuilderView() {
     editingType = editingRoutine.type || 'routine';
     editingId = editingRoutine.id;
     
-    // Debug log
-    console.log('[BuilderView] Editing routine:', {
-      id: editingId,
-      name: editingRoutine.routine?.name,
-      category: editingRoutine.routine?.category,
-      categoryType: typeof editingRoutine.routine?.category,
-      difficulties: editingRoutine.routine?.difficulty,
-      duration: editingRoutine.routine?.duration
-    });
     
     let loadedExercises = editingRoutine.routine.exercises || [];
     
@@ -374,10 +365,6 @@ export async function renderBuilderView() {
 
   const form = main.querySelector('#builder-form');
   if (form) {
-    console.log('✅ Form found, adding submit listener');
-    console.log('  createNewRoutine:', createNewRoutine);
-    console.log('  isEditingRoutine:', isEditingRoutine);
-    console.log('  selectedExercises count:', selectedExercises.length);
     form.addEventListener('submit', async e => {
       e.preventDefault();
 

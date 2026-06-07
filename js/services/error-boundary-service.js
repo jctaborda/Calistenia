@@ -33,7 +33,6 @@ export class ErrorBoundaryService {
         
         if (attempts < this.maxRetries) {
           this.retryAttempts.set(context, attempts + 1);
-          console.log(`Retry attempt ${attempts + 1}/${this.maxRetries} for ${context}`);
           
           // Show partial error recovery
           this.renderErrorView(error, context, () => {

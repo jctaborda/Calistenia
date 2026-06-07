@@ -32,16 +32,12 @@ initializeState();
 // Wait for complete cache initialization AND sync before starting router
 async function initializeApp() {
   try {
-    console.log('🔄 Initializing data cache...');
     await initializeDataCache();
-    console.log('✅ Data cache ready');
     
     // Check if server data has changed since last sync
     try {
       if (await isCacheStale()) {
-        console.log('🔄 Server data changed — syncing cache...');
         await syncDataCache();
-        console.log('✅ Cache synced — re-rendering with fresh data');
       }
     } catch (err) {
       console.warn('⚠️ Cache sync check failed:', err);
@@ -59,7 +55,6 @@ async function initializeApp() {
     if (main) {
       initializeEventDelegation(main);
       exposeToggleFavorite();
-      console.log('✅ Event delegation initialized');
     }
   }, 100);
   
@@ -115,12 +110,10 @@ async function ensureCategoriesLoaded(){
     try {
       const categories = await fetchCategories();
       updateState({ categories });
-      console.log(`[Main] Loaded ${categories.length} categories into state`);
     } catch (error) {
       console.error('Failed to load categories:', error);
     }
   } else {
-    console.log(`[Main] Categories already in state: ${getState().categories.length} items`);
   }
 }
 
@@ -129,12 +122,10 @@ async function ensureEquipmentLoaded(){
     try {
       const equipment = await fetchEquipment();
       updateState({ equipment });
-      console.log(`[Main] Loaded ${equipment.length} equipment into state`);
     } catch (error) {
       console.error('Failed to load equipment:', error);
     }
   } else {
-    console.log(`[Main] Equipment already in state: ${getState().equipment.length} items`);
   }
 }
 
@@ -143,12 +134,10 @@ async function ensureMusclesLoaded(){
     try {
       const muscles = await fetchMuscles();
       updateState({ muscles });
-      console.log(`[Main] Loaded ${muscles.length} muscles into state`);
     } catch (error) {
       console.error('Failed to load muscles:', error);
     }
   } else {
-    console.log(`[Main] Muscles already in state: ${getState().muscles.length} items`);
   }
 }
 
@@ -157,17 +146,14 @@ async function ensureDifficultiesLoaded(){
     try {
       const difficulties = await fetchDifficulties();
       updateState({ difficulties });
-      console.log(`[Main] Loaded ${difficulties.length} difficulties into state`);
     } catch (error) {
       console.error('Failed to load difficulties:', error);
     }
   } else {
-    console.log(`[Main] Difficulties already in state: ${getState().difficulties.length} items`);
   }
 }
 
 async function router() {
-  console.log('[Router] Checking if data is loaded...');
   
   const state = getState();
   const needsInitialLoad = !state.exercises || state.exercises.length === 0 || 
@@ -175,7 +161,6 @@ async function router() {
   
   // If data is not loaded, show spinner and load it
   if (needsInitialLoad) {
-    console.log('[Router#initial] Loading initial data...');
     document.getElementById('app').innerHTML = renderSpinner();
     
     await Promise.all([
@@ -188,18 +173,9 @@ async function router() {
       ensureDifficultiesLoaded()
     ]);
     
-    console.log('[Router#initial] Data loaded:', {
-      exercises: state.exercises?.length || 0,
-      routines: state.routines?.length || 0,
-      categories: state.categories?.length || 0,
-      equipment: state.equipment?.length || 0,
-      muscles: state.muscles?.length || 0,
-      difficulties: state.difficulties?.length || 0
-    });
     
     hideSpinner();
   } else {
-    console.log('[Router#skip] Data already loaded, skipping initial load');
   }
 
   const hash = window.location.hash;
@@ -296,7 +272,6 @@ async function router() {
       await exportImportView.render();
     } else if (hash === '#builder') {
       // Ensure all data is loaded before rendering builder
-      console.log('[Router#builder] Ensuring data is loaded...');
       await Promise.all([
         ensureExercisesLoaded(),
         ensureModulesLoaded(),
@@ -318,14 +293,11 @@ async function router() {
       await skillModulesView.render();
     } else if (hash.startsWith('#skill-module/')) {
       const moduleId = hash.split('/')[1];
-      console.log('Router: Navigating to skill module detail, moduleId:', moduleId);
       const skillModuleView = ErrorBoundaryService.wrapView(
         await import('./views/skill-module-detail-view.js'), 
         'Skill Module Detail'
       );
-      console.log('Router: About to call render for skill module detail');
       await skillModuleView.render(moduleId);
-      console.log('Router: Skill module detail render completed');
     } else if (hash === '#skills-tree') {
       const skillsTreeView = ErrorBoundaryService.wrapView(
         await import('./views/skills-tree-view.js'), 
@@ -399,7 +371,6 @@ window.updateState = updateState;
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js').then((registration) => {
-      console.log("[Main] SW Registered");
       
       // Handle service worker updates
       registration.addEventListener('updatefound', () => {

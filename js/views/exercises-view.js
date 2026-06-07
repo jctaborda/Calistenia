@@ -19,14 +19,6 @@ export async function renderExercisesView() {
   const equipment = state.equipment || [];
   const itemsPerPage = 10; // Number of exercises to display per page
   
-  // Log data status for debugging
-  console.log('[ExercisesView] Rendering with data:', {
-    exercises: exercises.length,
-    categories: categories.length,
-    equipment: equipment.length,
-    muscles: muscles.length,
-    difficulties: difficulties.length
-  });
   
   // Get user's favorite exercise IDs from state
   const user = getState().user || {};
@@ -586,7 +578,6 @@ export async function renderExercisesView() {
         const card = target.closest('.exercise-card');
         if (card) {
           const id = card.getAttribute('data-id');
-          console.log('[ExercisesView] Setting sessionStorage editingExerciseId:', id);
           sessionStorage.setItem('editingExerciseId', id);
           window.location.hash = '#exercise-form';
         }

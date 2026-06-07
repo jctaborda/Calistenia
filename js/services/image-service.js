@@ -37,7 +37,6 @@ export class ImageService {
     
     // Success handler (optional logging)
     img.onload = () => {
-      console.log(`Image loaded: ${src}`);
     };
     
     return img;

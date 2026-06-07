@@ -158,7 +158,6 @@ async function cleanupExpiredItems() {
 try {
 const result = await clearExpiredDeletedItems(UNDO_RETENTION_MS);
 if (result.deletedCount > 0) {
-console.log(`Cleaned up ${result.deletedCount} expired deleted items`);
 }
     // Schedule next cleanup in 1 hour
 setTimeout(cleanupExpiredItems, 60 * 60 * 1000);
@@ -174,6 +173,5 @@ export function initUndoService() {
 setTimeout(cleanupExpiredItems, 5000); // First cleanup after 5 seconds
   // Log current count
 getDeletedItemsByType('exercise').then(items => {
-console.log(`Active undo items: ${items.length}`);
 });
 }
