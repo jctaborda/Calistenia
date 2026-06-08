@@ -7,6 +7,7 @@ import { ModuleStore } from '../services/modules-service.js';
 import { saveForUndo } from '../services/undo-service.js';
 import { fetchSkillModules } from '../services/api.js';
 import { show } from '../services/toast-service.js';
+import { escapeHtml } from '../utils/html.js';
 
 export async function renderModuleAdminView(editId = null) {
   const main = document.getElementById('app');
@@ -428,13 +429,6 @@ export async function renderModuleAdminView(editId = null) {
 export default { render: renderModuleAdminView };
 
 // ==================== UTILITY FUNCTIONS ====================
-
-function escapeHtml(text) {
-  if (!text) return '';
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
-}
 
 function getDifficultyLabel(difficulty) {
   if (!difficulty) return 'Unknown';

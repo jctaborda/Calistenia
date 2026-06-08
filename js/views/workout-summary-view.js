@@ -1,6 +1,7 @@
 import { getState, updateState } from '../services/state.js';
 import { renderHeader } from '../components/header.js';
 import { getUnlockedAchievements } from '../services/achievements.js';
+import { formatWorkoutSummary } from '../utils/workout-summary.js';
 
 export function renderWorkoutSummaryView() {
   const main = document.getElementById('app');
@@ -83,29 +84,6 @@ export function renderWorkoutSummaryView() {
 
   // Export for router usage
   window.renderWorkoutSummaryView = renderWorkoutSummaryView;
-}
-
-// Format workout summary for social media/WhatsApp - now in event delegation service
-function formatWorkoutSummary(workout) {
-  const routine = workout.routine;
-  const date = new Date(workout.date).toLocaleDateString();
-  
-  let summary = `💪 *Workout Summary*\n`;
-  summary += `━━━━━━━━━━━━━━━━━━━━\n\n`;
-  summary += `📅 *Date:* ${date}\n`;
-  summary += `🏋️ *Routine:* ${routine.name}\n\n`;
-  summary += `🔥 *Exercises Completed:*\n`;
-  
-  workout.exercises.forEach((exercise, index) => {
-    summary += `\n${index + 1}. *${exercise.exerciseName}*\n`;
-    summary += `   Target: ${exercise.targetSets} sets × ${exercise.targetReps} reps\n`;
-    summary += `   Actual: ${exercise.actualReps.join(' × ')} reps`;
-  });
-  
-  summary += `\n\n━━━━━━━━━━━━━━━━━━━━\n`;
-  summary += `Great job! Keep pushing your limits! 💯\n`;
-  
-  return summary;
 }
 
 function showAdaptiveSuggestion(rating) {

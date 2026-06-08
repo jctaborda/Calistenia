@@ -1,5 +1,8 @@
 // Exercise Form Service - Handles all exercise form operations including prerequisites, progressions, formCues, and commonMistakes
 
+import { normalizeArray } from '../utils/array.js';
+import { show } from './toast-service.js';
+
 // Make available globally for backward compatibility
 window.initExerciseService = async (editId, setStateFn) => {
   return await initExerciseForm(editId, setStateFn);
@@ -42,19 +45,6 @@ export async function initExerciseForm(editId, setStateFn) {
 
   // ==================== HELPER FUNCTIONS ====================
 
-  function showMessage(text, type) {
-    const messageEl = document.getElementById('message');
-    if (messageEl) {
-      messageEl.textContent = text;
-      messageEl.className = `message ${type}`;
-      messageEl.style.display = 'block';
-      
-      setTimeout(() => {
-        messageEl.style.display = 'none';
-      }, 5000);
-    }
-  }
-
   function setupFormListeners(setStateFn) {
     // Add exercise form
     document.getElementById('exerciseForm')?.addEventListener('submit', handleAddExercise.bind(null, setStateFn));
@@ -96,7 +86,7 @@ export async function initExerciseForm(editId, setStateFn) {
       populateExerciseSelects(references.exercises); // NEW: Populate prerequisites/progressions
       
     } catch (error) {
-      showMessage('Error loading reference data: ' + error.message, 'error');
+      show('Error loading reference data: ' + error.message, 'error');
     }
   }
 
@@ -288,7 +278,7 @@ export async function initExerciseForm(editId, setStateFn) {
       if (editContainer) editContainer.style.display = 'block';
       if (exerciseList) exerciseList.classList.remove('active');
     } catch (error) {
-      showMessage('Error loading exercise: ' + error.message, 'error');
+      show('Error loading exercise: ' + error.message, 'error');
     }
   }
 
@@ -327,12 +317,6 @@ export async function initExerciseForm(editId, setStateFn) {
       <button type="button" class="btn btn-danger btn-sm remove-item" title="Remove">✕</button>
     `;
     container.appendChild(itemDiv);
-  }
-
-  function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
   }
 
   function setupDynamicListEvents() {
@@ -395,13 +379,6 @@ export async function initExerciseForm(editId, setStateFn) {
       .filter(value => value.length > 0); // Filter out empty strings
   }
 
-   // Helper to normalize values to arrays - handles null, undefined, empty strings, and single values
-  const normalizeArray = (value) => {
-    if (Array.isArray(value)) return value;
-    if (value === null || value === undefined || value === '') return [];
-    return [value];
-  };
-
   async function handleAddExercise(setStateFn, e) {
     e.preventDefault();
     
@@ -449,10 +426,10 @@ export async function initExerciseForm(editId, setStateFn) {
       
       setStateFn({ exercises: references.exercises });
       
-      showMessage(`Exercise added successfully! (ID: ${data.id})`, 'success');
+      show(`Exercise added successfully! (ID: ${data.id})`, 'success');
       e.target.reset();
     } catch (error) {
-      showMessage('Error adding exercise: ' + error.message, 'error');
+      show('Error adding exercise: ' + error.message, 'error');
     }
   }
 
@@ -524,7 +501,7 @@ export async function initExerciseForm(editId, setStateFn) {
       
       setStateFn({ exercises: references.exercises });
       
-      showMessage(`Exercise updated successfully!`, 'success');
+      show(`Exercise updated successfully!`, 'success');
       
       // Reset form and return to list view
       editingExerciseId = null;
@@ -534,13 +511,13 @@ export async function initExerciseForm(editId, setStateFn) {
       document.getElementById('exerciseList').classList.add('active');
       
     } catch (error) {
-      showMessage('Error updating exercise: ' + error.message, 'error');
+      show('Error updating exercise: ' + error.message, 'error');
     }
   }
 
   async function handleDeleteExercise(setStateFn, e) {
     if (!editingExerciseId) {
-      showMessage('No exercise selected for deletion', 'error');
+      show('No exercise selected for deletion', 'error');
       return;
     }
     
@@ -556,11 +533,11 @@ export async function initExerciseForm(editId, setStateFn) {
       
       setStateFn({ exercises: references.exercises });
       
-      showMessage(`Exercise deleted successfully!`, 'success');
+      show(`Exercise deleted successfully!`, 'success');
       
       cancelEdit();
     } catch (error) {
-      showMessage('Error deleting exercise: ' + error.message, 'error');
+      show('Error deleting exercise: ' + error.message, 'error');
     }
   }
 
@@ -625,12 +602,10 @@ export async function initExerciseForm(editId, setStateFn) {
   }
 
   async function loadAllExercises() {
-    const storage = await import('./storage.js');
     return storage.loadExercises();
   }
 
   async function saveAllExercises(exercises) {
-    const storage = await import('./storage.js');
     return storage.saveExercises(exercises);
   }
 

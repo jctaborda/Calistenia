@@ -2,6 +2,7 @@ import { getState, updateState } from '../services/state.js';
 import { renderHeader } from '../components/header.js';
 import { checkAchievements } from '../services/achievements.js';
 import { show } from '../services/toast-service.js';
+import { formatDuration } from '../utils/formatters.js';
 
 export async function renderWorkoutCompletionView() {
   const main = document.getElementById('app');
@@ -177,15 +178,6 @@ function calculateWorkoutStats(activeWorkout) {
     totalWorkTime,
     totalRestTime
   };
-}
-
-/**
- * Format duration in seconds to human-readable format
- */
-function formatDuration(seconds) {
-  const mins = Math.floor(seconds / 60);
-  const secs = seconds % 60;
-  return `${mins}m ${secs}s`;
 }
 
 // Export for router usage

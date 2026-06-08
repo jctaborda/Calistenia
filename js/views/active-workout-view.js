@@ -286,8 +286,6 @@ function handleNextSetClick() {
       // Not the last set - show rest timer
       const restTime = currentExerciseData.restTime || 60;
       
-      const main = document.getElementById('app');
-      
       // Hide set duration display
       const setDurationDisplay = main.querySelector('#set-timer-display');
       if (setDurationDisplay) {
@@ -316,23 +314,6 @@ function handleNextSetClick() {
       updateState({ activeWorkout }, { silent: true });
     }
   }
-}
-
-/**
- * Check if this is the last set of the last exercise in the workout
- */
-function isLastSetOfLastExercise(currentExerciseIndex, currentSetIndex, currentExerciseData, routine) {
-  const totalExercises = (routine.warmup?.length || 0) + routine.exercises.length + (routine.cooldown?.length || 0);
-  
-  // Check if this is the last exercise
-  const isLastExercise = currentExerciseIndex >= totalExercises - 1;
-  
-  if (!isLastExercise) {
-    return false;
-  }
-  
-  // Check if this is the last set of this exercise
-  return currentSetIndex >= currentExerciseData.sets - 1;
 }
 
 /**

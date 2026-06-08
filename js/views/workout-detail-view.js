@@ -2,6 +2,7 @@ import { getState, updateState } from '../services/state.js';
 import { renderHeader } from '../components/header.js';
 import { formatDate, formatWorkoutDate } from '../utils/date-formatter.js';
 import { show } from '../services/toast-service.js';
+import { formatDuration } from '../utils/formatters.js';
 
 export function renderWorkoutDetailView(workoutIndex) {
   const main = document.getElementById('app');
@@ -187,19 +188,6 @@ function calculateWorkoutStatistics(workout) {
     avgSetTime,
     setDetails
   };
-}
-
-/**
- * Format duration in seconds to human-readable format
- */
-function formatDuration(seconds) {
-  if (!seconds || seconds === 0) return '0s';
-  const mins = Math.floor(seconds / 60);
-  const secs = seconds % 60;
-  if (mins > 0) {
-    return `${mins}m ${secs}s`;
-  }
-  return `${secs}s`;
 }
 
 /**

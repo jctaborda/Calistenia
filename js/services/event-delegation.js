@@ -8,6 +8,7 @@ import { updateState } from './state.js';
 import { saveForUndo } from './undo-service.js';
 import { ModuleStore } from './modules-service.js';
 import { show } from './toast-service.js';
+import { formatWorkoutSummary } from '../utils/workout-summary.js';
 
 /**
  * Initialize all event delegation listeners
@@ -517,27 +518,6 @@ function handleShareWorkout() {
     }
     document.body.removeChild(textArea);
   }
-}
-
-function formatWorkoutSummary(workout) {
-  const routine = workout.routine;
-  const date = new Date(workout.date).toLocaleDateString();
-  
-  let summary = `💪 *Workout Summary*\n━━━━━━━━━━━━━━━━━━━━\n\n`;
-  summary += `📅 *Date:* ${date}\n`;
-  summary += `🏋️ *Routine:* ${routine.name}\n\n`;
-  summary += `🔥 *Exercises Completed:*\n`;
-  
-  workout.exercises.forEach((exercise, index) => {
-    summary += `\n${index + 1}. *${exercise.exerciseName}*\n`;
-    summary += `   Target: ${exercise.targetSets} sets × ${exercise.targetReps} reps\n`;
-    summary += `   Actual: ${exercise.actualReps.join(' × ')} reps`;
-  });
-  
-  summary += `\n\n━━━━━━━━━━━━━━━━━━━━\n`;
-  summary += `Great job! Keep pushing your limits! 💯\n`;
-  
-  return summary;
 }
 
 function handleBodyMetricsSubmit(form) {

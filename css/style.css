@@ -345,10 +345,6 @@ li {
   transform: rotate(2deg);
 }
 
-.drag-handle {
-  user-select: none;
-}
-
 .drag-handle:hover {
   background: var(--tag-bg) !important;
 }
@@ -411,12 +407,6 @@ li {
     display: grid;
     gap: var(--spacing-lg);
     margin-bottom: var(--spacing-xl);
-}
-
-.exercise-item {
-    background-color: var(--gray-100);
-    border-radius: var(--radius-md);
-    padding: var(--spacing-lg);
 }
 
 .difficulty-beginner {  border-left: 4px solid var(--btn-start);}
@@ -1528,6 +1518,7 @@ html.dark .loading {
 
 .drag-handle {
   cursor: move;
+  user-select: none;
   padding: 0.5rem;
   background: var(--drag-bg);
   border-radius: 4px;
@@ -1815,12 +1806,6 @@ html.dark .loading {
   border-radius: 50%;
   border-top-color: var(--white);
   animation: spin 0.8s linear infinite;
-}
-
-.empty-state {
-  text-align: center;
-  padding: 2rem;
-  color: var(--gray-500);
 }
 
 .empty-icon {
@@ -2362,14 +2347,6 @@ html.dark .routine-meta-item {
   gap: 1rem;
 }
 
-.workout-item {
-  background: white;
-  color: var(--gray-800);
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-}
-
 .workout-header {
   display: flex;
   justify-content: space-between;
@@ -2891,5 +2868,349 @@ html.dark .content-value {
   .bottom-sheet-footer {
     flex-direction: column;
   }
+}
+
+/* ==========================================================================
+   MISSING CLASSES (B-005) — Added for JS-rendered templates
+   ========================================================================== */
+
+/* Toast / Notification System */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 24px;
+  border-radius: 8px;
+  color: var(--white);
+  font-weight: 600;
+  font-size: 0.95rem;
+  z-index: 10000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  animation: toast-in 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.toast.success { background: var(--success); }
+.toast.error { background: var(--error); }
+.toast.warning { background: var(--warning-dark); color: var(--gray-900); }
+.toast.info { background: var(--btn-primary); }
+
+.app-toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 24px;
+  border-radius: 8px;
+  color: var(--white);
+  font-weight: 600;
+  font-size: 0.95rem;
+  z-index: 10000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  animation: toast-in 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* Error Boundary View */
+.error-container {
+  text-align: center;
+  padding: 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.error-content {
+  margin: 1rem 0;
+}
+.error-context {
+  color: var(--gray-600);
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
+}
+.error-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+.error-details {
+  text-align: left;
+  background: var(--gray-100);
+  padding: 1rem;
+  border-radius: 6px;
+  font-family: monospace;
+  font-size: 0.85rem;
+  max-height: 200px;
+  overflow: auto;
+  margin-top: 1rem;
+}
+
+/* Navbar (error boundary minimal) */
+.navbar {
+  background: var(--btn-primary);
+  color: var(--white);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+}
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--white);
+}
+
+/* Small text utility */
+.small-text {
+  font-size: 0.85rem;
+  color: var(--gray-600);
+}
+
+/* Content Layout Blocks */
+.content-block {
+  padding: 0.75rem;
+  background: var(--gray-100);
+  border-radius: var(--radius-sm);
+  margin: 0.5rem 0;
+}
+.content-section {
+  margin-bottom: 2rem;
+}
+.filter-section {
+  margin-bottom: 1.5rem;
+}
+
+/* Form Elements */
+.dynamic-list-input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid var(--gray-300);
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+.dynamic-list-item {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+.form-hint {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--gray-600);
+  margin-top: 0.25rem;
+}
+
+/* HIIT Timer */
+.hiit-timer-active {
+  background: var(--hiit-bg);
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  margin: 1rem 0;
+}
+.hiit-phase {
+  font-weight: 700;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+.hiit-phase.work {
+  background: var(--success);
+  color: var(--white);
+}
+.hiit-phase.rest {
+  background: var(--warning);
+  color: var(--gray-900);
+}
+.hiit-time {
+  font-size: 2rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  display: block;
+}
+
+/* Rest Timer */
+.rest-timer-container {
+  text-align: center;
+  padding: 1rem;
+  background: var(--gray-100);
+  border-radius: var(--radius-md);
+  margin: 1rem 0;
+}
+.timer-display {
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.timer-progress-bar {
+  height: 6px;
+  background: var(--gray-300);
+  border-radius: 3px;
+  margin-top: 0.5rem;
+  overflow: hidden;
+}
+
+/* Icon utility */
+.icon {
+  font-size: 1.2rem;
+  margin-right: 0.5rem;
+}
+
+/* Image Container */
+.image-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+}
+
+/* Warning */
+.warning {
+  color: var(--warning-dark);
+  font-style: italic;
+}
+
+/* Onboarding Form */
+.onboarding-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Progress Circle (SVG) */
+.progress-circle {
+  transition: stroke-dashoffset 0.3s ease;
+}
+
+/* Set Duration Value */
+.set-duration-value {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Sets Table */
+.sets-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.5rem 0;
+}
+.sets-table th,
+.sets-table td {
+  padding: 0.5rem;
+  text-align: center;
+  border-bottom: 1px solid var(--gray-200);
+}
+.sets-table th {
+  font-weight: 600;
+  color: var(--gray-700);
+}
+
+/* Small utility */
+.small {
+  font-size: 0.85rem;
+  color: var(--gray-600);
+}
+
+/* Stat Info (home view) */
+.stat-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+}
+
+/* Stat Value (workout detail) */
+.stat-value {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* Stats Overview */
+.stats-overview {
+  margin: 1.5rem 0;
+}
+
+/* View Container */
+.view-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Module Title */
+.module-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin: 0;
+}
+
+/* Achievement System */
+.achievements-section {
+  margin: 1rem 0;
+}
+.achievements-unlocked {
+  margin: 1rem 0;
+}
+.achievement-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: var(--gray-100);
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.5rem;
+}
+.achievement-emoji {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+.achievement-details {
+  flex: 1;
+}
+
+/* Exercise Detail Cards */
+.exercise-details {
+  font-size: 0.9rem;
+  color: var(--gray-700);
+}
+.exercise-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.exercise-target {
+  color: var(--gray-600);
+  font-size: 0.85rem;
+}
+
+/* Card Title */
+.card-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--btn-primary);
+  margin: 0 0 0.75rem 0;
+}
+
+/* Workout Detail Header */
+.workout-detail-header {
+  margin-bottom: 1.5rem;
+}
+
+/* Workout Stats */
+.workout-stats {
+  margin: 1rem 0;
 }
 

@@ -5,6 +5,13 @@
 
 export class WorkoutWorkflowService {
   /**
+   * Get warmup length from routine (cached per call)
+   */
+  _getWarmupLength(routine) {
+    return (routine.warmup && routine.warmup.length) ? routine.warmup.length : 0;
+  }
+
+  /**
    * Handle completing a set of current exercise
    * @param {object} activeWorkout - Current workout state
    * @param {number} currentExerciseIndex - Index of current exercise
@@ -17,7 +24,7 @@ export class WorkoutWorkflowService {
     const newSetIndex = currentSetIndex + 1;
 
     // Determine workout phases
-    const warmupLength = (routine.warmup && routine.warmup.length) ? routine.warmup.length : 0;
+    const warmupLength = this._getWarmupLength(routine);
     const mainExercisesLength = routine.exercises.length;
     const cooldownLength = (routine.cooldown && routine.cooldown.length) ? routine.cooldown.length : 0;
     const totalExercises = warmupLength + mainExercisesLength + cooldownLength;
@@ -63,7 +70,7 @@ export class WorkoutWorkflowService {
    * @returns {string} Phase name: 'warmup', 'main', or 'cooldown'
    */
   getCurrentPhase(exerciseIndex, routine) {
-    const warmupLength = (routine.warmup && routine.warmup.length) ? routine.warmup.length : 0;
+    const warmupLength = this._getWarmupLength(routine);
     const mainExercisesLength = routine.exercises.length;
 
     if (exerciseIndex < warmupLength) {
@@ -82,7 +89,7 @@ export class WorkoutWorkflowService {
    * @returns {object} Object with phase and local index
    */
   getPhaseInfo(globalExerciseIndex, routine) {
-    const warmupLength = (routine.warmup && routine.warmup.length) ? routine.warmup.length : 0;
+    const warmupLength = this._getWarmupLength(routine);
     const mainExercisesLength = routine.exercises.length;
 
     if (globalExerciseIndex < warmupLength) {

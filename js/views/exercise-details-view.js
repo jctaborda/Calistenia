@@ -5,6 +5,7 @@ import { ImageService } from '../services/image-service.js';
 import { formatDate } from '../utils/date-formatter.js';
 import { updateState } from '../services/state.js';
 import { ValidationService } from '../services/validation.js';
+import { normalizeArray } from '../utils/array.js';
 
 export async function renderExerciseDetailsView(exerciseId) {
   const main = document.getElementById('app');
@@ -43,13 +44,6 @@ export async function renderExerciseDetailsView(exerciseId) {
     return ex ? ValidationService.sanitizeText(ex.name) : 'Unknown';
   }
 
-  // Normalize values to arrays - handles null, undefined, empty strings, and single values
-  const normalizeArray = (value) => {
-    if (Array.isArray(value)) return value;
-    if (value === null || value === undefined || value === '') return [];
-    return [value];
-  };
-  
   // Fetch prerequisites and progressions - handle both array and single value
   const prerequisiteIds = normalizeArray(exercise.prerequisites);
   const prerequisitesLinks = prerequisiteIds.map(id => {

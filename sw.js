@@ -27,6 +27,9 @@ const APP_SHELL = [
   './manifest.json',
   './assets/icons/favicon-32x32.png',
   './assets/icons/favicon-192x192.png',
+  // Runtime data — needed for offline-first to work on first visit
+  './data/data.json',
+  './data/skill-modules.json',
   // Muscle images - Front view
   './assets/images/muscles/main/muscle-1.svg',
   './assets/images/muscles/main/muscle-2.svg',
