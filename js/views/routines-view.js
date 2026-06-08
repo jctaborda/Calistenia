@@ -1,6 +1,7 @@
 import { fetchRoutines, deleteRoutineFromDatabase } from '../services/api.js';
 import { renderHeader } from '../components/header.js';
 import { getState, updateState } from '../services/state.js';
+import { show } from '../services/toast-service.js';
 
 
 export async function renderRoutinesView() {
@@ -66,7 +67,7 @@ export async function renderRoutinesView() {
       // Guard: only proceed if routine was found
       if (!routine) {
         console.error(`Routine not found: type=${type}, id=${id}`);
-        alert('Routine not found. Please refresh the page.');
+        show('Routine not found. Please refresh the page.', 'error');
         return;
       }
       
@@ -118,7 +119,7 @@ export async function renderRoutinesView() {
               await renderRoutinesView();
             } catch (error) {
               console.error('Failed to delete routine:', error);
-              alert('Failed to delete routine. Please try again.');
+              show('Failed to delete routine. Please try again.', 'error');
             }
           }
         }

@@ -5,6 +5,7 @@ import { fetchSkillModules } from '../services/api.js';
 import { ModuleStore } from '../services/modules-service.js';
 import { saveForUndo } from '../services/undo-service.js';
 import { storeRoutines, routinesLoad } from '../services/database.js';
+import { show } from '../services/toast-service.js';
 
 export async function renderBuilderView() {
   const main = document.getElementById('app');
@@ -372,13 +373,13 @@ export async function renderBuilderView() {
       const name = nameInput.value.trim();
 
       if (!name) {
-        alert('Please enter a name.');
+        show('Please enter a name.', 'error');
         nameInput.focus();
         return;
       }
 
       if (selectedExercises.length === 0) {
-        alert('Please select at least one exercise.');
+        show('Please select at least one exercise.', 'error');
         return;
       }
       
@@ -391,7 +392,7 @@ export async function renderBuilderView() {
         const duration = main.querySelector('#routine-duration')?.value || '30';
         
         if (!description) {
-          alert('Please enter a description for the routine.');
+          show('Please enter a description for the routine.', 'error');
           return;
         }
         
@@ -427,7 +428,7 @@ export async function renderBuilderView() {
               editingRoutine: null
             });
             
-            alert('Module updated successfully!');
+            show('Module updated successfully!', 'success');
             window.location.hash = '#skill-modules';
           } else {
             const newModule = {
@@ -445,12 +446,12 @@ export async function renderBuilderView() {
               editingModule: null
             });
             
-            alert('New module created successfully!');
+            show('New module created successfully!', 'success');
             window.location.hash = '#skill-modules';
           }
         } catch (error) {
           console.error('Error saving module:', error);
-          alert('Error saving module: ' + error.message);
+          show('Error saving module: ' + error.message, 'error');
         }
       } else if (createNewRoutine) {
         // Create new routine - load existing, add new, save all
@@ -479,12 +480,12 @@ export async function renderBuilderView() {
           // Update state to reflect the new routines
           updateState({ routines: allRoutines });
           
-          alert('New routine created and saved successfully!');
+          show('New routine created and saved successfully!', 'success');
           window.location.hash = '#routines';
         } catch (error) {
           console.error('Error creating routine:', error);
           console.error('Error details:', error.message);
-          alert('Error creating routine: ' + error.message);
+          show('Error creating routine: ' + error.message, 'error');
         }
       } else {
         // Update existing routine - load, modify, save all
@@ -494,7 +495,7 @@ export async function renderBuilderView() {
           
           const routineIndex = allRoutines.findIndex(p => String(p.id) === String(editingId));
           if (routineIndex === -1) {
-            alert('Routine not found!');
+            show('Routine not found!', 'error');
             return;
           }
           
@@ -518,11 +519,11 @@ export async function renderBuilderView() {
           // Update state to reflect the changes
           updateState({ routines: allRoutines });
           
-          alert('Routine updated successfully!');
+          show('Routine updated successfully!', 'success');
           window.location.hash = '#routine-details/' + editingId;
         } catch (error) {
           console.error('Error updating routine:', error);
-          alert('Error updating routine: ' + error.message);
+          show('Error updating routine: ' + error.message, 'error');
         }
       }
     });

@@ -68,32 +68,53 @@ if (!window.appInitialized) {
   initializeApp();
 }
 
+// Loading flags to prevent concurrent loads
+const loadingFlags = {
+  exercises: false,
+  routines: false,
+  modules: false,
+  categories: false,
+  equipment: false,
+  muscles: false,
+  difficulties: false
+};
+
 async function ensureExercisesLoaded() {
+  if (loadingFlags.exercises) return;
   if (!getState().exercises || getState().exercises.length === 0) {
+    loadingFlags.exercises = true;
     try {
       const exercises = await fetchExercises();
       updateState({ exercises });
     } catch (error) {
       console.error('Failed to load exercises:', error);
       renderErrorView('Failed to load exercises. Please check your connection.');
+    } finally {
+      loadingFlags.exercises = false;
     }
   }
 }
 
 async function ensureRoutinesLoaded(){
+  if (loadingFlags.routines) return;
   if (!getState().routines || getState().routines.length === 0){
+    loadingFlags.routines = true;
     try {
       const routines = await fetchRoutines();
       updateState({ routines });
     } catch (error) {
       console.error('Failed to load routines:', error);
       renderErrorView('Failed to load routines. Please check your connection.');
+    } finally {
+      loadingFlags.routines = false;
     }
   }
 }
 
 async function ensureModulesLoaded(){
+  if (loadingFlags.modules) return;
   if (!getState().modules){
+    loadingFlags.modules = true;
     try {
       const modules = await fetchSkillModules();
       updateState({ modules });
@@ -101,55 +122,69 @@ async function ensureModulesLoaded(){
       console.error('Failed to load skill modules:', error);
       // Don't render error view, just log - modules are less critical than routines
       console.warn('Skill modules will be loaded on demand');
+    } finally {
+      loadingFlags.modules = false;
     }
   }
 }
 
 async function ensureCategoriesLoaded(){
+  if (loadingFlags.categories) return;
   if (!getState().categories || getState().categories.length === 0){
+    loadingFlags.categories = true;
     try {
       const categories = await fetchCategories();
       updateState({ categories });
     } catch (error) {
       console.error('Failed to load categories:', error);
+    } finally {
+      loadingFlags.categories = false;
     }
-  } else {
   }
 }
 
 async function ensureEquipmentLoaded(){
+  if (loadingFlags.equipment) return;
   if (!getState().equipment || getState().equipment.length === 0){
+    loadingFlags.equipment = true;
     try {
       const equipment = await fetchEquipment();
       updateState({ equipment });
     } catch (error) {
       console.error('Failed to load equipment:', error);
+    } finally {
+      loadingFlags.equipment = false;
     }
-  } else {
   }
 }
 
 async function ensureMusclesLoaded(){
+  if (loadingFlags.muscles) return;
   if (!getState().muscles || getState().muscles.length === 0){
+    loadingFlags.muscles = true;
     try {
       const muscles = await fetchMuscles();
       updateState({ muscles });
     } catch (error) {
       console.error('Failed to load muscles:', error);
+    } finally {
+      loadingFlags.muscles = false;
     }
-  } else {
   }
 }
 
 async function ensureDifficultiesLoaded(){
+  if (loadingFlags.difficulties) return;
   if (!getState().difficulties || getState().difficulties.length === 0){
+    loadingFlags.difficulties = true;
     try {
       const difficulties = await fetchDifficulties();
       updateState({ difficulties });
     } catch (error) {
       console.error('Failed to load difficulties:', error);
+    } finally {
+      loadingFlags.difficulties = false;
     }
-  } else {
   }
 }
 

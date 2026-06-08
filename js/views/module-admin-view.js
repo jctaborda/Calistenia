@@ -6,6 +6,7 @@ import { getState, updateState } from '../services/state.js';
 import { ModuleStore } from '../services/modules-service.js';
 import { saveForUndo } from '../services/undo-service.js';
 import { fetchSkillModules } from '../services/api.js';
+import { show } from '../services/toast-service.js';
 
 export async function renderModuleAdminView(editId = null) {
   const main = document.getElementById('app');
@@ -19,13 +20,13 @@ export async function renderModuleAdminView(editId = null) {
     try {
       editingModule = await ModuleStore.getById(editId);
       if (!editingModule) {
-        alert('Module not found. Redirecting to module list.');
+        show('Module not found. Redirecting to module list.', 'error');
         window.location.hash = '#skill-modules';
         return;
       }
     } catch (error) {
       console.error('Error loading module:', error);
-      alert('Error loading module: ' + error.message);
+      show('Error loading module: ' + error.message, 'error');
       return;
     }
   }
@@ -368,13 +369,13 @@ export async function renderModuleAdminView(editId = null) {
     const category = main.querySelector('#module-category').value.trim();
     
     if (!name) {
-      alert('Please enter a module name.');
+      show('Please enter a module name.', 'error');
       main.querySelector('#module-name').focus();
       return;
     }
     
     if (selectedExerciseIds.length === 0) {
-      alert('Please select at least one exercise for this module.');
+      show('Please select at least one exercise for this module.', 'error');
       return;
     }
     
@@ -392,23 +393,23 @@ export async function renderModuleAdminView(editId = null) {
       ModuleStore.update(moduleData)
         .then(() => {
           // No undo needed for updates - only for deletions
-          alert('Module updated successfully!');
+          show('Module updated successfully!', 'success');
           window.location.hash = '#skill-modules';
         })
         .catch(error => {
           console.error('Error updating module:', error);
-          alert('Error updating module: ' + error.message);
+          show('Error updating module: ' + error.message, 'error');
         });
     } else {
       // Create new module
       ModuleStore.add(moduleData)
         .then(() => {
-          alert('Module created successfully!');
+          show('Module created successfully!', 'success');
           window.location.hash = '#skill-modules';
         })
         .catch(error => {
           console.error('Error creating module:', error);
-          alert('Error creating module: ' + error.message);
+          show('Error creating module: ' + error.message, 'error');
         });
     }
   }

@@ -1,6 +1,7 @@
 import { renderHeader } from '../components/header.js';
 import { getState, updateState } from '../services/state.js';
 import { ValidationService } from '../services/validation.js';
+import { show } from '../services/toast-service.js';
 
 export function renderOnboardingView() {
   const main = document.getElementById('app');
@@ -9,7 +10,7 @@ export function renderOnboardingView() {
       <h1>Welcome! Let's get started</h1>
       <form id="onboarding-form" class="onboarding-form">
         <div class="form-group">
-          <label>Name: <input type="text" name="name" required maxlength="50" pattern="[a-zA-Z0-9\s\-']+" title="Use only letters, numbers, spaces, hyphens, and apostrophes"></label>
+          <label>Name: <input type="text" name="name" required maxlength="50" pattern="[a-zA-Z0-9\s'\-,]+" title="Use only letters, numbers, spaces, hyphens, and apostrophes"></label>
         </div><br><br>
         <div class="form-group">
           <label>Fitness Level:
@@ -34,7 +35,7 @@ export function renderOnboardingView() {
       const rawName = formData.get('name');
       const nameValidation = ValidationService.validateExerciseName(rawName);
       if (!nameValidation.valid) {
-        alert(nameValidation.error);
+        show(nameValidation.error, 'error');
         return;
       }
       

@@ -1,6 +1,7 @@
 import { renderHeader } from '../components/header.js';
 import { getState } from '../services/state.js';
 import { formatWorkoutDate, formatDate } from '../utils/date-formatter.js';
+import { show } from '../services/toast-service.js';
 
 export async function renderSharedWorkoutView(workoutId) {
   const main = document.getElementById('app');
@@ -87,7 +88,7 @@ export async function renderSharedWorkoutView(workoutId) {
       const text = textInput.value.trim();
       
       if (!name || !text) {
-        alert('Please enter both a name and comment.');
+        show('Please enter both a name and comment.', 'error');
         return;
       }
       

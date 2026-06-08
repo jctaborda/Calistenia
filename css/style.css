@@ -87,6 +87,15 @@
     --shadow-blue-2: rgba(25, 118, 210, 0.12);
     --shadow-blue-3: rgba(25, 118, 210, 0.07);
     --shadow-gold: rgba(255, 215, 0, 0.3);
+    
+    /* Dark mode specific */
+    --dark-border: #444;
+    --dark-accent: #42a5f5;
+    --dark-btn-hover: #3b8cdb;
+    --dark-text-secondary: #909090;
+    
+    /* Semantic backgrounds */
+    --suggestion-bg: #fff3e0;
 }
 
 @font-face {
@@ -291,7 +300,7 @@ li {
   background: var(--btn-secondary-hover);
 }
 
-// Favorites toggle active state
+/* Favorites toggle active state */
 .btn-secondary.active {
   background: linear-gradient(135deg, var(--warning-light) 0%, var(--warning) 100%);
   border-color: var(--warning);
@@ -790,7 +799,7 @@ html.dark select,
 html.dark textarea {
   background: var(--dark-input-bg);
   color: var(--tag-bg);
-  border-color: #444;
+  border-color: var(--dark-border);
 }
 
 html.dark input:focus, 
@@ -820,7 +829,7 @@ html.dark .btn {
 
 html.dark button:hover, 
 html.dark .btn:hover {
-  background: #3b8cdb;
+  background: var(--dark-btn-hover);
 }
 
 html.dark .pagination-btn {
@@ -848,17 +857,17 @@ html.dark .pagination-nav-btn:hover:not(.disabled) {
 html.dark .pagination-nav-btn.disabled {
   background: var(--dark-input-bg);
   color: var(--btn-secondary);
-  border-color: #444;
+  border-color: var(--dark-border);
 }
 
 html.dark .theme-toggle {
   background: var(--gray-800);
   color: var(--tag-bg);
-  border: 1px solid #444;
+  border: 1px solid var(--dark-border);
 }
 
 html.dark .theme-toggle:hover {
-  background: #444;
+  background: var(--dark-border);
 }
 
 /* Modal dark mode */
@@ -876,7 +885,7 @@ html.dark .modal-content {
 html.dark .form-control {
   background: var(--dark-input-bg);
   color: var(--tag-bg);
-  border-color: #444;
+  border-color: var(--dark-border);
 }
 
 /* Loading spinner overlay dark mode */
@@ -1032,15 +1041,6 @@ html.dark .error-message {
   background: var(--btn-primary-hover);
 }
 
-.btn-danger {
-  background: var(--btn-danger);
-  color: white;
-}
-
-.btn-danger:hover {
-  background: var(--btn-danger-hover);
-}
-
 .message {
   padding: 1rem;
   border-radius: 5px;
@@ -1107,7 +1107,7 @@ html.dark .exercise-form-container {
 }
 
 html.dark .exercise-form-container h1 {
-  color: #42a5f5;
+  color: var(--dark-accent);
 }
 
 html.dark .form-group label {
@@ -1115,12 +1115,12 @@ html.dark .form-group label {
 }
 
 html.dark .tab-btn {
-  color: #909090;
+  color: var(--dark-text-secondary);
 }
 
 html.dark .tab-btn:hover,
 html.dark .tab-btn.active {
-  color: #42a5f5;
+  color: var(--dark-accent);
 }
 
 html.dark .form-tabs {
@@ -1132,7 +1132,7 @@ html.dark .form-group textarea,
 html.dark .form-group select {
   background: var(--dark-input-bg);
   color: var(--tag-bg);
-  border-color: #444;
+  border-color: var(--dark-border);
 }
 
 html.dark .checkbox-item {
@@ -1160,7 +1160,7 @@ html.dark .message.error {
 }
 
 html.dark .exercise-list h2 {
-  color: #42a5f5;
+  color: var(--dark-accent);
 }
 
 html.dark .loading {
@@ -1613,7 +1613,7 @@ html.dark .loading {
 }
 
 .suggestion-card {
-  background: #fff3e0;
+  background: var(--suggestion-bg);
   border-left: 4px solid var(--warning-orange);
   padding: 1rem;
   border-radius: 4px;
@@ -1815,10 +1815,6 @@ html.dark .loading {
   border-radius: 50%;
   border-top-color: var(--white);
   animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
 }
 
 .empty-state {
@@ -2728,7 +2724,7 @@ html.dark .content-value {
 }
 
 .bottom-sheet {
-  background: #ffffff;
+  background: var(--white);
   width: 90%;
   max-width: 600px;
   max-height: 85vh;

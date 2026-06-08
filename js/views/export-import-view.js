@@ -7,6 +7,7 @@ import {
 } from '../services/export-import.js';
 import { getState } from '../services/state.js';
 import { renderHeader } from '../components/header.js';
+import { show } from '../services/toast-service.js';
 
 export function renderExportImportView() {
   const state = getState();
@@ -136,7 +137,7 @@ async function handleDownloadExport() {
     }, 2000);
     
   } catch (error) {
-    alert('Error: ' + error.message);
+    show('Error: ' + error.message, 'error');
     downloadBtn.disabled = false;
     downloadBtn.innerHTML = '<span class="icon">⬇️</span> Download Backup';
   }

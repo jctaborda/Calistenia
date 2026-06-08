@@ -144,7 +144,9 @@
         6,
         14
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        45
+      ],
       "progressions": [],
       "formCues": [
         "Start kneeling with ab wheel",
@@ -196,7 +198,9 @@
         "Avoid letting hips hike up",
         "Don't rush the walking"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        10
+      ]
     },
     {
       "id": 91,
@@ -217,7 +221,9 @@
       "muscles": [
         20
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        6
+      ],
       "progressions": [],
       "formCues": [
         "Side plank position with top leg crossed under",
@@ -254,7 +260,9 @@
       "muscles": [
         20
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        91
+      ],
       "progressions": [],
       "formCues": [
         "Stand with band around ankles or ankles crossed",
@@ -276,18 +284,30 @@
       "name": "Archer Pull-Up",
       "description": "One arm pulls while the other extends sideways, building unilateral back strength.",
       "skill": "Pull-Up Variations",
-      "equipment": [],
+      "equipment": [
+        6
+      ],
       "difficulty": [
         3
       ],
       "image_url": "assets/images/exercises/3293-72BC5Za.jpg",
       "video_url": "assets/videos/exercises/3293-72BC5Za.gif",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        12,
+        18
+      ],
+      "muscles": [
+        12,
+        1,
+        13
+      ],
       "prerequisites": [
         11
       ],
-      "progressions": [],
+      "progressions": [
+        17,
+        120
+      ],
       "formCues": [
         "Wide overhand grip",
         "Shift weight to one side on pull",
@@ -300,7 +320,10 @@
         "Avoid helping with the non-working arm",
         "Don't shorten the range of motion"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        1,
+        19
+      ]
     },
     {
       "id": 5,
@@ -395,14 +418,23 @@
       "name": "Assisted Pull-Up",
       "description": "Use resistance bands to assist in pulling up, ideal for beginners.",
       "skill": "Pull-Up Variations",
-      "equipment": [],
+      "equipment": [
+        2
+      ],
       "difficulty": [
         1
       ],
       "image_url": "assets/images/exercises/0017-kiJ4Z2K.jpg",
       "video_url": "assets/videos/exercises/0017-kiJ4Z2K.gif",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        12,
+        18
+      ],
+      "muscles": [
+        12,
+        1,
+        13
+      ],
       "prerequisites": [],
       "progressions": [
         11
@@ -418,23 +450,35 @@
         "Avoid partial range of motion",
         "Don't use momentum from legs"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        2,
+        19
+      ]
     },
     {
       "id": 119,
       "name": "Australian Pull Up",
       "description": "A bodyweight row variation performed on a bar set at waist height, requiring you to lie beneath the bar and pull your chest up while keeping your body in a straight line - excellent for building back strength.",
       "skill": "Pull-Up Variations",
-      "equipment": [],
+      "equipment": [
+        6
+      ],
       "difficulty": [
         3
       ],
       "image_url": "",
       "video_url": "",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        12,
+        18
+      ],
+      "muscles": [
+        12,
+        1,
+        9
+      ],
       "prerequisites": [
-        null
+        11
       ],
       "progressions": [
         20,
@@ -452,7 +496,10 @@
         "Avoid going too vertical",
         "Don't pull with arms only"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        13,
+        19
+      ]
     },
     {
       "id": 63,
@@ -515,8 +562,12 @@
         "Back",
         "14"
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        1
+      ],
+      "progressions": [
+        16
+      ],
       "formCues": [
         "Start with tucked position on ring or bar",
         "Engage lats and core intensely",
@@ -556,7 +607,7 @@
         11
       ],
       "prerequisites": [
-        60
+        103
       ],
       "progressions": [],
       "formCues": [
@@ -614,7 +665,9 @@
         "Avoid using momentum",
         "Don't rush the eccentric phase"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        15
+      ]
     },
     {
       "id": 34,
@@ -635,8 +688,12 @@
       "muscles": [
         5
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        1
+      ],
+      "progressions": [
+        32
+      ],
       "formCues": [
         "Sit on edge of bench, hands gripping edge",
         "Slide butt off bench, arms extended",
@@ -700,13 +757,18 @@
       "equipment": [
         16
       ],
-      "difficulty": [],
+      "difficulty": [
+        2
+      ],
       "image_url": "",
       "video_url": "",
       "categories": [
         16
       ],
-      "muscles": [],
+      "muscles": [
+        6,
+        14
+      ],
       "prerequisites": [
         123
       ],
@@ -724,7 +786,9 @@
         "Avoid going too fast",
         "Don't let elbows flare out"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        14
+      ]
     },
     {
       "id": 61,
@@ -875,7 +939,9 @@
       "muscles": [
         7
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        6
+      ],
       "progressions": [
         85,
         87
@@ -891,7 +957,10 @@
         "Avoid going too fast",
         "Don't raise only partway"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        7,
+        15
+      ]
     },
     {
       "id": 12,
@@ -956,7 +1025,9 @@
       "muscles": [
         8
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        94
+      ],
       "progressions": [
         94
       ],
@@ -971,7 +1042,9 @@
         "Avoid using momentum to lift",
         "Don't let feet separate"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        20
+      ]
     },
     {
       "id": 4,
@@ -1037,8 +1110,12 @@
         5,
         4
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        1
+      ],
+      "progressions": [
+        35
+      ],
       "formCues": [
         "Hands under chest, close together",
         "Keep elbows tucked to ribs",
@@ -1075,8 +1152,12 @@
         1,
         13
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        11
+      ],
+      "progressions": [
+        22
+      ],
       "formCues": [
         "Grip rings or bars one hand each side",
         "Pull chest to one side",
@@ -1119,7 +1200,9 @@
       "prerequisites": [
         89
       ],
-      "progressions": [],
+      "progressions": [
+        89
+      ],
       "formCues": [
         "Stand wide, shift weight to one side",
         "Squat deeply on one leg while other straight",
@@ -1195,7 +1278,9 @@
       "muscles": [
         6
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        6
+      ],
       "progressions": [
         55
       ],
@@ -1234,10 +1319,11 @@
         6
       ],
       "prerequisites": [
-        109,
-        58
+        54
       ],
-      "progressions": [],
+      "progressions": [
+        60
+      ],
       "formCues": [
         "Lie on back, arms extended up",
         "Lift legs to tabletop position",
@@ -1272,7 +1358,9 @@
       "muscles": [
         19
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        71
+      ],
       "progressions": [],
       "formCues": [
         "Grip bar with both hands, arms extended",
@@ -1357,7 +1445,9 @@
       "prerequisites": [
         1
       ],
-      "progressions": [],
+      "progressions": [
+        5
+      ],
       "formCues": [
         "Form diamond with thumbs and index fingers",
         "Keep elbows close to your ribs",
@@ -1393,7 +1483,9 @@
       "muscles": [
         8
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        79
+      ],
       "progressions": [
         79
       ],
@@ -1432,7 +1524,9 @@
         6,
         14
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        48
+      ],
       "progressions": [],
       "formCues": [
         "Lie on bench, grip behind head",
@@ -1445,7 +1539,10 @@
         "Avoid using momentum",
         "Don't go too deep initially"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        6,
+        16
+      ]
     },
     {
       "id": 43,
@@ -1468,7 +1565,9 @@
         12,
         13
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        1
+      ],
       "progressions": [],
       "formCues": [
         "Grip bar with fingertips only",
@@ -1506,7 +1605,7 @@
         8
       ],
       "prerequisites": [
-        94
+        95
       ],
       "progressions": [],
       "formCues": [
@@ -1520,7 +1619,10 @@
         "Avoid going too high initially",
         "Don't rush the movement"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        8,
+        20
+      ]
     },
     {
       "id": 125,
@@ -1530,13 +1632,17 @@
       "equipment": [
         16
       ],
-      "difficulty": [],
+      "difficulty": [
+        2
+      ],
       "image_url": "",
       "video_url": "",
       "categories": [
         16
       ],
-      "muscles": [],
+      "muscles": [
+        6
+      ],
       "prerequisites": [
         124,
         65
@@ -1555,7 +1661,9 @@
         "Avoid kicking too high",
         "Don't arch your back"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        14
+      ]
     },
     {
       "id": 105,
@@ -1578,8 +1686,7 @@
         20
       ],
       "prerequisites": [
-        1,
-        60
+        1
       ],
       "progressions": [
         106
@@ -1620,7 +1727,9 @@
         6,
         14
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        18
+      ],
       "progressions": [],
       "formCues": [
         "Hang from bar with straight arms",
@@ -1655,7 +1764,11 @@
       "categories": [
         16
       ],
-      "muscles": [],
+      "muscles": [
+        12,
+        1,
+        18
+      ],
       "prerequisites": [
         107
       ],
@@ -1671,7 +1784,10 @@
         "Avoid piking at hips",
         "Don't use momentum"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        1,
+        17
+      ]
     },
     {
       "id": 79,
@@ -1692,7 +1808,9 @@
       "muscles": [
         8
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        6
+      ],
       "progressions": [
         82,
         80
@@ -1734,10 +1852,11 @@
         8
       ],
       "prerequisites": [
-        74,
-        78
+        74
       ],
-      "progressions": [],
+      "progressions": [
+        75
+      ],
       "formCues": [
         "Anchor feet under pads, knees on pad",
         "Lower body by extending at knee",
@@ -1769,7 +1888,12 @@
       "categories": [
         16
       ],
-      "muscles": [],
+      "muscles": [
+        12,
+        1,
+        13,
+        19
+      ],
       "prerequisites": [
         119
       ],
@@ -1785,7 +1909,9 @@
         "Avoid using momentum",
         "Don't go too shallow"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        19
+      ]
     },
     {
       "id": 77,
@@ -1806,7 +1932,9 @@
       "muscles": [
         11
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        76
+      ],
       "progressions": [
         78
       ],
@@ -1846,8 +1974,12 @@
         9,
         19
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        30
+      ],
+      "progressions": [
+        24
+      ],
       "formCues": [
         "Start with wall handstand for stability",
         "Keep wrists under shoulders",
@@ -1887,8 +2019,12 @@
         18,
         5
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        25
+      ],
+      "progressions": [
+        23
+      ],
       "formCues": [
         "Kick up to handstand against wall",
         "Lower head toward floor gradually",
@@ -1929,7 +2065,9 @@
       "prerequisites": [
         65
       ],
-      "progressions": [],
+      "progressions": [
+        48
+      ],
       "formCues": [
         "Hang from bar with straight arms",
         "Raise knees toward chest",
@@ -1941,7 +2079,9 @@
         "Avoid rounding your back",
         "Don't lift too fast"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        6
+      ]
     },
     {
       "id": 48,
@@ -1963,8 +2103,12 @@
         6,
         14
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        65
+      ],
+      "progressions": [
+        49
+      ],
       "formCues": [
         "Hang from bar, arms straight",
         "Raise legs to horizontal or higher",
@@ -1976,7 +2120,10 @@
         "Avoid swinging your body",
         "Don't let legs drop too fast"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        6,
+        14
+      ]
     },
     {
       "id": 81,
@@ -1998,8 +2145,7 @@
         8
       ],
       "prerequisites": [
-        80,
-        79
+        80
       ],
       "progressions": [
         83
@@ -2040,8 +2186,12 @@
         6,
         14
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        1
+      ],
+      "progressions": [
+        52
+      ],
       "formCues": [
         "Lie on back, arms extended overhead",
         "Lift shoulders and legs off ground",
@@ -2077,7 +2227,9 @@
         6,
         14
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        6
+      ],
       "progressions": [
         60,
         58
@@ -2093,7 +2245,10 @@
         "Avoid losing hollow shape",
         "Don't rock too vigorously"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        6,
+        14
+      ]
     },
     {
       "id": 56,
@@ -2155,7 +2310,11 @@
       "categories": [
         16
       ],
-      "muscles": [],
+      "muscles": [
+        6,
+        14,
+        2
+      ],
       "prerequisites": [
         60
       ],
@@ -2174,7 +2333,9 @@
         "Avoid going too slow",
         "Don't round your back excessively"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        2
+      ]
     },
     {
       "id": 6,
@@ -2197,7 +2358,9 @@
         5,
         2
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        1
+      ],
       "progressions": [
         1
       ],
@@ -2240,7 +2403,9 @@
         84,
         86
       ],
-      "progressions": [],
+      "progressions": [
+        88
+      ],
       "formCues": [
         "Start on balls of feet",
         "Jump explosively upward",
@@ -2252,7 +2417,9 @@
         "Avoid locking knees on landing",
         "Don't let toes point inward"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        7
+      ]
     },
     {
       "id": 70,
@@ -2275,8 +2442,12 @@
         10,
         11
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        67
+      ],
+      "progressions": [
+        67
+      ],
       "formCues": [
         "Start in squat position",
         "Explode upward with maximum power",
@@ -2314,7 +2485,9 @@
         10,
         11
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        6
+      ],
       "progressions": [
         99
       ],
@@ -2358,7 +2531,9 @@
         1,
         8
       ],
-      "progressions": [],
+      "progressions": [
+        4
+      ],
       "formCues": [
         "Lean torso forward significantly",
         "Hands placed on parallel bars",
@@ -2395,7 +2570,9 @@
         6,
         14
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        46
+      ],
       "progressions": [],
       "formCues": [
         "Sit between parallel bars or rings",
@@ -2433,8 +2610,7 @@
         6
       ],
       "prerequisites": [
-        109,
-        58
+        6
       ],
       "progressions": [
         66
@@ -2450,7 +2626,9 @@
         "Avoid bending knees",
         "Don't use momentum"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        6
+      ]
     },
     {
       "id": 100,
@@ -2472,8 +2650,12 @@
         6,
         14
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        1
+      ],
+      "progressions": [
+        5
+      ],
       "formCues": [
         "Start in plank position",
         "Drive one knee toward chest",
@@ -2517,7 +2699,7 @@
         2
       ],
       "prerequisites": [
-        112
+        99
       ],
       "progressions": [],
       "formCues": [
@@ -2562,10 +2744,11 @@
         2
       ],
       "prerequisites": [
-        1,
-        11
+        111
       ],
-      "progressions": [],
+      "progressions": [
+        101
+      ],
       "formCues": [
         "Start at top of muscle-up (dip position)",
         "Lower slowly with control",
@@ -2645,8 +2828,12 @@
         1,
         13
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        11
+      ],
+      "progressions": [
+        11
+      ],
       "formCues": [
         "Start at top position with chin over bar",
         "Lower as slowly as possible",
@@ -2684,7 +2871,7 @@
         11
       ],
       "prerequisites": [
-        79
+        67
       ],
       "progressions": [
         76,
@@ -2727,7 +2914,9 @@
         1,
         13
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        39
+      ],
       "progressions": [],
       "formCues": [
         "Master regular chin-ups first",
@@ -2767,7 +2956,9 @@
         9,
         19
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        23
+      ],
       "progressions": [],
       "formCues": [
         "Master wall handstand first",
@@ -2808,8 +2999,12 @@
         1,
         13
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        11
+      ],
+      "progressions": [
+        30
+      ],
       "formCues": [
         "Master assisted variations first",
         "Use resistance band for help initially",
@@ -2889,8 +3084,12 @@
         12,
         9
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        109
+      ],
+      "progressions": [
+        112
+      ],
       "formCues": [
         "Hold position between parallel bars",
         "Arms straight, body vertical",
@@ -2928,8 +3127,13 @@
         18,
         4
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        1
+      ],
+      "progressions": [
+        30,
+        26
+      ],
       "formCues": [
         "Start in downward dog position",
         "Walk feet closer, lift hips high",
@@ -2970,7 +3174,9 @@
       "prerequisites": [
         73
       ],
-      "progressions": [],
+      "progressions": [
+        73
+      ],
       "formCues": [
         "Stand on one leg, other extended forward",
         "Keep chest up and core tight",
@@ -3009,7 +3215,9 @@
         5,
         18
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        29
+      ],
       "progressions": [],
       "formCues": [
         "Full planche - body parallel to ground",
@@ -3044,7 +3252,11 @@
       "categories": [
         16
       ],
-      "muscles": [],
+      "muscles": [
+        2,
+        3,
+        4
+      ],
       "prerequisites": [
         1,
         2,
@@ -3065,7 +3277,10 @@
         "Avoid going too far too soon",
         "Don't let wrists collapse"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        4,
+        3
+      ]
     },
     {
       "id": 45,
@@ -3088,7 +3303,9 @@
         14
       ],
       "prerequisites": [],
-      "progressions": [],
+      "progressions": [
+        54
+      ],
       "formCues": [
         "Forearms on ground, elbows under shoulders",
         "Keep body in straight line from head to heels",
@@ -3122,7 +3339,11 @@
       "categories": [
         16
       ],
-      "muscles": [],
+      "muscles": [
+        6,
+        14,
+        2
+      ],
       "prerequisites": [
         121
       ],
@@ -3140,7 +3361,9 @@
         "Avoid rushing the movement",
         "Don't lose plank position"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        6
+      ]
     },
     {
       "id": 126,
@@ -3150,17 +3373,25 @@
       "equipment": [
         16
       ],
-      "difficulty": [],
+      "difficulty": [
+        2
+      ],
       "image_url": "",
       "video_url": "",
       "categories": [
         16
       ],
-      "muscles": [],
+      "muscles": [
+        6,
+        14,
+        3
+      ],
       "prerequisites": [
         125
       ],
-      "progressions": [],
+      "progressions": [
+        127
+      ],
       "formCues": [
         "Start in high plank with feet wide",
         "Rotate body to touch one hip to floor",
@@ -3172,7 +3403,9 @@
         "Avoid using momentum only",
         "Don't lift hips too high"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        3
+      ]
     },
     {
       "id": 60,
@@ -3194,7 +3427,9 @@
         6,
         14
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        59
+      ],
       "progressions": [
         61,
         58
@@ -3280,7 +3515,9 @@
         1,
         13
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        20
+      ],
       "progressions": [
         12,
         13
@@ -3356,13 +3593,18 @@
       "equipment": [
         16
       ],
-      "difficulty": [],
+      "difficulty": [
+        1
+      ],
       "image_url": "",
       "video_url": "",
       "categories": [
         16
       ],
-      "muscles": [],
+      "muscles": [
+        6,
+        2
+      ],
       "prerequisites": [],
       "progressions": [],
       "formCues": [
@@ -3438,8 +3680,12 @@
         1,
         13
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        12
+      ],
+      "progressions": [
+        40
+      ],
       "formCues": [
         "Grip rings with palms facing you",
         "Allow rings to rotate naturally",
@@ -3476,8 +3722,12 @@
       "muscles": [
         5
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        32
+      ],
+      "progressions": [
+        1
+      ],
       "formCues": [
         "Adjust rings to chest height",
         "Grip rings firmly, arms extended",
@@ -3514,7 +3764,9 @@
         12,
         9
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        11
+      ],
       "progressions": [
         119
       ],
@@ -3550,7 +3802,11 @@
       "categories": [
         16
       ],
-      "muscles": [],
+      "muscles": [
+        12,
+        1,
+        19
+      ],
       "prerequisites": [
         119
       ],
@@ -3568,7 +3824,9 @@
         "Avoid rounding your back",
         "Don't pull too high"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        19
+      ]
     },
     {
       "id": 55,
@@ -3630,8 +3888,12 @@
         6,
         14
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        45
+      ],
+      "progressions": [
+        100
+      ],
       "formCues": [
         "Start in plank position",
         "Keep hips stable and square",
@@ -3643,7 +3905,9 @@
         "Avoid lifting one leg for reach",
         "Don't rush the taps"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        6
+      ]
     },
     {
       "id": 57,
@@ -3664,7 +3928,9 @@
       "muscles": [
         14
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        65
+      ],
       "progressions": [],
       "formCues": [
         "Hang from bar, lean to one side",
@@ -3677,7 +3943,10 @@
         "Avoid bending elbows for help",
         "Don't let hips sag"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        6,
+        14
+      ]
     },
     {
       "id": 89,
@@ -3741,8 +4010,12 @@
       "muscles": [
         14
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        53
+      ],
+      "progressions": [
+        51
+      ],
       "formCues": [
         "Lie on side, prop up on one forearm",
         "Stack feet or stagger for stability",
@@ -3777,7 +4050,9 @@
       "muscles": [
         20
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        91
+      ],
       "progressions": [
         98,
         96
@@ -3833,7 +4108,10 @@
         "Avoid using momentum",
         "Don't rush the movement"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        7,
+        15
+      ]
     },
     {
       "id": 80,
@@ -3897,9 +4175,11 @@
         11
       ],
       "prerequisites": [
-        67
+        74
       ],
-      "progressions": [],
+      "progressions": [
+        77
+      ],
       "formCues": [
         "Stand on one leg, slight knee bend",
         "Hinge at hip, extend other leg back",
@@ -3936,7 +4216,10 @@
         "Back",
         "14"
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        12,
+        18
+      ],
       "progressions": [
         114
       ],
@@ -3951,7 +4234,10 @@
         "Avoid using momentum",
         "Don't release grip prematurely"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        12,
+        1
+      ]
     },
     {
       "id": 117,
@@ -3969,7 +4255,9 @@
       "categories": [
         16
       ],
-      "muscles": [],
+      "muscles": [
+        5
+      ],
       "prerequisites": [],
       "progressions": [],
       "formCues": [
@@ -4009,7 +4297,9 @@
       "prerequisites": [
         1
       ],
-      "progressions": [],
+      "progressions": [
+        1
+      ],
       "formCues": [
         "Wide hand stance",
         "Bring knee to same-side elbow on descent",
@@ -4048,7 +4338,9 @@
         10,
         11
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        65
+      ],
       "progressions": [
         92,
         72
@@ -4089,7 +4381,6 @@
         8
       ],
       "prerequisites": [
-        94,
         95
       ],
       "progressions": [
@@ -4106,7 +4397,9 @@
         "Avoid using momentum to lift",
         "Don't bend the working knee"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        8
+      ]
     },
     {
       "id": 72,
@@ -4170,8 +4463,12 @@
         6,
         14
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        1
+      ],
+      "progressions": [
+        5
+      ],
       "formCues": [
         "Sit between bars, legs spread wide",
         "Lift legs to horizontal position",
@@ -4210,8 +4507,12 @@
         5,
         18
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        28
+      ],
+      "progressions": [
+        27
+      ],
       "formCues": [
         "Start in push-up position with wide stance",
         "Lean forward, arms straight",
@@ -4293,7 +4594,9 @@
         8,
         12
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        60
+      ],
       "progressions": [
         63
       ],
@@ -4331,7 +4634,9 @@
       "muscles": [
         6
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        65
+      ],
       "progressions": [
         65
       ],
@@ -4346,7 +4651,9 @@
         "Avoid using momentum to raise",
         "Don't lock knees harshly"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        6
+      ]
     },
     {
       "id": 44,
@@ -4367,7 +4674,9 @@
       "muscles": [
         19
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        42
+      ],
       "progressions": [],
       "formCues": [
         "Drape towel over bar",
@@ -4406,7 +4715,9 @@
         1,
         13
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        21
+      ],
       "progressions": [],
       "formCues": [
         "Hang from towel draped over bar",
@@ -4444,8 +4755,12 @@
       "muscles": [
         5
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        37
+      ],
+      "progressions": [
+        33
+      ],
       "formCues": [
         "Hands on stable surface, legs extended",
         "Keep elbows close to body",
@@ -4481,8 +4796,12 @@
       "muscles": [
         5
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        32
+      ],
+      "progressions": [
+        37
+      ],
       "formCues": [
         "Sit on bench with dumbbell overhead",
         "Lower weight behind head by bending elbow",
@@ -4494,7 +4813,9 @@
         "Avoid flaring elbow out",
         "Don't let torso rock"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        5
+      ]
     },
     {
       "id": 18,
@@ -4517,8 +4838,12 @@
         6,
         14
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        11
+      ],
+      "progressions": [
+        107
+      ],
       "formCues": [
         "Pull knees to chest while hanging",
         "Engage lats fully",
@@ -4558,8 +4883,7 @@
         11
       ],
       "prerequisites": [
-        70,
-        99
+        102
       ],
       "progressions": [],
       "formCues": [
@@ -4598,8 +4922,12 @@
         6,
         14
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        45
+      ],
+      "progressions": [
+        47
+      ],
       "formCues": [
         "Start in tucked position, knees to chest",
         "Lift hips and legs with core strength",
@@ -4638,8 +4966,12 @@
         5,
         18
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        27
+      ],
+      "progressions": [
+        29
+      ],
       "formCues": [
         "Start in push-up position, hands near hips",
         "Lean forward with arms straight",
@@ -4673,7 +5005,11 @@
       "categories": [
         16
       ],
-      "muscles": [],
+      "muscles": [
+        2,
+        3,
+        4
+      ],
       "prerequisites": [
         115
       ],
@@ -4689,7 +5025,10 @@
         "Avoid letting shoulders collapse",
         "Don't go too deep initially"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        2,
+        3
+      ]
     },
     {
       "id": 122,
@@ -4707,7 +5046,10 @@
       "categories": [
         16
       ],
-      "muscles": [],
+      "muscles": [
+        6,
+        14
+      ],
       "prerequisites": [
         121
       ],
@@ -4723,7 +5065,9 @@
         "Avoid pulling neck",
         "Don't rush the rotation"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        6
+      ]
     },
     {
       "id": 50,
@@ -4745,8 +5089,12 @@
         6,
         14
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        6
+      ],
+      "progressions": [
+        58
+      ],
       "formCues": [
         "Sit with legs and torso forming V shape",
         "Lift feet off ground, balance on sit bones",
@@ -4758,7 +5106,9 @@
         "Avoid bending knees too much",
         "Don't lean back onto floor"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        6
+      ]
     },
     {
       "id": 30,
@@ -4782,7 +5132,9 @@
         19
       ],
       "prerequisites": [],
-      "progressions": [],
+      "progressions": [
+        15
+      ],
       "formCues": [
         "Kick up against wall with back to it",
         "Walk feet up wall gradually",
@@ -4822,8 +5174,12 @@
         8,
         11
       ],
-      "prerequisites": [],
-      "progressions": [],
+      "prerequisites": [
+        67
+      ],
+      "progressions": [
+        67
+      ],
       "formCues": [
         "Back against wall, feet forward",
         "Sit until thighs parallel to ground",
@@ -4859,7 +5215,7 @@
         7
       ],
       "prerequisites": [
-        86
+        87
       ],
       "progressions": [],
       "formCues": [
@@ -4873,7 +5229,9 @@
         "Avoid using momentum",
         "Don't go too shallow"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        7
+      ]
     },
     {
       "id": 36,
@@ -4894,7 +5252,9 @@
       "muscles": [
         5
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        33
+      ],
       "progressions": [],
       "formCues": [
         "Start with light weight and progress gradually",
@@ -5056,7 +5416,7 @@
         14
       ],
       "prerequisites": [
-        109
+        53
       ],
       "progressions": [
         65
@@ -5072,7 +5432,10 @@
         "Avoid using momentum",
         "Don't lower too fast"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [
+        6,
+        14
+      ]
     }
   ],
   "muscles": [

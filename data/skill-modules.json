@@ -5,56 +5,144 @@
       "name": "Push-Up Progression",
       "description": "Master the foundational push-up movement from basic to advanced variations",
       "difficulty": "beginner",
-      "exercises": [1, 2, 5, 3],
-      "category": "Chest"
+      "exercises": [
+        6,
+        1,
+        2,
+        3,
+        7,
+        9,
+        37,
+        5,
+        4,
+        8,
+        31,
+        10
+      ],
+      "category": "Chest",
+      "prerequisites": []
     },
     {
       "id": 2,
       "name": "Dip Mastery",
       "description": "Build upper body pushing strength with dip variations",
       "difficulty": "intermediate",
-      "exercises": [4, 10],
-      "category": "Chest"
+      "exercises": [
+        32,
+        34,
+        33,
+        36
+      ],
+      "category": "Chest",
+      "prerequisites": [
+        1
+      ]
     },
     {
       "id": 3,
       "name": "Handstand Foundation",
       "description": "Learn to balance on your hands with progressive drills",
-      "difficulty": "advanced",
-      "exercises": [15, 20],
-      "category": "Shoulders"
+      "difficulty": "intermediate",
+      "exercises": [
+        30,
+        25,
+        26,
+        23,
+        24
+      ],
+      "category": "Shoulders",
+      "prerequisites": [
+        1
+      ]
     },
     {
       "id": 4,
       "name": "Pull-Up Progression",
-      "description": "From dead hangs to muscle-ups",
+      "description": "From dead hangs to advanced pull variations",
       "difficulty": "intermediate",
-      "exercises": [12, 18],
-      "category": "Back"
+      "exercises": [
+        42,
+        44,
+        20,
+        11,
+        12,
+        13,
+        119,
+        19,
+        39,
+        14,
+        40,
+        21,
+        22
+      ],
+      "category": "Back",
+      "prerequisites": [
+        1
+      ]
     },
     {
       "id": 5,
       "name": "Core Strength Basics",
       "description": "Essential ab exercises for a strong foundation",
       "difficulty": "beginner",
-      "exercises": [25, 30],
-      "category": "Abs"
+      "exercises": [
+        45,
+        59,
+        61,
+        53,
+        54,
+        65,
+        66,
+        48,
+        52,
+        60,
+        109,
+        46,
+        58,
+        124,
+        125,
+        126,
+        127
+      ],
+      "category": "Abs",
+      "prerequisites": []
     },
     {
       "id": 6,
       "name": "Planche Progression",
       "description": "Build the strength for this advanced static skill",
       "difficulty": "advanced",
-      "exercises": [115, 116],
-      "category": "Shoulders"
+      "exercises": [
+        115,
+        116,
+        28,
+        29,
+        27
+      ],
+      "category": "Shoulders",
+      "prerequisites": [
+        1,
+        5
+      ]
     },
     {
       "id": 7,
       "name": "Front Lever Progression",
       "description": "Develop horizontal pulling strength",
       "difficulty": "advanced",
-      "exercises": [18, 107],
-      "category": "Back"
+      "exercises": [
+        49,
+        18,
+        107,
+        114,
+        16,
+        17
+      ],
+      "category": "Back",
+      "prerequisites": [
+        4,
+        5
+      ]
     }
   ]
 }

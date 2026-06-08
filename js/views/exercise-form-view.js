@@ -2,6 +2,7 @@
 // Handles prerequisites, progressions, formCues, and commonMistakes
 
 import { ErrorBoundaryService } from '../services/error-boundary-service.js';
+import { renderHeader } from '../components/header.js';
 
 export async function renderExerciseForm(editId) {
   const app = document.getElementById('app');
@@ -44,37 +45,17 @@ export async function renderExerciseForm(editId) {
   }, 50);
 }
 
-function renderHeader() {
-  return `
-    <header class="app-header">
-      <div class="header-content">
-        <button class="back-btn" aria-label="Go back" data-nav="back">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M19 12H5M12 19l-7-7 7-7"/>
-          </svg>
-        </button>
-        <h1 class="header-title">Exercise Editor</h1>
-        <div style="width: 40px;"></div>
-      </div>
-    </header>`;
-}
-
 function getFormHTML() {
   return `
     <div class="exercise-form-container">
       <div id="message" class="message"></div>
-
-      <div class="form-tabs">
-        <button class="tab-btn active" data-tab="add">Add New Exercise</button>
-        <button class="tab-btn" data-tab="edit">Edit/Delete Exercise</button>
-      </div>
 
       <!-- Add Exercise Form -->
       <div id="add-form" class="form-section active">
         <form id="exerciseForm">
           <div class="form-group">
             <label for="name">Exercise Name *</label>
-            <input type="text" id="name" name="name" required minlength="2" maxlength="100" placeholder="e.g., Push-Up" pattern="[a-zA-Z0-9\s\-,\.\\(\\)]+" title="Minimum 2 characters, maximum 100. Letters, numbers, spaces only.">
+            <input type="text" id="name" name="name" required minlength="2" maxlength="100" placeholder="e.g., Push-Up" pattern="[\\],a-zA-Z0-9 ()\\.,-]+" title="Minimum 2 characters, maximum 100. Letters, numbers, spaces only.">
           </div>
 
           <div class="form-group">
@@ -84,7 +65,7 @@ function getFormHTML() {
 
           <div class="form-group">
             <label for="skill">Skill Category *</label>
-            <input type="text" id="skill" name="skill" required minlength="2" maxlength="100" placeholder="e.g., Push-Up Variations" pattern="[a-zA-Z0-9\s\-,\.\\(\\)]+">
+            <input type="text" id="skill" name="skill" required minlength="2" maxlength="100" placeholder="e.g., Push-Up Variations" pattern="[\],a-zA-Z0-9 ()\.,-]+">
           </div>
 
           <div class="form-group">
@@ -150,7 +131,7 @@ function getFormHTML() {
 
             <div class="form-group">
               <label for="editName">Exercise Name *</label>
-              <input type="text" id="editName" name="name" required minlength="2" maxlength="100" placeholder="e.g., Push-Up" pattern="[a-zA-Z0-9\s\-,\.\\(\\)]+">
+              <input type="text" id="editName" name="name" required minlength="2" maxlength="100" placeholder="e.g., Push-Up" pattern="[\],a-zA-Z0-9 ()\.,-]+">
             </div>
 
             <div class="form-group">
@@ -160,7 +141,7 @@ function getFormHTML() {
 
             <div class="form-group">
               <label for="editSkill">Skill Category *</label>
-              <input type="text" id="editSkill" name="skill" required minlength="2" maxlength="100" pattern="[a-zA-Z0-9\s\-,\.\\(\\)]+">
+              <input type="text" id="editSkill" name="skill" required minlength="2" maxlength="100" pattern="[\],a-zA-Z0-9 ()\.,-]+">
             </div>
 
             <div class="form-group">

@@ -4,6 +4,7 @@
 window.initExerciseService = async (editId, setStateFn) => {
   return await initExerciseForm(editId, setStateFn);
 };
+window.initExerciseForm = initExerciseForm;
 
 export async function initExerciseForm(editId, setStateFn) {
   const references = { 
@@ -22,16 +23,19 @@ export async function initExerciseForm(editId, setStateFn) {
   
   
   // Setup event listeners
-  setupTabs();
   setupFormListeners(setStateFn);
   
   // Load all data first
   await loadReferences();
   
-  // If editing, load the exercise
+  // If editing, load the exercise directly (no tabs anymore)
   if (editId) {
     sessionStorage.removeItem('editingExerciseId');
-    document.querySelector('[data-tab="edit"]').click();
+    // Switch to edit form directly (no tab buttons)
+    const addForm = document.getElementById('add-form');
+    const editForm = document.getElementById('edit-form');
+    if (addForm) addForm.classList.remove('active');
+    if (editForm) editForm.classList.add('active');
     await loadExerciseForEditById(editId);
   } else {
   }
@@ -49,23 +53,6 @@ export async function initExerciseForm(editId, setStateFn) {
         messageEl.style.display = 'none';
       }, 5000);
     }
-  }
-
-  function setupTabs() {
-    const tabBtns = document.querySelectorAll('.tab-btn');
-    tabBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const tabName = btn.dataset.tab;
-        
-        tabBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        
-        document.querySelectorAll('.form-section').forEach(section => {
-          section.classList.remove('active');
-        });
-        document.getElementById(`${tabName}-form`).classList.add('active');
-      });
-    });
   }
 
   function setupFormListeners(setStateFn) {
@@ -617,12 +604,22 @@ export async function initExerciseForm(editId, setStateFn) {
               <small>${ex.description.substring(0, 60)}...</small>
             </div>
             <div class="exercise-item-actions">
-              <button type="button" class="btn btn-secondary" onclick='loadExerciseForEdit(${ex.id})'>Edit</button>
+              <button type="button" class="btn btn-secondary" data-edit-exercise="${ex.id}">Edit</button>
             </div>
           </div>
         `).join('')}
       `;
     }
+    
+    // Attach click handler for edit buttons (delegated within this scope)
+    listContainer.addEventListener('click', (e) => {
+      const editBtn = e.target.closest('[data-edit-exercise]');
+      if (editBtn) {
+        e.preventDefault();
+        const exerciseId = parseInt(editBtn.dataset.editExercise);
+        loadExerciseForEditById(exerciseId);
+      }
+    });
     
     listContainer.classList.add('active');
   }
@@ -648,7 +645,4 @@ export async function initExerciseForm(editId, setStateFn) {
       timeout = setTimeout(later, wait);
     };
   }
-
-  // Expose loadExerciseForEdit for inline button handlers
-  window.loadExerciseForEdit = loadExerciseForEditById;
 }

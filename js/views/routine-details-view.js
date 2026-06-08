@@ -1,6 +1,7 @@
 // views/routine-details-view.js
 import { renderHeader } from '../components/header.js';
 import { updateState, getState } from '../services/state.js';
+import { show } from '../services/toast-service.js';
 
 export async function renderRoutineDetailsView(type, id) {
   const main = document.getElementById('app');
@@ -242,10 +243,10 @@ export async function renderRoutineDetailsView(type, id) {
       
       // Copy to clipboard
       navigator.clipboard.writeText(routineText).then(() => {
-        alert('Routine copied to clipboard!');
+        show('Routine copied to clipboard!', 'success');
       }).catch(err => {
         console.error('Failed to copy:', err);
-        alert('Failed to copy routine to clipboard.');
+        show('Failed to copy routine to clipboard.', 'error');
       });
     });
   }
@@ -268,11 +269,11 @@ export async function renderRoutineDetailsView(type, id) {
           // Update state with correct property name
           updateState({ routines: remainingRoutines });
           
-          alert('Routine deleted successfully!');
+          show('Routine deleted successfully!', 'success');
           window.location.hash = '#routines';
         } catch (error) {
           console.error('Error deleting routine:', error);
-          alert('Error deleting routine: ' + error.message);
+          show('Error deleting routine: ' + error.message, 'error');
         }
       }
     });

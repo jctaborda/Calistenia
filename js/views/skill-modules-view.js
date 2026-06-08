@@ -4,6 +4,7 @@ import { getState, updateState } from '../services/state.js';
 import { fetchSkillModules } from '../services/api.js';
 import { ModuleStore } from '../services/modules-service.js';
 import { saveForUndo } from '../services/undo-service.js';
+import { show } from '../services/toast-service.js';
 
 export async function renderSkillModulesView() {
   const main = document.getElementById('app');
@@ -150,7 +151,7 @@ export async function renderSkillModulesView() {
               });
             })
             .catch(err => {
-              alert('Error deleting module: ' + err.message);
+              show('Error deleting module: ' + err.message, 'error');
             });
         }
       } else if (type === 'start') {

@@ -7,6 +7,7 @@
 import { updateState } from './state.js';
 import { saveForUndo } from './undo-service.js';
 import { ModuleStore } from './modules-service.js';
+import { show } from './toast-service.js';
 
 /**
  * Initialize all event delegation listeners
@@ -31,6 +32,9 @@ export function initializeEventDelegation(mainElement) {
   
   // Workout handlers
   mainElement.addEventListener('click', handleWorkoutClick);
+  
+  // Error boundary handlers
+  mainElement.addEventListener('click', handleErrorCodeClick);
   
   // Form submission handlers
   mainElement.addEventListener('submit', handleFormSubmit);
@@ -153,7 +157,7 @@ function handleCopyRoutines(type, id) {
   }
   
   if (!routine) {
-    alert('Routine not found.');
+    show('Routine not found.', 'error');
     return;
   }
   
@@ -185,10 +189,10 @@ function handleCopyRoutines(type, id) {
   
   // Copy to clipboard
   navigator.clipboard.writeText(programText).then(() => {
-    alert('Routine copied to clipboard!');
+    show('Routine copied to clipboard!', 'success');
   }).catch(err => {
     console.error('Failed to copy:', err);
-    alert('Failed to copy routine to clipboard.');
+    show('Failed to copy routine to clipboard.', 'error');
   });
 }
 
@@ -371,6 +375,27 @@ function handleFormSubmit(e) {
 }
 
 /**
+ * Handle error boundary button clicks
+ */
+function handleErrorCodeClick(e) {
+  // Go home button (from error-boundary-service)
+  const goHomeBtn = e.target.closest('[data-error-go-home]');
+  if (goHomeBtn) {
+    e.preventDefault();
+    window.location.hash = '#';
+    return;
+  }
+  
+  // Reload page button (from error-boundary-service)
+  const reloadBtn = e.target.closest('[data-error-reload]');
+  if (reloadBtn) {
+    e.preventDefault();
+    location.reload();
+    return;
+  }
+}
+
+/**
  * ==================== ACTION HANDLERS ====================
  */
 
@@ -386,9 +411,7 @@ function handleDeleteRoutines(type, id) {
     const routine = state.routines?.find(p => String(p.id) === String(id));
     if (routine) {
       if (confirm(`Are you sure you want to delete "${routine.name}"? This action cannot be undone.`)) {
-        // Note: In a real app, you'd delete from the database/file
-        // For now, we just show an alert since we can't delete from data.json via browser
-        alert('Routine deleted successfully! (Note: This is a demo - in production, the routine would be deleted from the database)');
+        show('Routine deleted successfully! (Note: This is a demo - in production, the routine would be deleted from the database)', 'success');
         window.location.hash = '#routines';
       }
     }
@@ -454,12 +477,12 @@ function handleConfirmDeleteModule(editId) {
       if (editingModule) {
         saveForUndo('module', editingModule, editId);
       }
-      alert('Module deleted successfully!');
+      show('Module deleted successfully!', 'success');
       window.location.hash = '#skill-modules';
     })
     .catch(error => {
       console.error('Error deleting module:', error);
-      alert('Error deleting module: ' + error.message);
+      show('Error deleting module: ' + error.message, 'error');
     });
 }
 
@@ -469,7 +492,7 @@ function handleShareWorkout() {
   const lastWorkout = history.length > 0 ? history[history.length - 1] : null;
   
   if (!lastWorkout) {
-    alert('No workout to share.');
+    show('No workout to share.', 'info');
     return;
   }
   
@@ -477,7 +500,7 @@ function handleShareWorkout() {
   
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(workoutText).then(() => {
-      alert('✅ Workout summary copied to clipboard!\n\nYou can now paste it in WhatsApp, social media, or any text message.');
+      show('Workout summary copied to clipboard!\n\nYou can now paste it in WhatsApp, social media, or any text message.', 'success');
     }).catch(() => {
       prompt('Copy the workout summary below:', workoutText);
     });
@@ -488,7 +511,7 @@ function handleShareWorkout() {
     textArea.select();
     try {
       document.execCommand('copy');
-      alert('✅ Workout summary copied to clipboard!\n\nYou can now paste it in WhatsApp, social media, or any text message.');
+      show('Workout summary copied to clipboard!\n\nYou can now paste it in WhatsApp, social media, or any text message.', 'success');
     } catch (err) {
       prompt('Copy the workout summary below:', workoutText);
     }
@@ -526,7 +549,7 @@ function handleBodyMetricsSubmit(form) {
   // Validate weight
   const weightValidation = window.ValidationService.validateNumber(weight.toString());
   if (!weightValidation.valid) {
-    alert(weightValidation.error);
+    show(weightValidation.error, 'error');
     return;
   }
   
@@ -534,11 +557,11 @@ function handleBodyMetricsSubmit(form) {
   if (bodyFatInput.value && bodyFatInput.value.trim() !== '') {
     const bodyFatValidation = window.ValidationService.validateNumber(bodyFatInput.value);
     if (!bodyFatValidation.valid) {
-      alert(bodyFatValidation.error);
+      show(bodyFatValidation.error, 'error');
       return;
     }
     if (bodyFat < 0 || bodyFat > 100) {
-      alert('Body fat percentage must be between 0 and 100');
+      show('Body fat percentage must be between 0 and 100', 'error');
       return;
     }
   }
@@ -573,7 +596,7 @@ function handleCommentSubmit(form) {
   const text = textInput.value.trim();
   
   if (!name || !text) {
-    alert('Please enter both a name and comment.');
+    show('Please enter both a name and comment.', 'error');
     return;
   }
   

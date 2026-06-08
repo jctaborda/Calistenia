@@ -64,7 +64,7 @@ export class ErrorBoundaryService {
                        context.includes('Program') ? 'Program Error' : 'Application Error';
 
     const retryButton = onRetry 
-      ? `<button onclick="${this.generateRetryFunction(onRetry)}" class="btn btn-primary">Try Again</button>`
+      ? `<button data-error-retry class="btn btn-primary">Try Again</button>`
       : `<p class="small-text">Please refresh the page to recover.</p>`;
 
     main.innerHTML = header + `
@@ -80,11 +80,22 @@ export class ErrorBoundaryService {
         </div>
         <div class="error-actions">
           ${retryButton}
-          <button onclick="window.location.hash='#'" class="btn btn-secondary">Go Home</button>
-          <button onclick="location.reload()" class="btn btn-secondary">Refresh Page</button>
+          <button data-error-go-home class="btn btn-secondary">Go Home</button>
+          <button data-error-reload class="btn btn-secondary">Refresh Page</button>
         </div>
       </div>
     `;
+
+    // Attach retry handler directly since it's a one-time use button
+    if (onRetry) {
+      const retryBtn = main.querySelector('[data-error-retry]');
+      if (retryBtn) {
+        retryBtn.addEventListener('click', () => {
+          this.retryAttempts.set(context, 0);
+          onRetry();
+        });
+      }
+    }
 
     // Add error boundary styles
     this.ensureErrorStyles();
@@ -134,15 +145,6 @@ export class ErrorBoundaryService {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
-  }
-
-  /**
-   * Generate retry function code that can be embedded in HTML
-   * @param {Function} callback - Retry callback function
-   * @returns {string} - Function code string
-   */
-  static generateRetryFunction(callback) {
-    return `window.errorBoundaryRetry = () => ${callback.toString()}()`;
   }
 
   /**
