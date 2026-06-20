@@ -1,5 +1,6 @@
 // views/skill-modules-view.js - Updated to use service layer with IndexedDB storage
 import { renderHeader } from '../components/header.js';
+import { t } from '../i18n.js';
 import { getState, updateState } from '../services/state.js';
 import { fetchSkillModules } from '../services/api.js';
 import { ModuleStore } from '../services/modules-service.js';
@@ -39,8 +40,8 @@ export async function renderSkillModulesView() {
   } catch (error) {
     main.innerHTML = renderHeader() + `
       <div class="card">
-        <h1>Skill Modules</h1>
-        <p class="error-message">Unable to load skill modules. Please try again later.</p>
+        <h1>${t('skills.title')}</h1>
+        <p class="error-message">${t('skill_modules.load_error')}</p>
       </div>
     `;
     return;
@@ -73,10 +74,10 @@ export async function renderSkillModulesView() {
   main.innerHTML = renderHeader() + `
     <div class="card">
       <div class="view-header">
-        <h1 class="view-title">Skill Modules</h1>
+        <h1 class="view-title">${t('skills.title')}</h1>
         <div class="view-actions">
-          <button class="btn btn-secondary" id="skills-tree-btn">🌳 Skill Tree</button>
-          <button class="btn btn-primary" id="create-module-btn">New Module</button>
+          <button class="btn btn-secondary" id="skills-tree-btn">${t('skills_tree.title')}</button>
+          <button class="btn btn-primary" id="create-module-btn">${t('common.create')}</button>
         </div>
       </div>
       
@@ -91,14 +92,14 @@ export async function renderSkillModulesView() {
                 <h3 class="module-title">${module.name}</h3>
                 <p class="module-description">${module.description}</p>
                 <div class="module-tags">
-                  <span class="tag">${module.category || 'Uncategorized'}</span>
+                  <span class="tag">${module.category || t('skill_modules.uncategorized')}</span>
                   <span class="tag difficulty-${module.difficulty}">${module.difficulty}</span>
-                  <span class="tag">${module.exercises.length} Exercises</span>
+                  <span class="tag">${module.exercises.length} ${t('skills.exercises')}</span>
                 </div>
                 <div class="controls">
-                  <button class="view-btn module-action-btn" data-type="view" data-id="${module.id}">View</button>
-                  <button class="edit-btn module-action-btn" data-type="edit" data-id="${module.id}">Edit</button>
-                  ${isCompleted ? '<span class="completed-badge">✓ Completed</span>' : ''}
+                  <button class="view-btn module-action-btn" data-type="view" data-id="${module.id}">${t('common.view')}</button>
+                  <button class="edit-btn module-action-btn" data-type="edit" data-id="${module.id}">${t('common.edit')}</button>
+                  ${isCompleted ? '<span class="completed-badge">✅ ' + t('skills.complete') + '</span>' : ''}
                 </div>
               </div>
             </li>
@@ -138,7 +139,7 @@ export async function renderSkillModulesView() {
         window.location.hash = `#module-admin/${id}`;
       } else if (type === 'delete') {
         const module = modulesData.find(m => String(m.id) === String(id));
-        if (module && confirm(`Are you sure you want to delete "${module.name}"?`)) {
+        if (module && confirm(t('module_admin.delete_confirm') + '"' + module.name + '"? ' + t('module_admin.delete_action'))) {
           // Delete the module via service
           ModuleStore.delete(id)
             .then(() => {
@@ -151,7 +152,7 @@ export async function renderSkillModulesView() {
               });
             })
             .catch(err => {
-              show('Error deleting module: ' + err.message, 'error');
+              show(t('module_admin.delete_error') + err.message, 'error');
             });
         }
       } else if (type === 'start') {

@@ -1,6 +1,7 @@
 import { renderHeader } from '../components/header.js';
 import { getState, updateState } from '../services/state.js';
 import { formatDate } from '../utils/date-formatter.js';
+import { t } from '../i18n.js';
 
 // Simple number formatter: adds K suffix for thousands
 function formatNumber(num) {
@@ -11,12 +12,11 @@ function formatNumber(num) {
 
 // Get difficulty color for badge class names
 function getDifficultyColor(difficulty) {
-  const colors = {
-    'Beginner': 'beginner',
-    'Intermediate': 'intermediate',
-    'Advanced': 'advanced'
-  };
-  return colors[difficulty] || 'intermediate';
+  const d = (difficulty || '').toLowerCase();
+  if (d.includes('beginner') || d.includes('principiante')) return 'beginner';
+  if (d.includes('intermediate') || d.includes('intermedio')) return 'intermediate';
+  if (d.includes('advanced') || d.includes('avanzado')) return 'advanced';
+  return 'intermediate';
 }
 
 // Helper function to calculate total reps from workout progress
@@ -148,7 +148,9 @@ function getRatingLabel(rating) {
     2: 'Intermediate', 
     3: 'Advanced'
   };
-  return labels[rating] || `Level ${rating}`;
+  const raw = labels[rating] || `Level ${rating}`;
+  // Use t() for dynamic lookup so it respects the current locale
+  return t(`difficulty.${raw.toLowerCase()}`) || raw;
 }
 
 // Helper function to start workout from home button
@@ -188,8 +190,8 @@ async function renderHomeView() {
     <div class="home-container">
   <!-- Welcome Section -->
   <section class="welcome-section">
-  <h1>Welcome back, ${user.name}! 👋</h1>
-  <p class="subtitle">Ready to challenge yourself today?</p>
+  <h1>${t('home.welcome', { name: user.name })}! 👋</h1>
+  <p class="subtitle">${t('home.subtitle')}</p>
   </section>
 
   <!-- Quick Stats Cards -->
@@ -203,7 +205,7 @@ async function renderHomeView() {
   </div>
   <div class="stat-info">
   <span class="stat-number">${totalWorkouts}</span>
-  <span class="stat-label">Total Workouts</span>
+  <span class="stat-label">${t('home.stats.total_workouts')}</span>
   </div>
   </div>
   
@@ -215,7 +217,7 @@ async function renderHomeView() {
   </div>
   <div class="stat-info">
   <span class="stat-number">${currentStreak}</span>
-  <span class="stat-label">Day Streak</span>
+  <span class="stat-label">${t('home.stats.streak')}</span>
   </div>
   </div>
   
@@ -227,7 +229,7 @@ async function renderHomeView() {
   </div>
   <div class="stat-info">
   <span class="stat-number">${formatNumber(totalPushUps)}</span>
-  <span class="stat-label">Total Push-Ups</span>
+  <span class="stat-label">${t('home.stats.pushups')}</span>
   </div>
   </div>
   
@@ -239,81 +241,81 @@ async function renderHomeView() {
   </div>
   <div class="stat-info">
   <span class="stat-number">${achievements.length}</span>
-  <span class="stat-label">Achievements Unlocked</span>
+  <span class="stat-label">${t('home.stats.achievements')}</span>
   </div>
   </div>
   </section>
 
-  <!-- Quick Actions -->
+  <!-- t('home.quick_actions.title') -->
   <section class="quick-actions">
-  <h2 class="card-title">Quick Actions</h2>
+  <h2 class="card-title">${t('home.quick_actions.title')}</h2>
   <div class="action-grid">
   <button class="action-card" data-nav="#routines">
   <svg class="action-icon" viewBox="0 0 24 24" fill="currentColor">
     <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
   </svg>
-  <span class="action-title">Start Routine</span>
-  <span class="action-desc">Choose from pre-made routines</span>
+  <span class="action-title">${t('home.quick_actions.start_routine.title')}</span>
+  <span class="action-desc">${t('home.quick_actions.start_routine.desc')}</span>
   </button>
   
   <button class="action-card" data-action="create-routine">
   <svg class="action-icon" viewBox="0 0 24 24" fill="currentColor">
     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
   </svg>
-  <span class="action-title">Create Routine</span>
-  <span class="action-desc">Build your custom workout</span>
+  <span class="action-title">${t('home.quick_actions.create_routine.title')}</span>
+  <span class="action-desc">${t('home.quick_actions.create_routine.desc')}</span>
   </button>
   <button class="action-card" data-nav="#skills-tree">
   <svg class="action-icon" viewBox="0 0 24 24" fill="currentColor">
     <path d="M12 17.3l6.18-3.73L21 12l-5.5-4.33L17 4l-5 3-5-3-.5 3.67L3 12l2.82 1.57z"/>
   </svg>
-  <span class="action-title">Skill Tree</span>
-  <span class="action-desc">Track your skill progression</span>
+  <span class="action-title">${t('home.quick_actions.skill_tree.title')}</span>
+  <span class="action-desc">${t('home.quick_actions.skill_tree.desc')}</span>
   </button>
   
   <button class="action-card" data-nav="#exercises">
   <svg class="action-icon" viewBox="0 0 24 24" fill="currentColor">
     <path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.8-.7"/>
   </svg>
-  <span class="action-title">Browse Exercises</span>
-  <span class="action-desc">Discover new movements</span>
+  <span class="action-title">${t('home.quick_actions.browse_exercises.title')}</span>
+  <span class="action-desc">${t('home.quick_actions.browse_exercises.desc')}</span>
   </button>
   </div>
   </section>
 
-  <!-- Featured Routines -->
+  <!-- t('home.featured.title') -->
   ${state.routines && state.routines.length > 0 ? `
   <section class="featured-section">
-  <h2 class="card-title">Featured Routines</h2>
+  <h2 class="card-title">${t('home.featured.title')}</h2>
   <div class="programs-grid">
   ${state.routines.slice(0, 3).map(routine => `
   <div class="routine-card">
   <div class="routine-header">
   <h3>${routine.name}</h3>
-  <span class="difficulty-badge difficulty-${getDifficultyColor(routine.difficulty)}">${routine.difficulty || 'Intermediate'}</span>
+  <span class="difficulty-badge difficulty-${getDifficultyColor(routine.difficulty)}">${routine.difficulty || '${t("exercises.intermediate")}'}</span>
   </div>
   <p class="routine-desc">${routine.description || 'A comprehensive workout routine'}</p>
   <div class="routine-stats">
-  <span>📅 ${routine.duration || '30 min'}</span>
+  <span>📅 ${routine.duration || `${t('routine_details.duration')}: 30 min`}</span>
   <span>💪 ${routine.exercises?.length || 0} exercises</span>
   ${routine.category ? `<span class="routine-meta-item">📁 ${state.categories?.find(c => String(c.id) === String(routine.category))?.name || routine.category}</span>` : ''}
   </div>
-  <button class="btn btn-primary" data-start-routine data-routine-index="${state.routines.indexOf(routine)}">Start Now</button>
+  <button class="btn btn-primary" data-start-routine data-routine-index="${state.routines.indexOf(routine)}">${t('home.featured.start')}</button>
   </div>
   `).join('')}
   </div>
   </section>
   ` : ''}
 
-  <!-- Recent Activity -->
+  <!-- t('home.recent.title') -->
   <section class="recent-section">
-  <h2 class="card-title">Recent Activity</h2>
+  <h2 class="card-title">${t('home.recent.title')}</h2>
   ${recentWorkouts.length > 0 ? `
   <div class="workout-history">
   ${recentWorkouts.map(workout => `
   <div class="workout-item">
   <div class="workout-header">
-  <span class="workout-title">${workout.routine?.name || 'Custom Workout'}</span>
+  <span class="workout-title">${workout.routine?.name || t('summary.custom_workout')}</span>
   <span class="workout-date">${formatDate(workout.date)}</span>
   </div>
   <div class="workout-details">
@@ -325,16 +327,16 @@ async function renderHomeView() {
   </div>
   ` : `
   <div class="no-data">
-  <p>No workouts completed yet. Start your first workout to see activity here!</p>
-  <button class="btn btn-primary" data-nav="#routines">Start Workout</button>
+  <p>${t('home.no_workouts')}</p>
+  <button class="btn btn-primary" data-nav="#routines">${t('home.no_workouts.cta')}</button>
   </div>
   `}
   </section>
 
   <!-- Motivational Quote -->
   <section class="quote-section">
-  <blockquote>"The only bad workout is the one that didn't happen."</blockquote>
-  <cite>- Unknown</cite>
+  <blockquote>${t('home.quote')}</blockquote>
+  <cite>${t('home.quote_author')}</cite>
   </section>
     </div>
   `;

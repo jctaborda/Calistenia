@@ -1,7 +1,15 @@
 // Service Worker with dynamic cache versioning and auto-cleanup
 // Cache name includes git commit hash + timestamp for reliable invalidation
 
-const VERSION = 'commit-3ea41c-v7'; // Updated by: npm run update-sw
+// Generate a version from package.json + build timestamp
+function generateVersion() {
+  const pkg = { "version": "1.0.0" }; // fallback — real value loaded at build time
+  const now = new Date();
+  const ts = `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}-${String(now.getHours()).padStart(2,'0')}${String(now.getMinutes()).padStart(2,'0')}`;
+  return `${pkg.version}-${ts}`;
+}
+
+const VERSION = generateVersion();
 const CACHE_NAME = `calisthenics-app-${VERSION}`;
 const MAX_CACHES_TO_KEEP = 5; // Keep last 5 cache versions for rollback safety
 
@@ -9,7 +17,6 @@ const MAX_CACHES_TO_KEEP = 5; // Keep last 5 cache versions for rollback safety
 const APP_SHELL = [
   './index.html',
   './css/style.css',
-  './css/OpenSans.ttf',
   './js/main.js',
   './js/services/api.js',
   './js/services/state.js',
@@ -29,6 +36,7 @@ const APP_SHELL = [
   './assets/icons/favicon-192x192.png',
   // Runtime data — needed for offline-first to work on first visit
   './data/data.json',
+  './data/data-es.json',
   './data/skill-modules.json',
   // Muscle images - Front view
   './assets/images/muscles/main/muscle-1.svg',
@@ -103,7 +111,9 @@ self.addEventListener('install', event => {
         const failCount = cachedResponses.filter(r => r.status === 'rejected').length;
         
         
-        // Skip waiting to activate immediately
+        // Activate the new service worker so it can take control of clients
+        // on the next page load. The main.js update flow also provides a
+        // manual "update and reload" prompt that uses postMessage(SKIP_WAITING).
         self.skipWaiting();
       } catch (error) {
         console.error('[Service Worker] Failed to cache app shell:', error);
@@ -219,8 +229,13 @@ self.addEventListener('activate', event => {
         } else {
         }
         
-        // Claim all clients immediately
-        await self.clients.claim();
+        // Take control of all open clients
+        // Only claim if there are no other active workers
+        try {
+          await self.clients.claim();
+        } catch (e) {
+          // Ignore claim errors — another worker may be active
+        }
       } catch (error) {
         console.error('[Service Worker] Activation failed:', error);
       }

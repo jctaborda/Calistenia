@@ -1,3 +1,4 @@
+import { EXERCISE_NAME_MAX_LENGTH, DESCRIPTION_MAX_LENGTH, NUMERIC_INPUT_MAX, TOAST_TIMEOUTS } from '../constants.js';
 /**
  * ValidationService - Provides comprehensive form validation utilities
  * Centralized validation logic for all forms in the application
@@ -18,8 +19,8 @@ export class ValidationService {
       return { valid: false, error: 'Exercise name must be at least 2 characters' };
     }
     
-    if (value.length > 100) {
-      return { valid: false, error: 'Exercise name must not exceed 100 characters' };
+    if (value.length > EXERCISE_NAME_MAX_LENGTH) {
+      return { valid: false, error: `Exercise name must not exceed ${EXERCISE_NAME_MAX_LENGTH} characters` };
     }
     
     // Prevent HTML injection
@@ -40,8 +41,8 @@ export class ValidationService {
       return { valid: true, error: null }; // Optional field
     }
     
-    if (value.length > 2000) {
-      return { valid: false, error: 'Description must not exceed 2000 characters' };
+    if (value.length > DESCRIPTION_MAX_LENGTH) {
+      return { valid: false, error: `Description must not exceed ${DESCRIPTION_MAX_LENGTH} characters` };
     }
     
     // Prevent HTML injection
@@ -110,35 +111,46 @@ export class ValidationService {
 
   /**
    * Validate form fields collectively
-   * @param {FormData} formData - Form data object
+   * @param {FormData|Object} formData - Form data object or plain object with field values
    * @returns {{valid: boolean, errors: object}}
    */
   static validateExerciseForm(formData) {
+    // Normalize: accept both FormData and plain objects
+    function getField(obj, key) {
+      if (obj instanceof FormData) {
+        return obj.get(key);
+      }
+      if (obj && typeof obj === 'object') {
+        return obj[key];
+      }
+      return undefined;
+    }
+
     const errors = {};
     let hasErrors = false;
 
     // Required fields
-    const nameValidation = this.validateExerciseName(formData.get('name'));
+    const nameValidation = this.validateExerciseName(getField(formData, 'name'));
     if (!nameValidation.valid) {
       errors.name = nameValidation.error;
       hasErrors = true;
     }
 
-    const descriptionValidation = this.validateDescription(formData.get('description'));
+    const descriptionValidation = this.validateDescription(getField(formData, 'description'));
     if (!descriptionValidation.valid) {
       errors.description = descriptionValidation.error;
       hasErrors = true;
     }
 
     // Required fields
-    if (!formData.get('skill') || formData.get('skill').trim() === '') {
+    if (!getField(formData, 'skill') || String(getField(formData, 'skill')).trim() === '') {
       errors.skill = 'Skill category is required';
       hasErrors = true;
     }
 
     // Validate URL fields (optional but must be valid URLs or relative paths)
-    const image_url = formData.get('image_url');
-    if (image_url && image_url.length > 0) {
+    const image_url = getField(formData, 'image_url');
+    if (image_url && String(image_url).length > 0) {
       // Accept both absolute URLs and relative paths
       const isValidUrl = this.isValidImageUrl(image_url);
       if (!isValidUrl.valid) {
@@ -147,8 +159,8 @@ export class ValidationService {
       }
     }
 
-    const video_url = formData.get('video_url');
-    if (video_url && video_url.length > 0) {
+    const video_url = getField(formData, 'video_url');
+    if (video_url && String(video_url).length > 0) {
       // Accept both absolute URLs and relative paths
       const isValidUrl = this.isValidVideoUrl(video_url);
       if (!isValidUrl.valid) {
@@ -183,8 +195,8 @@ export class ValidationService {
       return { valid: false, error: 'Cannot be negative' };
     }
 
-    if (num > 10000) {
-      return { valid: false, error: 'Value too large' };
+    if (num > NUMERIC_INPUT_MAX) {
+      return { valid: false, error: `Value too large (max ${NUMERIC_INPUT_MAX})` };
     }
 
     return { valid: true, error: null };
@@ -326,11 +338,11 @@ function showMessage(text, type) {
     const msgEl = messageEls[0];
     msgEl.textContent = text;
     msgEl.className = `message ${type}`;
-    msgEl.style.display = 'block';
+    msgEl.classList.add('visible');
     
     setTimeout(() => {
-      msgEl.style.display = 'none';
-    }, 5000);
+      msgEl.classList.remove('visible');
+    }, TOAST_TIMEOUTS.info);
   } else {
     // Fallback: alert (shouldn't happen in normal usage)
   }

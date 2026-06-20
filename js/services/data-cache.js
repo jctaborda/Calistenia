@@ -1,4 +1,5 @@
-// Data Cache - Store JSON reference data in IndexedDB for fast offline access
+// Data Cache with i18n support - Store JSON reference data in IndexedDB for fast offline access
+// Loads locale-specific data files (data.json for English, data-es.json for Spanish)
 import { 
   storeExercises, 
   exercisesLoad,
@@ -15,9 +16,25 @@ import {
   storeDataVersion,
   loadDataVersion
 } from './database.js';
+import { show } from './toast-service.js';
+import { loadFromCacheOrFetch } from './cache-utils.js';
+
+// Avoid circular dependency with i18n.js - get locale from localStorage directly
+function getLocale() {
+  return localStorage.getItem('locale') || 'en';
+}
 
 let cacheInitialized = false;
 let cacheInitializationPromise = null;
+let cachedDataFile = null; // Stores the parsed data.json to distribute to stores
+
+/**
+ * Get the appropriate data filename based on current locale
+ */
+export function getDataFilename() {
+  const locale = getLocale();
+  return locale === 'es' ? './data/data-es.json' : './data/data.json';
+}
 
 /**
  * Prevents concurrent runs of initializeDataCache().
@@ -48,42 +65,79 @@ async function initializeDataCacheInternal() {
   if (cacheInitialized) return true;
   
   try {
-    // Load all reference data and cache to IndexedDB
-    const [exercises, categories, equipment, muscles, difficulties, routines, serverVersion] = await Promise.all([
-      loadAllExercises(),
-      loadAllCategories(),
-      loadAllEquipment(),
-      loadAllMuscles(),
-      loadAllDifficulties(),
-      loadAllRoutines(),
-      fetchServerVersion()
-    ]);
+    // Fetch data.json ONCE and distribute to all stores
+    const data = await fetchLocaleData();
     
-    // Store in IndexedDB for offline access
-    await storeExercises(exercises);
-    await storeCategories(categories);
-    await storeEquipment(equipment);
-    await storeMuscles(muscles);
-    await storeDifficulties(difficulties);
-    await storeRoutines(routines);
+    // Preserve existing user-added exercises before replacing reference data
+    const db = await import('./database.js');
+    const existingExercises = await db.exercisesLoad();
+    const existingRoutines = await db.routinesLoad();
     
-    // Store the server version for future sync checks
-    if (serverVersion) {
-      await storeDataVersion(serverVersion);
+    // Build a map of existing user exercises by ID
+    const existingMap = new Map();
+    existingExercises.forEach(ex => existingMap.set(String(ex.id), ex));
+    
+    // Merge: start with data.json exercises, overlay any user-added ones
+    const mergedExercises = [...(data.exercises || [])];
+    const existingIds = new Set(mergedExercises.map(e => String(e.id)));
+    existingExercises.forEach(ex => {
+      if (!existingIds.has(String(ex.id))) {
+        mergedExercises.push(ex);
+      }
+    });
+    
+    // Store merged exercises in IndexedDB
+    if (mergedExercises.length > 0) {
+      await db.storeExercises(mergedExercises);
     }
+    
+    // Store reference data (categories, equipment, etc.)
+    if (data.categories && Array.isArray(data.categories)) {
+      await storeCategories(data.categories);
+    }
+    if (data.equipment && Array.isArray(data.equipment)) {
+      await storeEquipment(data.equipment);
+    }
+    if (data.muscles && Array.isArray(data.muscles)) {
+      await storeMuscles(data.muscles);
+    }
+    if (data.difficulties && Array.isArray(data.difficulties)) {
+      await storeDifficulties(data.difficulties);
+    }
+    if (data.routines && Array.isArray(data.routines)) {
+      await storeRoutines(data.routines);
+    }
+    if (data.dataVersion) {
+      await storeDataVersion(data.dataVersion);
+    }
+    
+    // Keep the parsed data in memory for individual load functions
+    cachedDataFile = data;
     
     cacheInitialized = true;
     return true;
   } catch (error) {
     console.error('Error initializing data cache:', error);
+    show('Failed to initialize data cache. Some features may not work correctly.', 'error');
     return false;
   }
 }
 
-// Fetch the data version from data.json
+// Fetch and parse locale-specific data.json
+async function fetchLocaleData() {
+  const filename = getDataFilename();
+  const response = await fetch(filename);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch ${filename}: ${response.status} ${response.statusText}`);
+  }
+  return response.json();
+}
+
+// Fetch the data version from locale-specific data.json
 async function fetchServerVersion() {
   try {
-    const response = await fetch('./data/data.json');
+    const filename = getDataFilename();
+    const response = await fetch(filename);
     const data = await response.json();
     return data.dataVersion || null;
   } catch (error) {
@@ -113,17 +167,21 @@ export async function isCacheStale() {
     return stale;
   } catch (error) {
     console.warn('Error checking cache freshness:', error);
+    show('Could not verify data freshness. Cache may be stale.', 'warning');
     return false;
   }
 }
 
-// Force re-sync cache from data.json (clears and reloads all data)
+// Force re-sync cache from data.json (preserves user-added exercises)
 export async function syncDataCache() {
   try {
+    // Preserve existing user-added exercises before clearing
+    const db = await import('./database.js');
+    const existingExercises = await db.exercisesLoad();
+    const existingRoutines = await db.routinesLoad();
     
-    // Clear all cached data
+    // Clear all cached reference data (categories, equipment, etc.)
     await Promise.all([
-      storeExercises([]),
       storeCategories([]),
       storeEquipment([]),
       storeMuscles([]),
@@ -133,139 +191,55 @@ export async function syncDataCache() {
     
     // Reset initialization flag
     cacheInitialized = false;
+    cachedDataFile = null;
     
-    // Re-initialize with fresh data
+    // Re-initialize with fresh reference data from data.json
     await initializeDataCacheInternal();
+    
+    // Re-merge user-added exercises back into IndexedDB
+    if (existingExercises.length > 0) {
+      await db.storeExercises(existingExercises);
+    }
+    if (existingRoutines.length > 0) {
+      await db.storeRoutines(existingRoutines);
+    }
     
     return true;
   } catch (error) {
     console.error('Error syncing data cache:', error);
+    show('Failed to sync data cache. Please try again.', 'error');
     return false;
   }
 }
 
-// Load exercises from cache or file
+// Load exercises from cache or in-memory data
 export async function loadAllExercises() {
-  try {
-    const cached = await exercisesLoad();
-    if (cached && Array.isArray(cached) && cached.length > 0) {
-      return cached;
-    }
-  } catch (error) {
-    console.warn('No cached exercises, loading from file:', error);
-  }
-  
-  // Load from data.json as fallback
-  const response = await fetch('./data/data.json');
-  if (!response.ok) {
-    throw new Error(`Failed to fetch data.json: ${response.status} ${response.statusText}`);
-  }
-  const data = await response.json();
-  // Save to IndexedDB for future loads
-  if (data.exercises && Array.isArray(data.exercises) && data.exercises.length > 0) {
-    await storeExercises(data.exercises);
-  }
-  return data.exercises || [];
+  return loadFromCacheOrFetch(exercisesLoad, cachedDataFile?.exercises, 'exercises');
 }
 
-// Load categories from cache or file
+// Load categories from cache or in-memory data
 export async function loadAllCategories() {
-  try {
-    const cached = await categoriesLoad();
-    if (cached && cached.length > 0) {
-      return cached;
-    }
-  } catch (error) {
-    console.warn('No cached categories, loading from file');
-  }
-  
-  const response = await fetch('./data/data.json');
-  const data = await response.json();
-  // Save to IndexedDB for future loads
-  if (data.categories && data.categories.length > 0) {
-    await storeCategories(data.categories);
-  }
-  return data.categories || [];
+  return loadFromCacheOrFetch(categoriesLoad, cachedDataFile?.categories, 'categories');
 }
 
-// Load equipment from cache or file
+// Load equipment from cache or in-memory data
 export async function loadAllEquipment() {
-  try {
-    const cached = await equipmentLoad();
-    if (cached && cached.length > 0) {
-      return cached;
-    }
-  } catch (error) {
-    console.warn('No cached equipment, loading from file');
-  }
-  
-  const response = await fetch('./data/data.json');
-  const data = await response.json();
-  // Save to IndexedDB for future loads
-  if (data.equipment && data.equipment.length > 0) {
-    await storeEquipment(data.equipment);
-  }
-  return data.equipment || [];
+  return loadFromCacheOrFetch(equipmentLoad, cachedDataFile?.equipment, 'equipment');
 }
 
-// Load muscles from cache or file
+// Load muscles from cache or in-memory data
 export async function loadAllMuscles() {
-  try {
-    const cached = await musclesLoad();
-    if (cached && cached.length > 0) {
-      return cached;
-    }
-  } catch (error) {
-    console.warn('No cached muscles, loading from file');
-  }
-  
-  const response = await fetch('./data/data.json');
-  const data = await response.json();
-  // Save to IndexedDB for future loads
-  if (data.muscles && data.muscles.length > 0) {
-    await storeMuscles(data.muscles);
-  }
-  return data.muscles || [];
+  return loadFromCacheOrFetch(musclesLoad, cachedDataFile?.muscles, 'muscles');
 }
 
-// Load difficulties from cache or file
+// Load difficulties from cache or in-memory data
 export async function loadAllDifficulties() {
-  try {
-    const cached = await difficultiesLoad();
-    if (cached && cached.length > 0) {
-      return cached;
-    }
-  } catch (error) {
-    console.warn('No cached difficulties, loading from file');
-  }
-  
-  const response = await fetch('./data/data.json');
-  const data = await response.json();
-  // Save to IndexedDB for future loads
-  if (data.difficulties && data.difficulties.length > 0) {
-    await storeDifficulties(data.difficulties);
-  }
-  return data.difficulties || [];
+  return loadFromCacheOrFetch(difficultiesLoad, cachedDataFile?.difficulties, 'difficulties');
 }
 
-// Load routines from cache or file
+// Load routines from cache or in-memory data
 export async function loadAllRoutines() {
-  try {
-    const cached = await routinesLoad();
-    if (cached && cached.length > 0) {
-      return cached;
-    }
-  } catch (error) {
-    console.warn('No cached routines, loading from file');
-  }
-  
-  const response = await fetch('./data/data.json');
-  const data = await response.json();
-  // Save to IndexedDB for future loads
-  if (data.routines && data.routines.length > 0) {
-    await storeRoutines(data.routines);
-  }
-  return data.routines || [];
+  return loadFromCacheOrFetch(routinesLoad, cachedDataFile?.routines, 'routines');
 }
 
 // Clear all data cache (for debugging/testing)
@@ -280,7 +254,69 @@ export async function clearDataCache() {
       storeRoutines([])
     ]);
     cacheInitialized = false;
+    cachedDataFile = null;
   } catch (error) {
     console.error('Error clearing data cache:', error);
+    show('Failed to clear data cache.', 'error');
+  }
+}
+
+// Clear all data cache AND force reload from locale-specific file
+// Used when switching locales to ensure fresh data is loaded
+export async function reloadCacheForLocale() {
+  try {
+    // Preserve existing user-added exercises before clearing
+    const db = await import('./database.js');
+    const existingExercises = await db.exercisesLoad();
+    
+    // Clear IndexedDB reference data
+    await clearDataCache();
+    
+    // Clear JS in-memory caches by re-fetching from locale file
+    const filename = getDataFilename();
+    const response = await fetch(filename + '?t=' + Date.now());
+    if (!response.ok) throw new Error(`Failed to fetch ${filename}`);
+    const data = await response.json();
+    
+    // Merge user exercises with fresh reference data
+    const mergedExercises = [...(data.exercises || [])];
+    const existingIds = new Set(mergedExercises.map(e => String(e.id)));
+    existingExercises.forEach(ex => {
+      if (!existingIds.has(String(ex.id))) {
+        mergedExercises.push(ex);
+      }
+    });
+    
+    // Store all data from the locale file
+    if (mergedExercises.length > 0) {
+      await db.storeExercises(mergedExercises);
+    }
+    if (data.categories && Array.isArray(data.categories)) {
+      await storeCategories(data.categories);
+    }
+    if (data.equipment && Array.isArray(data.equipment)) {
+      await storeEquipment(data.equipment);
+    }
+    if (data.muscles && Array.isArray(data.muscles)) {
+      await storeMuscles(data.muscles);
+    }
+    if (data.difficulties && Array.isArray(data.difficulties)) {
+      await storeDifficulties(data.difficulties);
+    }
+    if (data.routines && Array.isArray(data.routines)) {
+      await storeRoutines(data.routines);
+    }
+    if (data.dataVersion) {
+      await storeDataVersion(data.dataVersion);
+    }
+    
+    // Cache in memory too
+    cachedDataFile = data;
+    cacheInitialized = true;
+    return true;
+  } catch (error) {
+    console.error('Error reloading cache for locale:', error);
+    show('Failed to reload data cache for locale. Please try again.', 'error');
+    return false;
   }
 }

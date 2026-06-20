@@ -1,5 +1,6 @@
 import { getState, updateState } from '../services/state.js';
 import { renderHeader } from '../components/header.js';
+import { t } from '../i18n.js';
 import { formatDate, formatWorkoutDate } from '../utils/date-formatter.js';
 import { show } from '../services/toast-service.js';
 import { formatDuration } from '../utils/formatters.js';
@@ -24,7 +25,7 @@ export function renderWorkoutDetailView(workoutIndex) {
   main.innerHTML = renderHeader() + `
     <div class="card">
       <div class="workout-detail-header">
-        <h1>${workout.routine?.name || 'Custom Workout'}</h1>
+        <h1>${workout.routine?.name || t('summary.custom_workout')}</h1>
         <p class="workout-date">${formatDate(workout.date)}</p>
       </div>
 
@@ -65,7 +66,7 @@ export function renderWorkoutDetailView(workoutIndex) {
         ${exercisesList.map((exercise, exIndex) => `
           <div class="exercise-card">
             <h3>${exercise.exerciseName}</h3>
-            <p class="exercise-target"><strong>Target:</strong> ${exercise.targetSets} sets × ${exercise.targetReps} reps</p>
+            <p class="exercise-target"><strong>Target:</strong> ${exercise.targetSets} sets ✕ ${exercise.targetReps} reps</p>
             
             <div class="sets-table">
               <table>
@@ -197,7 +198,7 @@ function copyWorkoutToMemory(workout, exercises) {
   const stats = calculateWorkoutStatistics(workout);
   
   // Create a formatted text summary
-  let summary = `🏋️ **Workout: ${workout.routine?.name || 'Custom Workout'}**\n`;
+  let summary = `🏋 **Workout: ${workout.routine?.name || t('summary.custom_workout')}**\n`;
   summary += `📅 Date: ${formatDate(workout.date)}\n\n`;
   
   summary += `📊 **Statistics**\n`;
@@ -210,7 +211,7 @@ function copyWorkoutToMemory(workout, exercises) {
   summary += `💪 **Exercises**\n`;
   exercises.forEach((exercise, exIndex) => {
     summary += `\n**${exercise.exerciseName}**\n`;
-    summary += `Target: ${exercise.targetSets} sets × ${exercise.targetReps} reps\n`;
+    summary += `Target: ${exercise.targetSets} sets ✕ ${exercise.targetReps} reps\n`;
     summary += `Sets:\n`;
     
     exercise.actualReps.forEach((reps, setIndex) => {
@@ -244,7 +245,6 @@ function shareWorkout(workout, exercises, stats) {
 }
 
 // Export for router usage
-window.renderWorkoutDetailView = renderWorkoutDetailView;
 
 // Named + default export for maximum flexibility (Pattern 3)
 export default { render: renderWorkoutDetailView };

@@ -1,0 +1,5493 @@
+{
+  "dataVersion": "2026-06-20T23:00:48.956Z",
+  "categories": [
+    {
+      "id": 8,
+      "name": "Brazos"
+    },
+    {
+      "id": 9,
+      "name": "Piernas"
+    },
+    {
+      "id": 10,
+      "name": "Abdominales"
+    },
+    {
+      "id": 11,
+      "name": "Pecho"
+    },
+    {
+      "id": 12,
+      "name": "Espalda"
+    },
+    {
+      "id": 13,
+      "name": "Hombros"
+    },
+    {
+      "id": 14,
+      "name": "Pantorrillas"
+    },
+    {
+      "id": 15,
+      "name": "Cardio"
+    },
+    {
+      "id": 16,
+      "name": "Sin definir"
+    },
+    {
+      "id": 17,
+      "name": "Empuje"
+    },
+    {
+      "id": 18,
+      "name": "Jalón"
+    },
+    {
+      "id": 19,
+      "name": "Cuerpo completo"
+    }
+  ],
+  "equipment": [
+    {
+      "id": 1,
+      "name": "Barras de fondos"
+    },
+    {
+      "id": 2,
+      "name": "Bandas elásticas"
+    },
+    {
+      "id": 3,
+      "name": "Mancuerna"
+    },
+    {
+      "id": 4,
+      "name": "Esterilla de gimnasio"
+    },
+    {
+      "id": 5,
+      "name": "Paralletes"
+    },
+    {
+      "id": 6,
+      "name": "Barra de dominadas"
+    },
+    {
+      "id": 7,
+      "name": "Ninguna (ejercicio con peso corporal)"
+    },
+    {
+      "id": 8,
+      "name": "Banco"
+    },
+    {
+      "id": 9,
+      "name": "Banco inclinado"
+    },
+    {
+      "id": 10,
+      "name": "Pesa rusa"
+    },
+    {
+      "id": 11,
+      "name": "Anillas gimnásticas"
+    },
+    {
+      "id": 12,
+      "name": "Banco/Step"
+    },
+    {
+      "id": 13,
+      "name": "Chaleco/cinturón con peso"
+    },
+    {
+      "id": 14,
+      "name": "Poste/barra vertical"
+    },
+    {
+      "id": 15,
+      "name": "Peso corporal"
+    },
+    {
+      "id": 16,
+      "name": "Suelo"
+    },
+    {
+      "id": 17,
+      "name": "Pared"
+    }
+  ],
+  "exercises": [
+    {
+      "id": 52,
+      "name": "Ab Rollout",
+      "description": "Arrodíllate y rueda hacia adelante con las manos en un banco, extendiendo los abdominales completamente.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        12
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6,
+        14
+      ],
+      "prerequisites": [
+        45
+      ],
+      "progressions": [],
+      "formCues": [
+        "Arrodíllate con la rueda abdominal",
+        "Rueda hacia adelante manteniendo el core apretado",
+        "Ve solo tan lejos como puedas mantener la forma",
+        "Tira hacia atrás con los abdominales, no empujes"
+      ],
+      "commonMistakes": [
+        "No dejes que las caderas se hundan",
+        "Evita ir demasiado lejos demasiado pronto",
+        "No redondees la parte baja de la espalda"
+      ],
+      "muscles_secondary": [
+        2,
+        18
+      ]
+    },
+    {
+      "id": 97,
+      "name": "Abductor Walk",
+      "description": "Con una banda alrededor de las piernas, camina hacia los lados manteniendo la tensión para trabajar los abductores.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        2
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8
+      ],
+      "prerequisites": [
+        96
+      ],
+      "progressions": [],
+      "formCues": [
+        "Banda en los tobillos, ligera flexión de rodillas",
+        "Camina hacia los lados manteniendo la tensión en la banda",
+        "Mantén las rodillas hacia afuera durante el movimiento",
+        "Camina una distancia determinada y luego regresa"
+      ],
+      "commonMistakes": [
+        "No estires las piernas completamente",
+        "Evita que las caderas se eleven",
+        "No apresures la caminata"
+      ],
+      "muscles_secondary": [
+        10
+      ]
+    },
+    {
+      "id": 91,
+      "name": "Adductor Plank",
+      "description": "En una plancha lateral, levanta la pierna superior ligeramente, activando los aductores para la estabilidad.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [
+        54
+      ],
+      "progressions": [],
+      "formCues": [
+        "Posición de plancha lateral con la pierna superior cruzada por debajo",
+        "Presiona la rodilla inferior contra el suelo",
+        "Activa los músculos internos de los muslos",
+        "Mantén el core apretado"
+      ],
+      "commonMistakes": [
+        "No dejes que las caderas se hundan",
+        "Evita relajar la pierna activada",
+        "No pongas demasiado peso en el hombro inferior"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 93,
+      "name": "Adductor Side Raise",
+      "description": "Acuéstate de lado, levanta la pierna inferior contra la gravedad, aislando los aductores.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        20
+      ],
+      "prerequisites": [
+        91
+      ],
+      "progressions": [],
+      "formCues": [
+        "De pie con banda en los tobillos o tobillos cruzados",
+        "Levanta la pierna cruzando ligeramente el cuerpo",
+        "Activa los músculos del muslo interno",
+        "Baja lentamente"
+      ],
+      "commonMistakes": [
+        "No uses impulso para balancear la pierna",
+        "Evita inclinarte hacia afuera del movimiento",
+        "No flexiones excesivamente la pierna de apoyo"
+      ],
+      "muscles_secondary": [
+        8
+      ]
+    },
+    {
+      "id": 14,
+      "name": "Archer Pull-Up",
+      "description": "Un brazo tira mientras el otro se extiende hacia los lados, fortaleciendo la espalda de forma unilateral.",
+      "skill": "Variaciones de dominadas",
+      "equipment": [],
+      "difficulty": [
+        3
+      ],
+      "image_url": "assets/images/exercises/3293-72BC5Za.jpg",
+      "video_url": "assets/videos/exercises/3293-72BC5Za.gif",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [
+        11
+      ],
+      "progressions": [
+        120
+      ],
+      "formCues": [
+        "Agarre amplio por encima",
+        "Desplaza el peso hacia un lado al tirar",
+        "Mantén el otro brazo recto",
+        "Tira hacia un hombro",
+        "Alterna lados con cada repetición"
+      ],
+      "commonMistakes": [
+        "No gires el torso",
+        "No ayudes con el brazo que no trabaja",
+        "No acortes el rango de movimiento"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 5,
+      "name": "Archer Push-Up",
+      "description": "Un brazo se extiende hacia el lado mientras el otro se flexiona, imitando el tiro de un arquero, para fortalecer el pecho de forma unilateral.",
+      "skill": "Variaciones de flexiones",
+      "equipment": [],
+      "difficulty": [
+        3
+      ],
+      "image_url": "assets/images/exercises/3294-A9qxk2F.jpg",
+      "video_url": "assets/videos/exercises/3294-A9qxk2F.gif",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [
+        3,
+        9,
+        2
+      ],
+      "progressions": [
+        4,
+        25
+      ],
+      "formCues": [
+        "Amplía considerablemente la separación de las manos",
+        "Desplaza el peso hacia un brazo al bajar",
+        "Mantén el otro brazo recto como el arco de un arquero",
+        "Empuja hacia el centro desde cada lado"
+      ],
+      "commonMistakes": [
+        "No gires el torso",
+        "Evita que el codo del brazo que trabaja se abra",
+        "No toques el suelo con la mano del brazo que no trabaja"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 73,
+      "name": "Assisted Pistol Squat",
+      "description": "Usa una banda para soporte mientras realizas una sentadilla con una pierna.",
+      "skill": "Sentadilla pistol",
+      "equipment": [
+        2
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8,
+        10,
+        11
+      ],
+      "prerequisites": [
+        71
+      ],
+      "progressions": [
+        68
+      ],
+      "formCues": [
+        "Sujétate para el equilibrio",
+        "Párate sobre una pierna, la otra extendida hacia adelante",
+        "Baja lo más posible sobre una pierna",
+        "Usa los brazos para asistencia mínima"
+      ],
+      "commonMistakes": [
+        "No dejes que la rodilla colapse hacia adentro",
+        "Evita que el talón se eleve del suelo",
+        "No redondees la espalda"
+      ],
+      "muscles_secondary": [
+        7,
+        20
+      ]
+    },
+    {
+      "id": 20,
+      "name": "Assisted Pull-Up",
+      "description": "Usa bandas elásticas para asistir en la subida, ideal para principiantes.",
+      "skill": "Variaciones de dominadas",
+      "equipment": [],
+      "difficulty": [
+        1
+      ],
+      "image_url": "assets/images/exercises/0017-kiJ4Z2K.jpg",
+      "video_url": "assets/videos/exercises/0017-kiJ4Z2K.gif",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [
+        119
+      ],
+      "progressions": [
+        11
+      ],
+      "formCues": [
+        "Usa banda o máquina para soporte",
+        "Enfócate en la forma correcta, no solo en las repeticiones",
+        "Comienza con más asistencia",
+        "Reduce la ayuda gradualmente"
+      ],
+      "commonMistakes": [
+        "No dependas demasiado de la asistencia",
+        "Evita rangos de movimiento parciales",
+        "No uses impulso con las piernas"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 119,
+      "name": "Australian Pull Up",
+      "description": "Una variación de remo con peso corporal realizada en una barra a la altura de la cintura, requiriendo que te acuestes debajo de la barra y tires del pecho hacia arriba mientras mantienes el cuerpo en línea recta, excelente para fortalecer la espalda.",
+      "skill": "Variaciones de dominadas",
+      "equipment": [],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [],
+      "progressions": [
+        20,
+        19
+      ],
+      "formCues": [
+        "Coloca el cuerpo debajo de la barra, pies en el suelo",
+        "Agarra la barra a la anchura de los hombros",
+        "Tira del pecho hacia la barra manteniendo el cuerpo recto",
+        "Baja con control"
+      ],
+      "commonMistakes": [
+        "No dejes que el cuerpo se hunda",
+        "Evita ir demasiado vertical",
+        "No tires solo con los brazos"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 63,
+      "name": "Back Extension",
+      "description": "Acostado boca abajo en un banco, levanta el torso para trabajar los músculos de la espalda baja.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        12
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        12
+      ],
+      "muscles": [
+        16
+      ],
+      "prerequisites": [
+        62
+      ],
+      "progressions": [
+        64
+      ],
+      "formCues": [
+        "Acuéstate boca abajo en el banco de hiperextensión",
+        "Cruza los brazos o detrás de la cabeza",
+        "Levanta el pecho usando la espalda baja",
+        "Baja con control"
+      ],
+      "commonMistakes": [
+        "No hiperextiendas excesivamente",
+        "Evita usar impulso para levantar",
+        "No redondees la espalda durante la bajada"
+      ],
+      "muscles_secondary": [
+        8,
+        11
+      ]
+    },
+    {
+      "id": 17,
+      "name": "Back Lever",
+      "description": "Cuelgate boca arriba, cuerpo paralelo al suelo, trabajando espalda y cadena posterior.",
+      "skill": "Palanca posterior",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "assets/images/exercises/3297-GaSzzuh.jpg",
+      "video_url": "assets/videos/exercises/3297-GaSzzuh.gif",
+      "categories": [
+        16
+      ],
+      "muscles": [
+        "Back",
+        "14"
+      ],
+      "prerequisites": [
+        1
+      ],
+      "progressions": [
+        16
+      ],
+      "formCues": [
+        "Comienza con posición encogida en anilla o barra",
+        "Activa dorsales y core intensamente",
+        "Extiende las piernas hacia atrás gradualmente",
+        "Mantén el cuerpo en línea recta"
+      ],
+      "commonMistakes": [
+        "No flexiones los codos",
+        "Evita que las caderas se hundan",
+        "No arquees la espalda excesivamente"
+      ],
+      "muscles_secondary": [
+        13,
+        19,
+        16
+      ]
+    },
+    {
+      "id": 104,
+      "name": "Bear Crawl",
+      "description": "Gatea sobre manos y pies con las rodillas fuera del suelo, un ejercicio de fuerza y movilidad corporal completa.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "assets/images/exercises/3360-0Yz8WdV.jpg",
+      "video_url": "assets/videos/exercises/3360-0Yz8WdV.gif",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8,
+        10,
+        11
+      ],
+      "prerequisites": [
+        103
+      ],
+      "progressions": [],
+      "formCues": [
+        "Comienza sobre manos y pies, rodillas flotando",
+        "Mueve hacia adelante con mano y pie opuestos",
+        "Mantén las caderas a nivel y bajas al suelo",
+        "Mantén un ritmo constante"
+      ],
+      "commonMistakes": [
+        "No dejes que las caderas se hundan o eleven",
+        "Evita levantar una rodilla demasiado alta",
+        "No apresures el movimiento"
+      ],
+      "muscles_secondary": [
+        2,
+        6,
+        14,
+        18
+      ]
+    },
+    {
+      "id": 86,
+      "name": "Bench Calf Raise",
+      "description": "Párate en el borde de un banco, eleva los talones para mayor rango, trabajando pantorrillas.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        12
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        14
+      ],
+      "muscles": [
+        7
+      ],
+      "prerequisites": [
+        85
+      ],
+      "progressions": [
+        87,
+        88
+      ],
+      "formCues": [
+        "Párate en el borde del banco con los talones colgando",
+        "Eleva hasta la punta de los pies lo más alto posible",
+        "Contrae pantorrillas en la parte superior",
+        "Baja los talones por debajo del nivel del banco"
+      ],
+      "commonMistakes": [
+        "No hagas un recorrido demasiado corto",
+        "Evita usar impulso",
+        "No apresures la fase excéntrica"
+      ],
+      "muscles_secondary": [
+        15
+      ]
+    },
+    {
+      "id": 34,
+      "name": "Bench Dip",
+      "description": "Manos en un banco, pies en el suelo, baja para trabajar tríceps con menos intensidad.",
+      "skill": "Variaciones de fondos",
+      "equipment": [
+        12
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8
+      ],
+      "muscles": [
+        5
+      ],
+      "prerequisites": [
+        1
+      ],
+      "progressions": [
+        32
+      ],
+      "formCues": [
+        "Siéntate en el borde del banco, manos agarrando el borde",
+        "Desliza la cadera fuera del banco, brazos extendidos",
+        "Baja el cuerpo flexionando los codos",
+        "Empuja hacia arriba para volver a la posición inicial"
+      ],
+      "commonMistakes": [
+        "No vayas demasiado profundo al inicio",
+        "Evita redondear los hombros",
+        "No coloques los pies demasiado hacia adelante"
+      ],
+      "muscles_secondary": [
+        4,
+        2
+      ]
+    },
+    {
+      "id": 41,
+      "name": "Biceps Curl",
+      "description": "Usando bandas elásticas, flexiona las manos hacia los hombros para aislar los bíceps.",
+      "skill": "Variaciones de dominadas",
+      "equipment": [
+        2
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8
+      ],
+      "muscles": [
+        1,
+        13
+      ],
+      "prerequisites": [
+        118
+      ],
+      "progressions": [],
+      "formCues": [
+        "Párate erguido, sujeta el peso con agarre supino",
+        "Mantén los codos cerca del torso",
+        "Levanta el peso flexionando los codos",
+        "Baja lentamente durante 2-3 segundos"
+      ],
+      "commonMistakes": [
+        "No balancees el cuerpo",
+        "Evita usar impulso",
+        "No estires los codos completamente"
+      ],
+      "muscles_secondary": [
+        19
+      ]
+    },
+    {
+      "id": 124,
+      "name": "Bicycles",
+      "description": "Un ejercicio dinámico de core realizado acostado boca arriba con las piernas en movimiento de ciclismo mientras llevas el codo opuesto a la rodilla, proporcionando una activación abdominal completa a través de patrones de movimiento rotacional.",
+      "skill": "",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        16
+      ],
+      "muscles": [
+        6,
+        14
+      ],
+      "prerequisites": [
+        123
+      ],
+      "progressions": [
+        125
+      ],
+      "formCues": [
+        "Acuéstate boca arriba, manos detrás de la cabeza",
+        "Lleva el codo opuesto a la rodilla",
+        "Extiende la otra pierna recta",
+        "Alterna lados en movimiento de ciclismo"
+      ],
+      "commonMistakes": [
+        "No tires del cuello",
+        "Evita ir demasiado rápido",
+        "No dejes que los codos se abran hacia afuera"
+      ],
+      "muscles_secondary": [
+        14
+      ]
+    },
+    {
+      "id": 61,
+      "name": "Bird Dog",
+      "description": "Desde cuatro puntos, extiende el brazo y la pierna opuestos, equilibrando para activar los músculos profundos del core.",
+      "skill": "Core",
+      "equipment": [],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [],
+      "progressions": [
+        53
+      ],
+      "formCues": [
+        "Comienza sobre manos y rodillas",
+        "Extiende el brazo y la pierna opuestos",
+        "Mantén las caderas a nivel y cuadradas",
+        "Mantén brevemente, luego alterna"
+      ],
+      "commonMistakes": [
+        "No dejes que las caderas giren",
+        "Evita arquear la espalda",
+        "No extiendas demasiado"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 71,
+      "name": "Bulgarian Split Squat",
+      "description": "Un pie elevado detrás en un banco, sentadilla con la pierna frontal para trabajar cuádriceps.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        12
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8,
+        10,
+        11
+      ],
+      "prerequisites": [
+        72,
+        67
+      ],
+      "progressions": [
+        73
+      ],
+      "formCues": [
+        "Un pie detrás en el banco o step",
+        "Baja las caderas hasta que la rodilla frontal esté a 90 grados",
+        "Impulsa a través del talón frontal para regresar",
+        "Mantén el torso erguido"
+      ],
+      "commonMistakes": [
+        "No dejes que la rodilla frontal avance demasiado sobre los pies",
+        "Evita rango de movimiento incompleto",
+        "No te inclines hacia adelante excesivamente"
+      ],
+      "muscles_secondary": [
+        7,
+        20
+      ]
+    },
+    {
+      "id": 99,
+      "name": "Burpee",
+      "description": "Sentadilla, salta hacia atrás a plancha, flexión, luego salta hacia arriba: un ejercicio de acondicionamiento corporal completo.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "assets/images/exercises/1160-dK9394r.jpg",
+      "video_url": "assets/videos/exercises/1160-dK9394r.gif",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8,
+        10,
+        11
+      ],
+      "prerequisites": [
+        1
+      ],
+      "progressions": [
+        103,
+        104
+      ],
+      "formCues": [
+        "Comienza de pie, baja a sentadilla",
+        "Lanza los pies hacia atrás a plancha",
+        "Haz una flexión",
+        "Salta los pies hacia adelante y explota hacia arriba"
+      ],
+      "commonMistakes": [
+        "No te saltes la flexión",
+        "Evita lanzar las piernas demasiado ancho",
+        "No hunda la posición de plancha"
+      ],
+      "muscles_secondary": [
+        2,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "id": 84,
+      "name": "Calf Raise",
+      "description": "De pie, eleva los talones del suelo, trabajando pantorrillas con el peso corporal en un movimiento simple.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [],
+      "progressions": [
+        87,
+        85
+      ],
+      "formCues": [
+        "Párate con los pies a la anchura de los hombros",
+        "Eleva hasta la punta de los pies lo más alto posible",
+        "Contrae pantorrillas en la parte superior",
+        "Baja lentamente"
+      ],
+      "commonMistakes": [
+        "No bloquees las rodillas bruscamente",
+        "Evita ir demasiado rápido",
+        "No eleves solo hasta la mitad"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 12,
+      "name": "Chin-Up",
+      "description": "Palmas facing hacia ti, sube para activar más los bíceps que los dorsales, un clásico ejercicio de espalda.",
+      "skill": "Variaciones de dominadas",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "assets/images/exercises/1326-T2mxWqc.jpg",
+      "video_url": "assets/videos/exercises/1326-T2mxWqc.gif",
+      "categories": [
+        12
+      ],
+      "muscles": [
+        12,
+        1,
+        13
+      ],
+      "prerequisites": [
+        1
+      ],
+      "progressions": [
+        11
+      ],
+      "formCues": [
+        "Agarre prono (palmas hacia ti), a la anchura de los hombros",
+        "Mantén los codos cerca del cuerpo",
+        "Lleva la barbilla por encima de la barra",
+        "Contrae bíceps en la parte superior"
+      ],
+      "commonMistakes": [
+        "No balancees las piernas",
+        "Evita ir demasiado shallow en la parte superior",
+        "No apresures la fase excéntrica"
+      ],
+      "muscles_secondary": [
+        9,
+        17,
+        18
+      ]
+    },
+    {
+      "id": 95,
+      "name": "Clamshell",
+      "description": "Acostado de lado con las rodillas dobladas, abre las rodillas como una almeja para trabajar los abductores.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8
+      ],
+      "prerequisites": [
+        94
+      ],
+      "progressions": [
+        94
+      ],
+      "formCues": [
+        "Acuéstate de lado, rodillas dobladas a 90 grados",
+        "Mantén los pies juntos, eleva la rodilla superior",
+        "Contrae glúteo medio en la parte superior",
+        "Baja lentamente"
+      ],
+      "commonMistakes": [
+        "No dejes que la espalda se ruede hacia atrás",
+        "Evita usar impulso para levantar",
+        "No dejes que los pies se separen"
+      ],
+      "muscles_secondary": [
+        20
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Clap Push-Up",
+      "description": "Una flexión explosiva donde empujas el suelo lo suficientemente fuerte para aplaudir en el aire, desarrollando potencia y velocidad del pecho.",
+      "skill": "Variaciones de flexiones",
+      "equipment": [],
+      "difficulty": [
+        2
+      ],
+      "image_url": "assets/images/exercises/1273-wigSg76.jpg",
+      "video_url": "assets/videos/exercises/1273-wigSg76.gif",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [
+        14,
+        7,
+        8
+      ],
+      "progressions": [
+        10
+      ],
+      "formCues": [
+        "Explota hacia arriba con potencia máxima",
+        "Aplaudir las manos en el punto más alto del movimiento",
+        "Aterriza suavemente sobre las palmas",
+        "Mantén el core abrochado durante todo el movimiento"
+      ],
+      "commonMistakes": [
+        "No dudes en aplaudir - sé decisivo",
+        "Evita aterrizar con los brazos rectos",
+        "No sacrifiques la forma por altura"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 37,
+      "name": "Close-Grip Push-Up",
+      "description": "Manos juntas en una flexión, desplazando el enfoque hacia los tríceps sobre el pecho.",
+      "skill": "Variaciones de flexiones",
+      "equipment": [],
+      "difficulty": [
+        2
+      ],
+      "image_url": "assets/images/exercises/0259-x6KpKpq.jpg",
+      "video_url": "assets/videos/exercises/0259-x6KpKpq.gif",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [
+        1
+      ],
+      "progressions": [
+        5,
+        4,
+        7,
+        8
+      ],
+      "formCues": [
+        "Manos bajo el pecho, juntas",
+        "Mantén los codos pegados a las costillas",
+        "Baja el pecho entre las manos",
+        "Enfócate en la activación de tríceps"
+      ],
+      "commonMistakes": [
+        "No dejes que los codos se abran",
+        "Evita que las caderas se hundan",
+        "No vayas demasiado shallow"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 21,
+      "name": "Commando Pull-Up",
+      "description": "Dominada con agarre alterno, tirando de la cabeza hacia un lado y luego el otro, trabajando espalda y bíceps.",
+      "skill": "Variaciones de dominadas",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        12
+      ],
+      "muscles": [
+        12,
+        1,
+        13
+      ],
+      "prerequisites": [
+        11
+      ],
+      "progressions": [
+        22
+      ],
+      "formCues": [
+        "Agarra anillas o barras, una mano en cada lado",
+        "Tira del pecho hacia un lado",
+        "Alterna lados con cada repetición",
+        "Mantén el core activado"
+      ],
+      "commonMistakes": [
+        "No gires el torso excesivamente",
+        "Evita usar impulso",
+        "No dejes que un lado haga todo el trabajo"
+      ],
+      "muscles_secondary": [
+        9,
+        17,
+        18,
+        14
+      ]
+    },
+    {
+      "id": 90,
+      "name": "Cossack Squat",
+      "description": "Sentadilla con postura ancha desplazando el peso de lado a lado, estirando y fortaleciendo los aductores.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8,
+        10,
+        11
+      ],
+      "prerequisites": [
+        89
+      ],
+      "progressions": [
+        89
+      ],
+      "formCues": [
+        "Párate ancho, desplaza el peso hacia un lado",
+        "Agáchate profundamente en una pierna mientras la otra está recta",
+        "Mantén el pie abajo en la pierna que se agacha",
+        "Alterna lados"
+      ],
+      "commonMistakes": [
+        "No levantes el pie en la pierna que se agacha",
+        "Evita ir demasiado shallow",
+        "No dejes que la rodilla colapse hacia adentro"
+      ],
+      "muscles_secondary": [
+        7,
+        20
+      ]
+    },
+    {
+      "id": 106,
+      "name": "Crow Pose",
+      "description": "Similar a la posición de rana pero con las rodillas fuera de los codos, mejorando la fuerza de muñecas y core.",
+      "skill": "Plancha",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6,
+        19
+      ],
+      "prerequisites": [
+        105
+      ],
+      "progressions": [],
+      "formCues": [
+        "Agáchate con las manos a la anchura de los hombros",
+        "Coloca las rodillas en la parte posterior de los brazos superiores",
+        "Inclínate ligeramente hacia adelante",
+        "Levanta un pie, luego el otro"
+      ],
+      "commonMistakes": [
+        "No dejes que los codos se abran hacia afuera",
+        "Evita mirar demasiado abajo",
+        "No pongas todo el peso en las muñecas"
+      ],
+      "muscles_secondary": [
+        2,
+        18
+      ]
+    },
+    {
+      "id": 53,
+      "name": "Crunch",
+      "description": "Acostado boca arriba, curla los hombros hacia la pelvis para contraer los abdominales directamente.",
+      "skill": "Core",
+      "equipment": [],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [
+        61,
+        59,
+        125,
+        45
+      ],
+      "progressions": [
+        55
+      ],
+      "formCues": [
+        "Acuéstate boca arriba, rodillas dobladas",
+        "Manos detrás de la cabeza o cruzadas en el pecho",
+        "Levanta los hombros del suelo",
+        "Contrae abdominales en la parte superior"
+      ],
+      "commonMistakes": [
+        "No tires del cuello",
+        "Evita ir demasiado alto demasiado pronto",
+        "No rebotes en la parte inferior"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 59,
+      "name": "Dead Bug",
+      "description": "Acostado boca arriba, extiende el brazo y la pierna opuestos mientras mantienes el core abrochado, trabajando abdominales profundos.",
+      "skill": "Core",
+      "equipment": [],
+      "difficulty": [
+        1
+      ],
+      "image_url": "assets/images/exercises/0276-iny3m5y.jpg",
+      "video_url": "assets/videos/exercises/0276-iny3m5y.gif",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [],
+      "progressions": [
+        53
+      ],
+      "formCues": [
+        "Acuéstate boca arriba, brazos extendidos hacia arriba",
+        "Levanta las piernas a posición de mesa",
+        "Baja el brazo y la pierna opuestos lentamente",
+        "Mantén la espalda baja presionada contra el suelo"
+      ],
+      "commonMistakes": [
+        "No dejes que la espalda se arquee fuera del suelo",
+        "Evita apresurar el movimiento",
+        "No empujes demasiado fuerte con las extremidades"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 42,
+      "name": "Dead Hang",
+      "description": "Cuélgate de una barra todo el tiempo posible, desarrollando resistencia de antebrazo y agarre.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8
+      ],
+      "muscles": [
+        19
+      ],
+      "prerequisites": [
+        71
+      ],
+      "progressions": [],
+      "formCues": [
+        "Agarra la barra con ambas manos, brazos extendidos",
+        "Cuelga libremente, deja que los hombros se relajen",
+        "Mantén el core activado ligeramente",
+        "Mantén durante la duración deseada"
+      ],
+      "commonMistakes": [
+        "No eleves los hombros excesivamente",
+        "Evita usar solo el agarre de los dedos",
+        "No rebotes en la parte inferior"
+      ],
+      "muscles_secondary": [
+        9,
+        12
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Decline Push-Up",
+      "description": "Pies elevados, manos en el suelo, desplazando el enfoque hacia el pecho superior y hombros en una flexión.",
+      "skill": "Variaciones de flexiones",
+      "equipment": [],
+      "difficulty": [
+        2
+      ],
+      "image_url": "assets/images/exercises/0279-i5cEhka.jpg",
+      "video_url": "assets/videos/exercises/0279-i5cEhka.gif",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [
+        3,
+        9,
+        2
+      ],
+      "progressions": [
+        4,
+        25
+      ],
+      "formCues": [
+        "Pies elevados en una superficie estable",
+        "Manos a la anchura de los hombros",
+        "Enfócate en el pecho superior y hombros",
+        "Comienza con una elevación moderada"
+      ],
+      "commonMistakes": [
+        "No dejes que las caderas se hundan por debajo de la línea de los hombros",
+        "Evita ir demasiado profundo demasiado pronto",
+        "No flexiones los brazos demasiado ancho"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 3,
+      "name": "Diamond Push-Up",
+      "description": "Manos juntas formando un diamante, trabajando el pecho interno y los tríceps con una desafiante variación de flexión.",
+      "skill": "Variaciones de flexiones",
+      "equipment": [],
+      "difficulty": [
+        2
+      ],
+      "image_url": "assets/images/exercises/0283-soIB2rj.jpg",
+      "video_url": "assets/videos/exercises/0283-soIB2rj.gif",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [
+        1
+      ],
+      "progressions": [
+        5,
+        4,
+        3,
+        8
+      ],
+      "formCues": [
+        "Forma un diamante con pulgares e índices",
+        "Mantén los codos cerca de tus costillas",
+        "Baja el pecho hacia la forma de diamante",
+        "Enfócate en la activación de tríceps"
+      ],
+      "commonMistakes": [
+        "No dejes que los codos se abran",
+        "Evita que las caderas se hundan",
+        "No vayas demasiado shallow en el movimiento"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 82,
+      "name": "Donkey Kick",
+      "description": "Sobre cuatro puntos, patea una pierna hacia atrás y hacia arriba, aislando los glúteos para fuerza y tono.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8
+      ],
+      "prerequisites": [
+        79
+      ],
+      "progressions": [
+        79
+      ],
+      "formCues": [
+        "Comienza sobre manos y rodillas",
+        "Levanta una pierna con la rodilla doblada a 90 grados",
+        "Patea el talón hacia el techo",
+        "Contrae glúteos en la parte superior"
+      ],
+      "commonMistakes": [
+        "No estires la pierna demasiado",
+        "Evita rotar las caderas hacia arriba",
+        "No apresures el movimiento"
+      ],
+      "muscles_secondary": [
+        11
+      ]
+    },
+    {
+      "id": 49,
+      "name": "Dragon Flag",
+      "description": "Acostado en un banco, levanta las piernas y caderas rectas hacia arriba, luego baja lentamente, un ejercicio avanzado de abdominales.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        12
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6,
+        14
+      ],
+      "prerequisites": [
+        48
+      ],
+      "progressions": [],
+      "formCues": [
+        "Acuéstate en el banco, agarra detrás de la cabeza",
+        "Levanta todo el cuerpo como una línea recta",
+        "Baja lentamente con control",
+        "Activa los abdominales intensamente durante todo el movimiento"
+      ],
+      "commonMistakes": [
+        "No te rompas en la cintura",
+        "Evita usar impulso",
+        "No vayas demasiado profundo al inicio"
+      ],
+      "muscles_secondary": [
+        6,
+        16
+      ]
+    },
+    {
+      "id": 43,
+      "name": "Finger Pull-Up",
+      "description": "Sube usando solo las yemas de los dedos en una barra, mejorando la fuerza de antebrazo y agarre.",
+      "skill": "Variaciones de dominadas",
+      "equipment": [],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [
+        14,
+        21,
+        13
+      ],
+      "progressions": [
+        101,
+        15
+      ],
+      "formCues": [
+        "Agarra la barra solo con las yemas de los dedos",
+        "Realiza la dominada con fuerza de los dedos",
+        "Progresa gradualmente desde dominadas regulares",
+        "Activa todo el cuerpo"
+      ],
+      "commonMistakes": [
+        "No lo intentes demasiado pronto",
+        "Evita usar agarre de palma en su lugar",
+        "No dejes que los dedos se resbalen"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 98,
+      "name": "Fire Hydrant",
+      "description": "Sobre cuatro puntos, levanta una pierna hacia el lado, imitando un perro en una hidrante, para abductores.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8
+      ],
+      "prerequisites": [
+        95
+      ],
+      "progressions": [],
+      "formCues": [
+        "Comienza sobre manos y rodillas",
+        "Levanta una pierna hacia el lado, rodilla doblada a 90",
+        "Mantén el tobillo sobre la rodilla",
+        "Baja con control"
+      ],
+      "commonMistakes": [
+        "No dejes que la cadera gire hacia adelante",
+        "Evita ir demasiado alto inicialmente",
+        "No apresures el movimiento"
+      ],
+      "muscles_secondary": [
+        8,
+        20
+      ]
+    },
+    {
+      "id": 125,
+      "name": "Flutter",
+      "description": "Un ejercicio de aislamiento abdominal realizado acostado boca arriba donde alternas levantando y bajando las piernas en un movimiento de aleteo, trabajando abdominales inferiores y flexores de cadera para el desarrollo de fuerza del core.",
+      "skill": "Core",
+      "equipment": [],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [],
+      "progressions": [
+        53
+      ],
+      "formCues": [
+        "Acuéstate boca arriba, brazos a los lados",
+        "Levanta las piernas ligeramente del suelo",
+        "Alterna las piernas en un pequeño movimiento de tijera",
+        "Mantén el core activado"
+      ],
+      "commonMistakes": [
+        "No dejes que las piernas se hundan al suelo",
+        "Evita patear demasiado alto",
+        "No arquees la espalda"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 105,
+      "name": "Frog Stand",
+      "description": "Equilibrio sobre las manos con las rodillas descansando en los codos, un paso principiante hacia la plancha.",
+      "skill": "Plancha",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8,
+        20
+      ],
+      "prerequisites": [
+        1
+      ],
+      "progressions": [
+        106
+      ],
+      "formCues": [
+        "Agáchate bajo con las manos en el suelo entre los pies",
+        "Coloca las rodillas en los brazos para soporte",
+        "Levanta un pie, luego el otro para flotar",
+        "Equilibra con el core activado"
+      ],
+      "commonMistakes": [
+        "No dejes que los codos colapsen hacia adentro",
+        "Evita poner demasiado peso en los hombros",
+        "No apresures el despegue"
+      ],
+      "muscles_secondary": [
+        6
+      ]
+    },
+    {
+      "id": 16,
+      "name": "Front Lever",
+      "description": "Mantén el cuerpo paralelo al suelo desde una barra, un ejercicio estático para fuerza de espalda y core.",
+      "skill": "Palanca frontal",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "assets/images/exercises/3296-PkCN2lv.jpg",
+      "video_url": "assets/videos/exercises/3296-PkCN2lv.gif",
+      "categories": [
+        12
+      ],
+      "muscles": [
+        12,
+        6,
+        14
+      ],
+      "prerequisites": [
+        18
+      ],
+      "progressions": [],
+      "formCues": [
+        "Cuélgate de la barra con brazos rectos",
+        "Activa dorsales y core firmemente",
+        "Levanta el cuerpo hasta estar paralelo al suelo",
+        "Mantén los brazos rectos durante todo el movimiento"
+      ],
+      "commonMistakes": [
+        "No flexiones los codos",
+        "Evita hacer puente en las caderas",
+        "No dejes que las piernas bajen por debajo de la horizontal"
+      ],
+      "muscles_secondary": [
+        13,
+        19,
+        9
+      ]
+    },
+    {
+      "id": 114,
+      "name": "Front Lever Pull",
+      "description": "Desde una suspensión, tira hacia una palanca frontal y mantén brevemente, desarrollando fuerza dinámica.",
+      "skill": "Palanca frontal",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        16
+      ],
+      "muscles": [
+        12,
+        1,
+        18
+      ],
+      "prerequisites": [
+        107
+      ],
+      "progressions": [],
+      "formCues": [
+        "Comienza en posición de palanca frontal",
+        "Tira del cuerpo hacia la barra con brazos rectos",
+        "Mantén el core apretado durante todo el movimiento",
+        "Controla la descendencia"
+      ],
+      "commonMistakes": [
+        "No flexiones los codos durante el tirón",
+        "Evita hacer puente en las caderas",
+        "No uses impulso"
+      ],
+      "muscles_secondary": [
+        1,
+        17
+      ]
+    },
+    {
+      "id": 79,
+      "name": "Glute Bridge",
+      "description": "Acostado boca arriba, eleva las caderas apretando los glúteos, un ejercicio básico de activación para fuerza de glúteos.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [],
+      "progressions": [
+        82,
+        80
+      ],
+      "formCues": [
+        "Acuéstate boca arriba, rodillas dobladas, pies planos",
+        "Eleva las caderas hasta que hombros a rodillas estén en línea",
+        "Contrae glúteos en la parte superior",
+        "Baja lentamente"
+      ],
+      "commonMistakes": [
+        "No arquees la espalda baja excesivamente",
+        "Evita ir demasiado shallow",
+        "No empujes solo con los talones"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 76,
+      "name": "Glute-Ham Raise",
+      "description": "En un banco, curla el cuerpo hacia arriba desde las rodillas, un ejercicio avanzado de isquiotibiales y glúteos.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        12
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "assets/images/exercises/3193-Vvwjz6N.jpg",
+      "video_url": "assets/videos/exercises/3193-Vvwjz6N.gif",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        11,
+        8
+      ],
+      "prerequisites": [
+        74
+      ],
+      "progressions": [
+        75
+      ],
+      "formCues": [
+        "Ancla los pies debajo de las almohadillas, rodillas en la almohadilla",
+        "Baja el cuerpo extendiendo en la rodilla",
+        "Usa los isquiotibiales para tirar hacia arriba",
+        "Mantén el core activado"
+      ],
+      "commonMistakes": [
+        "No dejes que las caderas se hundan demasiado",
+        "Evita usar impulso para regresar",
+        "No redondees la espalda"
+      ],
+      "muscles_secondary": [
+        16
+      ]
+    },
+    {
+      "id": 120,
+      "name": "Hammer Pull Up",
+      "description": "Una variación avanzada de dominada usando anillas gimnásticas o un agarre grueso que enfatiza la activación de bíceps a través de la posición de agarre neutro en la parte superior de cada repetición.",
+      "skill": "Variaciones de dominadas",
+      "equipment": [],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [
+        11
+      ],
+      "progressions": [
+        43,
+        101,
+        22
+      ],
+      "formCues": [
+        "Agarre neutro (palmas facing entre sí)",
+        "Mantén los codos cerca del cuerpo",
+        "Tira del pecho hacia la barra",
+        "Contrae espalda en la parte superior"
+      ],
+      "commonMistakes": [
+        "No dejes que las palmas giren durante el tirón",
+        "Evita usar impulso",
+        "No vayas demasiado shallow"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 77,
+      "name": "Hamstring Curl with Band",
+      "description": "Acostado boca abajo, curla las piernas contra la resistencia de la banda, aislando efectivamente los isquiotibiales.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        2
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        11
+      ],
+      "prerequisites": [
+        76
+      ],
+      "progressions": [
+        78
+      ],
+      "formCues": [
+        "Adjunta la banda al tobillo, ancla el extremo opuesto",
+        "Acuéstate boca abajo o párate, curla el talón hacia el glúteo",
+        "Contrae isquiotibiales en la parte superior",
+        "Baja lentamente"
+      ],
+      "commonMistakes": [
+        "No uses impulso para curlar hacia arriba",
+        "Evita elevar las caderas durante el movimiento",
+        "No apresures la fase excéntrica"
+      ],
+      "muscles_secondary": [
+        8
+      ]
+    },
+    {
+      "id": 23,
+      "name": "Handstand",
+      "description": "Equilibra sobre las manos con los pies en el aire, desarrollando estabilidad y fuerza de hombros.",
+      "skill": "Pino",
+      "equipment": [],
+      "difficulty": [
+        2
+      ],
+      "image_url": "assets/images/exercises/3302-XooAdhl.jpg",
+      "video_url": "assets/videos/exercises/3302-XooAdhl.gif",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [
+        25,
+        30
+      ],
+      "progressions": [
+        26
+      ],
+      "formCues": [
+        "Comienza con pino contra la pared para estabilidad",
+        "Mantén las muñecas sobre los hombros",
+        "Activa todo el cuerpo firmemente",
+        "Mira a las manos, no al suelo"
+      ],
+      "commonMistakes": [
+        "No hagas puente en las caderas",
+        "Evita caminar los pies demasiado abajo por la pared",
+        "No arquees la espalda baja"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 26,
+      "name": "Handstand Push-Up",
+      "description": "Desde un pino, baja la cabeza al suelo y empuja hacia arriba, un potente ejercicio de hombros.",
+      "skill": "Pino",
+      "equipment": [],
+      "difficulty": [
+        3
+      ],
+      "image_url": "assets/images/exercises/0471-rQxwMxO.jpg",
+      "video_url": "assets/videos/exercises/0471-rQxwMxO.gif",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [
+        23
+      ],
+      "progressions": [
+        24
+      ],
+      "formCues": [
+        "Salta a pino contra la pared",
+        "Baja la cabeza hacia el suelo gradualmente",
+        "Empuja hacia arriba con tríceps y hombros",
+        "Mantén el core apretado durante todo el movimiento"
+      ],
+      "commonMistakes": [
+        "No camines los pies demasiado abajo por la pared",
+        "Evita flexionar los codos hacia afuera",
+        "No apresures la descendencia"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 66,
+      "name": "Hanging Knee Raise",
+      "description": "Cuélgate de una barra, eleva las rodillas al pecho, trabajando flexores de cadera y abdominales.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6
+      ],
+      "prerequisites": [
+        65
+      ],
+      "progressions": [
+        48
+      ],
+      "formCues": [
+        "Cuélgate de la barra con brazos rectos",
+        "Eleva las rodillas hacia el pecho",
+        "Controla el movimiento en ambas direcciones",
+        "Mantén el core activado, sin balanceo"
+      ],
+      "commonMistakes": [
+        "No uses impulso para balancearte",
+        "Evita redondear la espalda",
+        "No eleves demasiado rápido"
+      ],
+      "muscles_secondary": [
+        6
+      ]
+    },
+    {
+      "id": 48,
+      "name": "Hanging Leg Raise",
+      "description": "Cuélgate de una barra, eleva las piernas rectas a 90 grados, enfocándote en abdominales inferiores.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "assets/images/exercises/0472-I3tsCnC.jpg",
+      "video_url": "assets/videos/exercises/0472-I3tsCnC.gif",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6,
+        14
+      ],
+      "prerequisites": [
+        65
+      ],
+      "progressions": [
+        49
+      ],
+      "formCues": [
+        "Cuélgate de la barra, brazos rectos",
+        "Eleva las piernas a la horizontal o más alto",
+        "Controla la descendencia completamente",
+        "Mantén el core apretado durante todo el movimiento"
+      ],
+      "commonMistakes": [
+        "No flexiones las rodillas durante el levantamiento",
+        "Evita balancear el cuerpo",
+        "No dejes que las piernas bajen demasiado rápido"
+      ],
+      "muscles_secondary": [
+        6,
+        14
+      ]
+    },
+    {
+      "id": 81,
+      "name": "Hip Thrust",
+      "description": "Apoya los hombros en un banco, impulsa las caderas hacia arriba con los pies planos, enfocándote en la potencia de glúteos.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        12
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8
+      ],
+      "prerequisites": [
+        80
+      ],
+      "progressions": [
+        83
+      ],
+      "formCues": [
+        "Espalda superior en el banco, pies en el suelo",
+        "Impulsa a través de los talones para levantar las caderas",
+        "Contrae glúteos en la parte superior",
+        "Baja con control"
+      ],
+      "commonMistakes": [
+        "No arquees la espalda baja excesivamente",
+        "Evita ir demasiado shallow",
+        "No empujes con las puntas de los pies"
+      ],
+      "muscles_secondary": [
+        6,
+        11
+      ]
+    },
+    {
+      "id": 46,
+      "name": "Hollow Body Hold",
+      "description": "Acostado boca arriba, eleva brazos y piernas ligeramente, formando una forma de 'banana' para trabajar abdominales.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6,
+        14
+      ],
+      "prerequisites": [
+        1
+      ],
+      "progressions": [
+        52
+      ],
+      "formCues": [
+        "Acuéstate boca arriba, brazos extendidos sobre la cabeza",
+        "Levanta hombros y pies del suelo",
+        "Presiona la espalda baja contra el suelo",
+        "Mantén con respiración constante"
+      ],
+      "commonMistakes": [
+        "No dejes que la espalda baja se arquee",
+        "Evita elevar demasiado las extremidades",
+        "No mantengas la respiración"
+      ],
+      "muscles_secondary": [
+        16
+      ]
+    },
+    {
+      "id": 109,
+      "name": "Hollow Rock",
+      "description": "Rock back and forth in a hollow body position, enhancing core stability.",
+      "skill": "Hollow Body Hold",
+      "equipment": [],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [
+        46
+      ],
+      "progressions": [
+        60,
+        58
+      ],
+      "formCues": [
+        "Start in hollow body position",
+        "Rock forward and backward gently",
+        "Keep lower back pressed to ground",
+        "Maintain core engagement"
+      ],
+      "commonMistakes": [
+        "Don't let back come off floor",
+        "Avoid losing hollow shape",
+        "Don't rock too vigorously"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 56,
+      "name": "Human Flag",
+      "description": "Sujeta tu cuerpo de lado desde un poste, un ejercicio extremo de oblicuos y hombros.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        14
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6,
+        14
+      ],
+      "prerequisites": [
+        53
+      ],
+      "progressions": [
+        65
+      ],
+      "formCues": [
+        "Agarra el poste con una mano arriba",
+        "Levanta el cuerpo lateralmente",
+        "Extiende la pierna superior hacia arriba",
+        "Mantén el core apretado"
+      ],
+      "commonMistakes": [
+        "No dejes que las caderas caigan",
+        "Evita usar impulso",
+        "No te muevas demasiado rápido"
+      ],
+      "muscles_secondary": [
+        2,
+        9,
+        12,
+        18
+      ]
+    },
+    {
+      "id": 121,
+      "name": "In and Out",
+      "description": "Acostado boca arriba, lleva el codo opuesto a la rodilla alternando en un movimiento de pedaleo que trabaja los oblicuos y el recto abdominal.",
+      "skill": "",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        16
+      ],
+      "muscles": [
+        6,
+        14,
+        2
+      ],
+      "prerequisites": [
+        60
+      ],
+      "progressions": [
+        122,
+        123
+      ],
+      "formCues": [
+        "Manos detrás de la cabeza, pies del suelo",
+        "Lleva el codo derecho a la rodilla izquierda mientras extiendes la pierna derecha",
+        "Alterna en un movimiento de pedaleo",
+        "Mantén la parte baja de la espalda presionada contra el suelo"
+      ],
+      "commonMistakes": [
+        "No tires del cuello",
+        "No te muevas demasiado rápido",
+        "No levantes demasiado la cabeza"
+      ],
+      "muscles_secondary": [
+        2
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Incline Push-Up",
+      "description": "Manos en una superficie elevada reducen la dificultad, enfocándose en el pecho inferior con una flexión simple.",
+      "skill": "Variaciones de flexiones",
+      "equipment": [],
+      "difficulty": [
+        1
+      ],
+      "image_url": "assets/images/exercises/0493-B1EVP9F.jpg",
+      "video_url": "assets/videos/exercises/0493-B1EVP9F.gif",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [],
+      "progressions": [
+        1
+      ],
+      "formCues": [
+        "Coloca las manos en una superficie elevada",
+        "Mantén el cuerpo en línea recta",
+        "Baja el pecho hacia la superficie",
+        "Empuja hacia arriba con fuerza"
+      ],
+      "commonMistakes": [
+        "No dejes que las caderas se hundan",
+        "Evita ir demasiado bajo al inicio",
+        "No flexiones los codos demasiado"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 87,
+      "name": "Jump Calf Raise",
+      "description": "Explosively jump while raising heels, building calf power and explosiveness.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        14
+      ],
+      "muscles": [
+        7
+      ],
+      "prerequisites": [
+        84,
+        86
+      ],
+      "progressions": [
+        88
+      ],
+      "formCues": [
+        "Start on balls of feet",
+        "Jump explosively upward",
+        "Land softly on balls of feet",
+        "Immediately prepare for next rep"
+      ],
+      "commonMistakes": [
+        "Don't land flat-footed heavily",
+        "Avoid locking knees on landing",
+        "Don't let toes point inward"
+      ],
+      "muscles_secondary": [
+        7
+      ]
+    },
+    {
+      "id": 70,
+      "name": "Jump Squat",
+      "description": "Squat down and explode upward into a jump, building explosive quad power.",
+      "skill": "Hollow Body Hold",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "assets/images/exercises/0514-LIlE5Tn.jpg",
+      "video_url": "assets/videos/exercises/0514-LIlE5Tn.gif",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8,
+        10,
+        11
+      ],
+      "prerequisites": [
+        67
+      ],
+      "progressions": [
+        67
+      ],
+      "formCues": [
+        "Start in squat position",
+        "Explode upward with maximum power",
+        "Land softly on balls of feet",
+        "Absorb impact immediately"
+      ],
+      "commonMistakes": [
+        "Don't land with straight legs",
+        "Avoid landing flat-footed heavily",
+        "Don't let knees collapse inward on landing"
+      ],
+      "muscles_secondary": [
+        7,
+        20
+      ]
+    },
+    {
+      "id": 102,
+      "name": "Jumping Jack",
+      "description": "Baja lentamente desde una posición de L-sit, una progresión para el L-sit completo.",
+      "skill": "L-Sit",
+      "equipment": [],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [],
+      "progressions": [
+        99
+      ],
+      "formCues": [
+        "Comienza en posición de L-sit",
+        "Baja las piernas lentamente",
+        "Toma 5-10 segundos para descender",
+        "Construye fuerza para la posición completa"
+      ],
+      "commonMistakes": [
+        "No bajes rápidamente",
+        "Evita usar impulso",
+        "No flexiones las rodillas"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 35,
+      "name": "Korean Dip",
+      "description": "Dip on a straight bar with body behind, an advanced triceps and chest exercise.",
+      "skill": "Dip Variations",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8
+      ],
+      "muscles": [
+        5
+      ],
+      "prerequisites": [
+        1,
+        8
+      ],
+      "progressions": [
+        4
+      ],
+      "formCues": [
+        "Lean torso forward significantly",
+        "Hands placed on parallel bars",
+        "Lower body with control",
+        "Focus on triceps stretch"
+      ],
+      "commonMistakes": [
+        "Don't let hips drop",
+        "Avoid going too shallow",
+        "Don't flare elbows excessively"
+      ],
+      "muscles_secondary": [
+        4,
+        2
+      ]
+    },
+    {
+      "id": 47,
+      "name": "L-Sit",
+      "description": "Mantén las piernas rectas mientras te soportas sobre las manos, trabajando abdominales y flexores de cadera.",
+      "skill": "L-Sit",
+      "equipment": [
+        5
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6,
+        14
+      ],
+      "prerequisites": [
+        46
+      ],
+      "progressions": [],
+      "formCues": [
+        "Siéntate en el suelo, manos a los lados",
+        "Empuja el cuerpo hacia arriba con los brazos",
+        "Extiende las piernas horizontalmente",
+        "Mantén con core apretado y hombros activados"
+      ],
+      "commonMistakes": [
+        "No dejes que las caderas caigan",
+        "Evita flexionar los codos",
+        "No balancees el cuerpo"
+      ],
+      "muscles_secondary": [
+        2,
+        18
+      ]
+    },
+    {
+      "id": 65,
+      "name": "Leg Raise",
+      "description": "Acostado boca arriba en posición de cuerpo hueco, balancea brazos y piernas arriba y abajo manteniendo la tensión abdominal.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [],
+      "progressions": [
+        66
+      ],
+      "formCues": [
+        "Acuéstate boca arriba, brazos sobre la cabeza",
+        "Levanta hombros y pies del suelo en posición de cuerpo hueco",
+        "Balancea brazos y piernas de forma controlada",
+        "Mantén la espalda baja presionada contra el suelo"
+      ],
+      "commonMistakes": [
+        "No dejes que la espalda baja se separe del suelo",
+        "Evita balancearte demasiado rápido",
+        "No flexiones las rodillas"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 100,
+      "name": "Mountain Climber",
+      "description": "En posición de plancha, alterna llevando las rodillas al pecho rápidamente, un ejercicio de cardio y core.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "assets/images/exercises/0630-RJgzwny.jpg",
+      "video_url": "assets/videos/exercises/0630-RJgzwny.gif",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6,
+        14
+      ],
+      "prerequisites": [
+        1
+      ],
+      "progressions": [
+        5
+      ],
+      "formCues": [
+        "Comienza en posición de plancha",
+        "Lleva una rodilla al pecho rápidamente",
+        "Alterna piernas en movimiento de carrera",
+        "Mantén las caderas bajas"
+      ],
+      "commonMistakes": [
+        "No dejes que las caderas se eleven",
+        "Evita ir demasiado rápido",
+        "No dejes que la espalda se hunda"
+      ],
+      "muscles_secondary": [
+        2,
+        10,
+        11,
+        18
+      ]
+    },
+    {
+      "id": 101,
+      "name": "Muscle-Up",
+      "description": "Combina una dominada explosiva con una transición a fondos, un movimiento compuesto avanzado de calistenia.",
+      "skill": "Muscle-up",
+      "equipment": [],
+      "difficulty": [
+        3
+      ],
+      "image_url": "assets/images/exercises/0631-yJUHKTn.jpg",
+      "video_url": "assets/videos/exercises/0631-yJUHKTn.gif",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [
+        14,
+        21,
+        43,
+        112,
+        15,
+        22,
+        13
+      ],
+      "progressions": [],
+      "formCues": [
+        "Realiza una dominada explosiva o kip",
+        "Transiciona rápidamente en la parte superior de la dominada",
+        "Empuja a posición de fondos",
+        "Baja de vuelta a la posición colgando"
+      ],
+      "commonMistakes": [
+        "No demores la transición",
+        "Evita que los hombros se rueden hacia adelante",
+        "No uses demasiado impulso"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 112,
+      "name": "Muscle-Up Negative",
+      "description": "Baja lentamente desde la parte superior de un muscle-up, una progresión para el movimiento completo.",
+      "skill": "Muscle-up",
+      "equipment": [
+        11
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        12
+      ],
+      "muscles": [
+        12,
+        1,
+        13,
+        4,
+        5,
+        2
+      ],
+      "prerequisites": [
+        111
+      ],
+      "progressions": [
+        101
+      ],
+      "formCues": [
+        "Comienza en la parte superior de un muscle-up (posición de fondos)",
+        "Baja lentamente con control",
+        "Toma 5-10 segundos para descender",
+        "Construye fuerza para la repetición completa"
+      ],
+      "commonMistakes": [
+        "No bajes rápidamente",
+        "Evita perder el control durante la transición",
+        "No uses impulso"
+      ],
+      "muscles_secondary": [
+        9,
+        17,
+        18
+      ]
+    },
+    {
+      "id": 78,
+      "name": "Natural Glute-Ham Raise",
+      "description": "Arrodíllate y baja el cuerpo usando isquiotibiales sin equipamiento, una variación con peso corporal.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        11,
+        8
+      ],
+      "prerequisites": [
+        74
+      ],
+      "progressions": [
+        76
+      ],
+      "formCues": [
+        "Acuéstate boca abajo, ancla los pies debajo de muebles",
+        "Tira del cuerpo hacia arriba usando isquiotibiales y glúteos",
+        "Controla la descendencia completamente",
+        "Mantén el core apretado"
+      ],
+      "commonMistakes": [
+        "No uses impulso para subir",
+        "Evita ir demasiado profundo al inicio",
+        "No arquees la espalda excesivamente"
+      ],
+      "muscles_secondary": [
+        16
+      ]
+    },
+    {
+      "id": 19,
+      "name": "Negative Pull-Up",
+      "description": "Baja lentamente desde la parte superior de una dominada, construyendo fuerza para dominadas completas.",
+      "skill": "Variaciones de dominadas",
+      "equipment": [],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [
+        119
+      ],
+      "progressions": [
+        11
+      ],
+      "formCues": [
+        "Comienza en la posición superior con la barbilla sobre la barra",
+        "Baja lo más lentamente posible",
+        "Toma 5-10 segundos para la descendencia",
+        "Controla todo el rango de movimiento"
+      ],
+      "commonMistakes": [
+        "No bajes rápidamente",
+        "Evita perder el control",
+        "No uses rebote en la parte inferior"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 74,
+      "name": "Nordic Hamstring Curl",
+      "description": "Arrodíllate, baja el torso hacia adelante con los pies anclados, trabajando isquiotibiales con fuerza excéntrica.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        11
+      ],
+      "prerequisites": [
+        67
+      ],
+      "progressions": [
+        76,
+        78
+      ],
+      "formCues": [
+        "Arrodíllate, ancla los pies debajo de un objeto estable",
+        "Baja el cuerpo con control usando isquiotibiales",
+        "Usa las manos para empujar hacia arriba inicialmente",
+        "Construye fuerza progresivamente"
+      ],
+      "commonMistakes": [
+        "No dejes que las rodillas salgan del suelo",
+        "Evita usar impulso",
+        "No vayas demasiado profundo demasiado pronto"
+      ],
+      "muscles_secondary": [
+        6,
+        8
+      ]
+    },
+    {
+      "id": 40,
+      "name": "One-Arm Chin-Up",
+      "description": "Sube con un brazo en una barra, un desafío extremo de bíceps y espalda.",
+      "skill": "Dominada a una mano",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "assets/images/exercises/0638-HjdqmZa.jpg",
+      "video_url": "assets/videos/exercises/0638-HjdqmZa.gif",
+      "categories": [
+        12
+      ],
+      "muscles": [
+        12,
+        1,
+        13
+      ],
+      "prerequisites": [
+        39
+      ],
+      "progressions": [],
+      "formCues": [
+        "Domina las dominadas regulares primero",
+        "Usa banda elástica para asistencia inicialmente",
+        "Mantén el cuerpo recto, sin balanceo",
+        "Progresa gradualmente"
+      ],
+      "commonMistakes": [
+        "No gires el cuerpo",
+        "Evita usar impulso",
+        "No comprometas la forma"
+      ],
+      "muscles_secondary": [
+        9,
+        17,
+        18
+      ]
+    },
+    {
+      "id": 24,
+      "name": "One-Arm Handstand",
+      "description": "Equilibra sobre una mano, un desafío avanzado de estabilidad de hombro y core.",
+      "skill": "Pino",
+      "equipment": [],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [
+        26
+      ],
+      "progressions": [],
+      "formCues": [
+        "Domina el pino contra la pared primero",
+        "Practica contra la pared un brazo a la vez",
+        "Mantén el cuerpo apretado y recto",
+        "Progresa gradualmente"
+      ],
+      "commonMistakes": [
+        "No lo intentes demasiado pronto",
+        "Evita usar impulso para subir",
+        "No dejes que las caderas giren"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 15,
+      "name": "One-Arm Pull-Up",
+      "description": "Sube tu cuerpo con un brazo, un movimiento avanzado para espalda y bíceps.",
+      "skill": "Variaciones de dominadas",
+      "equipment": [],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [
+        11
+      ],
+      "progressions": [
+        30
+      ],
+      "formCues": [
+        "Domina las variaciones asistidas primero",
+        "Usa banda elástica para ayuda inicialmente",
+        "Mantén el cuerpo recto, sin balanceo",
+        "Progresa gradualmente"
+      ],
+      "commonMistakes": [
+        "No gires el cuerpo",
+        "Evita usar impulso",
+        "No comprometas la forma por repeticiones"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 10,
+      "name": "One-Arm Push-Up",
+      "description": "Realizado con un brazo, requiriendo significativa fuerza de pecho, hombro y core.",
+      "skill": "Variaciones de flexiones",
+      "equipment": [],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [
+        4,
+        25
+      ],
+      "progressions": [],
+      "formCues": [
+        "Domina las flexiones inclinadas primero",
+        "Amplía la postura para estabilidad",
+        "Mantén el brazo que trabaja a 45 grados",
+        "Progresa gradualmente con progresiones"
+      ],
+      "commonMistakes": [
+        "No gires el torso",
+        "Evita rango de movimiento parcial",
+        "No colapses el hombro que trabaja"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 111,
+      "name": "Parallel Bar Support",
+      "description": "Mantén el cuerpo erguido entre barras paralelas, desarrollando estabilidad de hombro y tríceps.",
+      "skill": "Variaciones de fondos",
+      "equipment": [
+        1
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        12
+      ],
+      "muscles": [
+        12,
+        9
+      ],
+      "prerequisites": [
+        109
+      ],
+      "progressions": [
+        112
+      ],
+      "formCues": [
+        "Mantén la posición entre barras paralelas",
+        "Brazos rectos, cuerpo vertical",
+        "Activa hombros y core",
+        "Mantén el pecho erguido"
+      ],
+      "commonMistakes": [
+        "No dejes que los hombros se rueden hacia adelante",
+        "Evita bloquear las rodillas bruscamente",
+        "No te relajes en la parte inferior"
+      ],
+      "muscles_secondary": [
+        1,
+        13
+      ]
+    },
+    {
+      "id": 25,
+      "name": "Pike Push-Up",
+      "description": "Bisagra en las caderas con los pies en el suelo, empujando hacia arriba para trabajar hombros en un press vertical.",
+      "skill": "Variaciones de flexiones",
+      "equipment": [],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [
+        5,
+        7,
+        8
+      ],
+      "progressions": [
+        23,
+        10
+      ],
+      "formCues": [
+        "Comienza en posición de perro boca abajo",
+        "Camina los pies más cerca, eleva las caderas alto",
+        "Baja la cabeza hacia el suelo flexionando los codos",
+        "Empuja de vuelta a posición de pike"
+      ],
+      "commonMistakes": [
+        "No dejes que las caderas se hundan durante el movimiento",
+        "Evita flexionar demasiado en la cintura",
+        "No vayas demasiado shallow"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 68,
+      "name": "Pistol Squat",
+      "description": "Agáchate sobre una pierna con la otra extendida hacia adelante, requiriendo fuerza de cuádriceps y equilibrio.",
+      "skill": "Sentadilla pistol",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8,
+        10,
+        11
+      ],
+      "prerequisites": [
+        73
+      ],
+      "progressions": [
+        73
+      ],
+      "formCues": [
+        "Párate sobre una pierna, la otra extendida hacia adelante",
+        "Mantén el pecho erguido y core apretado",
+        "Baja lo más posible",
+        "Usa el brazo para equilibrio si es necesario"
+      ],
+      "commonMistakes": [
+        "No dejes que la rodilla colapse hacia adentro",
+        "Evita que el talón se eleve del suelo",
+        "No redondees la espalda"
+      ],
+      "muscles_secondary": [
+        7,
+        20
+      ]
+    },
+    {
+      "id": 27,
+      "name": "Planche",
+      "description": "Mantén el cuerpo paralelo al suelo sobre las manos, un intenso ejercicio estático de hombro y pecho.",
+      "skill": "Plancha",
+      "equipment": [
+        5
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        13
+      ],
+      "muscles": [
+        2,
+        4,
+        5,
+        18
+      ],
+      "prerequisites": [
+        29
+      ],
+      "progressions": [],
+      "formCues": [
+        "Plancha completa - cuerpo paralelo al suelo",
+        "Brazos rectos, manos empujando fuerte",
+        "Activa todo el core y hombros",
+        "Mantén durante una duración breve"
+      ],
+      "commonMistakes": [
+        "No flexiones los codos durante la sujeción",
+        "Evita que las caderas se hundan",
+        "No lo intentes sin progresiones"
+      ],
+      "muscles_secondary": [
+        9,
+        6,
+        14
+      ]
+    },
+    {
+      "id": 115,
+      "name": "Planche Lean",
+      "description": "Una progresión fundamental de plancha donde inclinas tu cuerpo hacia adelante en un ángulo mientras soportas peso sobre tus manos, construyendo la fuerza de hombros y core necesaria para la posición de plancha completa.",
+      "skill": "Plancha",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        16
+      ],
+      "muscles": [
+        2,
+        3,
+        4
+      ],
+      "prerequisites": [
+        1,
+        2,
+        3,
+        8
+      ],
+      "progressions": [
+        116
+      ],
+      "formCues": [
+        "Comienza en posición de flexión",
+        "Inclínate hacia adelante gradualmente sobre las muñecas",
+        "Mantén los brazos rectos",
+        "Construye fuerza de hombros lentamente"
+      ],
+      "commonMistakes": [
+        "No flexiones los codos durante la inclinación",
+        "Evita ir demasiado lejos demasiado pronto",
+        "No dejes que las muñecas colapsen"
+      ],
+      "muscles_secondary": [
+        4,
+        3
+      ]
+    },
+    {
+      "id": 45,
+      "name": "Plank",
+      "description": "Mantén una posición recta del cuerpo sobre antebrazos y puntas de los pies, activando abdominales para estabilidad.",
+      "skill": "Core",
+      "equipment": [],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [],
+      "progressions": [
+        53
+      ],
+      "formCues": [
+        "Antebrazos en el suelo, codos bajo los hombros",
+        "Mantén el cuerpo en línea recta desde la cabeza hasta los talones",
+        "Activa el core y glúteos firmemente",
+        "Respira constantemente durante la sujeción"
+      ],
+      "commonMistakes": [
+        "No dejes que las caderas caigan",
+        "Evita elevar las caderas demasiado alto",
+        "No contengas la respiración"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 123,
+      "name": "Plank Knee to Elbow",
+      "description": "Una variación de plancha donde llevas las rodillas alternadas hacia los codos opuestos mientras mantienes una posición de plancha estable, activando músculos profundos del core incluyendo oblicuos y transverso abdominal para mejorar la estabilidad.",
+      "skill": "",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        16
+      ],
+      "muscles": [
+        6,
+        14,
+        2
+      ],
+      "prerequisites": [
+        121
+      ],
+      "progressions": [
+        124
+      ],
+      "formCues": [
+        "Comienza en posición de plancha",
+        "Lleva la rodilla hacia el codo del mismo lado",
+        "Mantén el core activado y estable",
+        "Alterna lados rítmicamente"
+      ],
+      "commonMistakes": [
+        "No dejes que las caderas se eleven o hundan",
+        "Evita apresurar el movimiento",
+        "No pierdas la posición de plancha"
+      ],
+      "muscles_secondary": [
+        6
+      ]
+    },
+    {
+      "id": 126,
+      "name": "Plank Side to Side",
+      "description": "Una variación lateral de plancha donde desplazas el peso de lado a lado mientras mantienes soporte con un codo, construyendo fuerza de oblicuos y mejorando la estabilidad unilateral del core para movimientos avanzados de peso corporal.",
+      "skill": "",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        16
+      ],
+      "muscles": [
+        6,
+        14,
+        3
+      ],
+      "prerequisites": [
+        125
+      ],
+      "progressions": [
+        127
+      ],
+      "formCues": [
+        "Comienza en plancha alta con los pies anchos",
+        "Rota el cuerpo para tocar una cadera con el suelo",
+        "Regresa al centro y rota al otro lado",
+        "Mantén el core apretado durante todo el movimiento"
+      ],
+      "commonMistakes": [
+        "No te hundas a través de la espalda baja",
+        "Evita usar solo impulso",
+        "No eleves las caderas demasiado alto"
+      ],
+      "muscles_secondary": [
+        3
+      ]
+    },
+    {
+      "id": 60,
+      "name": "Plank with Leg Lift",
+      "description": "En una plancha, eleva una pierna a la vez, mejorando la estabilidad del transverso abdominal.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6,
+        14
+      ],
+      "prerequisites": [
+        59
+      ],
+      "progressions": [
+        61,
+        58
+      ],
+      "formCues": [
+        "Comienza en plancha sobre antebrazos",
+        "Eleva una pierna sin rotar las caderas",
+        "Mantén el core activado durante todo el movimiento",
+        "Alterna piernas o mantén"
+      ],
+      "commonMistakes": [
+        "No dejes que las caderas se eleven",
+        "Evita elevar la cadera levantada",
+        "No flexiones la rodilla de apoyo"
+      ],
+      "muscles_secondary": [
+        8
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Plyo Push-Up",
+      "description": "Empuja explosivamente para levantar las manos del suelo, mejorando la potencia del pecho y hombros.",
+      "skill": "Variaciones de flexiones",
+      "equipment": [],
+      "difficulty": [
+        2
+      ],
+      "image_url": "assets/images/exercises/1306-Snj1wSv.jpg",
+      "video_url": "assets/videos/exercises/1306-Snj1wSv.gif",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [
+        3,
+        9,
+        2
+      ],
+      "progressions": [
+        4,
+        25
+      ],
+      "formCues": [
+        "Movimiento explosivo hacia arriba",
+        "Genera potencia máxima desde el pecho",
+        "Las manos salen completamente del suelo",
+        "Aterriza suavemente y baja inmediatamente"
+      ],
+      "commonMistakes": [
+        "No aterrices con los codos bloqueados",
+        "Evita un empuje débil",
+        "No comprometas la forma por altura"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 11,
+      "name": "Pull-Up",
+      "description": "Cuélgate de una barra y tira de la barbilla por encima de ella, trabajando dorsales, bíceps y espalda superior con un rango de movimiento completo.",
+      "skill": "Variaciones de dominadas",
+      "equipment": [],
+      "difficulty": [
+        2
+      ],
+      "image_url": "assets/images/exercises/0652-lBDjFxJ.jpg",
+      "video_url": "assets/videos/exercises/0652-lBDjFxJ.gif",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [
+        20,
+        19
+      ],
+      "progressions": [
+        14,
+        120,
+        101,
+        15,
+        22,
+        13
+      ],
+      "formCues": [
+        "Agarra la barra con agarre prono, ligeramente más ancho que los hombros",
+        "Cuelga con los brazos completamente extendidos",
+        "Tira del pecho hacia la barra",
+        "Contrae las escápulas juntas"
+      ],
+      "commonMistakes": [
+        "No uses impulso o balanceo",
+        "Evita repeticiones parciales en la parte superior",
+        "No eleves los hombros en lugar de tirar"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 1,
+      "name": "Push-Up",
+      "description": "Un ejercicio fundamental donde bajas el pecho al suelo y empujas hacia arriba, activando el pecho, hombros y tríceps.",
+      "skill": "Variaciones de flexiones",
+      "equipment": [],
+      "difficulty": [
+        1
+      ],
+      "image_url": "assets/images/exercises/0662-I4hDWkc.jpg",
+      "video_url": "assets/videos/exercises/0662-I4hDWkc.gif",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [
+        6
+      ],
+      "progressions": [
+        37,
+        3,
+        9,
+        2
+      ],
+      "formCues": [
+        "Mantén el core apretado durante todo el movimiento",
+        "Mantén una línea recta desde la cabeza hasta los talones",
+        "Exhala al empujar hacia arriba, inhala al bajar",
+        "Mantén los codos a 45 grados respecto a tu cuerpo"
+      ],
+      "commonMistakes": [
+        "No dejes que las caderas se hundan o se eleven",
+        "Evita abrir los codos a 90 grados",
+        "No te detengas a mitad del movimiento"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 127,
+      "name": "Reach Up",
+      "description": "Un ejercicio de movilidad y activación del core realizado de pie o sentado donde alcanzas los brazos sobre la cabeza mientras arqueas ligeramente la espalda, promoviendo la extensión de la columna torácica y la movilidad de hombros esenciales para la progresión de plancha.",
+      "skill": "",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        16
+      ],
+      "muscles": [
+        6,
+        2
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Párate erguido, brazos sobre la cabeza",
+        "Estira todo el cuerpo hacia arriba",
+        "Mantén brevemente en la parte superior",
+        "Baja lentamente con control"
+      ],
+      "commonMistakes": [
+        "No arquees la espalda baja excesivamente",
+        "Evita usar impulso para alcanzar",
+        "No apresures el movimiento"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 64,
+      "name": "Reverse Hyperextension",
+      "description": "Acostado boca abajo, eleva las piernas desde un banco, trabajando espalda baja y glúteos.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        12
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": null,
+      "video_url": "",
+      "categories": [
+        12
+      ],
+      "muscles": [
+        16,
+        8
+      ],
+      "prerequisites": [
+        63
+      ],
+      "progressions": [],
+      "formCues": [
+        "Acuéstate boca abajo, agarra la barra detrás de la cabeza",
+        "Eleva las piernas hacia el techo",
+        "Contrae glúteos en la parte superior",
+        "Baja con control"
+      ],
+      "commonMistakes": [
+        "No arquees la espalda baja excesivamente",
+        "Evita usar impulso",
+        "No balancees las piernas"
+      ],
+      "muscles_secondary": [
+        11
+      ]
+    },
+    {
+      "id": 39,
+      "name": "Ring Chin-Up",
+      "description": "Dominada en anillas inestables, aumentando la activación de bíceps y estabilizadores.",
+      "skill": "Variaciones de dominadas",
+      "equipment": [
+        11
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        12
+      ],
+      "muscles": [
+        12,
+        1,
+        13
+      ],
+      "prerequisites": [
+        12
+      ],
+      "progressions": [
+        40
+      ],
+      "formCues": [
+        "Agarra las anillas con las palmas facing hacia ti",
+        "Deja que las anillas giren naturalmente",
+        "Tira del pecho hacia las anillas",
+        "Mantén el core activado para estabilidad"
+      ],
+      "commonMistakes": [
+        "No luches contra el giro de las anillas",
+        "Evita usar demasiado impulso",
+        "No dejes que los hombros se rueden hacia adelante"
+      ],
+      "muscles_secondary": [
+        9,
+        17,
+        18
+      ]
+    },
+    {
+      "id": 33,
+      "name": "Ring Dip",
+      "description": "Realiza fondos en anillas inestables, aumentando la demanda de tríceps y músculos estabilizadores.",
+      "skill": "Variaciones de fondos",
+      "equipment": [
+        11
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8
+      ],
+      "muscles": [
+        5
+      ],
+      "prerequisites": [
+        32
+      ],
+      "progressions": [
+        1
+      ],
+      "formCues": [
+        "Ajusta las anillas a la altura del pecho",
+        "Agarra las anillas firmemente, brazos extendidos",
+        "Baja con control en anillas inestables",
+        "Empuja hasta la extensión completa"
+      ],
+      "commonMistakes": [
+        "No dejes que las anillas giren demasiado",
+        "Evita perder el equilibrio",
+        "No apresures el movimiento"
+      ],
+      "muscles_secondary": [
+        4,
+        2
+      ]
+    },
+    {
+      "id": 108,
+      "name": "Ring Row",
+      "description": "Tira del cuerpo hacia arriba desde una suspensión baja en anillas, trabajando espalda y bíceps con dificultad ajustable.",
+      "skill": "Variaciones de dominadas",
+      "equipment": [
+        11
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        12
+      ],
+      "muscles": [
+        12,
+        9
+      ],
+      "prerequisites": [
+        11
+      ],
+      "progressions": [
+        119
+      ],
+      "formCues": [
+        "Cuélgate de las anillas con brazos extendidos",
+        "Tira del pecho hacia las anillas",
+        "Contrae las escápulas juntas",
+        "Baja con control"
+      ],
+      "commonMistakes": [
+        "No dejes que las anillas giren demasiado",
+        "Evita ir demasiado shallow",
+        "No uses impulso"
+      ],
+      "muscles_secondary": [
+        1,
+        13
+      ]
+    },
+    {
+      "id": 118,
+      "name": "Rows",
+      "description": "Un movimiento fundamental de tracción horizontal realizado mientras cuelgas de anillas o barras paralelas, activando dorsales, romboides y deltoides posteriores con un movimiento ascendente controlado del torso.",
+      "skill": "",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        16
+      ],
+      "muscles": [
+        12,
+        1,
+        19
+      ],
+      "prerequisites": [
+        119
+      ],
+      "progressions": [
+        41
+      ],
+      "formCues": [
+        "Inclínate ligeramente con la espalda plana",
+        "Tira el peso hacia el pecho inferior o abdominales",
+        "Contrae los músculos de la espalda en la parte superior",
+        "Controla la descendencia"
+      ],
+      "commonMistakes": [
+        "No uses impulso para balancearte",
+        "Evita redondear la espalda",
+        "No tires demasiado alto"
+      ],
+      "muscles_secondary": [
+        19
+      ]
+    },
+    {
+      "id": 55,
+      "name": "Russian Twist",
+      "description": "Siéntate, gira el torso de lado a lado con los pies fuera del suelo, activando oblicuos.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "assets/images/exercises/0687-XVDdcoj.jpg",
+      "video_url": "assets/videos/exercises/0687-XVDdcoj.gif",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        14
+      ],
+      "prerequisites": [
+        53
+      ],
+      "progressions": [
+        65
+      ],
+      "formCues": [
+        "Siéntate con rodillas dobladas, pies levantados",
+        "Inclínate ligeramente hacia atrás para activar el core",
+        "Rota el torso de lado a lado",
+        "Mantén el pecho erguido durante todo el movimiento"
+      ],
+      "commonMistakes": [
+        "No uses impulso para balancearte",
+        "Evita redondear completamente la espalda",
+        "No gires la espalda baja en lugar de los abdominales"
+      ],
+      "muscles_secondary": [
+        6
+      ]
+    },
+    {
+      "id": 31,
+      "name": "Shoulder Tap",
+      "description": "En una plancha, toca el hombro opuesto con una mano, activando hombros y core.",
+      "skill": "Variaciones de flexiones",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "assets/images/exercises/3699-yRpV5TC.jpg",
+      "video_url": "assets/videos/exercises/3699-yRpV5TC.gif",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6,
+        14
+      ],
+      "prerequisites": [
+        45
+      ],
+      "progressions": [
+        100
+      ],
+      "formCues": [
+        "Comienza en posición de plancha",
+        "Mantén las caderas estables y cuadradas",
+        "Toca el hombro opuesto con cada mano",
+        "Mantén una forma de plancha perfecta"
+      ],
+      "commonMistakes": [
+        "No dejes que las caderas giren o se eleven",
+        "Evita levantar una pierna para alcanzar",
+        "No apresures las tocas"
+      ],
+      "muscles_secondary": [
+        6
+      ]
+    },
+    {
+      "id": 57,
+      "name": "Side Hanging Raise",
+      "description": "Cuélgate de una barra, eleva las piernas lateralmente para trabajar oblicuos.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        14
+      ],
+      "prerequisites": [
+        65
+      ],
+      "progressions": [],
+      "formCues": [
+        "Cuélgate de la barra, inclínate hacia un lado",
+        "Eleva el cuerpo lateralmente usando el core",
+        "Mantén los brazos rectos durante todo el movimiento",
+        "Alterna lados"
+      ],
+      "commonMistakes": [
+        "No uses impulso para balancearte",
+        "Evita flexionar los codos para ayudar",
+        "No dejes que las caderas se hundan"
+      ],
+      "muscles_secondary": [
+        6,
+        14
+      ]
+    },
+    {
+      "id": 89,
+      "name": "Side Lunge",
+      "description": "Da un paso hacia el lado y agáchate, trabajando aductores y mejorando la movilidad lateral.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8,
+        10,
+        11
+      ],
+      "prerequisites": [
+        92
+      ],
+      "progressions": [
+        90
+      ],
+      "formCues": [
+        "Da un paso hacia un lado en estocada",
+        "Mantén la otra pierna recta",
+        "Flexiona la rodilla de trabajo, mantén el pie abajo",
+        "Empuja de vuelta al inicio"
+      ],
+      "commonMistakes": [
+        "No dejes que la pierna de apoyo se flexione",
+        "Evita rango de movimiento incompleto",
+        "No dejes que el pie de trabajo se gire hacia adentro"
+      ],
+      "muscles_secondary": [
+        7,
+        20
+      ]
+    },
+    {
+      "id": 54,
+      "name": "Side Plank",
+      "description": "Soporta el cuerpo sobre un antebrazo y el lado del pie, manteniendo para trabajar oblicuos.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        14
+      ],
+      "prerequisites": [
+        53
+      ],
+      "progressions": [
+        51
+      ],
+      "formCues": [
+        "Acuéstate de lado, apóyate en un antebrazo",
+        "Apila los pies o desalinea para estabilidad",
+        "Eleva las caderas para formar una línea recta",
+        "Mantén con el core activado"
+      ],
+      "commonMistakes": [
+        "No dejes que las caderas se hundan",
+        "Evita rodar hacia adelante o hacia atrás",
+        "No eleves la cadera demasiado alto"
+      ],
+      "muscles_secondary": [
+        8
+      ]
+    },
+    {
+      "id": 94,
+      "name": "Side-Lying Leg Raise",
+      "description": "Acostado de lado, eleva la pierna superior, aislando abductores para estabilidad de cadera.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        20
+      ],
+      "prerequisites": [
+        91
+      ],
+      "progressions": [
+        98,
+        96
+      ],
+      "formCues": [
+        "Acuéstate de lado, piernas apiladas",
+        "Eleva la pierna superior manteniéndola recta",
+        "Baja lentamente hasta justo por encima del suelo",
+        "Contrae cadera externa en la parte superior"
+      ],
+      "commonMistakes": [
+        "No dejes que las caderas se rueden hacia atrás",
+        "Evita usar impulso para levantar",
+        "No eleves demasiado alto inicialmente"
+      ],
+      "muscles_secondary": [
+        8
+      ]
+    },
+    {
+      "id": 85,
+      "name": "Single-Leg Calf Raise",
+      "description": "Eleva el talón en una pierna, aumentando la fuerza y estabilidad de pantorrillas de forma unilateral.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        14
+      ],
+      "muscles": [
+        7
+      ],
+      "prerequisites": [
+        84
+      ],
+      "progressions": [
+        86
+      ],
+      "formCues": [
+        "Párate sobre una pierna, la otra ligeramente hacia adelante",
+        "Eleva hasta la punta del pie de apoyo",
+        "Mantén el equilibrio sin sujetarte",
+        "Baja lentamente"
+      ],
+      "commonMistakes": [
+        "No dejes que la rodilla de apoyo se flexione",
+        "Evita usar impulso",
+        "No apresures el movimiento"
+      ],
+      "muscles_secondary": [
+        7,
+        15
+      ]
+    },
+    {
+      "id": 80,
+      "name": "Single-Leg Glute Bridge",
+      "description": "Eleva las caderas con una pierna extendida, trabajando glúteos de forma unilateral con un desafío añadido.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8
+      ],
+      "prerequisites": [
+        79
+      ],
+      "progressions": [
+        81
+      ],
+      "formCues": [
+        "Una pierna extendida, la otra doblada",
+        "Eleva las caderas usando la pierna de apoyo",
+        "Contrae el glúteo de trabajo en la parte superior",
+        "Baja con control"
+      ],
+      "commonMistakes": [
+        "No dejes que el pie de apoyo se levante",
+        "Evita elevar las caderas hacia un lado",
+        "No vayas demasiado shallow"
+      ],
+      "muscles_secondary": [
+        6,
+        11
+      ]
+    },
+    {
+      "id": 75,
+      "name": "Single-Leg Romanian Deadlift",
+      "description": "Bisagra en las caderas en una pierna, bajando el torso para trabajar isquiotibiales y mejorar el equilibrio.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8,
+        11
+      ],
+      "prerequisites": [
+        74
+      ],
+      "progressions": [
+        77
+      ],
+      "formCues": [
+        "Párate sobre una pierna, ligera flexión de rodilla",
+        "Bisagra en la cadera, extiende la otra pierna hacia atrás",
+        "Mantén la pierna de apoyo ligeramente doblada",
+        "Regresa contrayendo glúteos"
+      ],
+      "commonMistakes": [
+        "No dejes que la rodilla de apoyo colapse",
+        "Evita redondear la espalda baja",
+        "No vayas demasiado profundo al inicio"
+      ],
+      "muscles_secondary": [
+        16,
+        20
+      ]
+    },
+    {
+      "id": 107,
+      "name": "Skin the Cat",
+      "description": "Rota hacia atrás a través de una suspensión en anillas o barra, una progresión de movilidad y palanca posterior.",
+      "skill": "Palanca posterior",
+      "equipment": [
+        11
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "assets/images/exercises/3304-MSfvriJ.jpg",
+      "video_url": "assets/videos/exercises/3304-MSfvriJ.gif",
+      "categories": [
+        16
+      ],
+      "muscles": [
+        "Back",
+        "14"
+      ],
+      "prerequisites": [
+        12,
+        18
+      ],
+      "progressions": [
+        114
+      ],
+      "formCues": [
+        "Cuélgate de la barra con anillas o rig",
+        "Camina los pies hacia adelante mientras rotas el cuerpo",
+        "Baja hasta que la espalda esté contra la barra",
+        "Invierte el movimiento lentamente"
+      ],
+      "commonMistakes": [
+        "No gires demasiado rápido",
+        "Evita usar impulso",
+        "No sueltes el agarre prematuramente"
+      ],
+      "muscles_secondary": [
+        12,
+        1
+      ]
+    },
+    {
+      "id": 117,
+      "name": "Skull Crushers",
+      "description": "Un ejercicio efectivo de aislamiento de tríceps realizado acostado boca arriba, bajando un peso o resistencia hacia tu frente y luego extendiendo los brazos hacia arriba para trabajar la cabeza del tríceps.",
+      "skill": "",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        16
+      ],
+      "muscles": [
+        5
+      ],
+      "prerequisites": [],
+      "progressions": [],
+      "formCues": [
+        "Acuéstate en el banco, sujeta la barra sobre la cabeza",
+        "Baja la barra hacia la frente flexionando los codos",
+        "Extiende los brazos de vuelta al inicio",
+        "Mantén los brazos superiores estacionarios"
+      ],
+      "commonMistakes": [
+        "No rebotes la barra contra la frente",
+        "Evita mover los hombros durante el ejercicio",
+        "No uses demasiado peso"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 9,
+      "name": "Spiderman Push-Up",
+      "description": "Lleva una rodilla al codo durante una flexión, activando pecho y oblicuos simultáneamente.",
+      "skill": "Variaciones de flexiones",
+      "equipment": [],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [
+        1
+      ],
+      "progressions": [
+        5,
+        4,
+        3,
+        8
+      ],
+      "formCues": [
+        "Amplia separación de manos",
+        "Lleva la rodilla al codo del mismo lado al bajar",
+        "Alterna lados con cada repetición",
+        "Controla el movimiento completamente"
+      ],
+      "commonMistakes": [
+        "No dejes que la cadera gire",
+        "Evita apresurar el movimiento de la rodilla",
+        "No colapses el pecho"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 67,
+      "name": "Squat",
+      "description": "Flexiona rodillas y caderas para bajar el cuerpo, luego párate, un ejercicio básico de cuádriceps y glúteos.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8,
+        10,
+        11
+      ],
+      "prerequisites": [
+        65
+      ],
+      "progressions": [
+        92,
+        72
+      ],
+      "formCues": [
+        "Pies a la anchura de los hombros",
+        "Mantén el pecho erguido, core apretado",
+        "Baja caderas hacia atrás y abajo",
+        "Impulsa a través de los talones para levantarte"
+      ],
+      "commonMistakes": [
+        "No dejes que las rodillas se hundan hacia adentro",
+        "Evita levantar los talones del suelo",
+        "No redondees la espalda baja"
+      ],
+      "muscles_secondary": [
+        7,
+        20
+      ]
+    },
+    {
+      "id": 96,
+      "name": "Standing Abduction",
+      "description": "Con una banda alrededor de las piernas, empuja una pierna hacia el lado contra la resistencia.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        2
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8
+      ],
+      "prerequisites": [
+        95
+      ],
+      "progressions": [
+        97
+      ],
+      "formCues": [
+        "Párate erguido, banda alrededor de los tobillos",
+        "Eleva una pierna hacia el lado manteniéndola recta",
+        "Contrae cadera externa en la parte superior",
+        "Baja con control"
+      ],
+      "commonMistakes": [
+        "No te inclines hacia afuera de la pierna de trabajo",
+        "Evita usar impulso para levantar",
+        "No flexiones la pierna de trabajo"
+      ],
+      "muscles_secondary": [
+        8
+      ]
+    },
+    {
+      "id": 72,
+      "name": "Step-Up",
+      "description": "Sube a un banco con una pierna, impulsando a través del talón para trabajar cuádriceps.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        12
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        10,
+        8,
+        11
+      ],
+      "prerequisites": [
+        67
+      ],
+      "progressions": [
+        71
+      ],
+      "formCues": [
+        "Párate frente a una caja o step",
+        "Impulsa a través de un pie para subir",
+        "Lleva el otro pie para quedarte de pie a su lado",
+        "Baja con control"
+      ],
+      "commonMistakes": [
+        "No empujes con el pie trasero",
+        "Evita rango de movimiento incompleto",
+        "No lideres con la rodilla al bajar"
+      ],
+      "muscles_secondary": [
+        7
+      ]
+    },
+    {
+      "id": 113,
+      "name": "Straddle L-Sit",
+      "description": "Mantén las piernas abiertas en un L-sit, avanzando la fuerza del core y flexores de cadera.",
+      "skill": "L-Sit",
+      "equipment": [
+        5
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6,
+        14
+      ],
+      "prerequisites": [
+        1
+      ],
+      "progressions": [
+        5
+      ],
+      "formCues": [
+        "Siéntate entre barras, piernas abiertas ancho",
+        "Eleva las piernas a posición horizontal",
+        "Mantén el core activado y espalda plana",
+        "Baja lentamente cuando estés cansado"
+      ],
+      "commonMistakes": [
+        "No dejes que las rodillas se hundan hacia abajo",
+        "Evita redondear la espalda",
+        "No uses los brazos para subir"
+      ],
+      "muscles_secondary": [
+        2,
+        18
+      ]
+    },
+    {
+      "id": 29,
+      "name": "Straddle Planche",
+      "description": "Piernas abiertas ancho en una sujeción de plancha, aumentando la demanda de hombros.",
+      "skill": "Plancha",
+      "equipment": [
+        5
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "assets/images/exercises/3298-BL3GHeY.jpg",
+      "video_url": "assets/videos/exercises/3298-BL3GHeY.gif",
+      "categories": [
+        13
+      ],
+      "muscles": [
+        2,
+        4,
+        5,
+        18
+      ],
+      "prerequisites": [
+        28
+      ],
+      "progressions": [
+        27
+      ],
+      "formCues": [
+        "Comienza en posición de flexión con postura ancha",
+        "Inclínate hacia adelante, brazos rectos",
+        "Eleva las piernas con las rodillas ligeramente dobladas hacia afuera",
+        "Mantén el cuerpo en línea horizontal"
+      ],
+      "commonMistakes": [
+        "No flexiones los codos durante el levantamiento",
+        "Evita que las caderas se hundan",
+        "No apresures la progresión"
+      ],
+      "muscles_secondary": [
+        9,
+        6,
+        14
+      ]
+    },
+    {
+      "id": 92,
+      "name": "Sumo Squat",
+      "description": "Sentadilla con postura ancha con los pies hacia afuera, enfatizando aductores y muslos internos.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8,
+        10,
+        11
+      ],
+      "prerequisites": [
+        67
+      ],
+      "progressions": [
+        89
+      ],
+      "formCues": [
+        "Postura ancha, pies apuntando hacia afuera",
+        "Baja caderas hacia abajo y entre las piernas",
+        "Mantén el pecho erguido durante todo el movimiento",
+        "Impulsa a través de los talones para levantarte"
+      ],
+      "commonMistakes": [
+        "No dejes que las rodillas se hundan hacia adentro",
+        "Evita ir demasiado shallow",
+        "No redondees la espalda"
+      ],
+      "muscles_secondary": [
+        7,
+        20
+      ]
+    },
+    {
+      "id": 62,
+      "name": "Superman Hold",
+      "description": "Acostado boca abajo, eleva brazos y piernas del suelo, manteniendo para fortalecer la espalda baja.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        12
+      ],
+      "muscles": [
+        16,
+        8,
+        12
+      ],
+      "prerequisites": [
+        60
+      ],
+      "progressions": [
+        63
+      ],
+      "formCues": [
+        "Acuéstate boca abajo, brazos extendidos hacia adelante",
+        "Levanta el pecho y las piernas del suelo",
+        "Mantén la espalda baja activada",
+        "Mantén el cuello neutro"
+      ],
+      "commonMistakes": [
+        "No hiperextiendas el cuello",
+        "Evita elevar demasiado alto inicialmente",
+        "No contengas la respiración"
+      ],
+      "muscles_secondary": [
+        9
+      ]
+    },
+    {
+      "id": 110,
+      "name": "Supine Leg Raise",
+      "description": "Acostado boca arriba, eleva las piernas a vertical y baja lentamente, trabajando abdominales inferiores y flexores de cadera.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6
+      ],
+      "prerequisites": [
+        65
+      ],
+      "progressions": [
+        65
+      ],
+      "formCues": [
+        "Acuéstate boca arriba, brazos a los lados",
+        "Eleva las piernas manteniéndolas rectas",
+        "Controla la fase de bajada",
+        "Mantén la espalda baja presionada hacia abajo"
+      ],
+      "commonMistakes": [
+        "No dejes que la espalda se eleve del suelo",
+        "Evita usar impulso para levantar",
+        "No bloquees las rodillas bruscamente"
+      ],
+      "muscles_secondary": [
+        6
+      ]
+    },
+    {
+      "id": 44,
+      "name": "Towel Hang",
+      "description": "Cuélgate de toallas sobre una barra, desafiando antebrazos y agarre intensamente.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8
+      ],
+      "muscles": [
+        19
+      ],
+      "prerequisites": [
+        42
+      ],
+      "progressions": [],
+      "formCues": [
+        "Cuelga una toalla sobre la barra",
+        "Agarra cada extremo con una mano",
+        "Cuelga durante la duración",
+        "Enfócate en agarre y estabilidad de hombros"
+      ],
+      "commonMistakes": [
+        "No dejes que la toalla se resbale de las manos",
+        "Evita usar solo el agarre de los dedos",
+        "No eleves los hombros"
+      ],
+      "muscles_secondary": [
+        9,
+        12
+      ]
+    },
+    {
+      "id": 22,
+      "name": "Towel Pull-Up",
+      "description": "Agarra toallas sobre una barra para subir, mejorando la fuerza de agarre junto con el trabajo de espalda.",
+      "skill": "Variaciones de dominadas",
+      "equipment": [],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [
+        21
+      ],
+      "progressions": [
+        101,
+        15
+      ],
+      "formCues": [
+        "Cuélgate de la toalla drapada sobre la barra",
+        "Agarra la toalla con ambas manos",
+        "Lleva la barbilla por encima de la toalla",
+        "Enfócate en fuerza de agarre y dominada"
+      ],
+      "commonMistakes": [
+        "No dejes que la toalla se deslice",
+        "Evita perder el agarre durante la repetición",
+        "No balancees el cuerpo"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 32,
+      "name": "Tricep Dip",
+      "description": "Baja el cuerpo entre barras paralelas y empuja hacia arriba, trabajando tríceps eficazmente.",
+      "skill": "Variaciones de fondos",
+      "equipment": [
+        1
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8
+      ],
+      "muscles": [
+        5
+      ],
+      "prerequisites": [
+        37
+      ],
+      "progressions": [
+        33
+      ],
+      "formCues": [
+        "Manos en una superficie estable, piernas extendidas",
+        "Mantén los codos cerca del cuerpo",
+        "Baja caderas hacia el suelo",
+        "Empuja a través de tríceps para regresar"
+      ],
+      "commonMistakes": [
+        "No dejes que los codos se abran",
+        "Evita ir demasiado profundo",
+        "No bloquees los codos en la parte superior"
+      ],
+      "muscles_secondary": [
+        4,
+        2
+      ]
+    },
+    {
+      "id": 38,
+      "name": "Triceps Extension",
+      "description": "Usando una banda elástica sobre la cabeza, extiende los brazos para aislar tríceps.",
+      "skill": "Variaciones de fondos",
+      "equipment": [
+        2
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8
+      ],
+      "muscles": [
+        5
+      ],
+      "prerequisites": [
+        32
+      ],
+      "progressions": [
+        37
+      ],
+      "formCues": [
+        "Siéntate en el banco con mancuerna sobre la cabeza",
+        "Baja el peso detrás de la cabeza flexionando el codo",
+        "Extiende el brazo de vuelta al inicio",
+        "Mantén el brazo superior estacionario"
+      ],
+      "commonMistakes": [
+        "No uses impulso para levantar",
+        "Evita abrir el codo hacia afuera",
+        "No dejes que el torso se balancee"
+      ],
+      "muscles_secondary": [
+        5
+      ]
+    },
+    {
+      "id": 18,
+      "name": "Tuck Front Lever",
+      "description": "Rodillas recogidas al pecho mientras mantienes paralelo, una progresión hacia la palanca frontal completa.",
+      "skill": "Variaciones con recuento",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        12
+      ],
+      "muscles": [
+        12,
+        6,
+        14
+      ],
+      "prerequisites": [
+        11
+      ],
+      "progressions": [
+        107
+      ],
+      "formCues": [
+        "Recoge las rodillas al pecho mientras cuelgas",
+        "Activa los dorsales completamente",
+        "Eleva las caderas fuera de la posición vertical",
+        "Mantén los brazos rectos y bloqueados"
+      ],
+      "commonMistakes": [
+        "No flexiones los codos para ayudar",
+        "Evita que la espalda se redondee",
+        "No uses impulso para subir"
+      ],
+      "muscles_secondary": [
+        13,
+        19,
+        9
+      ]
+    },
+    {
+      "id": 103,
+      "name": "Tuck Jump",
+      "description": "Salta y recoge las rodillas al pecho en el aire, trabajando piernas, core y cardio.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8,
+        10,
+        11
+      ],
+      "prerequisites": [
+        102
+      ],
+      "progressions": [],
+      "formCues": [
+        "Comienza de pie",
+        "Salta explosivamente hacia arriba, llevando las rodillas al pecho",
+        "Aterriza suavemente sobre la punta de los pies",
+        "Prepárate inmediatamente para la siguiente repetición"
+      ],
+      "commonMistakes": [
+        "No aterrices con las piernas rectas",
+        "Evita aterrizar pesadamente con toda la planta del pie",
+        "No dejes que las rodillas colapsen hacia adentro"
+      ],
+      "muscles_secondary": [
+        6,
+        7
+      ]
+    },
+    {
+      "id": 51,
+      "name": "Tuck L-Sit",
+      "description": "Rodillas recogidas mientras mantienes una posición de L-sit, una progresión hacia el L-sit completo.",
+      "skill": "Variaciones con recuento",
+      "equipment": [
+        5
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6,
+        14
+      ],
+      "prerequisites": [
+        45
+      ],
+      "progressions": [
+        47
+      ],
+      "formCues": [
+        "Comienza en posición recogida, rodillas al pecho",
+        "Eleva las caderas y piernas con fuerza del core",
+        "Mantén los brazos rectos para soporte",
+        "Progresa al L-sit completo gradualmente"
+      ],
+      "commonMistakes": [
+        "No flexiones los codos para soporte",
+        "Evita usar impulso",
+        "No apresures la progresión"
+      ],
+      "muscles_secondary": [
+        2,
+        18
+      ]
+    },
+    {
+      "id": 28,
+      "name": "Tuck Planche",
+      "description": "Rodillas recogidas mientras mantienes paralelo sobre las manos, una progresión de plancha.",
+      "skill": "Variaciones con recuento",
+      "equipment": [
+        5
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        13
+      ],
+      "muscles": [
+        2,
+        4,
+        5,
+        18
+      ],
+      "prerequisites": [
+        27
+      ],
+      "progressions": [
+        29
+      ],
+      "formCues": [
+        "Comienza en posición de flexión, manos cerca de las caderas",
+        "Inclínate hacia adelante con brazos rectos",
+        "Levanta los pies del suelo, rodillas al pecho",
+        "Mantén brevemente, luego baja"
+      ],
+      "commonMistakes": [
+        "No flexiones los codos durante el levantamiento",
+        "Evita ir demasiado profundo al inicio",
+        "No colapses los hombros"
+      ],
+      "muscles_secondary": [
+        9,
+        6,
+        14
+      ]
+    },
+    {
+      "id": 116,
+      "name": "Tuck Planche Hold",
+      "description": "Mantén tu cuerpo en posición de recuento con las rodillas dobladas y cerca del pecho mientras te equilibras sobre las manos, desarrollando estabilidad crítica de hombros y activación del core para habilidades avanzadas de calistenia.",
+      "skill": "Plancha",
+      "equipment": [
+        15
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        16
+      ],
+      "muscles": [
+        2,
+        3,
+        4
+      ],
+      "prerequisites": [
+        115
+      ],
+      "progressions": [],
+      "formCues": [
+        "Manos cerca de las caderas, inclínate hacia adelante",
+        "Levanta los pies con las rodillas al pecho",
+        "Mantén los brazos rectos y bloqueados",
+        "Mantén brevemente, activa intensamente"
+      ],
+      "commonMistakes": [
+        "No flexiones los codos durante la sujeción",
+        "Evita que los hombros colapsen",
+        "No vayas demasiado profundo al inicio"
+      ],
+      "muscles_secondary": [
+        2,
+        3
+      ]
+    },
+    {
+      "id": 122,
+      "name": "Twist Sit Up",
+      "description": "Un ejercicio abdominal sentado en el suelo con las piernas extendidas, girando el torso para llevar el codo opuesto a la rodilla en un movimiento controlado que trabaja los oblicuos y el recto abdominal.",
+      "skill": "",
+      "equipment": [
+        16
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        16
+      ],
+      "muscles": [
+        6,
+        14
+      ],
+      "prerequisites": [
+        121
+      ],
+      "progressions": [],
+      "formCues": [
+        "Acuéstate boca arriba, rodillas dobladas",
+        "Siéntate mientras rotas el torso",
+        "Lleva el codo opuesto a la rodilla",
+        "Alterna lados con cada repetición"
+      ],
+      "commonMistakes": [
+        "No uses impulso para subir",
+        "No tires del cuello",
+        "No apresures la rotación"
+      ],
+      "muscles_secondary": [
+        6
+      ]
+    },
+    {
+      "id": 50,
+      "name": "V-Sit",
+      "description": "Siéntate con las piernas y el torso elevados en forma de V, manteniendo para activar abdominales y flexores de cadera.",
+      "skill": "L-Sit",
+      "equipment": [],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [],
+      "progressions": [
+        58
+      ],
+      "formCues": [
+        "Siéntate con piernas y torso formando forma de V",
+        "Levanta los pies del suelo, equilibra en los isquiones",
+        "Extiende las manos hacia adelante o sujeta las espinillas",
+        "Mantén la espalda recta"
+      ],
+      "commonMistakes": [
+        "No dejes que la espalda se redondee excesivamente",
+        "Evita flexionar las rodillas demasiado",
+        "No te inclines hacia atrás sobre el suelo"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 30,
+      "name": "Wall Handstand",
+      "description": "Practica pino contra una pared, fortaleciendo los hombros y el equilibrio.",
+      "skill": "Pino",
+      "equipment": [],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [],
+      "progressions": [
+        23
+      ],
+      "formCues": [
+        "Salta hacia la pared con la espalda hacia ella",
+        "Sube los pies por la pared gradualmente",
+        "Mantén el cuerpo en línea recta",
+        "Activa el core y los glúteos"
+      ],
+      "commonMistakes": [
+        "No hagas puente en las caderas",
+        "Evita subir los pies demasiado abajo",
+        "No arquees la espalda baja"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 69,
+      "name": "Wall Sit",
+      "description": "Apóyate contra una pared, mantén una posición sentada, un ejercicio isométrico de resistencia de cuádriceps.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        17
+      ],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        10,
+        8,
+        11
+      ],
+      "prerequisites": [
+        67
+      ],
+      "progressions": [
+        67
+      ],
+      "formCues": [
+        "Espalda contra la pared, pies hacia adelante",
+        "Siéntate hasta que los muslos estén paralelos al suelo",
+        "Mantén el core activado",
+        "Respira constantemente"
+      ],
+      "commonMistakes": [
+        "No dejes que las rodillas avancen demasiado sobre los pies",
+        "Evita que la espalda se deslice por la pared",
+        "No empujes solo con los talones"
+      ],
+      "muscles_secondary": [
+        7
+      ]
+    },
+    {
+      "id": 88,
+      "name": "Weighted Calf Raise",
+      "description": "Sujeta un peso o usa un chaleco con peso, eleva los talones para aumentar la resistencia de pantorrilla.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        13
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        14
+      ],
+      "muscles": [
+        7
+      ],
+      "prerequisites": [
+        87
+      ],
+      "progressions": [],
+      "formCues": [
+        "Sujeta una mancuerna o disco en una mano",
+        "Párate erguido, eleva los talones",
+        "Enfócate en la contracción de pantorrilla",
+        "Controla ambas fases"
+      ],
+      "commonMistakes": [
+        "No te inclines con el peso",
+        "Evita usar impulso",
+        "No hagas un recorrido demasiado corto"
+      ],
+      "muscles_secondary": [
+        7
+      ]
+    },
+    {
+      "id": 36,
+      "name": "Weighted Dip",
+      "description": "Añade peso a las fondos usando un chaleco o cinturón, intensificando el trabajo de tríceps.",
+      "skill": "Variaciones de fondos",
+      "equipment": [
+        13
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        8
+      ],
+      "muscles": [
+        5
+      ],
+      "prerequisites": [
+        33
+      ],
+      "progressions": [],
+      "formCues": [
+        "Comienza con poco peso y progresa gradualmente",
+        "Mantén una forma estricta durante todo el movimiento",
+        "Controla ambas fases por igual",
+        "Activa el core para evitar balanceo"
+      ],
+      "commonMistakes": [
+        "No añadas demasiado peso demasiado pronto",
+        "Evita usar impulso",
+        "No dejes que los hombros se rueden hacia adelante"
+      ],
+      "muscles_secondary": [
+        4,
+        2
+      ]
+    },
+    {
+      "id": 83,
+      "name": "Weighted Hip Thrust",
+      "description": "Añade peso sobre las caderas durante un empuje de cadera, intensificando la activación de glúteos.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        13
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8
+      ],
+      "prerequisites": [
+        81
+      ],
+      "progressions": [],
+      "formCues": [
+        "Coloca el disco de peso sobre las caderas",
+        "Mantén la forma correcta de empuje de cadera",
+        "Enfócate en la contracción de glúteos",
+        "Controla ambas fases"
+      ],
+      "commonMistakes": [
+        "No dejes que la barra se salga de las caderas",
+        "Evita usar impulso",
+        "No sacrifiques la forma por más peso"
+      ],
+      "muscles_secondary": [
+        6,
+        11
+      ]
+    },
+    {
+      "id": 13,
+      "name": "Wide Pull-Up",
+      "description": "Manos más anchas que los hombros para maximizar la activación de dorsales durante la dominada.",
+      "skill": "Variaciones de dominadas",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        2
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        12
+      ],
+      "muscles": [
+        12,
+        1,
+        13
+      ],
+      "prerequisites": [
+        11
+      ],
+      "progressions": [],
+      "formCues": [
+        "Agarra la barra a 1.5x la anchura de los hombros",
+        "Mantén el core activado",
+        "Tira del pecho hacia el centro de la barra",
+        "Siente cómo se activan los dorsales durante todo el movimiento"
+      ],
+      "commonMistakes": [
+        "No te inclines hacia atrás demasiado",
+        "Evita rango de movimiento incompleto",
+        "No dejes que los hombros se rueden hacia adelante"
+      ],
+      "muscles_secondary": [
+        9,
+        17,
+        18
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Wide Push-Up",
+      "description": "Manos colocadas más anchas que los hombros para enfatizar la activación del pecho sobre los tríceps, realizado bajando y subiendo el cuerpo.",
+      "skill": "Variaciones de flexiones",
+      "equipment": [],
+      "difficulty": [
+        1
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [],
+      "muscles": [],
+      "prerequisites": [
+        1
+      ],
+      "progressions": [
+        5,
+        4,
+        3,
+        8
+      ],
+      "formCues": [
+        "Separa las manos a 1.5x la anchura de los hombros",
+        "Mantén el core activado durante todo el movimiento",
+        "Baja el pecho al centro entre las manos",
+        "Controla la bajada durante 2-3 segundos"
+      ],
+      "commonMistakes": [
+        "No dejes que los hombros se eleven hacia las orejas",
+        "Evita rango de movimiento incompleto",
+        "No gires las caderas de lado a lado"
+      ],
+      "muscles_secondary": []
+    },
+    {
+      "id": 58,
+      "name": "Windshield Wipers",
+      "description": "Cuelga de una barra, balancea las piernas de lado a lado como limpiaparabrisas, trabajando los oblicuos.",
+      "skill": "Sujeción Hollow Body",
+      "equipment": [
+        6
+      ],
+      "difficulty": [
+        3
+      ],
+      "image_url": "",
+      "video_url": "",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6,
+        14
+      ],
+      "prerequisites": [
+        53
+      ],
+      "progressions": [
+        65
+      ],
+      "formCues": [
+        "Acuéstate boca arriba, brazos extendidos a los lados",
+        "Levanta las piernas y llévalas hacia un lado",
+        "Baja con control, luego lleva al otro lado",
+        "Mantén los hombros en el suelo"
+      ],
+      "commonMistakes": [
+        "No dejes que los hombros se eleven del suelo",
+        "Evita usar impulso",
+        "No bajes demasiado rápido"
+      ],
+      "muscles_secondary": [
+        6,
+        14
+      ]
+    }
+  ],
+  "muscles": [
+    {
+      "id": 1,
+      "name": "Bíceps braquial",
+      "is_front": true,
+      "name_en": "Biceps"
+    },
+    {
+      "id": 2,
+      "name": "Deltoides anterior",
+      "is_front": true,
+      "name_en": "Shoulders"
+    },
+    {
+      "id": 3,
+      "name": "Serrato anterior",
+      "is_front": true,
+      "name_en": "Serratus"
+    },
+    {
+      "id": 4,
+      "name": "Pectoral mayor",
+      "is_front": true,
+      "name_en": "Chest"
+    },
+    {
+      "id": 5,
+      "name": "Tríceps braquial",
+      "is_front": false,
+      "name_en": "Triceps"
+    },
+    {
+      "id": 6,
+      "name": "Recto abdominal",
+      "is_front": true,
+      "name_en": "Abs"
+    },
+    {
+      "id": 7,
+      "name": "Gastrocnemio",
+      "is_front": false,
+      "name_en": "Calves"
+    },
+    {
+      "id": 8,
+      "name": "Glúteo mayor",
+      "is_front": false,
+      "name_en": "Glutes"
+    },
+    {
+      "id": 9,
+      "name": "Trapecio",
+      "is_front": false,
+      "name_en": "Trapezius"
+    },
+    {
+      "id": 10,
+      "name": "Cuádriceps femoral",
+      "is_front": true,
+      "name_en": "Quads"
+    },
+    {
+      "id": 11,
+      "name": "Bíceps femoral",
+      "is_front": false,
+      "name_en": "Hamstrings"
+    },
+    {
+      "id": 12,
+      "name": "Dorsal ancho",
+      "is_front": false,
+      "name_en": "Lats"
+    },
+    {
+      "id": 13,
+      "name": "Braquial",
+      "is_front": true,
+      "name_en": "Brachialis"
+    },
+    {
+      "id": 14,
+      "name": "Oblicuo externo",
+      "is_front": true,
+      "name_en": "Obliques"
+    },
+    {
+      "id": 15,
+      "name": "Sóleo",
+      "is_front": true,
+      "name_en": "Soleus"
+    },
+    {
+      "id": 16,
+      "name": "Erectores de la espina",
+      "is_front": false,
+      "name_en": "Lower back"
+    },
+    {
+      "id": 17,
+      "name": "Redondo",
+      "is_front": false,
+      "name_en": "Teres"
+    },
+    {
+      "id": 18,
+      "name": "Deltoides posterior",
+      "is_front": false,
+      "name_en": "Posterior Deltoid"
+    },
+    {
+      "id": 19,
+      "name": "Antebrazo",
+      "is_front": true,
+      "name_en": "Forearm"
+    },
+    {
+      "id": 20,
+      "name": "Aductores",
+      "is_front": true,
+      "name_en": "Adductors"
+    }
+  ],
+  "difficulties": [
+    {
+      "id": 1,
+      "name": "beginner",
+      "label": "Principiante"
+    },
+    {
+      "id": 2,
+      "name": "intermediate",
+      "label": "Intermedio"
+    },
+    {
+      "id": 3,
+      "name": "advanced",
+      "label": "Avanzado"
+    }
+  ],
+  "routines": [
+    {
+      "id": 1,
+      "name": "Push Training",
+      "exercises": [
+        {
+          "exerciseId": 115,
+          "sets": 3,
+          "reps": 10,
+          "restTime": 60
+        },
+        {
+          "exerciseId": 116,
+          "sets": 3,
+          "reps": 10,
+          "restTime": 60
+        },
+        {
+          "exerciseId": 105,
+          "sets": 3,
+          "reps": 10,
+          "restTime": 60
+        },
+        {
+          "exerciseId": 32,
+          "sets": 3,
+          "reps": 10,
+          "restTime": 60
+        },
+        {
+          "exerciseId": 25,
+          "sets": 3,
+          "reps": 10,
+          "restTime": 60
+        },
+        {
+          "exerciseId": 3,
+          "sets": 3,
+          "reps": 10,
+          "restTime": 60
+        },
+        {
+          "exerciseId": 1,
+          "sets": 3,
+          "reps": 10,
+          "restTime": 60
+        },
+        {
+          "exerciseId": 5,
+          "sets": 3,
+          "reps": 10,
+          "restTime": 60
+        },
+        {
+          "exerciseId": 2,
+          "sets": 3,
+          "reps": 10,
+          "restTime": 60
+        },
+        {
+          "exerciseId": 117,
+          "sets": 3,
+          "reps": 10,
+          "restTime": 60
+        }
+      ],
+      "warmup": [
+        {
+          "exerciseId": 1,
+          "sets": 2,
+          "reps": 15,
+          "restTime": 30
+        },
+        {
+          "exerciseId": 6,
+          "sets": 2,
+          "reps": 12,
+          "restTime": 30
+        }
+      ],
+      "cooldown": [
+        {
+          "exerciseId": 6,
+          "sets": 2,
+          "reps": 10,
+          "restTime": 45
+        },
+        {
+          "exerciseId": 1,
+          "sets": 2,
+          "reps": 8,
+          "restTime": 45
+        }
+      ],
+      "description": "Entrenamiento enfocado en músculos de empuje: pecho, hombros y tríceps",
+      "difficulty": "beginner",
+      "category": 17,
+      "duration": 45
+    },
+    {
+      "id": 2,
+      "name": "Pull Training",
+      "exercises": [
+        {
+          "exerciseId": 18,
+          "sets": 3,
+          "reps": 10,
+          "restTime": 60
+        },
+        {
+          "exerciseId": 107,
+          "sets": 3,
+          "reps": 10,
+          "restTime": 60
+        },
+        {
+          "exerciseId": 12,
+          "sets": 3,
+          "reps": 10,
+          "restTime": 60
+        },
+        {
+          "exerciseId": 118,
+          "sets": 3,
+          "reps": 10,
+          "restTime": 60
+        },
+        {
+          "exerciseId": 119,
+          "sets": 3,
+          "reps": 10,
+          "restTime": 60
+        },
+        {
+          "exerciseId": 11,
+          "sets": 3,
+          "reps": 10,
+          "restTime": 60
+        },
+        {
+          "exerciseId": 13,
+          "sets": 3,
+          "reps": 10,
+          "restTime": 60
+        },
+        {
+          "exerciseId": 101,
+          "sets": 3,
+          "reps": 10,
+          "restTime": 60
+        },
+        {
+          "exerciseId": 41,
+          "sets": 3,
+          "reps": 10,
+          "restTime": 60
+        },
+        {
+          "exerciseId": 38,
+          "sets": 3,
+          "reps": 10,
+          "restTime": 60
+        },
+        {
+          "exerciseId": 42,
+          "sets": 3,
+          "reps": 10,
+          "restTime": 60
+        }
+      ],
+      "warmup": [
+        {
+          "exerciseId": 11,
+          "sets": 2,
+          "reps": 8,
+          "restTime": 30
+        },
+        {
+          "exerciseId": 19,
+          "sets": 2,
+          "reps": 10,
+          "restTime": 30
+        }
+      ],
+      "cooldown": [
+        {
+          "exerciseId": 11,
+          "sets": 2,
+          "reps": 8,
+          "restTime": 45
+        },
+        {
+          "exerciseId": 19,
+          "sets": 2,
+          "reps": 6,
+          "restTime": 45
+        }
+      ],
+      "description": "Entrenamiento enfocado en músculos de jalón: espalda, bíceps y antebrazos",
+      "difficulty": "beginner",
+      "category": 18,
+      "duration": 45
+    },
+    {
+      "id": 3,
+      "name": "Core Training",
+      "exercises": [
+        {
+          "exerciseId": 65,
+          "sets": 3,
+          "reps": 10,
+          "restTime": 60
+        },
+        {
+          "exerciseId": 53,
+          "sets": 3,
+          "reps": 10,
+          "restTime": 60
+        },
+        {
+          "exerciseId": 121,
+          "sets": 3,
+          "reps": 10,
+          "restTime": 60
+        },
+        {
+          "exerciseId": 122,
+          "sets": 3,
+          "reps": 10,
+          "restTime": 60
+        },
+        {
+          "exerciseId": 123,
+          "sets": 3,
+          "reps": 10,
+          "restTime": 60
+        },
+        {
+          "exerciseId": 124,
+          "sets": 3,
+          "reps": 10,
+          "restTime": 60
+        },
+        {
+          "exerciseId": 55,
+          "sets": 3,
+          "reps": 10,
+          "restTime": 60
+        },
+        {
+          "exerciseId": 125,
+          "sets": 3,
+          "reps": 10,
+          "restTime": 60
+        },
+        {
+          "exerciseId": 126,
+          "sets": 3,
+          "reps": 10,
+          "restTime": 60
+        },
+        {
+          "exerciseId": 127,
+          "sets": 3,
+          "reps": 10,
+          "restTime": 60
+        }
+      ],
+      "warmup": [
+        {
+          "exerciseId": 53,
+          "sets": 2,
+          "reps": 12,
+          "restTime": 30
+        },
+        {
+          "exerciseId": 65,
+          "sets": 2,
+          "reps": 10,
+          "restTime": 30
+        }
+      ],
+      "cooldown": [
+        {
+          "exerciseId": 53,
+          "sets": 2,
+          "reps": 8,
+          "restTime": 45
+        },
+        {
+          "exerciseId": 65,
+          "sets": 2,
+          "reps": 6,
+          "restTime": 45
+        }
+      ],
+      "description": "Entrenamiento específico para fortalecer el core: abdominales, lumbares y estabilidad",
+      "difficulty": "intermediate",
+      "category": 19,
+      "duration": 50
+    }
+  ]
+}

@@ -297,10 +297,10 @@ export class WorkoutTimerService {
         return `
           <div class="rest-timer-container">
             <h3>Rest Time</h3>
-            <div class="timer-display" style="color: var(--success);">
+            <div class="timer-display" class="text-success">
               <span id="timer-seconds">0</span>s
               <div class="timer-progress-bar">
-                <div id="timer-progress" style="width: 0%;"></div>
+                <div id="timer-progress" class="timer-progress-bar"></div>
               </div>
             </div>
           </div>

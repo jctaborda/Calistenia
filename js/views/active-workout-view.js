@@ -7,6 +7,7 @@
 
 import { getState, updateState } from '../services/state.js';
 import { renderHeader } from '../components/header.js';
+import { t } from '../i18n.js';
 import { workoutTimerService } from '../services/workout-timer-service.js';
 import { workoutModalsService } from '../services/workout-modals-service.js';
 import { workoutWorkflowService } from '../services/workout-workflow-service.js';
@@ -26,6 +27,9 @@ let isShowingRestTimer = false;
 export function renderActiveWorkoutView() {
   const main = document.getElementById('app');
   const { activeWorkout, exercises } = getState();
+  
+  // Clean up any stale timers from previous render before starting new ones
+  workoutTimerService.cleanup();
   
   // Validate workout exists
   if (!activeWorkout || !activeWorkout.routine) {
@@ -125,29 +129,29 @@ function renderActiveWorkoutTemplate({
   return renderHeader() + `
     <div class="card">
       <h1>${routine.name}</h1>
-      <p><span class="phase-badge" style="background: ${phaseColor}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.9em;">${phase.toUpperCase()}</span> Exercise ${currentExerciseIndex + 1} of ${totalExercises}</p>
+      <p><span class="phase-badge" style="background: ${phaseColor}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.9em;">${t(`active_workout.${phase}`)}</span> ${t('active_workout.exercise')} ${currentExerciseIndex + 1} ${t('active_workout.of')} ${totalExercises}</p>
       
       ${isHiitWorkout ? workoutTimerService.renderHiitSection(hiitInterval) : ''}
       
       <div id="set-timer-display" class="card margin-bottom-1">
-        <h3>⏱️ Set Duration</h3>
-        <p><strong>Time Taken:</strong> <span id="set-duration" class="set-duration-value" style="font-size: var(--font-size-base); font-weight: bold;">0</span>s</p>
+        <h3>⏱ ${t('active_workout.timer')}</h3>
+        <p><strong>${t('completion.duration')}:</strong> <span id="set-duration" class="set-duration-value" style="font-size: var(--font-size-base); font-weight: bold;">0</span>s</p>
       </div>
       
       <div class="card card-muted current-exercise-card">
         <h2>${exercise.name}</h2>
         ${!isHiitWorkout ? `
-          <p><strong>Set ${currentSetIndex + 1} of ${currentExerciseData.sets}</strong></p>
-          <p><strong>Target Reps:</strong> ${currentExerciseData.reps}</p>
+          <p><strong>${t('routine_details.sets')} ${currentSetIndex + 1} ${t('active_workout.of')} ${currentExerciseData.sets}</strong></p>
+          <p><strong>${t('routine_details.reps')}:</strong> ${currentExerciseData.reps}</p>
         ` : ''}
       </div>
       
       <div id="rest-timer"></div>
       
       <div class="workout-actions">
-        <button id="next-set-btn" class="btn flex-1">Next</button>
-        <button id="adjust-btn" class="btn flex-1">⚙️ Adjust</button>
-        <button id="swap-btn" class="btn flex-1">🔄 Swap</button>
+        <button id="next-set-btn" class="btn flex-1">${t('active_workout.next_set')}</button>
+        <button id="adjust-btn" class="btn flex-1">⚙ ${t('active_workout.adjust')}</button>
+        <button id="swap-btn" class="btn flex-1">🔄 ${t('active_workout.swap_exercise')}</button>
       </div>
     </div>
   `;
@@ -403,8 +407,8 @@ function handleStateChange() {
   if (window.location.hash === '#active-workout') {
     renderActiveWorkoutView();
   } else {
-    // Cleanup timers when leaving active workout view
-      workoutTimerService.stopTimer();
+    // Cleanup all timers when leaving active workout view
+    workoutTimerService.cleanup();
   }
 }
 
@@ -458,10 +462,10 @@ function handleSwapExercise({ currentExerciseIndex, exerciseId, activeWorkout, r
 function handleHIITTimer({ hiitInterval, currentExerciseIndex, currentExerciseData, routine }) {
   workoutTimerService.startHIITTimer(hiitInterval, {
     onWorkStart: () => {
-      workoutModalsService.showToast('Work time!', 'success');
+      workoutModalsService.showToast(t('toast.work_time'), 'success');
     },
     onWorkEnd: () => {
-      workoutModalsService.showToast('Rest time!', 'warning');
+      workoutModalsService.showToast(t('toast.rest_time'), 'warning');
     },
     onRestEnd: () => {
       document.dispatchEvent(new CustomEvent('stateChange'));

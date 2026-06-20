@@ -7,6 +7,7 @@ import {
 } from '../services/export-import.js';
 import { getState } from '../services/state.js';
 import { renderHeader } from '../components/header.js';
+import { t } from '../i18n.js';
 import { show } from '../services/toast-service.js';
 
 export function renderExportImportView() {
@@ -16,28 +17,28 @@ export function renderExportImportView() {
 
   return `
     <div class="view-container">
-      ${renderHeader('Export & Import')}
+      ${renderHeader('${t("export_import.header")}')}
       
       <div class="content-section">
         <section class="card export-section">
-          <h3>📤 Export Data</h3>
+          <h3>${t('export_import.title')}</h3>
           <p class="description">Download a backup of your workout history and custom routines as a JSON file.</p>
           
           ${hasWorkouts || hasPrograms 
             ? `
             <button id="btn-download-export" class="btn btn-primary btn-large">
-              <span class="icon">⬇️</span> Download Backup
+              <span class="icon">⬇</span> Download Backup
             </button>
             ` 
             : `
             <div class="empty-state">
-              <p class="empty-icon">📦</p>
+              <p class="empty-icon">[PACKAGE]</p>
               <p>No data to export yet. Complete some workouts first!</p>
             </div>
             `
           }
           
-          <div id="export-info" class="info-box" style="display: none;">
+          <div id="export-info" class="info-box hidden">
             <p><strong>Backup created:</strong> <span id="export-timestamp"></span></p>
             <p><strong>Includes:</strong> <span id="export-counts"></span></p>
             <p class="small"><em>This file can be used to restore your data on another device.</em></p>
@@ -45,7 +46,7 @@ export function renderExportImportView() {
         </section>
 
         <section class="card import-section">
-          <h3>📥 Import Data</h3>
+          <h3>[INBOX] Import Data</h3>
           <p class="description">Restore your workout history and custom routines from a backup file.</p>
           
           <label for="import-file" class="file-input-label">
@@ -53,7 +54,7 @@ export function renderExportImportView() {
             <span class="btn btn-secondary btn-large">📁 Select Backup File</span>
           </label>
           
-          <div id="import-status" class="status-box" style="display: none;"></div>
+          <div id="import-status" class="status-box hidden"></div>
           
           <div class="warning-box">
             <strong>⚠️ Note:</strong> Imported data will be merged with existing data. 
@@ -63,14 +64,14 @@ export function renderExportImportView() {
 
         ${hasWorkouts || hasPrograms ? `
         <section class="card danger-section">
-          <h3>🗑️ Clear User Data</h3>
+          <h3>🗑 Clear User Data</h3>
           <p class="description">Permanently delete all your workouts, custom routines, and skill modules from this device.</p>
           
           <button id="btn-clear-data" class="btn btn-danger btn-large">
-            <span class="icon">🗑️</span> Clear All My Data
+            <span class="icon">🗑</span> Clear All My Data
           </button>
           
-          <div id="clear-status" class="status-box" style="display: none;"></div>
+          <div id="clear-status" class="status-box hidden"></div>
         </section>
         ` : ''}
       </div>
@@ -115,7 +116,7 @@ async function handleDownloadExport() {
   
   try {
     downloadBtn.disabled = true;
-    downloadBtn.innerHTML = '<span class="spinner"></span> Generating...';
+    downloadBtn.innerHTML = '<span class="spinner-sm"></span> Generating...';
     
     const metadata = await getExportMetadata();
     
@@ -124,22 +125,22 @@ async function handleDownloadExport() {
     await downloadExport(filename);
     
     // Show success info
-    exportInfo.style.display = 'block';
+    exportInfo.classList.remove('hidden');
     document.getElementById('export-timestamp').textContent = new Date(metadata.exportedAt).toLocaleString();
     document.getElementById('export-counts').textContent = 
       `${metadata.workoutCount} workouts, ${metadata.routineCount} routines, ${metadata.moduleCount} modules`;
     
-    downloadBtn.innerHTML = '<span class="icon">✓</span> Backup Downloaded';
+    downloadBtn.innerHTML = '<span class="icon">✅</span> Backup Downloaded';
     
     setTimeout(() => {
       downloadBtn.disabled = false;
-      downloadBtn.innerHTML = '<span class="icon">⬇️</span> Download Another Backup';
+      downloadBtn.innerHTML = '<span class="icon">⬇</span> Download Another Backup';
     }, 2000);
     
   } catch (error) {
     show('Error: ' + error.message, 'error');
     downloadBtn.disabled = false;
-    downloadBtn.innerHTML = '<span class="icon">⬇️</span> Download Backup';
+    downloadBtn.innerHTML = '<span class="icon">⬇</span> Download Backup';
   }
 }
 
@@ -152,14 +153,14 @@ async function handleImportFile(event) {
 
   try {
     importBtn.disabled = true;
-    importBtn.innerHTML = '<span class="spinner"></span> Importing...';
+    importBtn.innerHTML = '<span class="spinner-sm"></span> Importing...';
     
     const result = await importFromFile(file);
     
     if (result.success) {
       const stats = result.stats;
       
-      importStatus.style.display = 'block';
+      importStatus.classList.remove('hidden');
       importStatus.className = 'status-box success';
       importStatus.innerHTML = `
         <p><strong>✅ Import Complete!</strong></p>
@@ -179,7 +180,7 @@ async function handleImportFile(event) {
       }, 3000);
     } else {
       // Handle validation errors with detailed messages
-      importStatus.style.display = 'block';
+      importStatus.classList.remove('hidden');
       importStatus.className = 'status-box error';
       
       let errorHtml = `<p><strong>❌ Import Failed:</strong></p>`;
@@ -203,7 +204,7 @@ async function handleImportFile(event) {
     }
     
   } catch (error) {
-    importStatus.style.display = 'block';
+    importStatus.classList.remove('hidden');
     importStatus.className = 'status-box error';
     importStatus.innerHTML = `<p><strong>❌ Import Failed:</strong> ${error.message}</p>`;
   } finally {
@@ -223,11 +224,11 @@ async function handleClearData() {
 
   try {
     clearBtn.disabled = true;
-    clearBtn.innerHTML = '<span class="spinner"></span> Clearing...';
+    clearBtn.innerHTML = '<span class="spinner-sm"></span> Clearing...';
     
     const result = await clearUserData();
     
-    clearStatus.style.display = 'block';
+    clearStatus.classList.remove('hidden');
     clearStatus.className = 'status-box success';
     clearStatus.innerHTML = `
       <p><strong>✅ Data Cleared!</strong></p>
@@ -243,11 +244,11 @@ async function handleClearData() {
     }, 2000);
     
   } catch (error) {
-    clearStatus.style.display = 'block';
+    clearStatus.classList.remove('hidden');
     clearStatus.className = 'status-box error';
     clearStatus.innerHTML = `<p><strong>❌ Error:</strong> ${error.message}</p>`;
   } finally {
     clearBtn.disabled = false;
-    clearBtn.innerHTML = '<span class="icon">🗑️</span> Clear All My Data';
+    clearBtn.innerHTML = '<span class="icon">🗑</span> Clear All My Data';
   }
 }

@@ -12,11 +12,12 @@ import { renderBuilderView } from './views/builder-view.js';
 import { renderExercisesView } from './views/exercises-view.js';
 import { renderRoutineDetailsView } from './views/routine-details-view.js';
 import { fetchExercises, fetchRoutines, fetchCategories, fetchEquipment, fetchMuscles, fetchDifficulties, fetchSkillModules } from './services/api.js';
-import { getExerciseProgressData } from './utils/chart-helpers.js';
+import { getExerciseProgressData } from './utils/workout-summary.js';
 import { renderSkillModulesView } from './views/skill-modules-view.js';
 import { renderSkillModuleDetailView } from './views/skill-module-detail-view.js';
 import { renderSharedWorkoutView } from './views/shared-workout-view.js';
-import { renderErrorView } from './views/error-view.js';
+import { renderErrorView as renderErrorViewModule } from './views/error-view.js';
+import { showConfirmation } from './services/confirmation-modal.js';
 import { renderSpinner, hideSpinner } from './components/spinner.js';
 import { renderSkillsTreeView } from './views/skills-tree-view.js';
 import { renderHeader } from './components/header.js';
@@ -27,28 +28,53 @@ import { renderExerciseForm } from './views/exercise-form-view.js';
 import { initExerciseForm } from './services/exercise-form-service.js';
 import { renderModuleAdminView } from './views/module-admin-view.js';
 import { initializeEventDelegation, exposeToggleFavorite } from './services/event-delegation.js';
+import { setLogLevel } from './services/logger.js';
+import { ValidationService } from './services/validation.js';
+import { VIEW_INIT_DELAY_MS, ERROR_BOUNDARY_MAX_RETRIES } from './constants.js';
+
+// Configure production logging
+setLogLevel('DEBUG');
+
 initializeState();
+
+// ==================== Root-Level Error Boundary ====================
+// Top-level catch-all for any unhandled errors before/during routing
+function installRootErrorHandler() {
+  // Catch unhandled promise rejections
+  window.addEventListener('unhandledrejection', (event) => {
+    event.preventDefault();
+    renderErrorViewModule('An unexpected error occurred. Please refresh the page.');
+  });
+
+  // Catch uncaught synchronous errors
+  window.addEventListener('error', (event) => {
+    event.preventDefault();
+    renderErrorViewModule('An unexpected error occurred. Please refresh the page.');
+  });
+}
+
+installRootErrorHandler();
 
 // Wait for complete cache initialization AND sync before starting router
 async function initializeApp() {
   try {
     await initializeDataCache();
-    
+
     // Check if server data has changed since last sync
     try {
       if (await isCacheStale()) {
         await syncDataCache();
       }
     } catch (err) {
-      console.warn('⚠️ Cache sync check failed:', err);
+      console.warn('Cache sync check failed:', err);
     }
   } catch (err) {
-    console.warn('⚠️ Failed to initialize data cache:', err);
+    console.warn('Failed to initialize data cache:', err);
   }
-  
+
   // Now that cache is fully initialized and synced, start the router
   router();
-  
+
   // Initialize event delegation after router is set up
   setTimeout(() => {
     const main = document.getElementById('app');
@@ -56,8 +82,8 @@ async function initializeApp() {
       initializeEventDelegation(main);
       exposeToggleFavorite();
     }
-  }, 100);
-  
+  }, VIEW_INIT_DELAY_MS);
+
   // Mark that initialization is complete to prevent double calls
   window.appInitialized = true;
 }
@@ -88,32 +114,32 @@ async function ensureExercisesLoaded() {
       updateState({ exercises });
     } catch (error) {
       console.error('Failed to load exercises:', error);
-      renderErrorView('Failed to load exercises. Please check your connection.');
+      renderErrorViewModule('Failed to load exercises. Please check your connection.');
     } finally {
       loadingFlags.exercises = false;
     }
   }
 }
 
-async function ensureRoutinesLoaded(){
+async function ensureRoutinesLoaded() {
   if (loadingFlags.routines) return;
-  if (!getState().routines || getState().routines.length === 0){
+  if (!getState().routines || getState().routines.length === 0) {
     loadingFlags.routines = true;
     try {
       const routines = await fetchRoutines();
       updateState({ routines });
     } catch (error) {
       console.error('Failed to load routines:', error);
-      renderErrorView('Failed to load routines. Please check your connection.');
+      renderErrorViewModule('Failed to load routines. Please check your connection.');
     } finally {
       loadingFlags.routines = false;
     }
   }
 }
 
-async function ensureModulesLoaded(){
+async function ensureModulesLoaded() {
   if (loadingFlags.modules) return;
-  if (!getState().modules){
+  if (!getState().modules) {
     loadingFlags.modules = true;
     try {
       const modules = await fetchSkillModules();
@@ -128,9 +154,9 @@ async function ensureModulesLoaded(){
   }
 }
 
-async function ensureCategoriesLoaded(){
+async function ensureCategoriesLoaded() {
   if (loadingFlags.categories) return;
-  if (!getState().categories || getState().categories.length === 0){
+  if (!getState().categories || getState().categories.length === 0) {
     loadingFlags.categories = true;
     try {
       const categories = await fetchCategories();
@@ -143,9 +169,9 @@ async function ensureCategoriesLoaded(){
   }
 }
 
-async function ensureEquipmentLoaded(){
+async function ensureEquipmentLoaded() {
   if (loadingFlags.equipment) return;
-  if (!getState().equipment || getState().equipment.length === 0){
+  if (!getState().equipment || getState().equipment.length === 0) {
     loadingFlags.equipment = true;
     try {
       const equipment = await fetchEquipment();
@@ -158,9 +184,9 @@ async function ensureEquipmentLoaded(){
   }
 }
 
-async function ensureMusclesLoaded(){
+async function ensureMusclesLoaded() {
   if (loadingFlags.muscles) return;
-  if (!getState().muscles || getState().muscles.length === 0){
+  if (!getState().muscles || getState().muscles.length === 0) {
     loadingFlags.muscles = true;
     try {
       const muscles = await fetchMuscles();
@@ -173,9 +199,9 @@ async function ensureMusclesLoaded(){
   }
 }
 
-async function ensureDifficultiesLoaded(){
+async function ensureDifficultiesLoaded() {
   if (loadingFlags.difficulties) return;
-  if (!getState().difficulties || getState().difficulties.length === 0){
+  if (!getState().difficulties || getState().difficulties.length === 0) {
     loadingFlags.difficulties = true;
     try {
       const difficulties = await fetchDifficulties();
@@ -188,16 +214,82 @@ async function ensureDifficultiesLoaded(){
   }
 }
 
+// ==================== Render Route Map ====================
+// Centralized map of routes to their async render functions and args
+const renderRoutes = {
+  '#onboarding': { view: 'onboarding-view.js', fn: 'renderOnboardingView', args: [], awaitRender: true },
+  '#home':       { view: 'home-view.js',       fn: 'renderHomeView',       args: [], awaitRender: true },
+  '#exercises':  { view: 'exercises-view.js',  fn: 'renderExercisesView',  args: [], awaitRender: true },
+  '#routines':   { view: 'routines-view.js',   fn: 'renderRoutinesView',   args: [], awaitRender: true },
+  '#active-workout': { view: 'active-workout-view.js', fn: 'renderActiveWorkoutView', args: [], awaitRender: true },
+  '#workout-completion': { view: 'workout-completion-view.js', fn: 'renderWorkoutCompletionView', args: [], awaitRender: true },
+  '#summary':    { view: 'workout-summary-view.js', fn: 'renderWorkoutSummaryView', args: [], awaitRender: true },
+  '#profile':    { view: 'profile-view.js',    fn: 'renderProfileView',    args: [], awaitRender: true },
+  '#export-import': { view: 'export-import-view.js', fn: 'renderExportImportView', args: [], awaitRender: true },
+  '#builder':    { view: 'builder-view.js',    fn: 'renderBuilderView',    args: [], awaitRender: true },
+  '#skill-modules': { view: 'skill-modules-view.js', fn: 'renderSkillModulesView', args: [], awaitRender: true },
+  '#skills-tree': { view: 'skills-tree-view.js', fn: 'renderSkillsTreeView', args: [], awaitRender: true },
+};
+
+// Routes with dynamic parameters
+const paramRoutes = {
+  '#exercise/':              { view: 'exercise-details-view.js',       fn: 'renderExerciseDetailsView',       args: [1],  awaitRender: true },
+  '#routine-details/':       { view: 'routine-details-view.js',        fn: 'renderRoutineDetailsView',        args: null, awaitRender: true },  // args computed
+  '#skill-module/':          { view: 'skill-module-detail-view.js',    fn: 'renderSkillModuleDetailView', args: [1],  awaitRender: true },
+  '#shared-workout/':        { view: 'shared-workout-view.js',         fn: 'renderSharedWorkoutView',       args: [1],  awaitRender: true },
+  '#workout-detail/':        { view: 'workout-detail-view.js',         fn: 'renderWorkoutDetailView',         args: [1],  awaitRender: true },
+};
+
+/**
+ * Resolve a hash to its route config and extract parameters
+ */
+function resolveRoute(hash) {
+  // Exact matches first
+  if (renderRoutes[hash]) {
+    return { ...renderRoutes[hash], params: [] };
+  }
+
+  // Check param-based routes
+  for (const [prefix, config] of Object.entries(paramRoutes)) {
+    if (hash.startsWith(prefix)) {
+      const cleanHash = hash.replace('#', '');
+      const parts = cleanHash.split('/');
+
+      // Build args based on the route type
+      let args = [];
+      if (prefix === '#exercise/') {
+        args = [parts[1]];
+      } else if (prefix === '#routine-details/') {
+        // Format: #routine-details/type/id or #routine-details/id
+        if (parts.length === 3) {
+          args = [parts[1], parts[2]];
+        } else {
+          args = ['routine', parts[1]];
+        }
+      } else if (prefix === '#skill-module/') {
+        args = [parts[1]];
+      } else if (prefix === '#shared-workout/') {
+        args = [parts[1]];
+      } else if (prefix === '#workout-detail/') {
+        args = [parseInt(parts[1])];
+      }
+
+      return { ...config, params: args };
+    }
+  }
+
+  return null;
+}
+
 async function router() {
-  
   const state = getState();
-  const needsInitialLoad = !state.exercises || state.exercises.length === 0 || 
+  const needsInitialLoad = !state.exercises || state.exercises.length === 0 ||
                            !state.routines || state.routines.length === 0;
-  
+
   // If data is not loaded, show spinner and load it
   if (needsInitialLoad) {
     document.getElementById('app').innerHTML = renderSpinner();
-    
+
     await Promise.all([
       ensureExercisesLoaded(),
       ensureRoutinesLoaded(),
@@ -207,10 +299,8 @@ async function router() {
       ensureMusclesLoaded(),
       ensureDifficultiesLoaded()
     ]);
-    
-    
+
     hideSpinner();
-  } else {
   }
 
   const hash = window.location.hash;
@@ -222,191 +312,161 @@ async function router() {
   }
 
   try {
-    // Wrap all view rendering with error boundaries for graceful recovery
-    if (hash === '#onboarding') {
-      const onboardingView = ErrorBoundaryService.wrapView(
-        await import('./views/onboarding-view.js'), 
-        'Onboarding'
-      );
-      await onboardingView.render();
-    } else if (hash === '' || hash === '#home') {
-      const homeView = ErrorBoundaryService.wrapView(
-        await import('./views/home-view.js'), 
-        'Home'
-      );
-      await homeView.render();
-    } else if (hash.startsWith('#exercise/')) {
-      const id = hash.split('/')[1];
-      const exerciseView = ErrorBoundaryService.wrapView(
-        await import('./views/exercise-details-view.js'), 
-        'Exercise Details'
-      );
-      exerciseView.render(id);
-    } else if (hash === '#routines') {
-      const routinesView = ErrorBoundaryService.wrapView(
-        await import('./views/routines-view.js'), 
-        'Routines'
-      );
-      await routinesView.render();
-    } else if (hash.startsWith('#routine-details/')) {
-      // Fix: Parse hash correctly - can be #routine-details/type/id or #routine-details/id
-      const cleanHash = hash.replace('#', '');  // "routine-details/routine/1" or "routine-details/1"
-      const parts = cleanHash.split('/');       // ["routine-details", "routine", "1"] or ["routine-details", "1"]
-      
-      let type, id;
-      if (parts.length === 3) {
-        // Format: #routine-details/type/id
-        type = parts[1];           // 'routine' or 'custom'
-        id = parts[2];             // ID
-      } else {
-        // Format: #routine-details/id (backward compatibility)
-        type = 'routine';          // Default to routine if not specified
-        id = parts[1];             // ID
-      }
-      
-      const routineDetailsView = ErrorBoundaryService.wrapView(
-        await import('./views/routine-details-view.js'), 
-        'Routine Details'
-      );
-      routineDetailsView.render(type, id);
-    } else if (hash === '#active-workout') {
-      const activeWorkoutView = ErrorBoundaryService.wrapView(
-        await import('./views/active-workout-view.js'), 
-        'Active Workout'
-      );
-      await activeWorkoutView.render();
-    } else if (hash === '#workout-completion') {
-      const workoutCompletionView = ErrorBoundaryService.wrapView(
-        await import('./views/workout-completion-view.js'), 
-        'Workout Completion'
-      );
-      await workoutCompletionView.render();
-    } else if (hash === '#summary') {
-      const summaryView = ErrorBoundaryService.wrapView(
-        await import('./views/workout-summary-view.js'), 
-        'Workout Summary'
-      );
-      await summaryView.render();
-    } else if (hash === '#exercises') {
-      const exercisesView = ErrorBoundaryService.wrapView(
-        await import('./views/exercises-view.js'), 
-        'Exercises'
-      );
-      await exercisesView.render();
-    } else if (hash === '#profile') {
-      const profileView = ErrorBoundaryService.wrapView(
-        await import('./views/profile-view.js'), 
-        'Profile'
-      );
-      await profileView.render();
-    } else if (hash === '#export-import') {
-      const exportImportView = ErrorBoundaryService.wrapView(
-        await import('./views/export-import-view.js'), 
-        'Export/Import'
-      );
-      await exportImportView.render();
-    } else if (hash === '#builder') {
-      // Ensure all data is loaded before rendering builder
-      await Promise.all([
-        ensureExercisesLoaded(),
-        ensureModulesLoaded(),
-        ensureCategoriesLoaded(),
-        ensureEquipmentLoaded(),
-        ensureMusclesLoaded(),
-        ensureDifficultiesLoaded()
-      ]);
-      const builderView = ErrorBoundaryService.wrapView(
-        await import('./views/builder-view.js'), 
-        'Builder'
-      );
-      await builderView.render();
-    } else if (hash === '#skill-modules') {
-      const skillModulesView = ErrorBoundaryService.wrapView(
-        await import('./views/skill-modules-view.js'), 
-        'Skill Modules'
-      );
-      await skillModulesView.render();
-    } else if (hash.startsWith('#skill-module/')) {
-      const moduleId = hash.split('/')[1];
-      const skillModuleView = ErrorBoundaryService.wrapView(
-        await import('./views/skill-module-detail-view.js'), 
-        'Skill Module Detail'
-      );
-      await skillModuleView.render(moduleId);
-    } else if (hash === '#skills-tree') {
-      const skillsTreeView = ErrorBoundaryService.wrapView(
-        await import('./views/skills-tree-view.js'), 
-        'Skills Tree'
-      );
-      await skillsTreeView.render();
-    } else if (hash.startsWith('#shared-workout/')) {
-      // Fix: Split hash correctly - parts[1] contains the workoutId
-      const workoutId = hash.split('/')[1];
-      const sharedWorkoutView = ErrorBoundaryService.wrapView(
-        await import('./views/shared-workout-view.js'), 
-        'Shared Workout'
-      );
-      await sharedWorkoutView.render(workoutId);
-    } else if (hash.startsWith('#workout-detail/')) {
-      // Parse workout index from hash: #workout-detail/0, #workout-detail/1, etc.
-      const workoutIndex = parseInt(hash.split('/')[1]);
-      const workoutDetailView = ErrorBoundaryService.wrapView(
-        await import('./views/workout-detail-view.js'), 
-        'Workout Detail'
-      );
-      await workoutDetailView.render(workoutIndex);
-    } else if (hash === '#exercise-form') {
+    // Module admin routes (use direct functions, not lazy-loaded views)
+    if (hash === '#exercise-form') {
       await renderExerciseForm();
-    } else if (hash === '#module-admin' || hash.startsWith('#module-admin/')) {
-      // Module admin view: #module-admin (create) or #module-admin/{id} (edit)
+      return;
+    }
+    if (hash === '#module-admin' || hash.startsWith('#module-admin/')) {
       if (hash === '#module-admin') {
-        // Create new module
         await renderModuleAdminView(null);
       } else {
-        // Edit existing module: #module-admin/{id}
-        const parts = hash.split('/'); // ['#module-admin', '5'] for '#module-admin/5'
+        const parts = hash.split('/');
         const moduleId = parts.length > 1 && parts[1] ? parseInt(parts[1]) : null;
         await renderModuleAdminView(moduleId);
       }
+      return;
     }
-    // else: do nothing for now
+
+    // Error/404 fallback
+    if (hash === '' || hash.startsWith('#error')) {
+      renderErrorViewModule('Page not found. The requested route does not exist.');
+      return;
+    }
+
+    // Resolve and render route
+    const routeConfig = resolveRoute(hash);
+    if (!routeConfig) {
+      renderErrorViewModule('Page not found. The requested route does not exist.');
+      return;
+    }
+
+    // Lazy-load the view module and render with error boundary
+    const viewModule = await import(`./views/${routeConfig.view}`);
+    const wrapped = ErrorBoundaryService.wrapView(viewModule, routeConfig.view);
+
+    if (wrapped.render) {
+      await wrapped.render(...routeConfig.params);
+    }
   } catch (error) {
     console.error('Router error:', error);
-    renderErrorView('An error occurred while loading this page.');
+    renderErrorViewModule('An error occurred while loading this page.');
   }
 }
 
 // Exercise CRUD helpers for offline PWA - uses IndexedDB instead of localStorage
 async function loadAllExercises() {
-  // Use storage.js which now loads from IndexedDB or data.json
   const storage = await import('./services/storage.js');
   return storage.loadExercises();
 }
 
 async function saveAllExercises(exercises) {
-  // Use storage.js which now saves to IndexedDB
   const storage = await import('./services/storage.js');
   return storage.saveExercises(exercises);
 }
 
-// Re-export exercise form service for backward compatibility
-window.initExerciseFormService = initExerciseForm;
-
 // Listen for hash changes and route accordingly
 window.addEventListener('hashchange', router);
+
+// Listen for locale changes and re-render the current view + header
+document.addEventListener('localeChange', async () => {
+  const header = document.getElementById('app-header');
+  if (header) {
+    header.outerHTML = renderHeader();
+  }
+
+  // 1. Clear IndexedDB data cache and reload from new locale file
+  try {
+    const dataCache = await import('./services/data-cache.js');
+    await dataCache.reloadCacheForLocale();
+  } catch (err) {
+    console.warn('Could not reload data cache on locale change:', err);
+  }
+
+  // 2. Clear JS in-memory caches
+  try {
+    const apiModule = await import('./services/api.js');
+    apiModule.clearAllCaches();
+  } catch (err) {
+    console.warn('Could not clear API cache:', err);
+  }
+
+  try {
+    const storageModule = await import('./services/storage.js');
+    storageModule.clearExercisesCache();
+  } catch (err) {
+    console.warn('Could not clear storage cache:', err);
+  }
+
+  // 3. Load all data fresh from IndexedDB (already repopulated by reloadCacheForLocale)
+  try {
+    const { fetchExercises, fetchRoutines, fetchCategories, fetchEquipment, fetchMuscles, fetchDifficulties } = await import('./services/api.js');
+    updateState({
+      exercises: await fetchExercises(),
+      routines: await fetchRoutines(),
+      categories: await fetchCategories(),
+      equipment: await fetchEquipment(),
+      muscles: await fetchMuscles(),
+      difficulties: await fetchDifficulties()
+    });
+  } catch (err) {
+    console.warn('Could not reload data on locale change:', err);
+  }
+
+  // 4. Re-render current view
+  router();
+});
 
 // Initialize undo service after main app is ready
 initUndoService();
 
-// Expose state functions globally for event delegation service
+// ==================== Public API: window.calisthenics ====================
+// All public APIs are exposed through this namespace instead of polluting window directly
+window.calisthenics = {
+  // State management
+  getState,
+  updateState,
+
+  // Exercise form service (backward compatibility)
+  initExerciseForm: initExerciseForm,
+
+  // Undo service
+  dismissAllUndoToasts,
+
+  // Router
+  router,
+
+  // Data loading
+  loadAllExercises,
+  saveAllExercises,
+
+  // Constants (read-only reference)
+  constants: {
+    TOAST_TIMEOUTS: Object.freeze({
+      info: 5000,
+      success: 3000,
+      warning: 5000,
+      error: 8000
+    }),
+    UNDO_RETENTION_MS: 30 * 24 * 60 * 60 * 1000,
+    MAX_RETRIES: 2
+  },
+
+  // Validation service (for event-delegation.js backward compat)
+  ValidationService: ValidationService
+};
+
+// Backward compatibility: attach key functions to window
+// These are kept for views and services that reference them directly
 window.getState = getState;
 window.updateState = updateState;
+window.ValidationService = ValidationService;
 
-// Clean up undo toasts on page unload
+// Register Service Worker
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js').then((registration) => {
-      
+
       // Handle service worker updates
       registration.addEventListener('updatefound', () => {
         const newWorker = registration.installing;
@@ -414,20 +474,22 @@ if ('serviceWorker' in navigator) {
           newWorker.addEventListener('statechange', () => {
             if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
               // New service worker is available
-              if (confirm('A new version of the app is available. Would you like to update?')) {
-                newWorker.postMessage({ type: 'SKIP_WAITING' });
-                window.location.reload();
-              }
+              showConfirmation('A new version of the app is available. Would you like to update?').then(confirmed => {
+                if (confirmed) {
+                  newWorker.postMessage({ type: 'SKIP_WAITING' });
+                  window.location.reload();
+                }
+              });
             }
           });
         }
       });
-      
+
       // Handle service worker controller change
       navigator.serviceWorker.addEventListener('controllerchange', () => {
         window.location.reload();
       });
-      
+
     }).catch(err => {
       console.error('Service Worker registration failed:', err);
     });

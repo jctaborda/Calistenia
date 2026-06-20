@@ -1,5 +1,6 @@
 import { fetchRoutines, deleteRoutineFromDatabase } from '../services/api.js';
 import { renderHeader } from '../components/header.js';
+import { t } from '../i18n.js';
 import { getState, updateState } from '../services/state.js';
 import { show } from '../services/toast-service.js';
 
@@ -49,6 +50,10 @@ export async function renderRoutinesView() {
     // Edit button handler
     const editBtn = target.closest('.edit-btn');
     if (editBtn) {
+      // Skip if this is a module action button (handled by skill-modules-view.js)
+      if (editBtn.classList.contains('module-action-btn')) {
+        return;
+      }
       const type = editBtn.getAttribute('data-type');
       const id = editBtn.getAttribute('data-id');
       
@@ -67,7 +72,7 @@ export async function renderRoutinesView() {
       // Guard: only proceed if routine was found
       if (!routine) {
         console.error(`Routine not found: type=${type}, id=${id}`);
-        show('Routine not found. Please refresh the page.', 'error');
+        show(t('routines.not_found'), 'error');
         return;
       }
       
@@ -119,7 +124,7 @@ export async function renderRoutinesView() {
               await renderRoutinesView();
             } catch (error) {
               console.error('Failed to delete routine:', error);
-              show('Failed to delete routine. Please try again.', 'error');
+              show(t('routines.delete_error'), 'error');
             }
           }
         }
@@ -156,15 +161,15 @@ export async function renderRoutinesView() {
       <h1 class="section-title">Routines</h1>
       
       <div class="filter-section">
-        <button class="btn btn-primary" id="create-routine-btn">✨ Create New Routine</button>
+        <button class="btn btn-primary" id="create-routine-btn">${t('routines.create')}</button>
       </div>
   
       <!-- Routines List -->
       ${allRoutines.length === 0 ? `
         <div class="empty-state">
-          <h2>No Routines Available</h2>
-          <p>Create your first routine to get started with your workout journey!</p>
-          <button class="btn btn-primary" id="create-from-empty">✨ Create New Routine</button>
+          <h2>${t('routines.no_routines')}</h2>
+          <p>${t('routines.create')}</p>
+          <button class="btn btn-primary" id="create-from-empty">${t('routines.create')}</button>
         </div>
       ` : `
         <div class="list-container">
@@ -176,14 +181,14 @@ export async function renderRoutinesView() {
               </div>
               ${p.description ? `<p class="routine-desc">${p.description}</p>` : ''}
               <div class="routine-meta">
-                ${p.category ? `<span class="routine-meta-item">📁 ${categories.find(c => String(c.id) === String(p.category))?.name || p.category}</span>` : ''}
-                ${p.duration ? `<span class="routine-meta-item">⏱️ ${p.duration} min</span>` : ''}
+                ${p.category ? `<span class="routine-meta-item" role="img" aria-label="category">📁 ${categories.find(c => String(c.id) === String(p.category))?.name || p.category}</span>` : ''}
+                ${p.duration ? `<span class="routine-meta-item" role="img" aria-label="duration">⏱ ${p.duration} min</span>` : ''}
               </div>
               <div class="routine-actions">
-                <button class="btn btn-primary view-btn" data-type="routine" data-id="${p.id}" data-action="view">View</button>
-                <button class="btn btn-success start-btn" data-type="routine" data-id="${p.id}" data-action="start">Start</button>
-                <button class="btn btn-warning edit-btn" data-type="routine" data-id="${p.id}" data-action="edit">Edit</button>
-                <button class="btn btn-danger delete-btn" data-type="routine" data-id="${p.id}" data-action="delete">Delete</button>
+                <button class="btn btn-primary view-btn" data-type="routine" data-id="${p.id}" data-action="view">${t('common.view')}</button>
+                <button class="btn btn-success start-btn" data-type="routine" data-id="${p.id}" data-action="start">${t('routines.start')}</button>
+                <button class="btn btn-warning edit-btn" data-type="routine" data-id="${p.id}" data-action="edit">${t('common.edit')}</button>
+                <button class="btn btn-danger delete-btn" data-type="routine" data-id="${p.id}" data-action="delete">${t('common.delete')}</button>
               </div>
             </div>
           `).join('')}

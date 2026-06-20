@@ -1,5 +1,6 @@
 import { getState, updateState } from '../services/state.js';
 import { renderHeader } from '../components/header.js';
+import { t } from '../i18n.js';
 import { checkAchievements } from '../services/achievements.js';
 import { show } from '../services/toast-service.js';
 import { formatDuration } from '../utils/formatters.js';
@@ -31,7 +32,7 @@ export async function renderWorkoutCompletionView() {
 
   main.innerHTML = renderHeader() + `
     <div class="card">
-  <h1>Workout Complete!</h1>
+  <h1>${t('completion.title')}</h1>
   <h2>${routine.name}</h2>
   
   ${workoutStats.totalDuration ? `
@@ -65,8 +66,8 @@ export async function renderWorkoutCompletionView() {
   const exercise = exercises.find(e => String(e.id) === String(exerciseData.exerciseId));
   return `
   <div class="card completion-exercise-card">
-  <h3>${exercise ? exercise.name : 'Unknown Exercise'}</h3>
-  <p><strong>Target:</strong> ${exerciseData.sets} sets × ${exerciseData.reps} reps</p>
+  <h3>${exercise ? exercise.name : '${t("completion.unknown_exercise")}'}</h3>
+  <p><strong>Target:</strong> ${exerciseData.sets} sets ✕ ${exerciseData.reps} reps</p>
   
   ${Array.from({ length: exerciseData.sets }, (_, setIndex) => `
   <div class="set-input-row">
@@ -111,7 +112,7 @@ export async function renderWorkoutCompletionView() {
   
   return {
   exerciseId: exerciseData.exerciseId,
-  exerciseName: exercise ? exercise.name : 'Unknown Exercise',
+  exerciseName: exercise ? exercise.name : '${t("completion.unknown_exercise")}',
   targetSets: exerciseData.sets,
   targetReps: exerciseData.reps,
   actualReps: sets
@@ -181,7 +182,6 @@ function calculateWorkoutStats(activeWorkout) {
 }
 
 // Export for router usage
-window.renderWorkoutCompletionView = renderWorkoutCompletionView;
 
 
 // Named + default export for maximum flexibility (Pattern 3)

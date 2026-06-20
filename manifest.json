@@ -7,7 +7,13 @@
   "background_color": "#fafbfc",
   "theme_color": "#1976d2",
   "description": "A PWA for calisthenics training and progress tracking.",
+  "orientation": "any",
   "icons": [
+    {
+      "src": "assets/icons/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
     {
       "src": "assets/icons/favicon-192x192.png",
       "sizes": "192x192",

@@ -1,5 +1,6 @@
 // views/skill-module-detail-view.js - Updated with proper exercise loading
 import { renderHeader } from '../components/header.js';
+import { t } from '../i18n.js';
 import { getState } from '../services/state.js';
 import { getModuleById } from '../services/modules-service.js';
 import { fetchSkillModules } from '../services/api.js';
@@ -39,9 +40,9 @@ export async function renderSkillModuleDetailView(moduleId) {
     difficultiesList = state.difficulties || [];
     
     // Create maps for quick lookup
-    window.exerciseMap = {};
+    const exerciseMap = {};
     allExercises.forEach(ex => {
-      window.exerciseMap[ex.id] = ex;
+      exerciseMap[ex.id] = ex;
     });
   } catch (error) {
     console.error('Error loading exercises:', error);
@@ -64,7 +65,11 @@ export async function renderSkillModuleDetailView(moduleId) {
   }
 
   function getExerciseData(id) {
-    return window.exerciseMap ? window.exerciseMap[parseInt(id)] : null;
+    const exerciseMap = allExercises.reduce((map, ex) => {
+      map[ex.id] = ex;
+      return map;
+    }, {});
+    return exerciseMap[parseInt(id)] || null;
   }
 
   const completedCount = module.exercises.filter(id => isExerciseCompleted(id)).length;
@@ -79,9 +84,9 @@ export async function renderSkillModuleDetailView(moduleId) {
       </div>
 
       <h1 class="module-name">${module.name}</h1>
-      <p class="module-description-text">${module.description || 'No description available'}</p>
-      <p><strong>Category:</strong> ${module.category || 'N/A'}</p>
-      <p><strong>Difficulty:</strong> ${module.difficulty || 'mixed'}</p>
+      <p class="module-description-text">${module.description || '${t("skill_module_detail.no_description")}'}</p>
+      <p><strong>Category:</strong> ${module.category || '${t("skill_module_detail.na")}'}</p>
+      <p><strong>Difficulty:</strong> ${module.difficulty || '${t("skill_module_detail.mixed")}'}</p>
       <p><strong>Total Exercises:</strong> ${module.exercises.length}</p>
 
       <div class="progression-section">
@@ -121,7 +126,7 @@ export async function renderSkillModuleDetailView(moduleId) {
                   <div class="flex-1">
                     <div class="exercise-header">
                       <strong class="exercise-number">${index + 1}. ${exerciseName}</strong>
-                      ${isCompleted ? '<span class="completed-indicator">✓ Completed</span>' : ''}
+                      ${isCompleted ? '<span class="completed-indicator">✅ Completed</span>' : ''}
                     </div>
                    <p class="exercise-desc">${description}</p>
 
@@ -134,7 +139,7 @@ export async function renderSkillModuleDetailView(moduleId) {
                                   const equipment = equipmentList.find(e => e.id === eqId);
                                   return equipment ? equipment.name : `Equipment ${eqId}`;
                                 }).join(', ') 
-                              : 'N/A'}
+                              : '${t("skill_module_detail.na")}'}
                           </span>
                         ` : ''}
                         <span>Difficulty: 
@@ -143,7 +148,7 @@ export async function renderSkillModuleDetailView(moduleId) {
                                 const difficulty = difficultiesList.find(d => d.id === diffId);
                                 return difficulty ? difficulty.label : `Difficulty ${diffId}`;
                               }).join(', ') 
-                            : 'N/A') : 'N/A'}
+                            : '${t("skill_module_detail.na")}') : '${t("skill_module_detail.na")}'}
                         </span>
                       </div>
                    ` : ''}
@@ -173,7 +178,6 @@ export async function renderSkillModuleDetailView(moduleId) {
 }
 
 // Export for router usage
-window.renderSkillModuleDetailView = renderSkillModuleDetailView;
 
 // Named + default export for maximum flexibility (Pattern 3)
 export default { render: renderSkillModuleDetailView };

@@ -1,13 +1,10 @@
 // Exercise Form Service - Handles all exercise form operations including prerequisites, progressions, formCues, and commonMistakes
+// Single form for both add and edit — populated differently depending on editId
 
 import { normalizeArray } from '../utils/array.js';
+import { escapeHtml } from '../utils/html.js';
 import { show } from './toast-service.js';
-
-// Make available globally for backward compatibility
-window.initExerciseService = async (editId, setStateFn) => {
-  return await initExerciseForm(editId, setStateFn);
-};
-window.initExerciseForm = initExerciseForm;
+import { loadExercises as loadExercisesFromStorage, saveExercises as saveExercisesToStorage } from './storage.js';
 
 export async function initExerciseForm(editId, setStateFn) {
   const references = { 
@@ -20,10 +17,9 @@ export async function initExerciseForm(editId, setStateFn) {
   
   let editingExerciseId = null;
   
-  // Dynamic list management counters - moved to top to avoid TDZ issues
+  // Dynamic list management counters
   let formCueItems = 0;
   let mistakeItems = 0;
-  
   
   // Setup event listeners
   setupFormListeners(setStateFn);
@@ -31,43 +27,29 @@ export async function initExerciseForm(editId, setStateFn) {
   // Load all data first
   await loadReferences();
   
-  // If editing, load the exercise directly (no tabs anymore)
+  // If editing, load the exercise and populate the form
   if (editId) {
     sessionStorage.removeItem('editingExerciseId');
-    // Switch to edit form directly (no tab buttons)
-    const addForm = document.getElementById('add-form');
-    const editForm = document.getElementById('edit-form');
-    if (addForm) addForm.classList.remove('active');
-    if (editForm) editForm.classList.add('active');
     await loadExerciseForEditById(editId);
-  } else {
   }
 
   // ==================== HELPER FUNCTIONS ====================
 
   function setupFormListeners(setStateFn) {
-    // Add exercise form
-    document.getElementById('exerciseForm')?.addEventListener('submit', handleAddExercise.bind(null, setStateFn));
-    
-    // Edit exercise form
-    document.getElementById('editForm')?.addEventListener('submit', handleEditExercise.bind(null, setStateFn));
+    // Single form handles both add and edit
+    document.getElementById('exerciseForm')?.addEventListener('submit', handleExerciseSubmit.bind(null, setStateFn));
     document.getElementById('deleteBtn')?.addEventListener('click', handleDeleteExercise.bind(null, setStateFn));
     document.getElementById('cancelEditBtn')?.addEventListener('click', cancelEdit);
     
-    // Search for exercises
-    const searchInput = document.getElementById('searchExercise');
-    if (searchInput) {
-      searchInput.addEventListener('input', debounce(searchExercises, 300));
-    }
-
     // Dynamic list event delegation
     setupDynamicListEvents();
   }
 
   async function loadReferences() {
     try {
-      // Load all data from single data.json file
-      const response = await fetch('./data/data.json');
+      const { getDataFilename } = await import('./data-cache.js');
+      const filename = getDataFilename();
+      const response = await fetch(filename);
       if (!response.ok) throw new Error('Failed to load data');
       const data = await response.json();
       
@@ -76,14 +58,13 @@ export async function initExerciseForm(editId, setStateFn) {
       references.equipment = data.equipment;
       references.difficulties = data.difficulties;
       
-      // Load exercises (for CRUD operations and dropdown population)
       references.exercises = await loadAllExercises();
       
       populateEquipmentCheckboxes();
       populateCategoryCheckboxes();
       populateMuscleCheckboxes();
       populateDifficultySelects(references.difficulties);
-      populateExerciseSelects(references.exercises); // NEW: Populate prerequisites/progressions
+      populateExerciseSelects(references.exercises);
       
     } catch (error) {
       show('Error loading reference data: ' + error.message, 'error');
@@ -92,16 +73,18 @@ export async function initExerciseForm(editId, setStateFn) {
 
   function populateExerciseSelects(exercises) {
     const exerciseOptions = exercises.map(ex => 
-      `<option value="${ex.id}">${ex.name}</option>`
+      `<option value="${ex.id}">${escapeHtml(ex.name)}</option>`
     ).join('');
     
-    // Prerequisites select
-    document.getElementById('editPrerequisites').innerHTML = 
-      '<option value="">-- Select Prerequisites --</option>' + exerciseOptions;
+    const prereqSelect = document.getElementById('prerequisites');
+    if (prereqSelect) {
+      prereqSelect.innerHTML = '<option value="">-- Select Prerequisites --</option>' + exerciseOptions;
+    }
     
-    // Progressions select
-    document.getElementById('editProgressions').innerHTML = 
-      '<option value="">-- Select Progressions --</option>' + exerciseOptions;
+    const progSelect = document.getElementById('progressions');
+    if (progSelect) {
+      progSelect.innerHTML = '<option value="">-- Select Progressions --</option>' + exerciseOptions;
+    }
   }
 
   function populateEquipmentCheckboxes() {
@@ -114,21 +97,9 @@ export async function initExerciseForm(editId, setStateFn) {
         </label>`
       ).join('');
     }
-    
-    // Also populate edit equipment checkboxes
-    const editContainer = document.getElementById('edit-equipment-container');
-    if (editContainer) {
-      editContainer.innerHTML = references.equipment.map(eq => 
-        `<label class="checkbox-item">
-          <input type="checkbox" name="equipment" value="${escapeHtml(String(eq.id))}">
-          ${escapeHtml(eq.name)}
-        </label>`
-      ).join('');
-    }
   }
 
   function populateCategoryCheckboxes() {
-    // Add form categories container
     const container = document.getElementById('categories-container');
     if (container) {
       container.innerHTML = references.categories.map(cat => 
@@ -138,21 +109,9 @@ export async function initExerciseForm(editId, setStateFn) {
         </label>`
       ).join('');
     }
-    
-    // Edit form categories container
-    const editContainer = document.getElementById('edit-categories-container');
-    if (editContainer) {
-      editContainer.innerHTML = references.categories.map(cat => 
-        `<label class="checkbox-item">
-          <input type="checkbox" name="categories" value="${escapeHtml(String(cat.id))}">
-          ${escapeHtml(cat.name)}
-        </label>`
-      ).join('');
-    }
   }
 
   function populateMuscleCheckboxes() {
-    // Add form primary muscles container
     const musclesContainer = document.getElementById('muscles-container');
     if (musclesContainer) {
       musclesContainer.innerHTML = references.muscles.map(mus => 
@@ -163,32 +122,9 @@ export async function initExerciseForm(editId, setStateFn) {
       ).join('');
     }
 
-    // Add form secondary muscles container
     const secondaryContainer = document.getElementById('muscles-secondary-container');
     if (secondaryContainer) {
       secondaryContainer.innerHTML = references.muscles.map(mus => 
-        `<label class="checkbox-item">
-          <input type="checkbox" name="muscles_secondary" value="${escapeHtml(String(mus.id))}">
-          ${escapeHtml(mus.name_en || mus.name)}
-        </label>`
-      ).join('');
-    }
-
-    // Edit form primary muscles container
-    const editMusclesContainer = document.getElementById('edit-muscles-container');
-    if (editMusclesContainer) {
-      editMusclesContainer.innerHTML = references.muscles.map(mus => 
-        `<label class="checkbox-item">
-          <input type="checkbox" name="muscles" value="${escapeHtml(String(mus.id))}">
-          ${escapeHtml(mus.name_en || mus.name)}
-        </label>`
-      ).join('');
-    }
-
-    // Edit form secondary muscles container
-    const editSecondaryContainer = document.getElementById('edit-muscles-secondary-container');
-    if (editSecondaryContainer) {
-      editSecondaryContainer.innerHTML = references.muscles.map(mus => 
         `<label class="checkbox-item">
           <input type="checkbox" name="muscles_secondary" value="${escapeHtml(String(mus.id))}">
           ${escapeHtml(mus.name_en || mus.name)}
@@ -202,40 +138,88 @@ export async function initExerciseForm(editId, setStateFn) {
       `<option value="${escapeHtml(String(d.id))}">${escapeHtml(d.label || d.name)}</option>`
     ).join('');
     
-    document.getElementById('difficulty').innerHTML = '<option value="">Select Difficulty...</option>' + difficultyOptions;
-    document.getElementById('editDifficulty').innerHTML = '<option value="">Select Difficulty...</option>' + difficultyOptions;
+    const select = document.getElementById('difficulty');
+    if (select) {
+      select.innerHTML = '<option value="">Select Difficulty...</option>' + difficultyOptions;
+    }
   }
 
   async function loadExerciseForEditById(exerciseId) {
     try {
-      const exercise = references.exercises.find(ex => ex.id === parseInt(exerciseId));
-      if (!exercise) throw new Error('Exercise not found');
+      // Step 1: Check in-memory references (try both string and numeric comparison)
+      let exercise = references.exercises.find(ex =>
+        String(ex.id) === String(exerciseId) ||
+        Number(ex.id) === Number(exerciseId)
+      );
+      
+      if (!exercise) {
+        // Step 2: Try IndexedDB directly
+        const { getExerciseById } = await import('../services/database.js');
+        exercise = await getExerciseById(exerciseId);
+      }
+      
+      if (!exercise) {
+        // Step 3: Load exercises from IndexedDB fresh (in case loadReferences didn't get user data)
+        const { exercisesLoad } = await import('../services/database.js');
+        const allExercises = await exercisesLoad();
+        exercise = allExercises.find(ex =>
+          String(ex.id) === String(exerciseId) ||
+          Number(ex.id) === Number(exerciseId)
+        );
+        if (exercise) {
+          references.exercises = allExercises;
+        }
+      }
+      
+      if (!exercise) {
+        // Step 4: Load from data.json file (fallback)
+        const { getDataFilename } = await import('./data-cache.js');
+        const filename = getDataFilename();
+        const resp = await fetch(filename);
+        if (resp.ok) {
+          const data = await resp.json();
+          exercise = data.exercises?.find(ex =>
+            String(ex.id) === String(exerciseId) ||
+            Number(ex.id) === Number(exerciseId)
+          );
+          if (exercise) {
+            const idx = references.exercises.findIndex(e =>
+              String(e.id) === String(exercise.id) || Number(e.id) === Number(exercise.id)
+            );
+            if (idx === -1) references.exercises.push(exercise);
+            else references.exercises[idx] = exercise;
+          }
+        }
+      }
+      
+      if (!exercise) {
+        console.error('[ExerciseForm] Could not find exercise with ID:', exerciseId, 'in IndexedDB or data.json');
+        throw new Error('Exercise not found');
+      }
       
       editingExerciseId = exercise.id;
       
-      // Fill form fields and populate selected values
+      // Fill text fields
+      const name = document.getElementById('name');
+      const description = document.getElementById('description');
+      const skill = document.getElementById('skill');
+      const image_url = document.getElementById('image_url');
+      const video_url = document.getElementById('video_url');
       
-      // Text fields
-      const editName = document.getElementById('editName');
-      const editDescription = document.getElementById('editDescription');
-      const editSkill = document.getElementById('editSkill');
-      const editImage_url = document.getElementById('editImage_url');
-      const editVideo_url = document.getElementById('editVideo_url');
+      if (name) name.value = exercise.name || '';
+      if (description) description.value = exercise.description || '';
+      if (skill) skill.value = exercise.skill || '';
+      if (image_url) image_url.value = exercise.image_url || '';
+      if (video_url) video_url.value = exercise.video_url || '';
       
-      if (editName) editName.value = exercise.name || '';
-      if (editDescription) editDescription.value = exercise.description || '';
-      if (editSkill) editSkill.value = exercise.skill || '';
-      if (editImage_url) editImage_url.value = exercise.image_url || '';
-      if (editVideo_url) editVideo_url.value = exercise.video_url || '';
-      
-      // Set difficulty select to the first difficulty value (or default)
-      const editDifficulty = document.getElementById('editDifficulty');
-      if (editDifficulty) {
+      // Set difficulty select
+      const difficulty = document.getElementById('difficulty');
+      if (difficulty) {
         const firstDifficulty = (exercise.difficulty && exercise.difficulty[0]) ? exercise.difficulty[0] : '';
-        editDifficulty.value = firstDifficulty;
+        difficulty.value = firstDifficulty;
       }
       
-      // Check checkboxes for equipment (array format)
+      // Check checkboxes
       const equipmentIds = Array.isArray(exercise.equipment) ? exercise.equipment : [exercise.equipment];
       checkCheckboxes('equipment', equipmentIds);
       
@@ -243,18 +227,18 @@ export async function initExerciseForm(editId, setStateFn) {
       checkCheckboxes('muscles', exercise.muscles || []);
       checkCheckboxes('muscles_secondary', exercise.muscles_secondary || []);
       
-      // Set prerequisites select (array of exercise IDs)
+      // Set prerequisites select
       const prereqIds = Array.isArray(exercise.prerequisites) ? exercise.prerequisites : [];
-      const prereqSelect = document.getElementById('editPrerequisites');
+      const prereqSelect = document.getElementById('prerequisites');
       if (prereqSelect) {
         Array.from(prereqSelect.options).forEach(opt => {
           opt.selected = prereqIds.includes(parseInt(opt.value));
         });
       }
       
-      // Set progressions select (array of exercise IDs)
+      // Set progressions select
       const progIds = Array.isArray(exercise.progressions) ? exercise.progressions : [];
-      const progSelect = document.getElementById('editProgressions');
+      const progSelect = document.getElementById('progressions');
       if (progSelect) {
         Array.from(progSelect.options).forEach(opt => {
           opt.selected = progIds.includes(parseInt(opt.value));
@@ -263,48 +247,42 @@ export async function initExerciseForm(editId, setStateFn) {
       
       // Load formCues dynamic list
       const formCues = Array.isArray(exercise.formCues) ? exercise.formCues : [];
-      loadDynamicList('formCuesContainer', formCueItems, formCues);
+      formCueItems = loadDynamicList('formCuesContainer', formCueItems, formCues);
       
       // Load commonMistakes dynamic list
       const mistakes = Array.isArray(exercise.commonMistakes) ? exercise.commonMistakes : [];
-      loadDynamicList('commonMistakesContainer', mistakeItems, mistakes);
+      mistakeItems = loadDynamicList('commonMistakesContainer', mistakeItems, mistakes);
       
-      // Show edit container and hide loading/search
-      const loadingExercise = document.getElementById('loadingExercise');
-      const editContainer = document.getElementById('editContainer');
-      const exerciseList = document.getElementById('exerciseList');
-      
-      if (loadingExercise) loadingExercise.style.display = 'none';
-      if (editContainer) editContainer.style.display = 'block';
-      if (exerciseList) exerciseList.classList.remove('active');
     } catch (error) {
       show('Error loading exercise: ' + error.message, 'error');
     }
   }
 
   function checkCheckboxes(name, values) {
-    const containerName = name.replace('_', '-');
-    const checkboxes = document.querySelectorAll(`#edit-${containerName}-container input`);
+    const container = document.getElementById(name + '-container');
+    if (!container) return;
+    const checkboxes = container.querySelectorAll('input[type="checkbox"]');
     checkboxes.forEach(cb => {
-      cb.checked = values.includes(parseInt(cb.value));
+      const cbId = String(cb.value);
+      cb.checked = values.some(v => String(v) === cbId);
     });
   }
 
-  // Load values into dynamic list containers
   function loadDynamicList(containerId, itemCounter, values) {
     const container = document.getElementById(containerId);
-    if (!container) return;
+    if (!container) return itemCounter;
     
     container.innerHTML = '';
     
     if (values && values.length > 0) {
       values.forEach(value => {
-        addItemToContainer(container, itemCounter, value);
+        itemCounter = addItemToContainer(container, itemCounter, value);
       });
     } else {
-      // Always show at least one empty field
-      addItemToContainer(container, itemCounter, '');
+      itemCounter = addItemToContainer(container, itemCounter, '');
     }
+    
+    return itemCounter;
   }
 
   function addItemToContainer(container, counter, value) {
@@ -317,6 +295,7 @@ export async function initExerciseForm(editId, setStateFn) {
       <button type="button" class="btn btn-danger btn-sm remove-item" title="Remove">✕</button>
     `;
     container.appendChild(itemDiv);
+    return counter;
   }
 
   function setupDynamicListEvents() {
@@ -327,18 +306,17 @@ export async function initExerciseForm(editId, setStateFn) {
     [formCuesContainer, mistakesContainer].forEach(container => {
       if (!container) return;
       
-      // Add item button handler
       const addButtonId = container.id === 'formCuesContainer' ? 'addFormCueBtn' : 'addMistakeBtn';
       const addBtn = document.getElementById(addButtonId);
       
       if (addBtn) {
         addBtn.addEventListener('click', () => {
-          const counter = container.id === 'formCuesContainer' ? formCueItems : mistakeItems;
+          const currentItems = container.querySelectorAll('.dynamic-list-item');
+          const counter = currentItems.length;
           addItemToContainer(container, counter, '');
         });
       }
       
-      // Remove item handler (delegated)
       container.addEventListener('click', (e) => {
         if (e.target.classList.contains('remove-item')) {
           const item = e.target.closest('.dynamic-list-item');
@@ -347,7 +325,6 @@ export async function initExerciseForm(editId, setStateFn) {
             if (items.length > 1) {
               item.remove();
             } else {
-              // Clear the last item instead of removing
               const input = item.querySelector('input');
               if (input) input.value = '';
             }
@@ -358,35 +335,36 @@ export async function initExerciseForm(editId, setStateFn) {
   }
 
   function getCheckedValues(name) {
-    const checkboxes = document.querySelectorAll(`input[name="${name}"]:checked`);
+    const container = document.getElementById(name + '-container');
+    if (!container) return [];
+    const checkboxes = container.querySelectorAll('input[type="checkbox"]:checked');
     return Array.from(checkboxes).map(cb => parseInt(cb.value));
   }
 
-  // Get values from multi-select dropdown
   function getMultiSelectValues(selectId) {
     const select = document.getElementById(selectId);
     if (!select) return [];
     return Array.from(select.selectedOptions).map(opt => parseInt(opt.value));
   }
 
-  // Get values from dynamic list
   function getDynamicListValues(containerId) {
     const container = document.getElementById(containerId);
     if (!container) return [];
     const inputs = container.querySelectorAll('.dynamic-list-input');
     return Array.from(inputs)
       .map(input => input.value.trim())
-      .filter(value => value.length > 0); // Filter out empty strings
+      .filter(value => value.length > 0);
   }
 
-  async function handleAddExercise(setStateFn, e) {
+  async function handleExerciseSubmit(setStateFn, e) {
     e.preventDefault();
     
     const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
     
     // Validate form data before processing
     try {
-      const validationService = await import('./services/validation.js');
+      const validationService = await import('./validation.js');
       const validationResult = validationService.ValidationService.validateExerciseForm(formData);
       
       if (!validationResult.valid) {
@@ -400,8 +378,6 @@ export async function initExerciseForm(editId, setStateFn) {
       console.error('Validation service not available:', err);
     }
     
-    const data = Object.fromEntries(formData.entries());
-    
     data.categories = getCheckedValues('categories');
     data.muscles = getCheckedValues('muscles');
     data.muscles_secondary = getCheckedValues('muscles_secondary');
@@ -409,109 +385,63 @@ export async function initExerciseForm(editId, setStateFn) {
     const equipmentIds = getCheckedValues('equipment');
     data.equipment = Array.isArray(equipmentIds) ? equipmentIds : (equipmentIds ? [equipmentIds] : []);
     
-    // Normalize prerequisites and progressions to arrays
-    data.prerequisites = normalizeArray(data.prerequisites);
-    data.progressions = normalizeArray(data.progressions);
+    const prereqSelect = document.getElementById('prerequisites');
+    data.prerequisites = prereqSelect 
+      ? Array.from(prereqSelect.selectedOptions).map(opt => parseInt(opt.value))
+      : [];
+    const progSelect = document.getElementById('progressions');
+    data.progressions = progSelect 
+      ? Array.from(progSelect.selectedOptions).map(opt => parseInt(opt.value))
+      : [];
     
-    const difficultyValue = formData.get('difficulty');
-    data.difficulty = difficultyValue ? [parseInt(difficultyValue)] : [];
-    
-    try {
-      const maxId = Math.max(...references.exercises.map(ex => ex.id), 0);
-      data.id = maxId + 1;
-      
-      references.exercises.push(data);
-      
-      await saveAllExercises(references.exercises);
-      
-      setStateFn({ exercises: references.exercises });
-      
-      show(`Exercise added successfully! (ID: ${data.id})`, 'success');
-      e.target.reset();
-    } catch (error) {
-      show('Error adding exercise: ' + error.message, 'error');
-    }
-  }
-
-   async function handleEditExercise(setStateFn, e) {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    if (!editingExerciseId) {
-      console.error('No exercise ID to edit');
-      return;
-    }
-    
-    const formData = new FormData(e.target);
-    
-    let validationPassed = true;
-    try {
-      const validationService = await import('./services/validation.js');
-      
-      if (validationService.ValidationService && typeof validationService.ValidationService.validateExerciseForm === 'function') {
-        const validationResult = validationService.ValidationService.validateExerciseForm(formData);
-        
-        if (!validationResult.valid) {
-          console.error('Validation failed:', validationResult.errors);
-          validationService.ValidationService.clearAllErrors();
-          Object.keys(validationResult.errors).forEach(fieldName => {
-            validationService.ValidationService.showError(fieldName, validationResult.errors[fieldName]);
-          });
-          validationPassed = false;
-        }
-      }
-    } catch (err) {
-    }
-    
-    if (!validationPassed) {
-      return;
-    }
-    
-    const data = Object.fromEntries(formData.entries());
-    data.id = editingExerciseId;
-    
-    data.categories = getCheckedValues('categories');
-    data.muscles = getCheckedValues('muscles');
-    data.muscles_secondary = getCheckedValues('muscles_secondary');
-    
-    const equipmentIds = getCheckedValues('equipment');
-    data.equipment = Array.isArray(equipmentIds) ? equipmentIds : (equipmentIds ? [equipmentIds] : []);
-    
-    // NEW: Get prerequisites and progressions from multi-select
-    data.prerequisites = getMultiSelectValues('editPrerequisites');
-    data.progressions = getMultiSelectValues('editProgressions');
-    
-    // NEW: Get formCues and commonMistakes from dynamic lists
     data.formCues = getDynamicListValues('formCuesContainer');
     data.commonMistakes = getDynamicListValues('commonMistakesContainer');
     
     const difficultyValue = formData.get('difficulty');
     data.difficulty = difficultyValue ? [parseInt(difficultyValue)] : [];
     
-    
-    try {
-      const index = references.exercises.findIndex(ex => ex.id === editingExerciseId);
-      if (index === -1) {
-        throw new Error('Exercise not found with ID: ' + editingExerciseId);
+    if (editingExerciseId) {
+      // EDIT mode
+      data.id = editingExerciseId;
+      
+      try {
+        const index = references.exercises.findIndex(ex => String(ex.id) === String(editingExerciseId));
+        if (index === -1) {
+          throw new Error('Exercise not found with ID: ' + editingExerciseId);
+        }
+        
+        references.exercises[index] = data;
+        
+        await saveAllExercises(references.exercises);
+        
+        setStateFn({ exercises: references.exercises });
+        
+        show('Exercise updated successfully!', 'success');
+        window.location.hash = '#exercises';
+      } catch (error) {
+        show('Error updating exercise: ' + error.message, 'error');
       }
-      
-      references.exercises[index] = data;
-      
-      await saveAllExercises(references.exercises);
-      
-      setStateFn({ exercises: references.exercises });
-      
-      show(`Exercise updated successfully!`, 'success');
-      
-      // Reset form and return to list view
-      editingExerciseId = null;
-      document.getElementById('editForm').reset();
-      document.getElementById('loadingExercise').style.display = 'block';
-      document.getElementById('editContainer').style.display = 'none';
-      document.getElementById('exerciseList').classList.add('active');
-      
-    } catch (error) {
-      show('Error updating exercise: ' + error.message, 'error');
+    } else {
+      // ADD mode
+      try {
+        const numericIds = references.exercises
+          .map(ex => ex.id)
+          .filter(id => typeof id === 'number' && !isNaN(id));
+        const maxId = numericIds.length > 0 ? Math.max(...numericIds) : 0;
+        data.id = maxId + 1;
+        
+        references.exercises.push(data);
+        
+        await saveAllExercises(references.exercises);
+        
+        setStateFn({ exercises: references.exercises });
+        
+        show(`Exercise added successfully! (ID: ${data.id})`, 'success');
+        e.target.reset();
+        window.location.hash = '#exercises';
+      } catch (error) {
+        show('Error adding exercise: ' + error.message, 'error');
+      }
     }
   }
 
@@ -521,21 +451,20 @@ export async function initExerciseForm(editId, setStateFn) {
       return;
     }
     
-    const exercise = references.exercises.find(ex => ex.id === editingExerciseId);
+    const exercise = references.exercises.find(ex => String(ex.id) === String(editingExerciseId));
     const confirmed = confirm(`Are you sure you want to delete "${exercise?.name}"? This cannot be undone.`);
     
     if (!confirmed) return;
     
     try {
-      references.exercises = references.exercises.filter(ex => ex.id !== editingExerciseId);
+      references.exercises = references.exercises.filter(ex => String(ex.id) !== String(editingExerciseId));
       
       await saveAllExercises(references.exercises);
       
       setStateFn({ exercises: references.exercises });
       
-      show(`Exercise deleted successfully!`, 'success');
-      
-      cancelEdit();
+      show('Exercise deleted successfully!', 'success');
+      window.location.hash = '#exercises';
     } catch (error) {
       show('Error deleting exercise: ' + error.message, 'error');
     }
@@ -543,81 +472,14 @@ export async function initExerciseForm(editId, setStateFn) {
 
   function cancelEdit() {
     editingExerciseId = null;
-    document.getElementById('editForm').reset();
-    document.getElementById('loadingExercise').style.display = 'none';
-    document.getElementById('editContainer').style.display = 'none';
-    document.getElementById('exerciseList').classList.add('active');
-  }
-
-  function searchExercises() {
-    const searchTerm = document.getElementById('searchExercise').value.toLowerCase();
-    const listContainer = document.getElementById('exerciseList');
-    
-    if (!searchTerm) {
-      listContainer.classList.remove('active');
-      return;
-    }
-    
-    const filtered = references.exercises.filter(ex => 
-      ex.name.toLowerCase().includes(searchTerm) ||
-      ex.description.toLowerCase().includes(searchTerm)
-    );
-    
-    displayExerciseList(filtered);
-  }
-
-  function displayExerciseList(items) {
-    const listContainer = document.getElementById('exerciseList');
-    
-    if (items.length === 0) {
-      listContainer.innerHTML = '<p>No exercises found.</p>';
-    } else {
-      listContainer.innerHTML = `
-        <h2>Found ${items.length} exercises</h2>
-        ${items.map(ex => `
-          <div class="exercise-item">
-            <div>
-              <strong>${ex.name}</strong>
-              <small>${ex.description.substring(0, 60)}...</small>
-            </div>
-            <div class="exercise-item-actions">
-              <button type="button" class="btn btn-secondary" data-edit-exercise="${ex.id}">Edit</button>
-            </div>
-          </div>
-        `).join('')}
-      `;
-    }
-    
-    // Attach click handler for edit buttons (delegated within this scope)
-    listContainer.addEventListener('click', (e) => {
-      const editBtn = e.target.closest('[data-edit-exercise]');
-      if (editBtn) {
-        e.preventDefault();
-        const exerciseId = parseInt(editBtn.dataset.editExercise);
-        loadExerciseForEditById(exerciseId);
-      }
-    });
-    
-    listContainer.classList.add('active');
+    document.getElementById('exerciseForm').reset();
   }
 
   async function loadAllExercises() {
-    return storage.loadExercises();
+    return loadExercisesFromStorage();
   }
 
   async function saveAllExercises(exercises) {
-    return storage.saveExercises(exercises);
-  }
-
-  function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-      const later = () => {
-        clearTimeout(timeout);
-        func(...args);
-      };
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-    };
+    return saveExercisesToStorage(exercises);
   }
 }

@@ -8,7 +8,14 @@ import { updateState } from './state.js';
 import { saveForUndo } from './undo-service.js';
 import { ModuleStore } from './modules-service.js';
 import { show } from './toast-service.js';
+import { showConfirmation as showConfirmationModal } from './confirmation-modal.js';
 import { formatWorkoutSummary } from '../utils/workout-summary.js';
+import { deleteRoutine as dbDeleteRoutine } from './database.js';
+import { routinesLoad } from './database.js';
+import { storeSharedComments, loadSharedComments } from './database.js';
+
+let mainElementRef = null;
+let handlers = [];
 
 /**
  * Initialize all event delegation listeners
@@ -16,29 +23,36 @@ import { formatWorkoutSummary } from '../utils/workout-summary.js';
  * @param {HTMLElement} mainElement - The main #app container element
  */
 export function initializeEventDelegation(mainElement) {
-  // Navigation handlers
-  mainElement.addEventListener('click', handleNavigationClick);
+  mainElementRef = mainElement;
   
-  // Routine/Workout handlers
-  mainElement.addEventListener('click', handleRoutinesClick);
+  const navHandler = handleNavigationClick;
+  const routineHandler = handleRoutinesClick;
+  const exerciseHandler = handleExerciseClick;
+  const profileHandler = handleProfileClick;
+  const moduleHandler = handleModuleClick;
+  const workoutHandler = handleWorkoutClick;
+  const errorBoundaryHandler = handleErrorCodeClick;
+  const formHandler = handleFormSubmit;
   
-  // Exercise handlers
-  mainElement.addEventListener('click', handleExerciseClick);
+  mainElement.addEventListener('click', navHandler);
+  mainElement.addEventListener('click', routineHandler);
+  mainElement.addEventListener('click', exerciseHandler);
+  mainElement.addEventListener('click', profileHandler);
+  mainElement.addEventListener('click', moduleHandler);
+  mainElement.addEventListener('click', workoutHandler);
+  mainElement.addEventListener('click', errorBoundaryHandler);
+  mainElement.addEventListener('submit', formHandler);
   
-  // Profile handlers
-  mainElement.addEventListener('click', handleProfileClick);
-  
-  // Module handlers
-  mainElement.addEventListener('click', handleModuleClick);
-  
-  // Workout handlers
-  mainElement.addEventListener('click', handleWorkoutClick);
-  
-  // Error boundary handlers
-  mainElement.addEventListener('click', handleErrorCodeClick);
-  
-  // Form submission handlers
-  mainElement.addEventListener('submit', handleFormSubmit);
+  handlers = [
+    { el: mainElement, type: 'click', fn: navHandler },
+    { el: mainElement, type: 'click', fn: routineHandler },
+    { el: mainElement, type: 'click', fn: exerciseHandler },
+    { el: mainElement, type: 'click', fn: profileHandler },
+    { el: mainElement, type: 'click', fn: moduleHandler },
+    { el: mainElement, type: 'click', fn: workoutHandler },
+    { el: mainElement, type: 'click', fn: errorBoundaryHandler },
+    { el: mainElement, type: 'submit', fn: formHandler },
+  ];
 }
 
 /**
@@ -109,7 +123,9 @@ function handleRoutinesClick(e) {
     e.preventDefault();
     const type = deleteBtn.dataset.type;
     const id = deleteBtn.dataset.id;
-    handleDeleteRoutines(type, id);
+    handleDeleteRoutines(type, id).catch(err => {
+      console.error('Delete routine error:', err);
+    });
     return;
   }
 }
@@ -169,7 +185,7 @@ function handleCopyRoutines(type, id) {
     programText += '*Warmup*\n';
     routine.warmup.forEach(ex => {
       const exercise = exercises.find(e => e.id === ex.exerciseId);
-      programText += `- ${exercise ? exercise.name : 'Unknown'}: ${ex.sets} sets × ${ex.reps} reps (Rest: ${ex.restTime}s)\n`;
+      programText += `- ${exercise ? exercise.name : 'Unknown'}: ${ex.sets} sets ✕ ${ex.reps} reps (Rest: ${ex.restTime}s)\n`;
     });
     programText += '\n';
   }
@@ -177,14 +193,14 @@ function handleCopyRoutines(type, id) {
   programText += '*Exercises*\n';
   routine.exercises.forEach(ex => {
     const exercise = exercises.find(e => e.id === ex.exerciseId);
-    programText += `- ${exercise ? exercise.name : 'Unknown'}: ${ex.sets} sets × ${ex.reps} reps (Rest: ${ex.restTime}s)\n`;
+    programText += `- ${exercise ? exercise.name : 'Unknown'}: ${ex.sets} sets ✕ ${ex.reps} reps (Rest: ${ex.restTime}s)\n`;
   });
   
   if (routine.cooldown && routine.cooldown.length > 0) {
     programText += '\n*Cooldown*\n';
     routine.cooldown.forEach(ex => {
       const exercise = exercises.find(e => e.id === ex.exerciseId);
-      programText += `- ${exercise ? exercise.name : 'Unknown'}: ${ex.sets} sets × ${ex.reps} reps (Rest: ${ex.restTime}s)\n`;
+      programText += `- ${exercise ? exercise.name : 'Unknown'}: ${ex.sets} sets ✕ ${ex.reps} reps (Rest: ${ex.restTime}s)\n`;
     });
   }
   
@@ -260,11 +276,14 @@ function handleToggleFavorite(exerciseId) {
   const user = state.user || {};
   let favoriteExerciseIds = user.favoriteExerciseIds || [];
   
-  // Toggle the exercise in favorites
-  if (favoriteExerciseIds.includes(exerciseId)) {
-    favoriteExerciseIds = favoriteExerciseIds.filter(id => id !== exerciseId);
+  // Normalize exerciseId to string for consistent comparison
+  const normalizedId = String(exerciseId);
+  
+  // Toggle the exercise in favorites using String comparison
+  if (favoriteExerciseIds.some(id => String(id) === normalizedId)) {
+    favoriteExerciseIds = favoriteExerciseIds.filter(id => String(id) !== normalizedId);
   } else {
-    favoriteExerciseIds.push(exerciseId);
+    favoriteExerciseIds.push(normalizedId);
   }
   
   window.updateState({ user: { ...user, favoriteExerciseIds } });
@@ -365,14 +384,6 @@ function handleFormSubmit(e) {
     handleCommentSubmit(e.target);
     return;
   }
-  
-  // Module form
-  const moduleForm = e.target.closest('#module-form');
-  if (moduleForm) {
-    e.preventDefault();
-    handleModuleFormSubmit(e.target);
-    return;
-  }
 }
 
 /**
@@ -405,25 +416,37 @@ function handleStartRoutines(type, id) {
   window.location.hash = `#routine-details/${type}/${id}`;
 }
 
-function handleDeleteRoutines(type, id) {
+async function handleDeleteRoutines(type, id) {
   const state = window.getState();
   
   if (type === 'routine') {
     const routine = state.routines?.find(p => String(p.id) === String(id));
     if (routine) {
-      if (confirm(`Are you sure you want to delete "${routine.name}"? This action cannot be undone.`)) {
-        show('Routine deleted successfully! (Note: This is a demo - in production, the routine would be deleted from the database)', 'success');
-        window.location.hash = '#routines';
+      const confirmed = await showConfirmationModal(`Are you sure you want to delete "${routine.name}"? This action cannot be undone.`);
+      if (confirmed) {
+        try {
+          saveForUndo('routine', routine, routine.id);
+          await dbDeleteRoutine(routine.id);
+          // Reload routines from IndexedDB and update state
+          const refreshedRoutines = await routinesLoad();
+          window.updateState({ routines: refreshedRoutines });
+          show('Routine deleted successfully!', 'success');
+          window.location.hash = '#routines';
+        } catch (error) {
+          console.error('Failed to delete routine:', error);
+          show('Failed to delete routine. Please try again.', 'error');
+        }
       }
     }
   }
 }
 
 function handleDeleteMetric(index) {
-  if (!confirm('Delete this metric?')) return;
+  showConfirmationModal('Delete this metric?').then(confirmed => {
+    if (!confirmed) return;
   
   const state = window.getState();
-  const user = { ...state.user };
+  const user = { ...(state.user || {}) };
   user.bodyMetrics = user.bodyMetrics || [];
   
   const metricToDelete = user.bodyMetrics[index];
@@ -439,21 +462,20 @@ function handleDeleteMetric(index) {
   
   updateState({ user });
   // Re-render will be triggered by state change if view supports it
+  });
 }
 
 function handleDeleteWorkoutHistory(index) {
-  const state = window.getState();
-  const historyItem = state.history[index];
-  
-  if (!historyItem) return;
-  
-  if (!confirm('Delete this workout from history?')) return;
-  
-  saveForUndo('workout-history', historyItem, index);
-  
-  const newHistory = state.history.filter((_, i) => i !== index);
-  updateState({ history: newHistory });
-  // Re-render will be triggered by state change if view supports it
+  showConfirmationModal('Delete this workout from history?').then(confirmed => {
+    if (!confirmed) return;
+    const state = window.getState();
+    const historyItem = state.history[index];
+    if (!historyItem) return;
+    saveForUndo('workout-history', historyItem, index);
+    const newHistory = state.history.filter((_, i) => i !== index);
+    updateState({ history: newHistory });
+    // Re-render will be triggered by state change if view supports it
+  });
 }
 
 function handleRemoveExercise(exId) {
@@ -470,21 +492,22 @@ function handleResetExerciseSelection() {
 }
 
 function handleConfirmDeleteModule(editId) {
-  if (!confirm('Are you sure you want to delete this module?')) return;
-  
-  ModuleStore.delete(editId)
-    .then(() => {
-      const editingModule = window.currentEditingModule;
-      if (editingModule) {
-        saveForUndo('module', editingModule, editId);
-      }
-      show('Module deleted successfully!', 'success');
-      window.location.hash = '#skill-modules';
-    })
-    .catch(error => {
-      console.error('Error deleting module:', error);
-      show('Error deleting module: ' + error.message, 'error');
-    });
+  showConfirmationModal('Are you sure you want to delete this module?').then(confirmed => {
+    if (!confirmed) return;
+    ModuleStore.delete(editId)
+      .then(() => {
+        const editingModule = window.currentEditingModule;
+        if (editingModule) {
+          saveForUndo('module', editingModule, editId);
+        }
+        show('Module deleted successfully!', 'success');
+        window.location.hash = '#skill-modules';
+      })
+      .catch(error => {
+        console.error('Error deleting module:', error);
+        show('Error deleting module: ' + error.message, 'error');
+      });
+  });
 }
 
 function handleShareWorkout() {
@@ -499,22 +522,41 @@ function handleShareWorkout() {
   
   const workoutText = formatWorkoutSummary(lastWorkout);
   
+  // Try Web Share API first (native sharing on mobile)
+  if (navigator.share) {
+    navigator.share({
+      title: 'My Workout Summary',
+      text: workoutText
+    }).then(() => {
+      show('Workout shared successfully!', 'success');
+    }).catch(err => {
+      // User cancelled share or share failed — fall back to clipboard
+      if (err.name !== 'AbortError') {
+        fallbackCopy(workoutText);
+      }
+    });
+  } else {
+    fallbackCopy(workoutText);
+  }
+}
+
+function fallbackCopy(text) {
   if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(workoutText).then(() => {
-      show('Workout summary copied to clipboard!\n\nYou can now paste it in WhatsApp, social media, or any text message.', 'success');
+    navigator.clipboard.writeText(text).then(() => {
+      show('Workout summary copied to clipboard!', 'success');
     }).catch(() => {
-      prompt('Copy the workout summary below:', workoutText);
+      prompt('Copy the workout summary below:', text);
     });
   } else {
     const textArea = document.createElement('textarea');
-    textArea.value = workoutText;
+    textArea.value = text;
     document.body.appendChild(textArea);
     textArea.select();
     try {
       document.execCommand('copy');
-      show('Workout summary copied to clipboard!\n\nYou can now paste it in WhatsApp, social media, or any text message.', 'success');
+      show('Workout summary copied to clipboard!', 'success');
     } catch (err) {
-      prompt('Copy the workout summary below:', workoutText);
+      prompt('Copy the workout summary below:', text);
     }
     document.body.removeChild(textArea);
   }
@@ -547,7 +589,7 @@ function handleBodyMetricsSubmit(form) {
   }
   
   const state = window.getState();
-  const user = { ...state.user };
+  const user = { ...(state.user || {}) };
   user.bodyMetrics = user.bodyMetrics || [];
   
   user.bodyMetrics.push({
@@ -564,12 +606,12 @@ function handleBodyMetricsSubmit(form) {
   bodyFatInput.value = '';
   
   // Re-render profile view
-  if (window.renderProfileView) {
-    window.renderProfileView();
+  if (window.calisthenics && window.calisthenics.renderProfileView) {
+    window.calisthenics.renderProfileView();
   }
 }
 
-function handleCommentSubmit(form) {
+async function handleCommentSubmit(form) {
   const nameInput = form.querySelector('#comment-name');
   const textInput = form.querySelector('#comment-text');
   const name = nameInput.value.trim();
@@ -581,14 +623,30 @@ function handleCommentSubmit(form) {
   }
   
   const workoutId = form.dataset.workoutId;
-  const comments = JSON.parse(localStorage.getItem(`sharedComments_${workoutId}`) || '[]');
+  
+  // Load existing comments from IndexedDB
+  let comments;
+  try {
+    comments = await loadSharedComments(workoutId);
+  } catch (error) {
+    console.error('Error loading comments from IndexedDB:', error);
+    comments = [];
+  }
+  
   comments.push({
     name,
     text,
     date: new Date().toISOString()
   });
   
-  localStorage.setItem(`sharedComments_${workoutId}`, JSON.stringify(comments));
+  // Save back to IndexedDB
+  try {
+    await storeSharedComments(workoutId, comments);
+  } catch (error) {
+    console.error('Error saving comments to IndexedDB:', error);
+    show('Failed to save comment.', 'error');
+    return;
+  }
   
   // Clear form and re-render
   nameInput.value = '';
@@ -599,20 +657,20 @@ function handleCommentSubmit(form) {
   }
 }
 
-function handleModuleFormSubmit(form) {
-  // This will be handled by the module-admin-view's own event listener
-  // The form handler in that view has more context about exercises
-  if (window.handleModuleFormSubmit) {
-    window.handleModuleFormSubmit(form);
-  }
-}
+/**
+ * Show a confirmation modal (replaces intrusive browser confirm())
+ * @param {string} message - Confirmation message
+ * @returns {Promise<boolean>} Resolves true if confirmed, false if cancelled
+ */
+
+// Re-exported from confirmation-modal.js — do not modify here
 
 /**
  * Handle create routine action from home view
  */
 function handleCreateRoutine() {
   const state = window.getState();
-  const user = { ...state.user };
+  const user = { ...(state.user || {}) };
   
   // Initialize customRoutines if not exists
   user.customRoutines = user.customRoutines || [];
@@ -645,11 +703,14 @@ export function exposeToggleFavorite() {
     const user = state.user || {};
     let favoriteExerciseIds = user.favoriteExerciseIds || [];
     
-    // Toggle the exercise in favorites
-    if (favoriteExerciseIds.includes(exerciseId)) {
-      favoriteExerciseIds = favoriteExerciseIds.filter(id => id !== exerciseId);
+    // Normalize exerciseId to string for consistent comparison
+    const normalizedId = String(exerciseId);
+    
+    // Toggle the exercise in favorites using String comparison
+    if (favoriteExerciseIds.some(id => String(id) === normalizedId)) {
+      favoriteExerciseIds = favoriteExerciseIds.filter(id => String(id) !== normalizedId);
     } else {
-      favoriteExerciseIds.push(exerciseId);
+      favoriteExerciseIds.push(normalizedId);
     }
     
     window.updateState({ user: { ...user, favoriteExerciseIds } });
@@ -657,9 +718,12 @@ export function exposeToggleFavorite() {
 }
 
 /**
- * Clean up all event listeners (for cleanup on app shutdown)
+ * Clean up all event listeners and release references
  */
 export function cleanupEventDelegation() {
-  // No cleanup needed - listeners are on main element which gets replaced on navigation
-  // The old listeners become garbage collected when main element is replaced
+  handlers.forEach(({ el, type, fn }) => {
+    el.removeEventListener(type, fn);
+  });
+  handlers = [];
+  mainElementRef = null;
 }

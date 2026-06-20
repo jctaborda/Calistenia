@@ -1,3 +1,5 @@
+import { ACHIEVEMENT_SEVEN_DAYS_MS } from '../constants.js';
+
 import { getState } from './state.js';
 
 // Achievement definitions with emojis and descriptions
@@ -17,7 +19,7 @@ const ACHIEVEMENTS = {
   five_workouts: {
     id: 'five_workouts',
     name: 'Five Star',
-    emoji: '⭐',
+    emoji: '★',
     description: 'Complete 5 workouts total'
   },
   ten_workouts: {
@@ -140,7 +142,7 @@ function unlockAchievement(achievementId, user) {
  */
 function checkWeeklyConsistency(history) {
   const now = new Date();
-  const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+  const sevenDaysAgo = new Date(now.getTime() - ACHIEVEMENT_SEVEN_DAYS_MS);
   
   let countInWeek = 0;
   for (const workout of history) {

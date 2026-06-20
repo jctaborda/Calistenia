@@ -1,5 +1,6 @@
 // views/routine-details-view.js
 import { renderHeader } from '../components/header.js';
+import { t } from '../i18n.js';
 import { updateState, getState } from '../services/state.js';
 import { show } from '../services/toast-service.js';
 
@@ -54,7 +55,7 @@ export async function renderRoutineDetailsView(type, id) {
       return `
         <li class="exercise-item ${difficultyClass}">
           <div class="exercise-info">
-            <strong>${exercise ? exercise.name : 'Unknown Exercise (ID: ' + ex.exerciseId + ')'}</strong>
+            <strong>${exercise ? exercise.name : t('routine_details.unknown_exercise') + ex.exerciseId + ')'}</strong>
             <div class="exercise-details">
               Sets: ${ex.sets} | Reps: ${ex.reps} | Rest: ${ex.restTime}s
             </div>
@@ -102,17 +103,17 @@ export async function renderRoutineDetailsView(type, id) {
     <div class="card">
       <div class="routine-header">
         <button class="back-button" data-nav="#routines">
-          ← Back to Routines
+          ← ${t('routine_details.back')}
         </button>
         <div class="routine-actions">
           <button class="btn btn-sm" id="edit-routine-btn" data-type="${type}" data-id="${id}">
-            Edit Routine
+            ${t('routine_details.edit')}
           </button>
           <button class="btn btn-sm" id="copy-routine-btn" data-type="${type}" data-id="${id}">
-            📋 Copy Routine
+            ${t('routine_details.copy')}
           </button>
           <button class="btn btn-danger btn-sm" id="delete-routine-btn" data-type="${type}" data-id="${id}">
-            Delete Routine
+            ${t('routine_details.delete')}
           </button>
         </div>
       </div>
@@ -122,11 +123,11 @@ export async function renderRoutineDetailsView(type, id) {
         ${routine.description ? `<p class="routine-desc">${routine.description}</p>` : ''}
         <div class="routine-meta">
           ${routine.category ? `<span class="routine-meta-item">📁 ${categories.find(c => String(c.id) === String(routine.category))?.name || routine.category}</span>` : ''}
-          ${routine.duration ? `<span class="routine-meta-item">⏱️ ${routine.duration} min</span>` : ''}
+          ${routine.duration ? `<span class="routine-meta-item">⏱ ${routine.duration} min</span>` : ''}
         </div>
-        ${renderExerciseList(routine.warmup, 'Warmup')}
+        ${renderExerciseList(routine.warmup, t('routine_details.warmup'))}
         
-        <h3 class="section-title">Exercises</h3>
+        <h3 class="section-title">${t('routine_details.exercises_section')}</h3>
         <ul class="exercise-list">
           ${(routine.exercises || []).map(ex => {
             const exercise = findExerciseById(ex.exerciseId);
@@ -148,7 +149,7 @@ export async function renderRoutineDetailsView(type, id) {
             return `
               <li class="exercise-item ${exerciseDifficultyClass}">
                 <div class="exercise-info">
-                  <strong>${exercise ? exercise.name : 'Unknown Exercise (ID: ' + ex.exerciseId + ')'}</strong>
+                  <strong>${exercise ? exercise.name : t('routine_details.unknown_exercise') + ex.exerciseId + ')'}</strong>
                   <div class="exercise-details">
                     Sets: ${ex.sets} | Reps: ${ex.reps} | Rest: ${ex.restTime}s
                   </div>
@@ -158,17 +159,17 @@ export async function renderRoutineDetailsView(type, id) {
           }).join('')}
         </ul>
         
-        ${renderExerciseList(routine.cooldown, 'Cooldown')}
+        ${renderExerciseList(routine.cooldown, t('routine_details.cooldown'))}
         
         <div class="start-routine-container">
           <button class="btn" id="start-routine-btn" data-type="${type}" data-id="${id}">
-            Start Routine
+            ${t('routine_details.start')}
           </button>
         </div>
 
         <!-- Muscle Diagrams -->
         <div class="routine-muscle-section">
-          <h3 class="section-title">Target Muscles</h3>
+          <h3 class="section-title">${t('routine_details.target_muscles')}</h3>
           <div class="muscle-container">
             <div class="muscle-diagram-front">
               <img src="./assets/images/muscles/muscular_system_front.svg" alt="Muscular System Front" class="base-image">
@@ -219,34 +220,34 @@ export async function renderRoutineDetailsView(type, id) {
       let routineText = `*${routine.name}*\n\n`;
       
       if (routine.warmup && routine.warmup.length > 0) {
-        routineText += '*Warmup*\n';
-        routine.warmup.forEach(ex => {
-          const exercise = findExerciseById(ex.exerciseId);
-          routineText += `- ${exercise ? exercise.name : 'Unknown'}: ${ex.sets} sets × ${ex.reps} reps (Rest: ${ex.restTime}s)\n`;
-        });
-        routineText += '\n';
-      }
+            routineText += '*' + t('routine_details.warmup') + '*\\n';
+            routine.warmup.forEach(ex => {
+              const exercise = findExerciseById(ex.exerciseId);
+              routineText += `- ${exercise ? exercise.name : t('completion.unknown')}: ${ex.sets} sets ✕ ${ex.reps} reps (Rest: ${ex.restTime}s)\\n`;
+            });
+            routineText += '\\n';
+          }
       
-      routineText += '*Exercises*\n';
-      routine.exercises.forEach(ex => {
-        const exercise = findExerciseById(ex.exerciseId);
-        routineText += `- ${exercise ? exercise.name : 'Unknown'}: ${ex.sets} sets × ${ex.reps} reps (Rest: ${ex.restTime}s)\n`;
-      });
+          routineText += '*' + t('routine_details.exercises_section') + '*\\n';
+          routine.exercises.forEach(ex => {
+            const exercise = findExerciseById(ex.exerciseId);
+            routineText += `- ${exercise ? exercise.name : t('completion.unknown')}: ${ex.sets} sets ✕ ${ex.reps} reps (Rest: ${ex.restTime}s)\\n`;
+          });
       
-      if (routine.cooldown && routine.cooldown.length > 0) {
-        routineText += '\n*Cooldown*\n';
-        routine.cooldown.forEach(ex => {
-          const exercise = findExerciseById(ex.exerciseId);
-          routineText += `- ${exercise ? exercise.name : 'Unknown'}: ${ex.sets} sets × ${ex.reps} reps (Rest: ${ex.restTime}s)\n`;
-        });
-      }
+          if (routine.cooldown && routine.cooldown.length > 0) {
+            routineText += '\\n*' + t('routine_details.cooldown') + '*\\n';
+            routine.cooldown.forEach(ex => {
+              const exercise = findExerciseById(ex.exerciseId);
+              routineText += `- ${exercise ? exercise.name : t('completion.unknown')}: ${ex.sets} sets ✕ ${ex.reps} reps (Rest: ${ex.restTime}s)\\n`;
+            });
+          }
       
       // Copy to clipboard
       navigator.clipboard.writeText(routineText).then(() => {
-        show('Routine copied to clipboard!', 'success');
+        show(t('routine_details.routine_copy_clipboard'), 'success');
       }).catch(err => {
         console.error('Failed to copy:', err);
-        show('Failed to copy routine to clipboard.', 'error');
+        show(t('routine_details.routine_copy_failed'), 'error');
       });
     });
   }
@@ -255,7 +256,7 @@ export async function renderRoutineDetailsView(type, id) {
   const deleteBtn = main.querySelector('#delete-routine-btn');
   if (deleteBtn) {
     deleteBtn.addEventListener('click', async () => {
-      if (confirm(`Are you sure you want to delete "${routine.name}"? This action cannot be undone.`)) {
+      if (confirm(t('routine_details.delete_confirm') + '"' + routine.name + '"? ' + t('routine_details.delete_action'))) {
         try {
           // Load routines from IndexedDB
           const allRoutines = await import('../services/database.js').then(db => db.routinesLoad());
@@ -269,11 +270,11 @@ export async function renderRoutineDetailsView(type, id) {
           // Update state with correct property name
           updateState({ routines: remainingRoutines });
           
-          show('Routine deleted successfully!', 'success');
+          show(t('routine_details.delete_success'), 'success');
           window.location.hash = '#routines';
         } catch (error) {
           console.error('Error deleting routine:', error);
-          show('Error deleting routine: ' + error.message, 'error');
+          show(t('routine_details.delete_error') + error.message, 'error');
         }
       }
     });

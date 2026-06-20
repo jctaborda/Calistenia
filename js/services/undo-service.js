@@ -1,10 +1,10 @@
 // Undo Service - Handles temporary storage of deleted items and restore functionality
 import { saveDeletedItem, getDeletedItemsByType, deleteDeletedItem, clearExpiredDeletedItems } from './database.js';
-import { loadExercises } from './storage.js';
+import { loadExercises, saveExercises } from './storage.js';
 import { modulesLoad, routinesLoad, storeExercises, storeModules, storeRoutines } from './database.js';
+import { saveModules } from './modules-service.js';
 import { show } from './toast-service.js';
-const UNDO_RETENTION_MS = 30 * 24 * 60 * 60 * 1000; // 30 days in milliseconds
-const TOAST_DURATION = 8000; // 8 seconds for user to react
+import { UNDO_RETENTION_MS, UNDO_CLEANUP_INTERVAL_MS, UNDO_TOAST_DURATION_MS, CLEANUP_INITIAL_DELAY_MS } from '../constants.js';
 let undoToasts = new Map(); // Track active undo toast notifications
 /**
 * Save a deleted item for potential undo
@@ -61,7 +61,7 @@ if (toast.parentNode) {
 toast.remove();
 }
 undoToasts.delete(type);
-}, TOAST_DURATION);
+}, UNDO_TOAST_DURATION_MS);
   undoToasts.set(type, { toast, timeoutId });
 }
 /**
@@ -102,31 +102,33 @@ return false;
     // Restore based on type
 let success = false;
     switch (type) {
-case 'exercise':
-// Exercises are stored as an array, so we need to add it back
-const exercises = await exercisesLoad();
-if (!exercises.find(e => e.id === deletedItem.originalId)) {
-exercises.push(deletedItem.item);
-// Note: In a full implementation, you'd call storage.saveExercises(exercises)
-success = true;
-}
-break;
-  case 'module':
-const modules = await modulesLoad();
-if (!modules.find(m => m.id === deletedItem.originalId)) {
-modules.push(deletedItem.item);
-// Note: In a full implementation, you'd call storage.saveModules(modules)
-success = true;
-}
-break;
-  case 'routine':
-const routines = await routinesLoad();
-if (!routines.find(r => r.id === deletedItem.originalId)) {
-routines.push(deletedItem.item);
-// Note: In a full implementation, you'd call storage.storeRoutines(routines)
-success = true;
-}
-break;
+     case 'exercise':
+       // Exercises are stored as an array, so we need to add it back
+       const exercises = await exercisesLoad();
+       if (!exercises.find(e => e.id === deletedItem.originalId)) {
+         exercises.push(deletedItem.item);
+         await saveExercises(exercises);
+       }
+       success = true;
+       break;
+
+     case 'module':
+       const modules = await modulesLoad();
+       if (!modules.find(m => m.id === deletedItem.originalId)) {
+         modules.push(deletedItem.item);
+         await saveModules(modules);
+       }
+       success = true;
+       break;
+
+     case 'routine':
+       const routines = await routinesLoad();
+       if (!routines.find(r => r.id === deletedItem.originalId)) {
+         routines.push(deletedItem.item);
+         await storeRoutines(routines);
+       }
+       success = true;
+       break;
   case 'body-metric':
 // Body metrics are part of user state stored in localStorage
 // Full implementation would require storing bodyMetrics in IndexedDB
@@ -160,7 +162,7 @@ const result = await clearExpiredDeletedItems(UNDO_RETENTION_MS);
 if (result.deletedCount > 0) {
 }
     // Schedule next cleanup in 1 hour
-setTimeout(cleanupExpiredItems, 60 * 60 * 1000);
+setTimeout(cleanupExpiredItems, UNDO_CLEANUP_INTERVAL_MS);
 } catch (error) {
 console.error('Error cleaning up expired items:', error);
 }
@@ -170,7 +172,7 @@ console.error('Error cleaning up expired items:', error);
 */
 export function initUndoService() {
 // Start initial cleanup
-setTimeout(cleanupExpiredItems, 5000); // First cleanup after 5 seconds
+setTimeout(cleanupExpiredItems, CLEANUP_INITIAL_DELAY_MS); // First cleanup after 5 seconds
   // Log current count
 getDeletedItemsByType('exercise').then(items => {
 });

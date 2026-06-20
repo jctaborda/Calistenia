@@ -100,14 +100,14 @@ export class ImageService {
 
    if (!useVideoTag) {
       // Use <img> tag for images and GIFs - no error handler to avoid display issues
-      return `<img src="${url}" alt="${alt}" style="max-width: 200px; border-radius: 8px;">`;
+      return `<img src="${url}" alt="${alt}" class="img-thumb">`;
     } else if (type === 'video') {
       // Detect file extension to set correct MIME type for actual video files
       const mimeType = ext === 'webm' ? 'video/webm' :
                        ext === 'ogg' ? 'video/ogg' :
                        ext === 'mp4' ? 'video/mp4' : 'video/mp4';
-      
-      return `<video controls width="300" style="border-radius: 8px;" loop autoplay muted playsinline>
+
+      return `<video controls class="media-video" width="300">
           <source src="${url}" type="${mimeType}">
           Your browser does not support the video tag.
         </video>`;

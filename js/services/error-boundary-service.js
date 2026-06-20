@@ -4,11 +4,12 @@
  */
 
 import { renderHeader } from '../components/header.js';
+import { ERROR_BOUNDARY_MAX_RETRIES } from '../constants.js';
 
 export class ErrorBoundaryService {
   // Store for tracking retry attempts per view
   static retryAttempts = new Map();
-  static maxRetries = 2;
+  static maxRetries = ERROR_BOUNDARY_MAX_RETRIES;
 
   /**
    * Create an error boundary wrapper that catches rendering errors
@@ -96,9 +97,6 @@ export class ErrorBoundaryService {
         });
       }
     }
-
-    // Add error boundary styles
-    this.ensureErrorStyles();
   }
 
   /**
@@ -145,65 +143,6 @@ export class ErrorBoundaryService {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
-  }
-
-  /**
-   * Ensure error boundary styles are in the document
-   */
-  static ensureErrorStyles() {
-    if (document.getElementById('error-boundary-styles')) return;
-
-    const style = document.createElement('style');
-    style.id = 'error-boundary-styles';
-    style.textContent = `
-      .error-container {
-        max-width: 800px;
-        margin: 2rem auto;
-        padding: 2rem;
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      }
-      .error-content {
-        margin: 1.5rem 0;
-        padding: 1rem;
-        background: #fff3f3;
-        border-left: 4px solid #ff4444;
-        border-radius: 4px;
-      }
-      .error-message {
-        color: #d93025;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-      }
-      .error-context {
-        color: #666;
-        font-size: 0.9em;
-      }
-      .error-details {
-        background: #f5f5f5;
-        padding: 1rem;
-        border-radius: 4px;
-        overflow-x: auto;
-        font-family: monospace;
-        font-size: 0.85em;
-        color: #333;
-      }
-      .error-actions {
-        display: flex;
-        gap: 1rem;
-        margin-top: 1.5rem;
-      }
-      .error-actions .btn {
-        flex: 1;
-      }
-      .small-text {
-        font-size: 0.9em;
-        color: #666;
-        margin: 1rem 0;
-      }
-    `;
-    document.head.appendChild(style);
   }
 
   /**

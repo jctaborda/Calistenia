@@ -1,5 +1,6 @@
 // js/views/exercises-view.js
 import { renderHeader } from '../components/header.js';
+import { t } from '../i18n.js';
 import { getState } from '../services/state.js';
 import { ValidationService } from '../services/validation.js';
 import { 
@@ -11,6 +12,9 @@ import {
 } from '../utils/dom-optimizer.js';
 
 export async function renderExercisesView() {
+  // Always restore scrolling when entering this view (prevents stale lock from bottom sheet)
+  document.body.style.overflow = '';
+  
   const state = getState();
   const exercises = state.exercises || [];
   const categories = state.categories || [];
@@ -303,19 +307,19 @@ export async function renderExercisesView() {
       
       if (filteredExercises.length === 0) {
         // Hide grid, show empty state
-        if (gridElement) gridElement.style.display = 'none';
-        if (emptyStateElement) emptyStateElement.style.display = 'block';
+        if (gridElement) gridElement.classList.add('hidden');
+        if (emptyStateElement) emptyStateElement.classList.remove('hidden');
       } else {
         // Show grid, hide empty state
         if (gridElement) {
-          gridElement.style.display = '';
+          gridElement.classList.remove('hidden');
           withScrollPreservation(gridElement, () => {
             batchDomUpdates(() => {
               diffUpdateGrid(gridElement, exercisesToShow, categories, cardCache, difficulties);
             });
           });
         }
-        if (emptyStateElement) emptyStateElement.style.display = 'none';
+        if (emptyStateElement) emptyStateElement.classList.add('hidden');
       }
       
       // Update pagination efficiently
@@ -326,29 +330,29 @@ export async function renderExercisesView() {
  // Render main layout with optimized structure and modern CSS classes
   main.innerHTML = renderHeader() + `
   <div class="card">
-    <h1 class="section-title">Exercises</h1>
+    <h1 class="section-title">${t('exercises.title')}</h1>
     
     <!-- Filter Section -->
     <div class="filter-section">
-      <button class="btn btn-primary" id="add-exercise-btn">➕ Add Exercise</button>
+      <button class="btn btn-primary" id="add-exercise-btn">➕ ${t('exercises.add')}</button>
       <input type="text" id="exercise-filter" class="filter-input" 
-        placeholder="Search exercises..." autocomplete="off">
+        placeholder="${t('exercises.search')}" autocomplete="off">
       
       <!-- Favorites Toggle -->
-      <button class="btn btn-secondary" id="favorites-toggle">⭐ Favorites Only</button>
+      <button class="btn btn-secondary" id="favorites-toggle">★ ${t('exercises.favorites_only')}</button>
       
       <!-- Filter Bottom Sheet Toggle -->
-      <button class="btn btn-accent" id="open-filters-btn">🔍 Filters <span id="filter-count" style="display:none">(0)</span></button>
+      <button class="btn btn-accent" id="open-filters-btn">🔍 ${t('exercises.filter')} <span id="filter-count" style="display:none">(0)</span></button>
     </div>
 
     <!-- Exercises Grid -->
     <div id="exercises-grid" class="exercises-grid"></div>
     
     ${filteredExercises.length === 0 ? `
-    <div class="empty-state" style="display: none;" id="empty-exercises-state">
-      <h2>No Exercises Found</h2>
-      <p>${currentFilters.searchText || currentFilters.showFavoritesOnly ? 'Try adjusting your filters or clearing them to see all exercises.' : 'No exercises match your current criteria.'}</p>
-      <button class="btn btn-primary" id="clear-filters-empty-state">🔄 Clear Filters</button>
+    <div class="empty-state hidden" id="empty-exercises-state">
+      <h2>${t('exercises.no_found')}</h2>
+      <p>${currentFilters.searchText || currentFilters.showFavoritesOnly ? t('exercises.try_adjusting') : t('exercises.no_match')}</p>
+      <button class="btn btn-primary" id="clear-filters-empty-state">🔄 ${t('exercises.clear_filters')}</button>
     </div>
     ` : ''}
     
@@ -361,42 +365,42 @@ export async function renderExercisesView() {
   </div>
 
   <!-- Filter Bottom Sheet -->
-  <div class="bottom-sheet-overlay" id="filter-overlay" style="display:none;">
+  <div class="bottom-sheet-overlay bottom-sheet-overlay-flex" id="filter-overlay">
     <div class="bottom-sheet" id="filter-bottom-sheet">
       <div class="bottom-sheet-header">
-        <h3>Filter Exercises</h3>
+        <h3>${t('exercises.filter_title')}</h3>
         <button class="bottom-sheet-close" id="close-filters-btn">&times;</button>
       </div>
       
       <div class="bottom-sheet-content">
         <!-- Categories -->
         <div class="filter-group">
-          <h4>Categories</h4>
+          <h4>${t('exercises.filter_categories')}</h4>
           <div class="checkbox-list" id="filter-categories"></div>
         </div>
         
         <!-- Muscles -->
         <div class="filter-group">
-          <h4>Muscle Groups</h4>
+          <h4>${t('exercises.filter_muscles')}</h4>
           <div class="checkbox-list" id="filter-muscles"></div>
         </div>
         
         <!-- Equipment -->
         <div class="filter-group">
-          <h4>Equipment</h4>
+          <h4>${t('exercises.filter_equipment')}</h4>
           <div class="checkbox-list" id="filter-equipment"></div>
         </div>
         
         <!-- Difficulties -->
         <div class="filter-group">
-          <h4>Difficulty</h4>
+          <h4>${t('exercises.filter_difficulty')}</h4>
           <div class="checkbox-list" id="filter-difficulties"></div>
         </div>
       </div>
       
       <div class="bottom-sheet-footer">
-        <button class="btn btn-secondary" id="clear-filters-from-sheet">Clear All</button>
-        <button class="btn btn-primary" id="apply-filters-btn">Apply Filters</button>
+        <button class="btn btn-secondary" id="clear-filters-from-sheet">${t('exercises.clear_filters')}</button>
+        <button class="btn btn-primary" id="apply-filters-btn">${t('exercises.apply_filters')}</button>
       </div>
     </div>
   </div>`;
@@ -483,20 +487,10 @@ export async function renderExercisesView() {
     const content = main.querySelector('#filter-bottom-sheet .bottom-sheet-content');
     
     if (overlay && sheet) {
-      // Force display and positioning
-      overlay.style.display = 'flex';
-      overlay.style.position = 'fixed';
-      overlay.style.top = '0';
-      overlay.style.left = '0';
-      overlay.style.right = '0';
-      overlay.style.bottom = '0';
-      overlay.style.width = '100%';
-      overlay.style.height = '100%';
-      overlay.style.zIndex = '999999';
-      overlay.style.background = 'rgba(0, 0, 0, 0.9)';
-      overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+      // Show overlay using CSS class (positioning handled by .bottom-sheet-overlay in style.css)
+      overlay.classList.remove('bottom-sheet-overlay-flex');
       
-      // Force bottom sheet styling
+      // Force bottom sheet styling (CSS already handles most of this)
       sheet.style.display = 'flex';
       sheet.style.flexDirection = 'column';
       sheet.style.width = '90%';
@@ -550,9 +544,10 @@ export async function renderExercisesView() {
   function closeFiltersSheet() {
     const overlay = main.querySelector('#filter-overlay');
     if (overlay) {
-      overlay.style.display = 'none';
-      document.body.style.overflow = ''; // Restore scrolling
+      overlay.classList.add('bottom-sheet-overlay-flex');
     }
+    // Always restore scrolling - sheet might be gone but overflow could still be locked
+    document.body.style.overflow = '';
   }
 
   /**
@@ -618,10 +613,10 @@ export async function renderExercisesView() {
               const toggleBtn = main.querySelector('#favorites-toggle');
               if (currentFilters.showFavoritesOnly) {
                 toggleBtn.classList.add('active');
-                toggleBtn.innerHTML = '⭐ Showing Favorites';
+                toggleBtn.innerHTML = '★ Showing Favorites';
               } else {
                 toggleBtn.classList.remove('active');
-                toggleBtn.innerHTML = '⭐ Favorites Only';
+                toggleBtn.innerHTML = '★ Favorites Only';
               }
         
               applyFilters();
@@ -670,7 +665,7 @@ export async function renderExercisesView() {
               const toggleBtn = main.querySelector('#favorites-toggle');
               if (toggleBtn) {
                 toggleBtn.classList.remove('active');
-                toggleBtn.innerHTML = '⭐ Favorites Only';
+                toggleBtn.innerHTML = '★ Favorites Only';
               }
         
               applyFilters();
@@ -741,8 +736,8 @@ export async function renderExercisesView() {
         }
       }
       
-      // Handle overlay click (close on overlay)
-      else if (target.closest('#filter-overlay')) {
+      // Handle overlay click (close only when clicking the overlay backdrop, not the sheet)
+      else if (target.id === 'filter-overlay') {
         closeFiltersSheet();
       }
     });
@@ -781,7 +776,7 @@ export async function renderExercisesView() {
     
     document.querySelectorAll('.exercise-card-favorite').forEach(btn => {
       const exerciseId = btn.getAttribute('data-exercise-id');
-      const isFavorite = favoriteExerciseIds.includes(exerciseId);
+      const isFavorite = favoriteExerciseIds.some(id => String(id) === String(exerciseId));
       btn.textContent = isFavorite ? '★' : '☆';
       btn.className = `btn exercise-card-favorite ${isFavorite ? 'favorited' : ''}`;
     });

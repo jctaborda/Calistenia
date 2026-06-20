@@ -1,5 +1,6 @@
 // PWA Offline Storage - Uses IndexedDB for large data (exercises, workouts)
 // localStorage only stores small state values to avoid quota limits
+// Loads locale-specific data files for reference data
 
 import {
   storeExercises,
@@ -11,34 +12,45 @@ import {
   clearDatabase,
   getDatabaseSize
 } from './database.js';
+import { getLocale } from '../i18n.js';
+import { loadFromCacheOrFetch } from './cache-utils.js';
 
 let exercisesCache = null;
 
+/**
+ * Get the appropriate data filename based on current locale
+ */
+function getDataFilename() {
+  const locale = getLocale();
+  return locale === 'es' ? './data/data-es.json' : './data/data.json';
+}
+
 export async function loadExercises() {
   // Try IndexedDB first (migrated from localStorage)
-  try {
-    const cached = await exercisesLoad();
-    if (cached && cached.length > 0) {
-  exercisesCache = cached;
-  return cached;
-    }
-  } catch (error) {
-    console.error('Error loading exercises from IndexedDB:', error);
+  const cached = await loadFromCacheOrFetch(
+    () => exercisesLoad(),
+    exercisesCache,
+    'exercises'
+  );
+  if (cached && cached.length > 0) {
+    exercisesCache = cached;
+    return cached;
   }
   
-  // Fall back to data.json
+  // Fall back to locale-specific data.json
   try {
-    const response = await fetch('./data/data.json');
+    const filename = getDataFilename();
+    const response = await fetch(filename);
     if (!response.ok) throw new Error('Failed to load exercises');
     const data = await response.json();
     exercisesCache = data.exercises;
-    
+
     // Store in IndexedDB for offline access
     await storeExercises(data.exercises);
-    
+
     return data.exercises;
   } catch (error) {
-    console.error('Error loading exercises:', error);
+    console.error('Error loading exercises from data.json:', error);
     return [];
   }
 }
@@ -79,8 +91,9 @@ export const ExerciseStore = {
   async add(exercise) {
     const exercises = await this.getAll();
     
-    // Generate new ID (max id + 1)
-    const maxId = Math.max(...exercises.map(e => e.id), 0);
+    // Generate new ID (max numeric id + 1)
+    const numericIds = exercises.map(e => e.id).filter(id => typeof id === 'number' && !isNaN(id));
+    const maxId = numericIds.length > 0 ? Math.max(...numericIds) : 0;
     exercise.id = maxId + 1;
     
     exercises.push(exercise);
@@ -116,20 +129,21 @@ export const ExerciseStore = {
   }
 };
 
-// Generic CRUD store for any data type from consolidated data.json
+// Generic CRUD store for any data type from locale-specific data.json
 export function createStore(name, filename) {
-  // For now, just load from data.json (read-only for reference data)
+  // For now, just load from locale-specific data.json (read-only for reference data)
   return {
     async getAll() {
-  try {
-  const response = await fetch('./data/data.json');
-  if (!response.ok) throw new Error('Failed to load data');
-  const data = await response.json();
-  return data[name] || [];
-  } catch (error) {
-  console.error(`Error loading ${name}:`, error);
-  return [];
-  }
+      try {
+        const locFilename = getDataFilename();
+        const response = await fetch(locFilename);
+        if (!response.ok) throw new Error('Failed to load data');
+        const data = await response.json();
+        return data[name] || [];
+      } catch (error) {
+        console.error(`Error loading ${name}:`, error);
+        return [];
+      }
     },
 
     async getById(id) {
@@ -189,4 +203,9 @@ export async function clearExerciseData() {
 // Get database stats
 export async function getStorageStats() {
   return getDatabaseSize();
+}
+
+// Clear in-memory exercises cache for locale switching
+export function clearExercisesCache() {
+  exercisesCache = null;
 }

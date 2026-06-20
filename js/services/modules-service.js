@@ -1,57 +1,73 @@
 // Skill Modules Service - Handles loading and saving of skill modules
 // Uses IndexedDB for persistent storage (offline-capable)
-// Falls back to data/skill-modules.json for initial load
+// Loads the language-appropriate JSON file on first run, then all operations
+// happen in IndexedDB only. admin.html writes JSON files directly.
 
 import { 
   storeModules, 
-  modulesLoad, 
-  deleteModule as deleteModuleFromDb
+  modulesLoad
 } from './database.js';
+import { show } from './toast-service.js';
+import { getState } from './state.js';
 
 let modulesCache = null;
 
-const MODULES_DB_NAME = 'skill_modules';
+const LANG_MAP = { es: 'skill-modules-es.json', en: 'skill-modules.json' };
 
 /**
- * Load all skill modules from IndexedDB or data.json file
+ * Load all skill modules from IndexedDB or the language-appropriate JSON file.
+ * Returns the modules array (en modules regardless of locale for the PWA).
  */
 export async function loadModules() {
   // Try IndexedDB first
   try {
     const cached = await modulesLoad();
-    if (cached && cached.length > 0) {
-      modulesCache = cached;
-      return cached;
+    if (cached && cached.en && cached.en.modules && cached.en.modules.length > 0) {
+      modulesCache = cached.en.modules;
+      return cached.en.modules;
     }
   } catch (error) {
     console.error('Error loading modules from IndexedDB:', error);
   }
   
-  // Fall back to data.json file
+  // Fall back to the language-appropriate JSON file, store in IndexedDB
   try {
-    const response = await fetch('./data/skill-modules.json');
+    const locale = (getState().locale || 'en').toLowerCase();
+    const file = LANG_MAP[locale] || 'skill-modules.json';
+    const response = await fetch(`/data/${file}`);
     if (!response.ok) throw new Error('Failed to load skill modules');
     
     const data = await response.json();
     const modules = data.modules || [];
     
     // Store in IndexedDB for offline access
-    await storeModules(modules);
+    await storeModules({ en: data, es: {} });
     modulesCache = modules;
     
     return modules;
   } catch (error) {
     console.error('Error loading skill modules:', error);
+    show('Failed to load skill modules. Using default modules.', 'warning');
     return [];
   }
 }
 
 /**
- * Save modules to IndexedDB
+ * Save modules to IndexedDB only (not to JSON files).
  */
 export async function saveModules(modules) {
   try {
-    await storeModules(modules);
+    // Load existing ES data from cache or IndexedDB to preserve it
+    let esData = {};
+    try {
+      const cached = await modulesLoad();
+      if (cached && cached.es) {
+        esData = cached.es;
+      }
+    } catch (e) { /* ignore */ }
+    
+    const data = { en: { modules }, es: esData };
+    await storeModules(data);
     modulesCache = modules;
     return { success: true, message: 'Saved to IndexedDB' };
   } catch (error) {
@@ -75,7 +91,7 @@ export async function addModule(module) {
   try {
     const modules = await loadModules();
     
-    // Generate new ID (max id + 1, or use string IDs for custom modules)
+    // Generate new ID (max numeric id + 1)
     const numericIds = modules.filter(m => typeof m.id === 'number');
     let newId;
     

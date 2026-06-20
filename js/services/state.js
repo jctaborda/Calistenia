@@ -1,18 +1,5 @@
 let state = {};
 
-// Deep freeze utility to prevent accidental mutations (development only)
-const deepFreeze = (obj) => {
-  if (obj === null || typeof obj !== 'object') return;
-  
-  Object.keys(obj).forEach(key => {
-    if (typeof obj[key] === 'object' && obj[key] !== null) {
-      deepFreeze(obj[key]);
-    }
-  });
-  
-  Object.freeze(obj);
-};
-
 /**
  * Validate that an update follows immutable pattern
  * @param {*} original - Original value
@@ -52,8 +39,8 @@ export function updateState(updates, enforceImmutable = true) {
   // Merge updates immutably
   const newState = { ...state, ...updates };
   
-  if (enforceImmutable && typeof __DEV__ !== 'undefined' && __DEV__) {
-    // Development-only check for nested object mutations
+  if (enforceImmutable && typeof previousState !== 'undefined') {
+    // Check for nested object mutations
     Object.keys(updates).forEach(key => {
       const original = previousState[key];
       const newValue = updates[key];
@@ -61,7 +48,7 @@ export function updateState(updates, enforceImmutable = true) {
       if (original !== undefined && typeof newValue === 'object') {
         if (!isValidImmutableUpdate(original, newValue)) {
           console.warn(
-            `⚠️  State mutation detected for '${key}'. ` +
+            `WARNING  State mutation detected for '${key}'. ` +
             `Expected immutable update but found potential direct mutation. ` +
             `Please use spread operator: { ${key}: { ...${key}, ...updates.${key} } }`
           );
@@ -144,11 +131,7 @@ export function initializeState() {
   
   // Define default state structure
   const defaultState = {
-    user: {
-      name: 'User',
-      autoAdvanceAfterRest: true,
-      restTimerColorMode: 'both'
-    },
+    user: null,
     activeWorkout: null,
     history: [],
     exercises: [],
@@ -192,10 +175,5 @@ export function initializeState() {
     }
   } else {
     state = { ...defaultState };
-  }
-  
-  // Freeze in development mode
-  if (typeof __DEV__ !== 'undefined' && __DEV__) {
-    deepFreeze(state);
   }
 }

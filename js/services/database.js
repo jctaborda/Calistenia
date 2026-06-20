@@ -23,7 +23,7 @@ const DB_NAME = 'calisthenics-db';
  * 3. Test on fresh install and existing DB
  * 4. Update this changelog with new version details
  */
-const DB_VERSION = 6;
+const DB_VERSION = 7;
 const STORES = {
   EXERCISES: 'exercises',
   WORKOUTS: 'workouts',
@@ -35,19 +35,50 @@ const STORES = {
   MUSCLES: 'muscles',
   DIFFICULTIES: 'difficulties',
   DELETED_ITEMS: 'deleted_items', // For undo functionality
-  DATA_VERSION: 'data_version' // Tracks data.json version for cache sync
+  DATA_VERSION: 'data_version', // Tracks data.json version for cache sync
+  SHARED_COMMENTS: 'shared_comments' // Stores comments for shared workouts
 };
 
 let db = null;
 
 /**
- * Attaches a transaction-level error handler that rejects the promise.
- * This ensures that ANY IndexedDB error (quota exceeded, corrupted DB, etc.)
- * propagates to the caller instead of failing silently.
+ * Check if an error indicates an IndexedDB quota exceeded condition.
+ * Returns true when the error message/stack contains quota-related keywords.
+ */
+function isQuotaExceededError(error) {
+  if (!error) return false;
+  const msg = String(error).toLowerCase();
+  return (
+    msg.includes('quota') ||
+    msg.includes('exceeded') ||
+    msg.includes('quota_exceeded') ||
+    msg.includes('data_store_full') ||
+    (error.name === 'QuotaExceededError') ||
+    (error.name === 'DOMException' && msg.includes('quota'))
+  );
+}
+
+/**
+ * Show a user-friendly message when IndexedDB quota is exceeded.
+ */
+function showQuotaExceededMessage() {
+  // Use alert as a fallback since we may not have DOM access here
+  alert('Storage full. Please clear old data or use a different browser.');
+}
+
+/**
+ * Attaches a transaction-level error handler that rejects the promise
+ * and detects IndexedDB quota exceeded errors.
  */
 function attachTransactionError(transaction) {
   transaction.onerror = () => {
-    console.error('IndexedDB transaction error:', transaction.error);
+    const err = transaction.error;
+    if (isQuotaExceededError(err)) {
+      console.error('IndexedDB quota exceeded:', err);
+      showQuotaExceededMessage();
+    } else {
+      console.error('IndexedDB transaction error:', err);
+    }
   };
   transaction.onabort = () => {
     console.error('IndexedDB transaction aborted:', transaction.error);
@@ -94,11 +125,10 @@ export function openDatabase() {
         database.createObjectStore(STORES.STATE, { keyPath: 'key' });
       }
 
-      // Create object store for skill modules
+      // Create object store for skill modules (bilingual: 'en' and 'es' entries)
       if (!database.objectStoreNames.contains(STORES.MODULES)) {
-        const moduleStore = database.createObjectStore(STORES.MODULES, { keyPath: 'id' });
-        moduleStore.createIndex('name', 'name', { unique: false });
-        moduleStore.createIndex('category', 'category', { unique: false });
+        const moduleStore = database.createObjectStore(STORES.MODULES);
+        moduleStore.createIndex('lang', 'lang', { unique: true });
       }
 
       // Create object store for routines
@@ -137,6 +167,11 @@ export function openDatabase() {
       if (!database.objectStoreNames.contains(STORES.DATA_VERSION)) {
         database.createObjectStore(STORES.DATA_VERSION, { keyPath: 'key' });
       }
+
+      // Create object store for shared workout comments
+      if (!database.objectStoreNames.contains(STORES.SHARED_COMMENTS)) {
+        database.createObjectStore(STORES.SHARED_COMMENTS, { keyPath: 'workoutId' });
+      }
     };
 
     // onupgradeneeded handler ends here, close Promise constructor
@@ -155,7 +190,12 @@ export async function storeRoutines(routinesArray) {
 
   routinesArray.forEach(routine => {
     const putRequest = store.put(routine);
-    putRequest.onerror = () => console.error('Error storing routine:', putRequest.error);
+    putRequest.onerror = () => {
+      if (isQuotaExceededError(putRequest.error)) {
+        showQuotaExceededMessage();
+      }
+      console.error('Error storing routine:', putRequest.error);
+    };
   });
 
   return new Promise((resolve, reject) => {
@@ -222,7 +262,12 @@ export async function storeExercises(exercisesArray) {
 
   exercisesArray.forEach(exercise => {
     const putRequest = store.put(exercise);
-    putRequest.onerror = () => console.error('Error storing exercise:', putRequest.error);
+    putRequest.onerror = () => {
+      if (isQuotaExceededError(putRequest.error)) {
+        showQuotaExceededMessage();
+      }
+      console.error('Error storing exercise:', putRequest.error);
+    };
   });
 
   return new Promise((resolve, reject) => {
@@ -260,7 +305,12 @@ export async function storeCategories(categoriesArray) {
 
   categoriesArray.forEach(category => {
     const putRequest = store.put(category);
-    putRequest.onerror = () => console.error('Error storing category:', putRequest.error);
+    putRequest.onerror = () => {
+      if (isQuotaExceededError(putRequest.error)) {
+        showQuotaExceededMessage();
+      }
+      console.error('Error storing category:', putRequest.error);
+    };
   });
 
   return new Promise((resolve, reject) => {
@@ -298,7 +348,12 @@ export async function storeEquipment(equipmentArray) {
 
   equipmentArray.forEach(item => {
     const putRequest = store.put(item);
-    putRequest.onerror = () => console.error('Error storing equipment:', putRequest.error);
+    putRequest.onerror = () => {
+      if (isQuotaExceededError(putRequest.error)) {
+        showQuotaExceededMessage();
+      }
+      console.error('Error storing equipment:', putRequest.error);
+    };
   });
 
   return new Promise((resolve, reject) => {
@@ -336,7 +391,12 @@ export async function storeMuscles(musclesArray) {
 
   musclesArray.forEach(muscle => {
     const putRequest = store.put(muscle);
-    putRequest.onerror = () => console.error('Error storing muscle:', putRequest.error);
+    putRequest.onerror = () => {
+      if (isQuotaExceededError(putRequest.error)) {
+        showQuotaExceededMessage();
+      }
+      console.error('Error storing muscle:', putRequest.error);
+    };
   });
 
   return new Promise((resolve, reject) => {
@@ -374,7 +434,12 @@ export async function storeDifficulties(difficultiesArray) {
 
   difficultiesArray.forEach(difficulty => {
     const putRequest = store.put(difficulty);
-    putRequest.onerror = () => console.error('Error storing difficulty:', putRequest.error);
+    putRequest.onerror = () => {
+      if (isQuotaExceededError(putRequest.error)) {
+        showQuotaExceededMessage();
+      }
+      console.error('Error storing difficulty:', putRequest.error);
+    };
   });
 
   return new Promise((resolve, reject) => {
@@ -458,6 +523,12 @@ export async function storeWorkout(workout) {
   const store = transaction.objectStore(STORES.WORKOUTS);
 
   const putRequest = store.put(workout);
+  putRequest.onerror = () => {
+    if (isQuotaExceededError(putRequest.error)) {
+      showQuotaExceededMessage();
+    }
+    console.error('Error storing workout:', putRequest.error);
+  };
 
   return new Promise((resolve, reject) => {
     putRequest.onsuccess = () => resolve({ success: true });
@@ -501,22 +572,53 @@ export async function clearDatabase() {
 // Get database size
 export async function getDatabaseSize() {
   const database = await openDatabase();
+  const storeNames = [...database.objectStoreNames];
   
-  const workoutCount = await new Promise((resolve, reject) => {
-    const transaction = database.transaction([STORES.WORKOUTS], 'readonly');
-    attachTransactionError(transaction);
-    const store = transaction.objectStore(STORES.WORKOUTS);
-    const request = store.count();
-    
-    request.onsuccess = () => resolve(request.result);
-    request.onerror = () => reject(request.error);
+  const counts = {};
+  const promises = storeNames.map(storeName => {
+    return new Promise((resolve, reject) => {
+      const transaction = database.transaction([storeName], 'readonly');
+      attachTransactionError(transaction);
+      const store = transaction.objectStore(storeName);
+      const request = store.count();
+      
+      request.onsuccess = () => resolve({ name: storeName, count: request.result });
+      request.onerror = () => reject(request.error);
+    });
   });
-
-  return { workoutCount };
+  
+  const results = await Promise.all(promises);
+  
+  results.forEach(r => {
+    counts[r.name] = r.count;
+  });
+  
+  // Also get storage estimate if available
+  let storageEstimate = null;
+  if (navigator.storage && navigator.storage.estimate) {
+    try {
+      storageEstimate = await navigator.storage.estimate();
+    } catch (e) {
+      // Storage estimate not available
+    }
+  }
+  
+  return {
+    stores: counts,
+    storeCount: storeNames.length,
+    totalItems: Object.values(counts).reduce((sum, c) => sum + c, 0),
+    storageEstimate: storageEstimate ? {
+      quota: storageEstimate.quota,
+      usage: storageEstimate.usage,
+      usagePercent: storageEstimate.quota > 0 
+        ? Math.round((storageEstimate.usage / storageEstimate.quota) * 100) 
+        : 0
+    } : null
+  };
 }
 
 // Modules operations
-export async function storeModules(modulesArray) {
+export async function storeModules(modulesData) {
   const database = await openDatabase();
   const transaction = database.transaction([STORES.MODULES], 'readwrite');
   attachTransactionError(transaction);
@@ -525,10 +627,14 @@ export async function storeModules(modulesArray) {
   const clearRequest = store.clear();
   clearRequest.onerror = () => console.error('Error clearing modules store:', clearRequest.error);
 
-  modulesArray.forEach(module => {
-    const putRequest = store.put(module);
-    putRequest.onerror = () => console.error('Error storing module:', putRequest.error);
-  });
+  // modulesData is { en: { modules: [...] }, es: { modules: [...] } }
+  // Store as indexed entries: 'en' and 'es' with lang property
+  const enWithLang = { ...modulesData.en, lang: 'en' };
+  const esWithLang = { ...modulesData.es, lang: 'es' };
+  const putEn = store.put(enWithLang, 'en');
+  const putEs = store.put(esWithLang, 'es');
+  putEn.onerror = () => console.error('Error storing en modules:', putEn.error);
+  putEs.onerror = () => console.error('Error storing es modules:', putEs.error);
 
   return new Promise((resolve, reject) => {
     transaction.oncomplete = () => resolve({ success: true });
@@ -543,12 +649,34 @@ export async function modulesLoad() {
   const store = transaction.objectStore(STORES.MODULES);
 
   return new Promise((resolve, reject) => {
-    const request = store.getAll();
-
-    request.onsuccess = () => resolve(request.result || []);
-    request.onerror = () => {
-      console.error('Error loading modules from IndexedDB:', request.error);
-      reject(request.error);
+    const getRequest = store.get('en');
+    getRequest.onsuccess = () => {
+      const enData = getRequest.result;
+      const esReq = store.get('es');
+      esReq.onsuccess = () => {
+        if (enData) {
+          // Strip lang property from both
+          const { lang: enLang, ...enClean } = enData;
+          const esResult = esReq.result;
+          let esClean = {};
+          if (esResult) {
+            const { lang: esLang, ...esCleanObj } = esResult;
+            esClean = esCleanObj;
+          }
+          enClean.es = esClean;
+          resolve(enClean);
+        } else {
+          resolve([]);
+        }
+      };
+      esReq.onerror = () => {
+        const { lang: enLang, ...enClean } = enData || {};
+        resolve(enClean || []);
+      };
+    };
+    getRequest.onerror = () => {
+      console.error('Error loading modules from IndexedDB:', getRequest.error);
+      reject(getRequest.error);
     };
   });
 }
@@ -659,6 +787,45 @@ export async function clearExpiredDeletedItems(retentionMs) {
     };
     request.onerror = () => {
       console.error('Error clearing expired deleted items:', request.error);
+      reject(request.error);
+    };
+  });
+}
+
+// Shared comments operations
+export async function storeSharedComments(workoutId, commentsArray) {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.SHARED_COMMENTS], 'readwrite');
+  attachTransactionError(transaction);
+  const store = transaction.objectStore(STORES.SHARED_COMMENTS);
+
+  const putRequest = store.put({ workoutId, comments: commentsArray });
+  putRequest.onerror = () => {
+    if (isQuotaExceededError(putRequest.error)) {
+      showQuotaExceededMessage();
+    }
+    console.error('Error storing shared comments:', putRequest.error);
+  };
+
+  return new Promise((resolve, reject) => {
+    putRequest.onsuccess = () => resolve({ success: true });
+    putRequest.onerror = () => reject(putRequest.error);
+  });
+}
+
+export async function loadSharedComments(workoutId) {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.SHARED_COMMENTS], 'readonly');
+  attachTransactionError(transaction);
+  const store = transaction.objectStore(STORES.SHARED_COMMENTS);
+
+  return new Promise((resolve, reject) => {
+    const request = store.get(workoutId);
+    request.onsuccess = () => {
+      resolve(request.result?.comments || []);
+    };
+    request.onerror = () => {
+      console.error('Error loading shared comments from IndexedDB:', request.error);
       reject(request.error);
     };
   });

@@ -68,7 +68,7 @@ export function createExerciseCard(exercise, categories, difficulties = []) {
   // Get favorite state from global state
   const user = window.getState ? window.getState().user : window.state?.user;
   const favoriteExerciseIds = user?.favoriteExerciseIds || [];
-  const isFavorite = favoriteExerciseIds.includes(exercise.id);
+  const isFavorite = favoriteExerciseIds.some(id => String(id) === String(exercise.id));
   
   card.className = `exercise-card ${difficultyClass}`;
   card.setAttribute('data-id', exercise.id);

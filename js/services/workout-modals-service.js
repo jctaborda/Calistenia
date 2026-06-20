@@ -1,3 +1,5 @@
+import { t } from '../i18n.js';
+import { show as showToastShared } from './toast-service.js';
 /**
  * WorkoutModalsService - Handles all modal rendering and interactions for active workouts
  * Separated from view logic to improve code organization and maintainability
@@ -55,7 +57,7 @@ export class WorkoutModalsService {
 
     const content = `
       <label><strong>Current Sets: ${currentSets}</strong></label>
-      <div class="flex-container" style="margin: 1rem 0;">
+      <div class="flex-container" class="margin-y-1">
         <button id="decrease-sets-btn" class="btn btn-secondary">-</button>
         <span id="current-sets-display">${currentSets}</span>
         <button id="increase-sets-btn" class="btn flex-1">+</button>
@@ -63,7 +65,7 @@ export class WorkoutModalsService {
       <p id="new-reps-target">(No change to reps)</p>
     `;
 
-    const modalController = this.show('Adjust Sets', content);
+    const modalController = this.show(t('active_workout.adjust'), content);
 
     let setsCount = currentSets;
     const displayEl = document.getElementById('current-sets-display');
@@ -139,13 +141,13 @@ export class WorkoutModalsService {
 
        const content = `
          <label for="exercise-select">Select a replacement exercise:</label>
-         <select id="exercise-select" class="form-control" style="margin-top: 0.5rem;">
+         <select id="exercise-select" class="form-control" class="mt-05rem">
            <option value="">-- Select Exercise --</option>
            ${exerciseList}
          </select>
        `;
 
-       const modalController = this.show('Swap Exercise', content);
+       const modalController = this.show(t('active_workout.swap_exercise'), content);
        const closeBtn = modalController.element.querySelector('.close-modal');
        const selectEl = document.getElementById('exercise-select');
 
@@ -180,43 +182,12 @@ export class WorkoutModalsService {
      }
 
   /**
-   * Show success toast/message
+   * Show success toast/message — delegates to the shared toast service
    * @param {string} message - Message to display
    * @param {string} type - 'success', 'info', 'warning', or 'error'
    */
   showToast(message, type = 'info') {
-    const toast = document.createElement('div');
-    toast.className = `toast ${type}`;
-    toast.textContent = message;
-    
-    toast.style.cssText = `
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 1rem 2rem;
-      border-radius: 8px;
-      color: white;
-      z-index: 1000;
-      animation: slideDown 0.3s ease;
-    `;
-
-    // Add background colors based on type
-    const colors = {
-      success: '#4CAF50',
-      error: '#f44336',
-      warning: '#ff9800',
-      info: '#2196F3'
-    };
-    
-    toast.style.backgroundColor = colors[type] || colors.info;
-
-    document.body.appendChild(toast);
-
-    // Remove after 3 seconds
-    setTimeout(() => {
-      toast.remove();
-    }, 3000);
+    showToastShared(message, type);
   }
 }
 

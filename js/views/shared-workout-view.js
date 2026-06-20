@@ -1,7 +1,9 @@
 import { renderHeader } from '../components/header.js';
+import { t } from '../i18n.js';
 import { getState } from '../services/state.js';
 import { formatWorkoutDate, formatDate } from '../utils/date-formatter.js';
 import { show } from '../services/toast-service.js';
+import { loadSharedComments } from '../services/database.js';
 
 export async function renderSharedWorkoutView(workoutId) {
   const main = document.getElementById('app');
@@ -12,26 +14,26 @@ export async function renderSharedWorkoutView(workoutId) {
 
   if (!workout) {
     main.innerHTML = renderHeader() + `
-      <div class="card">
-        <h1>Workout Not Found</h1>
-        <p>The shared workout you're looking for doesn't exist or has been removed.</p>
-        <button class="btn" data-nav="#home">Go Home</button>
-      </div>
-    `;
+       <div class="card">
+         <h1>${t('shared_workout.not_found')}</h1>
+         <p>${t('shared_workout.not_found_desc')}</p>
+         <button class="btn" data-nav="#home">${t('shared_workout.back')}</button>
+       </div>
+     `;
     return;
   }
 
   const state = await getState();
   const exercises = state.exercises || [];
-  const sharedComments = JSON.parse(localStorage.getItem(`sharedComments_${workoutId}`) || '[]');
+  const sharedComments = await loadSharedComments(workoutId);
 
   // Format date
   const formattedDate = formatWorkoutDate(workout.date, true);
 
   main.innerHTML = renderHeader() + `
     <div class="card">
-      <h1>Shared Workout</h1>
-      <p>Shared on ${formattedDate}</p>
+      <h1>${t('shared_workout.title')}</h1>
+      <p>${t('shared_workout.shared_on')} ${formattedDate}</p>
       
       <h2>${workout.routine.name}</h2>
       
@@ -39,15 +41,15 @@ export async function renderSharedWorkoutView(workoutId) {
         ${workout.exercises.map((ex, index) => `
           <div class="card shared-workout-card">
             <h3>${index + 1}. ${ex.exerciseName}</h3>
-            <p><strong>Target:</strong> ${ex.targetSets} sets × ${ex.targetReps} reps</p>
-            <p><strong>Completed:</strong> ${ex.actualReps ? ex.actualReps.join(', ') + ' reps per set' : 'Not logged'}</p>
+            <p><strong>Target:</strong> ${ex.targetSets} sets ✕ ${ex.targetReps} reps</p>
+            <p><strong>Completed:</strong> ${ex.actualReps ? ex.actualReps.join(', ') + ' reps per set' : t('shared_workout.not_logged')}</p>
           </div>
         `).join('')}
       </div>
       
       <!-- Comment Section -->
       <div class="comments-section">
-        <h3>Comments</h3>
+        <h3>${t('shared_workout.comments')}</h3>
         
         ${sharedComments.length > 0 ? `
           <div class="comments-list">
@@ -59,19 +61,19 @@ export async function renderSharedWorkoutView(workoutId) {
               </div>
             `).join('')}
           </div>
-        ` : '<p class="comments-empty">No comments yet. Be the first to comment!</p>'}
+        ` : `<p class="comments-empty">${t('shared_workout.no_comments')}</p>`}
         
         <form id="comment-form" class="comment-form">
-          <input type="text" id="comment-name" placeholder="Your name" required 
+          <input type="text" id="comment-name" placeholder="${t('shared_workout.your_name')}" required 
                  class="comment-input">
-          <textarea id="comment-text" placeholder="Write a comment..." required 
+          <textarea id="comment-text" placeholder="${t('shared_workout.write_comment')}" required 
                     rows="3" class="comment-input"></textarea>
-          <button type="submit" class="btn">Post Comment</button>
+          <button type="submit" class="btn">${t('shared_workout.post_comment')}</button>
         </form>
       </div>
       
-      <div style="margin-top: 2rem;">
-        <button class="btn btn-secondary" data-nav="#home">Back to Home</button>
+      <div class="mt-2rem">
+        <button class="btn btn-secondary" data-nav="#home">${t('shared_workout.back')}</button>
       </div>
     </div>
   `;
@@ -79,7 +81,7 @@ export async function renderSharedWorkoutView(workoutId) {
   // Handle comment form submission
   const commentForm = main.querySelector('#comment-form');
   if (commentForm) {
-    commentForm.addEventListener('submit', e => {
+    commentForm.addEventListener('submit', async e => {
       e.preventDefault();
       
       const nameInput = main.querySelector('#comment-name');
@@ -88,20 +90,34 @@ export async function renderSharedWorkoutView(workoutId) {
       const text = textInput.value.trim();
       
       if (!name || !text) {
-        show('Please enter both a name and comment.', 'error');
+        show(t('shared_workout.enter_name_comment'), 'error');
         return;
       }
       
-      // Get existing comments or create new array
-      const comments = JSON.parse(localStorage.getItem(`sharedComments_${workoutId}`) || '[]');
+      // Load existing comments from IndexedDB
+      let comments;
+      try {
+        comments = await loadSharedComments(workoutId);
+      } catch (error) {
+        console.error('Error loading comments from IndexedDB:', error);
+        comments = [];
+      }
+      
       comments.push({
         name,
         text,
         date: new Date().toISOString()
       });
       
-      // Save back to localStorage
-      localStorage.setItem(`sharedComments_${workoutId}`, JSON.stringify(comments));
+      // Save back to IndexedDB
+      try {
+        const { storeSharedComments } = await import('../services/database.js');
+        await storeSharedComments(workoutId, comments);
+      } catch (error) {
+        console.error('Error saving comments to IndexedDB:', error);
+        show(t('shared_workout.comment_save_error') || 'Failed to save comment.', 'error');
+        return;
+      }
       
       // Clear form and re-render
       nameInput.value = '';

@@ -1,5 +1,6 @@
 import { getState, updateState } from '../services/state.js';
 import { renderHeader } from '../components/header.js';
+import { t } from '../i18n.js';
 import { getUnlockedAchievements } from '../services/achievements.js';
 import { formatWorkoutSummary } from '../utils/workout-summary.js';
 
@@ -56,7 +57,7 @@ export function renderWorkoutSummaryView() {
   
   <div class="summary-actions">
   <button class="btn share-workout-btn" data-share-workout>📋 Copy to Clipboard</button>
-  <button class="btn btn-secondary back-to-home-btn" data-nav="#home">Back to Home</button>
+  <button class="btn btn-secondary back-to-home-btn" data-nav="#home">${t('summary.back')}</button>
   <button class="btn btn-secondary view-profile-btn" data-nav="#profile">View Profile</button>
   </div>
     </div>
@@ -83,8 +84,7 @@ export function renderWorkoutSummaryView() {
   });
 
   // Export for router usage
-  window.renderWorkoutSummaryView = renderWorkoutSummaryView;
-}
+  }
 
 function showAdaptiveSuggestion(rating) {
   const suggestionEl = document.getElementById('app').querySelector('#adaptive-suggestion');

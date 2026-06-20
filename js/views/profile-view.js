@@ -4,6 +4,7 @@ import { getState, updateState } from '../services/state.js';
 import { saveForUndo } from '../services/undo-service.js';
 import { getAllAchievementStatus } from '../services/achievements.js';
 import { formatDate, formatWorkoutDate } from '../utils/date-formatter.js';
+import { t } from '../i18n.js';
 import { ValidationService } from '../services/validation.js';
 import { show } from '../services/toast-service.js';
 
@@ -18,44 +19,44 @@ export async function renderProfileView() {
 
   main.innerHTML = renderHeader() + `
     <div class="card">
-  <h1>Profile</h1>
+  <h1>${t('profile.title')}</h1>
   
   <!-- Export/Import Section -->
   <div class="profile-section">
-  <h2>Data Management</h2>
+  <h2>${t('profile.data_management')}</h2>
   <p><strong>Backup & Restore:</strong> Export your workout history and routines, or restore from a backup file.</p>
   <a href="#export-import" class="btn btn-primary">
-  📤 Export / Import Data
+  ${t('profile.export_import')}
   </a>
   </div>
   
-  <p><strong>Name:</strong> ${user?.name || ''}</p>
-  <p><strong>Level:</strong> ${user?.level || ''}</p>
+  <p><strong>${t('profile.name')}:</strong> ${user?.name || ''}</p>
+  <p><strong>${t('profile.level')}:</strong> ${user?.level || ''}</p>
   
   <!-- Body Metrics Section -->
   <div class="profile-section">
-  <h2>Body Metrics</h2>
+  <h2>${t('profile.body_metrics')}</h2>
   
   <form id="body-metrics-form" class="metrics-form">
   <div class="form-input-group">
-  <label for="weight">Weight (kg/lbs):</label>
-  <input type="number" id="weight" step="0.1" required placeholder="e.g., 70">
+  <label for="weight">${t('profile.weight')}</label>
+  <input type="number" id="weight" step="0.1" required placeholder="${t('profile.weight_placeholder')}">
   </div>
   <div class="form-input-group">
-  <label for="bodyFat">Body Fat (%):</label>
-  <input type="number" id="bodyFat" step="0.1" placeholder="e.g., 15">
+  <label for="bodyFat">${t('profile.body_fat')}</label>
+  <input type="number" id="bodyFat" step="0.1" placeholder="${t('profile.body_fat_placeholder')}">
   </div>
-  <button type="submit" class="btn add-metric-btn">Add Metric</button>
+  <button type="submit" class="btn add-metric-btn">${t('profile.add_metric')}</button>
   </form>
   
   ${bodyMetrics.length > 0 ? `
   <table class="metrics-table">
   <thead>
   <tr>
-  <th>Date</th>
-  <th>Weight</th>
-  <th>Body Fat</th>
-  <th>Action</th>
+  <th>${t('profile.metrics_date')}</th>
+  <th>${t('profile.metrics_weight')}</th>
+  <th>${t('profile.metrics_body_fat')}</th>
+  <th>${t('profile.metrics_action')}</th>
   </tr>
   </thead>
   <tbody>
@@ -64,17 +65,17 @@ export async function renderProfileView() {
   <td>${formatDate(metric.date)}</td>
   <td>${metric.weight}</td>
   <td>${metric.bodyFat || '-'}</td>
-  <td><button class="btn btn-danger btn-sm" data-delete-metric data-index="${metric.index}">Delete</button></td>
+  <td><button class="btn btn-danger btn-sm" data-delete-metric data-index="${metric.index}">${t('profile.metrics_delete')}</button></td>
   </tr>
   `).join('')}
   </tbody>
   </table>
-  ` : '<p class="metrics-empty">No metrics logged yet.</p>'}
+  ` : `<p class="metrics-empty">${t('profile.no_metrics')}</p>`}
   </div>
   
   <!-- Achievements Section -->
   <div class="profile-section">
-  <h2>Achievements</h2>
+  <h2>${t('profile.achievements')}</h2>
   ${achievementStatus.some(a => a.unlocked) ? `
   <div class="achievements-section">
   ${achievementStatus.filter(a => a.unlocked).map(ach => `
@@ -87,10 +88,10 @@ export async function renderProfileView() {
   </div>
   `).join('')}
   </div>
-  ` : '<p class="achievements-empty">No achievements unlocked yet. Complete workouts to earn them!</p>'}
+  ` : `<p class="achievements-empty">${t('profile.no_achievements')}</p>`}
   
   <div style="margin-top: 1rem;">
-  <h3>Potential Achievements</h3>
+  <h3>${t('profile.potential_achievements')}</h3>
   ${achievementStatus.filter(a => !a.unlocked).map(ach => `
   <div class="achievement-item achievement-pending" style="opacity: 0.5; border-left: 4px solid var(--gray-400);">
   <span class="achievement-emoji">${ach.emoji}</span>
@@ -104,8 +105,8 @@ export async function renderProfileView() {
   </div>
   
   <div class="profile-section">
-   <h2>Workout History</h2>
-   ${history.length === 0 ? '<p>No workouts completed yet.</p>' : `
+   <h2>${t('profile.workout_history')}</h2>
+   ${history.length === 0 ? `<p>${t('profile.no_workouts')}</p>` : `
            <ul class="workout-history-list">
              ${history.map((w, index) => `
                <li class="workout-item" data-workout-item data-index="${index}" style="cursor: pointer;">
@@ -114,14 +115,14 @@ export async function renderProfileView() {
                    <span class="workout-date">${formatWorkoutDate(w.date, false)}</span>
                  </div>
                  ${w.completedExercises ? `<span class="workout-count">${w.completedExercises.length} exercises</span>` : ''}
-                 <button class="btn btn-danger btn-sm" data-delete-workout data-index="${index}" title="Delete this workout">×</button>
+                 <button class="btn btn-danger btn-sm" data-delete-workout data-index="${index}" title="Delete this workout">✕</button>
                </li>
              `).join('')}
            </ul>
          `}
    </div>
   
-  <button class="btn back-to-home-btn" data-nav="#home" style="margin-top: 2rem;">Back to Home</button>
+  <button class="btn back-to-home-btn" data-nav="#home" style="margin-top: 2rem;">${t('profile.back_to_home')}</button>
     </div>
   `;
 
@@ -152,14 +153,14 @@ export async function renderProfileView() {
     }
     // Body fat should be between 0-100%
     if (bodyFat < 0 || bodyFat > 100) {
-      show('Body fat percentage must be between 0 and 100', 'error');
+      show(t('profile.body_fat_range'), 'error');
       return;
     }
   }
   
   // Add metric to user state
   const state = getState();
-  const user = { ...state.user };
+  const user = { ...(state.user || {}) };
   user.bodyMetrics = user.bodyMetrics || [];
   
   // Add index for deletion reference

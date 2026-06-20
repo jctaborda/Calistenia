@@ -1,5 +1,6 @@
-// PWA Offline Data Loading - loads all data from single data.json file
+// PWA Offline Data Loading with i18n support - loads locale-specific data files
 // No server endpoints needed - works offline as a progressive web app
+// Uses data.json for English, data-es.json for Spanish
 import { 
   loadAllExercises, 
   loadAllCategories, 
@@ -18,7 +19,9 @@ export async function fetchAllData() {
   }
   
   try {
-    const response = await fetch('./data/data.json');
+    const { getDataFilename } = await import('./data-cache.js');
+    const filename = getDataFilename();
+    const response = await fetch(filename);
     if (!response.ok) throw new Error('Failed to fetch data');
     const data = await response.json();
     cachedData = data;
@@ -145,6 +148,11 @@ export { ModuleStore } from './modules-service.js';
 
 // Clear cache to force reload from file
 export function clearDataCache() {
+  cachedData = null;
+}
+
+// Clear all JS-level caches for locale switching
+export function clearAllCaches() {
   cachedData = null;
 }
 

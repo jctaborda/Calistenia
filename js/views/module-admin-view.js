@@ -2,6 +2,7 @@
 // Follows exercise-form-service pattern with proper CRUD operations
 
 import { renderHeader } from '../components/header.js';
+import { t } from '../i18n.js';
 import { getState, updateState } from '../services/state.js';
 import { ModuleStore } from '../services/modules-service.js';
 import { saveForUndo } from '../services/undo-service.js';
@@ -21,13 +22,13 @@ export async function renderModuleAdminView(editId = null) {
     try {
       editingModule = await ModuleStore.getById(editId);
       if (!editingModule) {
-        show('Module not found. Redirecting to module list.', 'error');
+        show(t('module_admin.not_found'), 'error');
         window.location.hash = '#skill-modules';
         return;
       }
     } catch (error) {
       console.error('Error loading module:', error);
-      show('Error loading module: ' + error.message, 'error');
+      show(t('module_admin.load_error') + error.message, 'error');
       return;
     }
   }
@@ -54,91 +55,92 @@ export async function renderModuleAdminView(editId = null) {
     ? selectedExerciseIds.map(exId => {
         const exercise = exercises.find(e => e.id === exId);
         return `
-          <div class="card margin-bottom-1 selected-exercise-item" data-ex-id="${exId}">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <div>
+          <div class="card margin-bottom-1 selected-exercise-item" data-ex-id="${exId}" draggable="true">
+            <div class="flex-between">
+              <div class="drag-handle">
+                <span>⋮⋮</span>
                 <strong>${escapeHtml(exercise?.name || `Exercise ${exId}`)}</strong>
-                <span style="color: var(--gray-600); font-size: 0.875rem;">
-                  ${exercise ? getDifficultyLabel(exercise.difficulty) : 'Unknown difficulty'}
+                <span class="text-sm text-gray-600">
+                  ${exercise ? getDifficultyLabel(exercise.difficulty) : t('module_admin.unknown_difficulty')}
                 </span>
               </div>
               <button type="button" class="btn btn-danger btn-sm remove-exercise-btn" data-ex-id="${exId}">
-                Remove
+                ${t('common.remove')}
               </button>
             </div>
           </div>
         `;
       }).join('')
-    : '<p style="color: var(--gray-600); text-align: center; padding: 2rem;">No exercises selected. Use the filter below to find and select exercises.</p>';
+    : '<p class="text-center-muted p-2rem">' + t('module_admin.no_exercises_desc') + '</p>';
   
   main.innerHTML = renderHeader() + `
     <div class="card">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+      <div class="flex-between mb-1rem">
         <button class="btn btn-secondary" data-nav="#skill-modules">
-          ← Back to Modules
+          ← ${t('skills.back')}
         </button>
-        <h1>${editId ? 'Edit Skill Module' : 'Create New Skill Module'}</h1>
+        <h1>${editId ? t('module_admin.title_edit') : t('module_admin.title_create')}</h1>
       </div>
       
       <form id="module-form">
         <!-- Basic Information Section -->
         <div class="card margin-bottom-1">
-          <h3>Basic Information</h3>
+          <h3>${t('module_admin.basic_info')}</h3>
           
-          <div style="margin-bottom: 1rem;">
-            <label for="module-name" style="display: block; font-weight: 600; margin-bottom: 0.5rem;">
-              Module Name *
+          <div class="mb-1rem">
+            <label for="module-name" class="form-label">
+              ${t('module_admin.name')} *
             </label>
             <input 
               type="text" 
               id="module-name" 
               class="filter-input" 
-              placeholder="e.g., Push-Up Progression"
+              placeholder="${t('module_admin.name_placeholder')}"
               value="${escapeHtml(formData.name)}"
               required
-              style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-300); border-radius: 4px;"
+              class="input-gray"
             >
           </div>
           
-          <div style="margin-bottom: 1rem;">
-            <label for="module-description" style="display: block; font-weight: 600; margin-bottom: 0.5rem;">
-              Description
+          <div class="mb-1rem">
+            <label for="module-description" class="form-label">
+              ${t('module_admin.description')}
             </label>
             <textarea 
               id="module-description" 
               class="filter-input"
               rows="4"
-              placeholder="Describe what this module teaches..."
-              style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-300); border-radius: 4px; resize: vertical;"
+              placeholder="${t('module_admin.description_placeholder')}"
+              class="textarea-full"
             >${escapeHtml(formData.description)}</textarea>
           </div>
           
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="grid-2">
             <div>
-              <label for="module-difficulty" style="display: block; font-weight: 600; margin-bottom: 0.5rem;">
-                Difficulty
+              <label for="module-difficulty" class="form-label">
+                ${t('module_admin.difficulty')}
               </label>
               <select 
                 id="module-difficulty" 
                 class="filter-input"
-                style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-300); border-radius: 4px;"
+                class="input-gray"
               >
-                <option value="beginner" ${formData.difficulty === 'beginner' ? 'selected' : ''}>Beginner</option>
-                <option value="intermediate" ${formData.difficulty === 'intermediate' ? 'selected' : ''}>Intermediate</option>
-                <option value="advanced" ${formData.difficulty === 'advanced' ? 'selected' : ''}>Advanced</option>
+                <option value="beginner" ${formData.difficulty === 'beginner' ? 'selected' : ''}>${t('difficulty.beginner')}</option>
+                <option value="intermediate" ${formData.difficulty === 'intermediate' ? 'selected' : ''}>${t('difficulty.intermediate')}</option>
+                <option value="advanced" ${formData.difficulty === 'advanced' ? 'selected' : ''}>${t('difficulty.advanced')}</option>
               </select>
             </div>
             
             <div>
-              <label for="module-category" style="display: block; font-weight: 600; margin-bottom: 0.5rem;">
-                Category
+              <label for="module-category" class="form-label">
+                ${t('module_admin.category')}
               </label>
               <select 
                 id="module-category" 
                 class="filter-input"
-                style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-300); border-radius: 4px;"
+                class="input-gray"
               >
-                <option value="">Select a category...</option>
+                <option value="">${t('module_admin.select_category')}</option>
                 ${categoryOptions}
               </select>
             </div>
@@ -147,48 +149,48 @@ export async function renderModuleAdminView(editId = null) {
         
         <!-- Exercise Selection Section -->
         <div class="card margin-bottom-1">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-            <h3>Module Exercises (${selectedExerciseIds.length} selected)</h3>
+          <div class="flex-between mb-1rem">
+            <h3>${t('module_admin.exercises')} (${selectedExerciseIds.length} selected)</h3>
             <button type="button" class="btn btn-secondary btn-sm" data-reset-exercises ${selectedExerciseIds.length === 0 ? 'disabled' : ''}>
-              Clear All
+              ${t('common.clear')}
             </button>
           </div>
           
-          <div id="selected-exercises-list" style="${selectedExerciseIds.length === 0 ? 'display: none;' : ''}">
+          <div id="selected-exercises-list" class="${selectedExerciseIds.length === 0 ? 'hidden' : ''}">
             ${selectedExercisesHTML}
           </div>
           
-          <div style="margin-top: 1rem;">
-            <label for="exercise-search" style="display: block; font-weight: 600; margin-bottom: 0.5rem;">
-              Search Exercises
+          <div class="mt-1rem">
+            <label for="exercise-search" class="form-label">
+              ${t('exercises.search')}
             </label>
             <input 
               type="text" 
               id="exercise-search" 
               class="filter-input"
-              placeholder="Search exercises by name..."
-              style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-300); border-radius: 4px;"
+              placeholder="${t('exercises.search')}..."
+              class="input-gray"
             >
           </div>
           
-          <div id="available-exercises-list" style="margin-top: 1rem; max-height: 400px; overflow-y: auto;">
+          <div id="available-exercises-list" class="scrollable-mt">
             ${exercises.map(exercise => {
-              const isSelected = selectedExerciseIds.includes(exercise.id);
-              return `
-                <div class="card margin-bottom-1 exercise-item ${isSelected ? 'selected' : ''}" 
-                     data-ex-id="${exercise.id}" 
-                     ${isSelected ? 'style="display: none;"' : ''}>
+                       const isSelected = selectedExerciseIds.includes(exercise.id);
+                       const itemClass = isSelected ? 'card margin-bottom-1 exercise-item selected hidden' : 'card margin-bottom-1 exercise-item';
+                       return `
+                         <div class="${itemClass}" \
+                              data-ex-id="${exercise.id}">
                   <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
                     <div>
                       <strong>${escapeHtml(exercise.name)}</strong>
-                      <div style="font-size: 0.875rem; color: var(--gray-600);">
-                        ${exercise.description ? escapeHtml(exercise.description.substring(0, 100)) + (exercise.description.length > 100 ? '...' : '') : 'No description'}
+                      <div class="text-sm text-gray-600">
+                        ${exercise.description ? escapeHtml(exercise.description.substring(0, 100)) + (exercise.description.length > 100 ? '...' : '') : t('common.none')}
                       </div>
                     </div>
                     <input type="checkbox" 
                            data-ex-id="${exercise.id}" 
                            ${isSelected ? 'checked disabled' : ''}
-                           style="margin-left: 1rem;">
+                           class="ml-1rem">
                   </label>
                 </div>
               `;
@@ -197,17 +199,17 @@ export async function renderModuleAdminView(editId = null) {
         </div>
         
         <!-- Action Buttons -->
-        <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-          <button type="submit" class="btn btn-primary" style="flex: 1;">
-            ${editId ? 'Update Module' : 'Create Module'}
+        <div class="flex-gap mt-2rem">
+          <button type="submit" class="btn btn-primary flex-btn">
+            ${editId ? t('module_admin.save') : t('module_admin.title_create')}
           </button>
           ${editId ? `
             <button type="button" class="btn btn-danger" data-confirm-delete data-edit-id="${editId}">
-              Delete Module
+              ${t('common.delete')} Module
             </button>
           ` : ''}
           <button type="button" class="btn btn-secondary" data-nav="#skill-modules">
-            Cancel
+            ${t('common.cancel')}
           </button>
         </div>
       </form>
@@ -244,7 +246,72 @@ export async function renderModuleAdminView(editId = null) {
     }
   });
   
+  // Drag-and-drop reorder for selected exercises
+  setupDragAndDrop();
+  
   // ==================== HELPER FUNCTIONS ====================
+  
+  function setupDragAndDrop() {
+    const selectedList = main.querySelector('#selected-exercises-list');
+    if (!selectedList) return;
+    
+    let draggedItem = null;
+    let draggedIndex = null;
+    
+    selectedList.addEventListener('dragstart', (e) => {
+      const item = e.target.closest('.selected-exercise-item');
+      if (!item) return;
+      draggedItem = item;
+      draggedIndex = parseInt(item.dataset.exId);
+      item.style.opacity = '0.4';
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    
+    selectedList.addEventListener('dragend', (e) => {
+      if (draggedItem) {
+        draggedItem.style.opacity = '';
+      }
+      draggedItem = null;
+      draggedIndex = null;
+      // Remove any visual drop indicators
+      main.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+    });
+    
+    selectedList.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      
+      const item = e.target.closest('.selected-exercise-item');
+      if (!item || item === draggedItem) return;
+      
+      // Remove drag-over from all items
+      main.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+      item.classList.add('drag-over');
+    });
+    
+    selectedList.addEventListener('dragleave', (e) => {
+      const item = e.target.closest('.selected-exercise-item');
+      if (item) item.classList.remove('drag-over');
+    });
+    
+    selectedList.addEventListener('drop', (e) => {
+      e.preventDefault();
+      const targetItem = e.target.closest('.selected-exercise-item');
+      if (!targetItem || !draggedItem) return;
+      
+      const targetIndex = parseInt(targetItem.dataset.exId);
+      
+      // Reorder selectedExerciseIds
+      const fromIdx = selectedExerciseIds.indexOf(draggedIndex);
+      const toIdx = selectedExerciseIds.indexOf(targetIndex);
+      
+      if (fromIdx !== -1 && toIdx !== -1 && fromIdx !== toIdx) {
+        const [moved] = selectedExerciseIds.splice(fromIdx, 1);
+        selectedExerciseIds.splice(toIdx, 0, moved);
+        updateSelectedExercisesUI();
+      }
+    });
+  }
   
   function handleExerciseSearch(e) {
     const searchTerm = e.target.value.toLowerCase().trim();
@@ -255,9 +322,9 @@ export async function renderModuleAdminView(editId = null) {
       const exerciseDesc = item.querySelector('div:nth-child(2)')?.textContent.toLowerCase() || '';
       
       if (exerciseName.includes(searchTerm) || exerciseDesc.includes(searchTerm)) {
-        item.style.display = '';
+        item.classList.remove('hidden');
       } else {
-        item.style.display = 'none';
+        item.classList.add('hidden');
       }
     });
   }
@@ -291,13 +358,13 @@ export async function renderModuleAdminView(editId = null) {
     
     // If no exercises selected
     if (selectedExerciseIds.length === 0) {
-      if (selectedList) selectedList.style.display = 'none';
+      if (selectedList) selectedList.classList.add('hidden');
       if (clearButton) clearButton.disabled = true;
       
       // Show all available exercises
       const availableItems = main.querySelectorAll('.exercise-item');
       availableItems.forEach(item => {
-        item.style.display = '';
+        item.classList.remove('hidden');
       });
       
       // Update header count
@@ -311,23 +378,24 @@ export async function renderModuleAdminView(editId = null) {
     }
     
     // Exercises selected - show the list
-    if (selectedList) selectedList.style.display = '';
+    if (selectedList) selectedList.classList.remove('hidden');
     if (clearButton) clearButton.disabled = false;
     
     // Update list content
     selectedList.innerHTML = selectedExerciseIds.map(exId => {
       const exercise = exercises.find(e => e.id === exId);
       return `
-        <div class="card margin-bottom-1 selected-exercise-item" data-ex-id="${exId}">
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div>
+        <div class="card margin-bottom-1 selected-exercise-item" data-ex-id="${exId}" draggable="true">
+          <div class="flex-between">
+            <div class="drag-handle">
+              <span>⋮⋮</span>
               <strong>${escapeHtml(exercise?.name || `Exercise ${exId}`)}</strong>
-              <span style="color: var(--gray-600); font-size: 0.875rem;">
-                ${exercise ? getDifficultyLabel(exercise.difficulty) : 'Unknown difficulty'}
+              <span class="text-sm text-gray-600">
+                ${exercise ? getDifficultyLabel(exercise.difficulty) : t('module_admin.unknown_difficulty')}
               </span>
             </div>
             <button type="button" class="btn btn-danger btn-sm remove-exercise-btn" data-ex-id="${exId}">
-              Remove
+              ${t('common.remove')}
             </button>
           </div>
         </div>
@@ -347,9 +415,9 @@ export async function renderModuleAdminView(editId = null) {
     availableItems.forEach(item => {
       const exId = parseInt(item.dataset.exId);
       if (selectedExerciseIds.includes(exId)) {
-        item.style.display = 'none';
+        item.classList.add('hidden');
       } else {
-        item.style.display = '';
+        item.classList.remove('hidden');
       }
     });
     
@@ -370,13 +438,13 @@ export async function renderModuleAdminView(editId = null) {
     const category = main.querySelector('#module-category').value.trim();
     
     if (!name) {
-      show('Please enter a module name.', 'error');
+      show(t('module_admin.enter_name'), 'error');
       main.querySelector('#module-name').focus();
       return;
     }
     
     if (selectedExerciseIds.length === 0) {
-      show('Please select at least one exercise for this module.', 'error');
+      show(t('module_admin.select_exercise'), 'error');
       return;
     }
     
@@ -394,23 +462,23 @@ export async function renderModuleAdminView(editId = null) {
       ModuleStore.update(moduleData)
         .then(() => {
           // No undo needed for updates - only for deletions
-          show('Module updated successfully!', 'success');
+          show(t('module_admin.updated'), 'success');
           window.location.hash = '#skill-modules';
         })
         .catch(error => {
           console.error('Error updating module:', error);
-          show('Error updating module: ' + error.message, 'error');
+          show(t('module_admin.update_error') + error.message, 'error');
         });
     } else {
       // Create new module
       ModuleStore.add(moduleData)
         .then(() => {
-          show('Module created successfully!', 'success');
+          show(t('module_admin.created'), 'success');
           window.location.hash = '#skill-modules';
         })
         .catch(error => {
           console.error('Error creating module:', error);
-          show('Error creating module: ' + error.message, 'error');
+          show(t('module_admin.create_error') + error.message, 'error');
         });
     }
   }
@@ -422,8 +490,7 @@ export async function renderModuleAdminView(editId = null) {
   // window.confirmDelete = function() {...}
   
   // Export for router
-  window.renderModuleAdminView = renderModuleAdminView;
-}
+  }
 
 // Named + default export for maximum flexibility (Pattern 3)
 export default { render: renderModuleAdminView };
