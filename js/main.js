@@ -32,24 +32,40 @@ import { setLogLevel } from './services/logger.js';
 import { ValidationService } from './services/validation.js';
 import { VIEW_INIT_DELAY_MS, ERROR_BOUNDARY_MAX_RETRIES } from './constants.js';
 
+console.log('[main.js] Module loaded');
+
 // Configure production logging
 setLogLevel('DEBUG');
 
 initializeState();
+console.log('[main.js] State initialized');
 
 // ==================== Root-Level Error Boundary ====================
 // Top-level catch-all for any unhandled errors before/during routing
 function installRootErrorHandler() {
+  function showRootError(message) {
+    const main = document.getElementById('app');
+    if (main) {
+      main.innerHTML = renderErrorViewModule(message);
+    } else {
+      // DOM not ready yet — wait for it
+      document.addEventListener('DOMContentLoaded', () => {
+        const m = document.getElementById('app');
+        if (m) m.innerHTML = renderErrorViewModule(message);
+      }, { once: true });
+    }
+  }
+
   // Catch unhandled promise rejections
   window.addEventListener('unhandledrejection', (event) => {
     event.preventDefault();
-    renderErrorViewModule('An unexpected error occurred. Please refresh the page.');
+    showRootError('An unexpected error occurred. Please refresh the page.');
   });
 
   // Catch uncaught synchronous errors
   window.addEventListener('error', (event) => {
     event.preventDefault();
-    renderErrorViewModule('An unexpected error occurred. Please refresh the page.');
+    showRootError('An unexpected error occurred. Please refresh the page.');
   });
 }
 
@@ -57,13 +73,17 @@ installRootErrorHandler();
 
 // Wait for complete cache initialization AND sync before starting router
 async function initializeApp() {
+  console.log('[main.js] initializeApp started');
   try {
     await initializeDataCache();
+    console.log('[main.js] Data cache initialized');
 
     // Check if server data has changed since last sync
     try {
       if (await isCacheStale()) {
+        console.log('[main.js] Cache stale, syncing...');
         await syncDataCache();
+        console.log('[main.js] Cache synced');
       }
     } catch (err) {
       console.warn('Cache sync check failed:', err);
@@ -73,7 +93,9 @@ async function initializeApp() {
   }
 
   // Now that cache is fully initialized and synced, start the router
+  console.log('[main.js] Starting router...');
   router();
+  console.log('[main.js] Router called');
 
   // Initialize event delegation after router is set up
   setTimeout(() => {
@@ -114,7 +136,8 @@ async function ensureExercisesLoaded() {
       updateState({ exercises });
     } catch (error) {
       console.error('Failed to load exercises:', error);
-      renderErrorViewModule('Failed to load exercises. Please check your connection.');
+      const main = document.getElementById('app');
+      if (main) main.innerHTML = renderErrorViewModule('Failed to load exercises. Please check your connection.');
     } finally {
       loadingFlags.exercises = false;
     }
@@ -130,7 +153,8 @@ async function ensureRoutinesLoaded() {
       updateState({ routines });
     } catch (error) {
       console.error('Failed to load routines:', error);
-      renderErrorViewModule('Failed to load routines. Please check your connection.');
+      const main = document.getElementById('app');
+      if (main) main.innerHTML = renderErrorViewModule('Failed to load routines. Please check your connection.');
     } finally {
       loadingFlags.routines = false;
     }
@@ -282,7 +306,9 @@ function resolveRoute(hash) {
 }
 
 async function router() {
+  console.log('[main.js] router() called, hash:', window.location.hash);
   const state = getState();
+  console.log('[main.js] router state: user=', !!state.user, 'exercises=', state.exercises?.length, 'routines=', state.routines?.length);
   const needsInitialLoad = !state.exercises || state.exercises.length === 0 ||
                            !state.routines || state.routines.length === 0;
 
@@ -328,16 +354,24 @@ async function router() {
       return;
     }
 
+    // Default to home on empty hash
+    if (hash === '') {
+      window.location.hash = '#home';
+      return;
+    }
+
     // Error/404 fallback
-    if (hash === '' || hash.startsWith('#error')) {
-      renderErrorViewModule('Page not found. The requested route does not exist.');
+    if (hash.startsWith('#error')) {
+      const main = document.getElementById('app');
+      if (main) main.innerHTML = renderErrorViewModule('Page not found. The requested route does not exist.');
       return;
     }
 
     // Resolve and render route
     const routeConfig = resolveRoute(hash);
     if (!routeConfig) {
-      renderErrorViewModule('Page not found. The requested route does not exist.');
+      const main = document.getElementById('app');
+      if (main) main.innerHTML = renderErrorViewModule('Page not found. The requested route does not exist.');
       return;
     }
 
@@ -350,7 +384,8 @@ async function router() {
     }
   } catch (error) {
     console.error('Router error:', error);
-    renderErrorViewModule('An error occurred while loading this page.');
+    const main = document.getElementById('app');
+    if (main) main.innerHTML = renderErrorViewModule('An error occurred while loading this page.');
   }
 }
 

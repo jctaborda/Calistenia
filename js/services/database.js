@@ -23,7 +23,7 @@ const DB_NAME = 'calisthenics-db';
  * 3. Test on fresh install and existing DB
  * 4. Update this changelog with new version details
  */
-const DB_VERSION = 7;
+const DB_VERSION = 8;
 const STORES = {
   EXERCISES: 'exercises',
   WORKOUTS: 'workouts',
@@ -125,9 +125,44 @@ export function openDatabase() {
         database.createObjectStore(STORES.STATE, { keyPath: 'key' });
       }
 
+      // Migrate: if modules store exists without keyPath, recreate it with keyPath
+      if (database.objectStoreNames.contains(STORES.MODULES)) {
+        const oldStore = database.transaction(STORES.MODULES, 'readwrite').objectStore(STORES.MODULES);
+        if (!oldStore.keyPath) {
+          // Save existing entries before recreating the store
+          const keysReq = oldStore.getAllKeys();
+          keysReq.onsuccess = () => {
+            const entries = {};
+            const keys = keysReq.result;
+            let pending = keys.length;
+            keys.forEach(k => {
+              const getReq = oldStore.get(k);
+              getReq.onsuccess = () => {
+                entries[k] = getReq.result;
+                if (--pending === 0) {
+                  // All entries saved, recreate store with keyPath
+                  database.deleteObjectStore(STORES.MODULES);
+                  const newStore = database.createObjectStore(STORES.MODULES, { keyPath: 'lang' });
+                  newStore.createIndex('lang', 'lang', { unique: true });
+                  Object.entries(entries).forEach(([k, v]) => {
+                    if (v) newStore.put(v);
+                  });
+                }
+              };
+            });
+            if (pending === 0) {
+              // No entries, just recreate
+              database.deleteObjectStore(STORES.MODULES);
+              const newStore = database.createObjectStore(STORES.MODULES, { keyPath: 'lang' });
+              newStore.createIndex('lang', 'lang', { unique: true });
+            }
+          };
+        }
+      }
+
       // Create object store for skill modules (bilingual: 'en' and 'es' entries)
       if (!database.objectStoreNames.contains(STORES.MODULES)) {
-        const moduleStore = database.createObjectStore(STORES.MODULES);
+        const moduleStore = database.createObjectStore(STORES.MODULES, { keyPath: 'lang' });
         moduleStore.createIndex('lang', 'lang', { unique: true });
       }
 
@@ -631,8 +666,8 @@ export async function storeModules(modulesData) {
   // Store as indexed entries: 'en' and 'es' with lang property
   const enWithLang = { ...modulesData.en, lang: 'en' };
   const esWithLang = { ...modulesData.es, lang: 'es' };
-  const putEn = store.put(enWithLang, 'en');
-  const putEs = store.put(esWithLang, 'es');
+  const putEn = store.put(enWithLang);
+  const putEs = store.put(esWithLang);
   putEn.onerror = () => console.error('Error storing en modules:', putEn.error);
   putEs.onerror = () => console.error('Error storing es modules:', putEs.error);
 
