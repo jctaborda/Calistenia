@@ -526,8 +526,9 @@ export async function loadDataVersion() {
 
     request.onsuccess = () => resolve(request.result?.version || null);
     request.onerror = () => {
-      console.error('Error loading data version from IndexedDB:', request.error);
-      reject(request.error);
+      // Treat transaction errors as "no version stored" — not a fatal error
+      console.warn('Could not load data version from IndexedDB:', request.error);
+      resolve(null);
     };
   });
 }

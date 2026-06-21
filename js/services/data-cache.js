@@ -167,7 +167,6 @@ export async function isCacheStale() {
     return stale;
   } catch (error) {
     console.warn('Error checking cache freshness:', error);
-    show('Could not verify data freshness. Cache may be stale.', 'warning');
     return false;
   }
 }
