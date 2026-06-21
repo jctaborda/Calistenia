@@ -667,8 +667,11 @@ export async function storeModules(modulesData) {
   // Store as indexed entries: 'en' and 'es' with lang property
   const enWithLang = { ...modulesData.en, lang: 'en' };
   const esWithLang = { ...modulesData.es, lang: 'es' };
-  const putEn = store.put(enWithLang);
-  const putEs = store.put(esWithLang);
+  
+  // Determine key to use: if store has keyPath, let IndexedDB use it; otherwise use explicit key
+  const storeKeyPath = store.keyPath;
+  const putEn = storeKeyPath ? store.put(enWithLang) : store.put(enWithLang, 'en');
+  const putEs = storeKeyPath ? store.put(esWithLang) : store.put(esWithLang, 'es');
   putEn.onerror = () => console.error('Error storing en modules:', putEn.error);
   putEs.onerror = () => console.error('Error storing es modules:', putEs.error);
 
