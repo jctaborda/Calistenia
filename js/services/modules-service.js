@@ -34,7 +34,7 @@ export async function loadModules() {
   try {
     const locale = (getState().locale || 'en').toLowerCase();
     const file = LANG_MAP[locale] || 'skill-modules.json';
-    const response = await fetch(`/data/${file}`);
+    const response = await fetch(`data/${file}`);
     if (!response.ok) throw new Error('Failed to load skill modules');
     
     const data = await response.json();
