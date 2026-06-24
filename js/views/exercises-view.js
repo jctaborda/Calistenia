@@ -788,16 +788,6 @@ export async function renderExercisesView() {
     main.dataset.favoriteListenerAdded = 'true';
   }
   
-  // Force reload of CSS to ensure latest styles are applied
-  // This works around Service Worker caching issues
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(function(registrations) {
-      for(let registration of registrations) {
-        registration.unregister();
-      }
-    });
-  }
-  
   // Setup lazy loading for any future images
   setupLazyLoadImages();
 }

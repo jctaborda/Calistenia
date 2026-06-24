@@ -127,115 +127,168 @@ const loadingFlags = {
   difficulties: false
 };
 
+// Shared promises for in-flight loads (dedupe concurrent calls)
+const loadingPromises = {
+  exercises: null,
+  routines: null,
+  modules: null,
+  categories: null,
+  equipment: null,
+  muscles: null,
+  difficulties: null
+};
+
 async function ensureExercisesLoaded() {
-  if (loadingFlags.exercises) return;
+  if (loadingPromises.exercises) return loadingPromises.exercises;
+  
   if (!getState().exercises || getState().exercises.length === 0) {
     loadingFlags.exercises = true;
-    try {
-      const exercises = await fetchExercises();
-      updateState({ exercises });
-    } catch (error) {
-      console.error('Failed to load exercises:', error);
-      const main = document.getElementById('app');
-      if (main) main.innerHTML = renderErrorViewModule('Failed to load exercises. Please check your connection.');
-    } finally {
-      loadingFlags.exercises = false;
-    }
+    loadingPromises.exercises = (async () => {
+      try {
+        const exercises = await fetchExercises();
+        updateState({ exercises });
+      } catch (error) {
+        console.error('Failed to load exercises:', error);
+        const main = document.getElementById('app');
+        if (main) main.innerHTML = renderErrorViewModule('Failed to load exercises. Please check your connection.');
+      } finally {
+        loadingFlags.exercises = false;
+        loadingPromises.exercises = null;
+      }
+    })();
   }
+  
+  return loadingPromises.exercises || Promise.resolve();
 }
 
 async function ensureRoutinesLoaded() {
-  if (loadingFlags.routines) return;
+  if (loadingPromises.routines) return loadingPromises.routines;
+  
   if (!getState().routines || getState().routines.length === 0) {
     loadingFlags.routines = true;
-    try {
-      const routines = await fetchRoutines();
-      updateState({ routines });
-    } catch (error) {
-      console.error('Failed to load routines:', error);
-      const main = document.getElementById('app');
-      if (main) main.innerHTML = renderErrorViewModule('Failed to load routines. Please check your connection.');
-    } finally {
-      loadingFlags.routines = false;
-    }
+    loadingPromises.routines = (async () => {
+      try {
+        const routines = await fetchRoutines();
+        updateState({ routines });
+      } catch (error) {
+        console.error('Failed to load routines:', error);
+        const main = document.getElementById('app');
+        if (main) main.innerHTML = renderErrorViewModule('Failed to load routines. Please check your connection.');
+      } finally {
+        loadingFlags.routines = false;
+        loadingPromises.routines = null;
+      }
+    })();
   }
+  
+  return loadingPromises.routines || Promise.resolve();
 }
 
 async function ensureModulesLoaded() {
-  if (loadingFlags.modules) return;
+  if (loadingPromises.modules) return loadingPromises.modules;
+  
   if (!getState().modules) {
     loadingFlags.modules = true;
-    try {
-      const modules = await fetchSkillModules();
-      updateState({ modules });
-    } catch (error) {
-      console.error('Failed to load skill modules:', error);
-      // Don't render error view, just log - modules are less critical than routines
-      console.warn('Skill modules will be loaded on demand');
-    } finally {
-      loadingFlags.modules = false;
-    }
+    loadingPromises.modules = (async () => {
+      try {
+        const modules = await fetchSkillModules();
+        updateState({ modules });
+      } catch (error) {
+        console.error('Failed to load skill modules:', error);
+        // Don't render error view, just log - modules are less critical than routines
+        console.warn('Skill modules will be loaded on demand');
+      } finally {
+        loadingFlags.modules = false;
+        loadingPromises.modules = null;
+      }
+    })();
   }
+  
+  return loadingPromises.modules || Promise.resolve();
 }
 
 async function ensureCategoriesLoaded() {
-  if (loadingFlags.categories) return;
+  if (loadingPromises.categories) return loadingPromises.categories;
+  
   if (!getState().categories || getState().categories.length === 0) {
     loadingFlags.categories = true;
-    try {
-      const categories = await fetchCategories();
-      updateState({ categories });
-    } catch (error) {
-      console.error('Failed to load categories:', error);
-    } finally {
-      loadingFlags.categories = false;
-    }
+    loadingPromises.categories = (async () => {
+      try {
+        const categories = await fetchCategories();
+        updateState({ categories });
+      } catch (error) {
+        console.error('Failed to load categories:', error);
+      } finally {
+        loadingFlags.categories = false;
+        loadingPromises.categories = null;
+      }
+    })();
   }
+  
+  return loadingPromises.categories || Promise.resolve();
 }
 
 async function ensureEquipmentLoaded() {
-  if (loadingFlags.equipment) return;
+  if (loadingPromises.equipment) return loadingPromises.equipment;
+  
   if (!getState().equipment || getState().equipment.length === 0) {
     loadingFlags.equipment = true;
-    try {
-      const equipment = await fetchEquipment();
-      updateState({ equipment });
-    } catch (error) {
-      console.error('Failed to load equipment:', error);
-    } finally {
-      loadingFlags.equipment = false;
-    }
+    loadingPromises.equipment = (async () => {
+      try {
+        const equipment = await fetchEquipment();
+        updateState({ equipment });
+      } catch (error) {
+        console.error('Failed to load equipment:', error);
+      } finally {
+        loadingFlags.equipment = false;
+        loadingPromises.equipment = null;
+      }
+    })();
   }
+  
+  return loadingPromises.equipment || Promise.resolve();
 }
 
 async function ensureMusclesLoaded() {
-  if (loadingFlags.muscles) return;
+  if (loadingPromises.muscles) return loadingPromises.muscles;
+  
   if (!getState().muscles || getState().muscles.length === 0) {
     loadingFlags.muscles = true;
-    try {
-      const muscles = await fetchMuscles();
-      updateState({ muscles });
-    } catch (error) {
-      console.error('Failed to load muscles:', error);
-    } finally {
-      loadingFlags.muscles = false;
-    }
+    loadingPromises.muscles = (async () => {
+      try {
+        const muscles = await fetchMuscles();
+        updateState({ muscles });
+      } catch (error) {
+        console.error('Failed to load muscles:', error);
+      } finally {
+        loadingFlags.muscles = false;
+        loadingPromises.muscles = null;
+      }
+    })();
   }
+  
+  return loadingPromises.muscles || Promise.resolve();
 }
 
 async function ensureDifficultiesLoaded() {
-  if (loadingFlags.difficulties) return;
+  if (loadingPromises.difficulties) return loadingPromises.difficulties;
+  
   if (!getState().difficulties || getState().difficulties.length === 0) {
     loadingFlags.difficulties = true;
-    try {
-      const difficulties = await fetchDifficulties();
-      updateState({ difficulties });
-    } catch (error) {
-      console.error('Failed to load difficulties:', error);
-    } finally {
-      loadingFlags.difficulties = false;
-    }
+    loadingPromises.difficulties = (async () => {
+      try {
+        const difficulties = await fetchDifficulties();
+        updateState({ difficulties });
+      } catch (error) {
+        console.error('Failed to load difficulties:', error);
+      } finally {
+        loadingFlags.difficulties = false;
+        loadingPromises.difficulties = null;
+      }
+    })();
   }
+  
+  return loadingPromises.difficulties || Promise.resolve();
 }
 
 // ==================== Render Route Map ====================
@@ -307,10 +360,8 @@ function resolveRoute(hash) {
 
 async function router() {
   console.log('[main.js] router() called, hash:', window.location.hash);
-  const state = getState();
-  console.log('[main.js] router state: user=', !!state.user, 'exercises=', state.exercises?.length, 'routines=', state.routines?.length);
-  const needsInitialLoad = !state.exercises || state.exercises.length === 0 ||
-                           !state.routines || state.routines.length === 0;
+  const needsInitialLoad = !getState().exercises || getState().exercises.length === 0 ||
+                           !getState().routines || getState().routines.length === 0;
 
   // If data is not loaded, show spinner and load it
   if (needsInitialLoad) {
@@ -329,6 +380,8 @@ async function router() {
     hideSpinner();
   }
 
+  // Get fresh state after loading completes
+  const state = getState();
   const hash = window.location.hash;
 
   // Handle unauthenticated users

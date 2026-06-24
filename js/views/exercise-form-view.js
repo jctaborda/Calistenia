@@ -4,6 +4,7 @@
 import { ErrorBoundaryService } from '../services/error-boundary-service.js';
 import { renderHeader } from '../components/header.js';
 import { t } from '../i18n.js';
+import { updateState } from '../services/state.js';
 
 export async function renderExerciseForm(editId) {
   const app = document.getElementById('app');

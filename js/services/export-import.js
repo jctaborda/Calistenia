@@ -10,6 +10,7 @@ import {
   storeModules,
   getDatabaseSize
 } from './database.js';
+import { saveModules } from './modules-service.js';
 
 const EXPORT_VERSION = '1.0';
 const EXPORT_TIMESTAMP = new Date().toISOString();
@@ -18,62 +19,66 @@ const EXPORT_TIMESTAMP = new Date().toISOString();
  * JSON Schema definition for data export/import validation
  */
 const DATA_SCHEMA = {
-  version: {
-    type: 'string',
-    required: true,
-    allowedValues: ['1.0']
-  },
-  exportedAt: {
-    type: 'string',
-    required: true,
-    format: 'iso-date'
-  },
-  appVersion: {
-    type: 'string',
-    required: false
-  },
-  workouts: {
-    type: 'array',
-    required: true,
-    itemSchema: {
-      id: { type: 'string|number', required: true },
-      routine: { type: 'object', required: true },
-      date: { type: 'string', required: true, format: 'iso-date' },
-      exercises: { 
-        type: 'array', 
-        required: true,
-        itemSchema: {
-          exerciseId: { type: 'string|number', required: true },
-          exerciseName: { type: 'string', required: true },
-          targetSets: { type: 'number', required: true, min: 1 },
-          targetReps: { type: 'number', required: true, min: 0 },
-          actualReps: { type: 'array', required: false, itemSchema: { type: 'number' } }
-        }
-      },
-      setHistory: { type: 'array', required: false }
-    }
-  },
-  routines: {
-    type: 'array',
-    required: false,
-    itemSchema: {
-      id: { type: 'string|number', required: true },
-      name: { type: 'string', required: true },
-      exercises: { type: 'array', required: true },
-      warmup: { type: 'object', required: false },
-      cooldown: { type: 'object', required: false }
-    }
-  },
-  skillModules: {
-    type: 'array',
-    required: false,
-    itemSchema: {
-      id: { type: 'string|number', required: true },
-      name: { type: 'string', required: true },
-      category: { type: 'string', required: true },
-      description: { type: 'string', required: true },
-      requirements: { type: 'array', required: true },
-      unlocked: { type: 'boolean', required: false }
+  type: 'object',
+  required: true,
+  fieldSchema: {
+    version: {
+      type: 'string',
+      required: true,
+      allowedValues: ['1.0']
+    },
+    exportedAt: {
+      type: 'string',
+      required: true,
+      format: 'iso-date'
+    },
+    appVersion: {
+      type: 'string',
+      required: false
+    },
+    workouts: {
+      type: 'array',
+      required: true,
+      itemSchema: {
+        id: { type: 'string|number', required: true },
+        routine: { type: 'object', required: true },
+        date: { type: 'string', required: true, format: 'iso-date' },
+        exercises: { 
+          type: 'array', 
+          required: true,
+          itemSchema: {
+            exerciseId: { type: 'string|number', required: true },
+            exerciseName: { type: 'string', required: true },
+            targetSets: { type: 'number', required: true, min: 1 },
+            targetReps: { type: 'number', required: true, min: 0 },
+            actualReps: { type: 'array', required: false, itemSchema: { type: 'number' } }
+          }
+        },
+        setHistory: { type: 'array', required: false }
+      }
+    },
+    routines: {
+      type: 'array',
+      required: false,
+      itemSchema: {
+        id: { type: 'string|number', required: true },
+        name: { type: 'string', required: true },
+        exercises: { type: 'array', required: true },
+        warmup: { type: 'object', required: false },
+        cooldown: { type: 'object', required: false }
+      }
+    },
+    skillModules: {
+      type: 'array',
+      required: false,
+      itemSchema: {
+        id: { type: 'string|number', required: true },
+        name: { type: 'string', required: true },
+        description: { type: 'string', required: true },
+        difficulty: { type: 'string', required: true },
+        category: { type: 'string', required: true },
+        exercises: { type: 'array', required: true }
+      }
     }
   }
 };
@@ -284,40 +289,53 @@ export async function importUserData(jsonData) {
     if (importData.routines && Array.isArray(importData.routines)) {
       const existingRoutines = await routinesLoad();
       const existingRoutinesIds = new Set(existingRoutines.map(p => String(p.id)));
-
+      
+      const routinesToImport = [];
       for (const routine of importData.routines) {
         if (existingRoutinesIds.has(String(routine.id))) {
           stats.routines.skipped++;
         } else {
-          try {
-            await storeRoutines([...existingRoutines, routine]);
-            stats.routines.imported++;
-          } catch (error) {
-            const errorMsg = `Failed to import routine ${routine.id}: ${error.message}`;
-            stats.errors.push(errorMsg);
-            console.error(errorMsg, error);
-          }
+          routinesToImport.push(routine);
+        }
+      }
+      
+      if (routinesToImport.length > 0) {
+        try {
+          await storeRoutines([...existingRoutines, ...routinesToImport]);
+          stats.routines.imported = routinesToImport.length;
+        } catch (error) {
+          const errorMsg = `Failed to import routines: ${error.message}`;
+          stats.errors.push(errorMsg);
+          console.error(errorMsg, error);
         }
       }
     }
 
     // Import skill modules
     if (importData.skillModules && Array.isArray(importData.skillModules)) {
-      const existingModules = await modulesLoad();
-      const existingModuleIds = new Set(existingModules.map(m => String(m.id)));
-
+      const existingModulesData = await modulesLoad();
+      const existingModuleIds = new Set(
+        (existingModulesData?.en?.modules || []).map(m => String(m.id))
+      );
+      
+      const modulesToImport = [];
       for (const module of importData.skillModules) {
         if (existingModuleIds.has(String(module.id))) {
           stats.skillModules.skipped++;
         } else {
-          try {
-            await storeModules([...existingModules, module]);
-            stats.skillModules.imported++;
-          } catch (error) {
-            const errorMsg = `Failed to import module ${module.id}: ${error.message}`;
-            stats.errors.push(errorMsg);
-            console.error(errorMsg, error);
-          }
+          modulesToImport.push(module);
+        }
+      }
+      
+      if (modulesToImport.length > 0) {
+        try {
+          const modules = existingModulesData?.en?.modules || [];
+          await saveModules([...modules, ...modulesToImport]);
+          stats.skillModules.imported = modulesToImport.length;
+        } catch (error) {
+          const errorMsg = `Failed to import modules: ${error.message}`;
+          stats.errors.push(errorMsg);
+          console.error(errorMsg, error);
         }
       }
     }

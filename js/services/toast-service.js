@@ -1,5 +1,6 @@
 import { t } from '../i18n.js';
 import { TOAST_TIMEOUTS } from '../constants.js';
+import { ValidationService } from './validation.js';
 
 // Default timeouts by type (in ms)
 const DEFAULT_TIMEOUTS = TOAST_TIMEOUTS;
@@ -27,7 +28,9 @@ export function show(message, type = 'info', duration) {
   // Create toast element
   const toast = document.createElement('div');
   toast.className = `app-toast toast-${type}`;
-  toast.innerHTML = `<span>${message}</span>`;
+  const span = document.createElement('span');
+  span.textContent = message;
+  toast.appendChild(span);
 
   document.body.appendChild(toast);
 

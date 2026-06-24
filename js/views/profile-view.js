@@ -125,61 +125,13 @@ export async function renderProfileView() {
   <button class="btn back-to-home-btn" data-nav="#home" style="margin-top: 2rem;">${t('profile.back_to_home')}</button>
     </div>
   `;
-
-  // Handle body metrics form submission
-  const form = main.querySelector('#body-metrics-form');
-  if (form) {
-    form.addEventListener('submit', e => {
-  e.preventDefault();
-  
-  const weightInput = main.querySelector('#weight');
-  const bodyFatInput = main.querySelector('#bodyFat');
-  const weight = parseFloat(weightInput.value);
-  const bodyFat = bodyFatInput.value ? parseFloat(bodyFatInput.value) : null;
-  
-  // Validate weight
-  const weightValidation = ValidationService.validateNumber(weight.toString());
-  if (!weightValidation.valid) {
-    show(weightValidation.error, 'error');
-    return;
-  }
-  
-  // Validate body fat if provided
-  if (bodyFatInput.value && bodyFatInput.value.trim() !== '') {
-    const bodyFatValidation = ValidationService.validateNumber(bodyFatInput.value);
-    if (!bodyFatValidation.valid) {
-      show(bodyFatValidation.error, 'error');
-      return;
-    }
-    // Body fat should be between 0-100%
-    if (bodyFat < 0 || bodyFat > 100) {
-      show(t('profile.body_fat_range'), 'error');
-      return;
-    }
-  }
-  
-  // Add metric to user state
-  const state = getState();
-  const user = { ...(state.user || {}) };
-  user.bodyMetrics = user.bodyMetrics || [];
-  
-  // Add index for deletion reference
-  user.bodyMetrics.push({
-  date: new Date().toISOString(),
-  weight,
-  bodyFat,
-  index: user.bodyMetrics.length
-  });
-  
-  updateState({ user });
-  
-  // Clear form and re-render
-  weightInput.value = '';
-  bodyFatInput.value = '';
-  renderProfileView();
-    });
-  }
 }
 
 // Named + default export for maximum flexibility (Pattern 3)
 export default { render: renderProfileView };
+
+// Expose renderProfileView globally for event delegation service
+if (typeof window !== 'undefined') {
+  window.calisthenics = window.calisthenics || {};
+  window.calisthenics.renderProfileView = renderProfileView;
+}

@@ -1,5 +1,6 @@
 import { t } from '../i18n.js';
 import { show as showToastShared } from './toast-service.js';
+import { ValidationService } from './validation.js';
 /**
  * WorkoutModalsService - Handles all modal rendering and interactions for active workouts
  * Separated from view logic to improve code organization and maintainability
@@ -15,10 +16,12 @@ export class WorkoutModalsService {
   show(title, content) {
     const modal = document.createElement('div');
     modal.className = 'modal';
+    const escapedTitle = ValidationService.sanitizeText(title);
+    const escapedContent = ValidationService.sanitizeText(content);
     modal.innerHTML = `
       <div class="modal-content">
-        <h2>${title}</h2>
-        <div class="modal-body">${content}</div>
+        <h2>${escapedTitle}</h2>
+        <div class="modal-body">${escapedContent}</div>
         <button class="btn btn-secondary close-modal">Close</button>
       </div>
     `;
@@ -136,8 +139,8 @@ export class WorkoutModalsService {
      showSwapExerciseModal(exerciseIndex, originalExerciseId, activeWorkout, routine, exercises) {
        // Build exercise list (skip current exercise to avoid swapping with itself)
        const exerciseList = exercises
-         .filter((_, idx) => idx !== exerciseIndex) // Don't include current exercise
-         .map((e, idx) => `<option value="${idx}">${e.name}</option>`).join('');
+         .filter((e, idx) => e.id !== originalExerciseId) // Don't include current exercise
+         .map((e) => `<option value="${e.id}">${e.name}</option>`).join('');
 
        const content = `
          <label for="exercise-select">Select a replacement exercise:</label>
@@ -156,7 +159,8 @@ export class WorkoutModalsService {
            const selectedIndex = selectEl.selectedIndex;
 
            if (selectedIndex > 0) { // Must select an actual exercise
-             const newExercise = exercises[parseInt(selectEl.value)];
+             const newExerciseId = parseInt(selectEl.value);
+             const newExercise = exercises.find(e => e.id === newExerciseId);
 
              // Create updated routine with swapped exercise
              const updatedRoutine = {

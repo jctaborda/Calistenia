@@ -195,14 +195,6 @@ export async function syncDataCache() {
     // Re-initialize with fresh reference data from data.json
     await initializeDataCacheInternal();
     
-    // Re-merge user-added exercises back into IndexedDB
-    if (existingExercises.length > 0) {
-      await db.storeExercises(existingExercises);
-    }
-    if (existingRoutines.length > 0) {
-      await db.storeRoutines(existingRoutines);
-    }
-    
     return true;
   } catch (error) {
     console.error('Error syncing data cache:', error);

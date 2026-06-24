@@ -316,6 +316,14 @@ const translations = {
     'module_admin.created': 'Module created successfully!',
     'module_admin.create_error': 'Error creating module: ',
     'module_admin.unknown_difficulty': 'Unknown difficulty',
+    'module_admin.basic_info': 'Basic Information',
+    'module_admin.difficulty': 'Difficulty',
+    'module_admin.category': 'Category',
+    'module_admin.select_category': 'Select Category...',
+    'module_admin.delete_confirm': 'Are you sure you want to delete this module?',
+    'module_admin.delete_action': 'This action cannot be undone.',
+    'module_admin.delete_error': 'Error deleting module: ',
+    'module_admin.deleted': 'Module deleted successfully!',
 
     // Shared Workout
     'shared_workout.title': 'Shared Workout',

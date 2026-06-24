@@ -79,13 +79,13 @@ export function renderWorkoutDetailView(workoutIndex) {
                   </tr>
                 </thead>
                 <tbody>
-                  ${exercise.actualReps.map((reps, setIndex) => {
+                  ${(exercise.actualReps || []).map((reps, setIndex) => {
                     const setDetail = stats.setDetails[exIndex]?.[setIndex];
                     const setTime = setDetail?.setTime ?? 0;
                     const restTime = setDetail?.restTime ?? 0;
                     
                     // Don't show rest time for the last set
-                    const isLastSet = setIndex === exercise.actualReps.length - 1;
+                    const isLastSet = (exercise.actualReps || []).length - 1 === setIndex;
                     const displayRestTime = isLastSet ? 0 : restTime;
                     
                     return `

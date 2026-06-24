@@ -22,9 +22,9 @@ export async function loadModules() {
   // Try IndexedDB first
   try {
     const cached = await modulesLoad();
-    if (cached && cached.en && cached.en.modules && cached.en.modules.length > 0) {
-      modulesCache = cached.en.modules;
-      return cached.en.modules;
+    if (cached?.modules && cached.modules.length > 0) {
+      modulesCache = cached.modules;
+      return cached.modules;
     }
   } catch (error) {
     console.error('Error loading modules from IndexedDB:', error);

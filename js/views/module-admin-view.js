@@ -246,6 +246,32 @@ export async function renderModuleAdminView(editId = null) {
     }
   });
   
+  // Clear exercise selection button
+  main.addEventListener('click', (e) => {
+    if (e.target.matches('[data-reset-exercises]')) {
+      selectedExerciseIds = [];
+      updateSelectedExercisesUI();
+    }
+  });
+  
+  // Delete module button
+  main.addEventListener('click', async (e) => {
+    if (e.target.matches('[data-confirm-delete]')) {
+      const editId = e.target.dataset.editId;
+      const confirmed = await showConfirmationModal('Are you sure you want to delete this module?');
+      if (confirmed) {
+        try {
+          await ModuleStore.delete(editId);
+          show(t('module_admin.deleted'), 'success');
+          window.location.hash = '#skill-modules';
+        } catch (error) {
+          console.error('Error deleting module:', error);
+          show(t('module_admin.delete_error') + error.message, 'error');
+        }
+      }
+    }
+  });
+  
   // Drag-and-drop reorder for selected exercises
   setupDragAndDrop();
   

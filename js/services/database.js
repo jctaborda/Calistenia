@@ -705,12 +705,13 @@ export async function modulesLoad() {
           enClean.es = esClean;
           resolve(enClean);
         } else {
-          resolve([]);
+          // Always return consistent shape: { modules: [] }
+          resolve({ modules: [] });
         }
       };
       esReq.onerror = () => {
         const { lang: enLang, ...enClean } = enData || {};
-        resolve(enClean || []);
+        resolve(enClean || { modules: [] });
       };
     };
     getRequest.onerror = () => {

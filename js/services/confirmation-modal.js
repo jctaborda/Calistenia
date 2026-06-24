@@ -1,6 +1,8 @@
 // Confirmation modal service - replaces browser confirm() with a styled modal
 // Used by SW update prompts and other confirmation flows
 
+import { ValidationService } from './validation.js';
+
 let styleInjected = false;
 
 function injectStyles() {
@@ -49,10 +51,11 @@ export function showConfirmation(message) {
   return new Promise((resolve) => {
     const overlay = document.createElement('div');
     overlay.className = 'confirm-modal-overlay';
+    const escapedMessage = ValidationService.sanitizeText(message);
     overlay.innerHTML = `
       <div class="confirm-modal-content">
         <h2>Confirm</h2>
-        <p>${message}</p>
+        <p>${escapedMessage}</p>
         <div class="confirm-modal-actions">
           <button class="btn btn-secondary confirm-cancel">Cancel</button>
           <button class="btn btn-danger confirm-ok">Confirm</button>

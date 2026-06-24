@@ -3,31 +3,31 @@
   "categories": [
     {
       "id": 8,
-      "name": "Brazos"
+      "name": "Arms"
     },
     {
       "id": 9,
-      "name": "Piernas"
+      "name": "Legs"
     },
     {
       "id": 10,
-      "name": "Abdominales"
+      "name": "Abs"
     },
     {
       "id": 11,
-      "name": "Pecho"
+      "name": "Chest"
     },
     {
       "id": 12,
-      "name": "Espalda"
+      "name": "Back"
     },
     {
       "id": 13,
-      "name": "Hombros"
+      "name": "Shoulders"
     },
     {
       "id": 14,
-      "name": "Pantorrillas"
+      "name": "Calves"
     },
     {
       "id": 15,
@@ -35,97 +35,97 @@
     },
     {
       "id": 16,
-      "name": "Sin definir"
+      "name": "Undefined"
     },
     {
       "id": 17,
-      "name": "Empuje"
+      "name": "Push"
     },
     {
       "id": 18,
-      "name": "Jalón"
+      "name": "Pull"
     },
     {
       "id": 19,
-      "name": "Cuerpo completo"
+      "name": "Full Body"
     }
   ],
   "equipment": [
     {
       "id": 1,
-      "name": "Barras de fondos"
+      "name": "Parallel Bars"
     },
     {
       "id": 2,
-      "name": "Bandas elásticas"
+      "name": "Resistance Bands"
     },
     {
       "id": 3,
-      "name": "Mancuerna"
+      "name": "Dumbbell"
     },
     {
       "id": 4,
-      "name": "Esterilla de gimnasio"
+      "name": "Gym Mat"
     },
     {
       "id": 5,
-      "name": "Paralletes"
+      "name": "Parallettes"
     },
     {
       "id": 6,
-      "name": "Barra de dominadas"
+      "name": "Pull-up Bar"
     },
     {
       "id": 7,
-      "name": "Ninguna (ejercicio con peso corporal)"
+      "name": "None (bodyweight exercise)"
     },
     {
       "id": 8,
-      "name": "Banco"
+      "name": "Bench"
     },
     {
       "id": 9,
-      "name": "Banco inclinado"
+      "name": "Incline Bench"
     },
     {
       "id": 10,
-      "name": "Pesa rusa"
+      "name": "Kettlebell"
     },
     {
       "id": 11,
-      "name": "Anillas gimnásticas"
+      "name": "Gymnastic Rings"
     },
     {
       "id": 12,
-      "name": "Banco/Step"
+      "name": "Bench/Step"
     },
     {
       "id": 13,
-      "name": "Chaleco/cinturón con peso"
+      "name": "Weight Vest/Belt"
     },
     {
       "id": 14,
-      "name": "Poste/barra vertical"
+      "name": "Post/Vertical Bar"
     },
     {
       "id": 15,
-      "name": "Peso corporal"
+      "name": "Bodyweight"
     },
     {
       "id": 16,
-      "name": "Suelo"
+      "name": "Floor"
     },
     {
       "id": 17,
-      "name": "Pared"
+      "name": "Wall"
     }
   ],
   "exercises": [
     {
       "id": 52,
       "name": "Ab Rollout",
-      "description": "Arrodíllate y rueda hacia adelante con las manos en un banco, extendiendo los abdominales completamente.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Kneel and roll forward with hands on a bench, extending abs completely.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         12
       ],
@@ -146,15 +146,15 @@
       ],
       "progressions": [],
       "formCues": [
-        "Arrodíllate con la rueda abdominal",
-        "Rueda hacia adelante manteniendo el core apretado",
-        "Ve solo tan lejos como puedas mantener la forma",
-        "Tira hacia atrás con los abdominales, no empujes"
+        "Kneel with the ab wheel",
+        "Roll forward keeping Core tight",
+        "Go only as far as you can maintain the form",
+        "Pull back with abs, don't push"
       ],
       "commonMistakes": [
-        "No dejes que las caderas se hundan",
-        "Evita ir demasiado lejos demasiado pronto",
-        "No redondees la parte baja de la espalda"
+        "Don't let hips sink",
+        "Avoid going too far too soon",
+        "Don't round lower back"
       ],
       "muscles_secondary": [
         2,
@@ -164,8 +164,8 @@
     {
       "id": 97,
       "name": "Abductor Walk",
-      "description": "Con una banda alrededor de las piernas, camina hacia los lados manteniendo la tensión para trabajar los abductores.",
-      "skill": "Sujeción Hollow Body",
+      "description": "With a band around the legs, walk sideways keeping tension to work abductors.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         2
       ],
@@ -185,15 +185,15 @@
       ],
       "progressions": [],
       "formCues": [
-        "Banda en los tobillos, ligera flexión de rodillas",
-        "Camina hacia los lados manteniendo la tensión en la banda",
-        "Mantén las rodillas hacia afuera durante el movimiento",
-        "Camina una distancia determinada y luego regresa"
+        "Bands around ankles, slight knee bend",
+        "Walk sideways keeping tension on the band",
+        "Keep knees out during movement",
+        "Walk a set distance then return"
       ],
       "commonMistakes": [
-        "No estires las piernas completamente",
-        "Evita que las caderas se eleven",
-        "No apresures la caminata"
+        "Don't stretch legs completely",
+        "Avoid hips elevating",
+        "Don't rush the walk"
       ],
       "muscles_secondary": [
         10
@@ -202,8 +202,8 @@
     {
       "id": 91,
       "name": "Adductor Plank",
-      "description": "En una plancha lateral, levanta la pierna superior ligeramente, activando los aductores para la estabilidad.",
-      "skill": "Sujeción Hollow Body",
+      "description": "In a side plank, lift top leg slightly, activating adductors for stability.",
+      "skill": "Hollow Body Hold",
       "equipment": [],
       "difficulty": [
         2
@@ -217,23 +217,23 @@
       ],
       "progressions": [],
       "formCues": [
-        "Posición de plancha lateral con la pierna superior cruzada por debajo",
-        "Presiona la rodilla inferior contra el suelo",
-        "Activa los músculos internos de los muslos",
-        "Mantén el core apretado"
+        "Siof plank position with top leg crossed underneath",
+        "Press bottom knee into floor",
+        "Activate inner thigh muscles",
+        "Keep Core tight"
       ],
       "commonMistakes": [
-        "No dejes que las caderas se hundan",
-        "Evita relajar la pierna activada",
-        "No pongas demasiado peso en el hombro inferior"
+        "Don't let hips sink",
+        "Avoid relaxing the activated leg",
+        "Don't put too much weight on bottom shoulder"
       ],
       "muscles_secondary": []
     },
     {
       "id": 93,
       "name": "Adductor Side Raise",
-      "description": "Acuéstate de lado, levanta la pierna inferior contra la gravedad, aislando los aductores.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Lie on your side, lift bottom leg against gravity, isolating adductors.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         16
       ],
@@ -253,15 +253,15 @@
       ],
       "progressions": [],
       "formCues": [
-        "De pie con banda en los tobillos o tobillos cruzados",
-        "Levanta la pierna cruzando ligeramente el cuerpo",
-        "Activa los músculos del muslo interno",
-        "Baja lentamente"
+        "Standing with bands around ankles or crossed ankles",
+        "Lift leg crossing body slightly",
+        "Activate inner thigh muscles",
+        "Lower slowly"
       ],
       "commonMistakes": [
-        "No uses impulso para balancear la pierna",
-        "Evita inclinarte hacia afuera del movimiento",
-        "No flexiones excesivamente la pierna de apoyo"
+        "Don't use momentum to balance leg",
+        "Avoid leaning outward from movement",
+        "Don't excessively flex support leg"
       ],
       "muscles_secondary": [
         8
@@ -270,8 +270,8 @@
     {
       "id": 14,
       "name": "Archer Pull-Up",
-      "description": "Un brazo tira mientras el otro se extiende hacia los lados, fortaleciendo la espalda de forma unilateral.",
-      "skill": "Variaciones de dominadas",
+      "description": "One arm pulls while other extends to sides, strengthening back unilaterally.",
+      "skill": "Pull-up Variations",
       "equipment": [],
       "difficulty": [
         3
@@ -287,24 +287,24 @@
         120
       ],
       "formCues": [
-        "Agarre amplio por encima",
-        "Desplaza el peso hacia un lado al tirar",
-        "Mantén el otro brazo recto",
-        "Tira hacia un hombro",
-        "Alterna lados con cada repetición"
+        "Wide grip overhead",
+        "Shift weight to one side when pulling",
+        "Keep other arm straight",
+        "Pull to one shoulder",
+        "Alternatete sides with each rep"
       ],
       "commonMistakes": [
-        "No gires el torso",
-        "No ayudes con el brazo que no trabaja",
-        "No acortes el rango de movimiento"
+        "Don't rotate torso",
+        "Don't help with non-working arm",
+        "Don't shorten range of motion"
       ],
       "muscles_secondary": []
     },
     {
       "id": 5,
       "name": "Archer Push-Up",
-      "description": "Un brazo se extiende hacia el lado mientras el otro se flexiona, imitando el tiro de un arquero, para fortalecer el pecho de forma unilateral.",
-      "skill": "Variaciones de flexiones",
+      "description": "One arm extends to side while other flexes, imitating an archer's shot, to strengthen chest unilaterally.",
+      "skill": "Push-up Variations",
       "equipment": [],
       "difficulty": [
         3
@@ -323,23 +323,23 @@
         25
       ],
       "formCues": [
-        "Amplía considerablemente la separación de las manos",
-        "Desplaza el peso hacia un brazo al bajar",
-        "Mantén el otro brazo recto como el arco de un arquero",
-        "Empuja hacia el centro desde cada lado"
+        "Widen hand separation considerably",
+        "Shift weight to one arm when lowering",
+        "Keep other arm straight like an archer's bow",
+        "Push from center from each side"
       ],
       "commonMistakes": [
-        "No gires el torso",
-        "Evita que el codo del brazo que trabaja se abra",
-        "No toques el suelo con la mano del brazo que no trabaja"
+        "Don't rotate torso",
+        "Avoid working arm elbow opening",
+        "Don't touch floor with non-working arm hand"
       ],
       "muscles_secondary": []
     },
     {
       "id": 73,
       "name": "Assisted Pistol Squat",
-      "description": "Usa una banda para soporte mientras realizas una sentadilla con una pierna.",
-      "skill": "Sentadilla pistol",
+      "description": "Use a band for support while performing a one-legged squat.",
+      "skill": "Pistol Squat",
       "equipment": [
         2
       ],
@@ -363,15 +363,15 @@
         68
       ],
       "formCues": [
-        "Sujétate para el equilibrio",
-        "Párate sobre una pierna, la otra extendida hacia adelante",
-        "Baja lo más posible sobre una pierna",
-        "Usa los brazos para asistencia mínima"
+        "Hold for balance",
+        "Stand on one leg, other extended forward",
+        "Lower as much as possible on one leg",
+        "Use arms for minimal assistance"
       ],
       "commonMistakes": [
-        "No dejes que la rodilla colapse hacia adentro",
-        "Evita que el talón se eleve del suelo",
-        "No redondees la espalda"
+        "Don't let knee collapse inward",
+        "Avoid heel lifting from floor",
+        "Don't round back"
       ],
       "muscles_secondary": [
         7,
@@ -381,8 +381,8 @@
     {
       "id": 20,
       "name": "Assisted Pull-Up",
-      "description": "Usa bandas elásticas para asistir en la subida, ideal para principiantes.",
-      "skill": "Variaciones de dominadas",
+      "description": "Use resistance bands to assist the pull-up, ideal for beginners.",
+      "skill": "Pull-up Variations",
       "equipment": [],
       "difficulty": [
         1
@@ -398,23 +398,23 @@
         11
       ],
       "formCues": [
-        "Usa banda o máquina para soporte",
-        "Enfócate en la forma correcta, no solo en las repeticiones",
-        "Comienza con más asistencia",
-        "Reduce la ayuda gradualmente"
+        "Use band or machine for support",
+        "Focus on proper form, not just reps",
+        "Start with more assistance",
+        "Gradually reduce assistance"
       ],
       "commonMistakes": [
-        "No dependas demasiado de la asistencia",
-        "Evita rangos de movimiento parciales",
-        "No uses impulso con las piernas"
+        "Don't rely too much on assistance",
+        "Avoid partial ranges of motion",
+        "Don't use leg momentum"
       ],
       "muscles_secondary": []
     },
     {
       "id": 119,
       "name": "Australian Pull Up",
-      "description": "Una variación de remo con peso corporal realizada en una barra a la altura de la cintura, requiriendo que te acuestes debajo de la barra y tires del pecho hacia arriba mientras mantienes el cuerpo en línea recta, excelente para fortalecer la espalda.",
-      "skill": "Variaciones de dominadas",
+      "description": "A bodyweight rowing variation performed on a bar at waist height, requiring you to lie under the bar and pull chest up while keeping body in straight line, excellent for strengthening back.",
+      "skill": "Pull-up Variations",
       "equipment": [],
       "difficulty": [
         1
@@ -429,23 +429,23 @@
         19
       ],
       "formCues": [
-        "Coloca el cuerpo debajo de la barra, pies en el suelo",
-        "Agarra la barra a la anchura de los hombros",
-        "Tira del pecho hacia la barra manteniendo el cuerpo recto",
-        "Baja con control"
+        "Place body under bar, feet on floor",
+        "Grip bar at shoulder width",
+        "Pull chest to bar keeping body straight",
+        "Lower with control"
       ],
       "commonMistakes": [
-        "No dejes que el cuerpo se hunda",
-        "Evita ir demasiado vertical",
-        "No tires solo con los brazos"
+        "Don't let body sink",
+        "Avoid going too vertical",
+        "Don't pull with arms only"
       ],
       "muscles_secondary": []
     },
     {
       "id": 63,
       "name": "Back Extension",
-      "description": "Acostado boca abajo en un banco, levanta el torso para trabajar los músculos de la espalda baja.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Lying face down on a bench, lift torso to work lower back muscles.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         12
       ],
@@ -467,15 +467,15 @@
         64
       ],
       "formCues": [
-        "Acuéstate boca abajo en el banco de hiperextensión",
-        "Cruza los brazos o detrás de la cabeza",
-        "Levanta el pecho usando la espalda baja",
-        "Baja con control"
+        "Lie face down on hyperextension bench",
+        "Cross arms or behind head",
+        "Lift chest using lower back",
+        "Lower with control"
       ],
       "commonMistakes": [
-        "No hiperextiendas excesivamente",
-        "Evita usar impulso para levantar",
-        "No redondees la espalda durante la bajada"
+        "Don't hyperextend excessively",
+        "Avoid using momentum to lift",
+        "Don't round back during lowering"
       ],
       "muscles_secondary": [
         8,
@@ -485,8 +485,8 @@
     {
       "id": 17,
       "name": "Back Lever",
-      "description": "Cuelgate boca arriba, cuerpo paralelo al suelo, trabajando espalda y cadena posterior.",
-      "skill": "Palanca posterior",
+      "description": "Hang face up, body parallel to floor, working back and posterior chain.",
+      "skill": "Back Lever",
       "equipment": [
         6
       ],
@@ -509,15 +509,15 @@
         16
       ],
       "formCues": [
-        "Comienza con posición encogida en anilla o barra",
-        "Activa dorsales y core intensamente",
-        "Extiende las piernas hacia atrás gradualmente",
-        "Mantén el cuerpo en línea recta"
+        "Start with tucked position on ring or bar",
+        "Activate lats and Core intensely",
+        "Gradually extend your legs backward",
+        "Keep body in straight line"
       ],
       "commonMistakes": [
-        "No flexiones los codos",
-        "Evita que las caderas se hundan",
-        "No arquees la espalda excesivamente"
+        "Don't bend elbows",
+        "Avoid hips sinking",
+        "Don't arch back excessively"
       ],
       "muscles_secondary": [
         13,
@@ -528,8 +528,8 @@
     {
       "id": 104,
       "name": "Bear Crawl",
-      "description": "Gatea sobre manos y pies con las rodillas fuera del suelo, un ejercicio de fuerza y movilidad corporal completa.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Crawl on hands and feet with knees off the floor, a full-body strength and mobility exercise.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         16
       ],
@@ -551,15 +551,15 @@
       ],
       "progressions": [],
       "formCues": [
-        "Comienza sobre manos y pies, rodillas flotando",
-        "Mueve hacia adelante con mano y pie opuestos",
-        "Mantén las caderas a nivel y bajas al suelo",
-        "Mantén un ritmo constante"
+        "Start on hands and feet, knees floating",
+        "Move forward with opposite hand and foot",
+        "Keep hips level and lower to the floor",
+        "Maintain a steady pace"
       ],
       "commonMistakes": [
-        "No dejes que las caderas se hundan o eleven",
-        "Evita levantar una rodilla demasiado alta",
-        "No apresures el movimiento"
+        "Don't let hips sink o eleven",
+        "Avoid lifting a Knee too high",
+        "Don't rush the movement"
       ],
       "muscles_secondary": [
         2,
@@ -571,8 +571,8 @@
     {
       "id": 86,
       "name": "Bench Calf Raise",
-      "description": "Párate en el borde de un banco, eleva los talones para mayor rango, trabajando pantorrillas.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Stand on edge of a bench, lift heels for greater range, working calves.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         12
       ],
@@ -595,15 +595,15 @@
         88
       ],
       "formCues": [
-        "Párate en el borde del banco con los talones colgando",
-        "Eleva hasta la punta de los pies lo más alto posible",
-        "Contrae pantorrillas en la parte superior",
-        "Baja los talones por debajo del nivel del banco"
+        "Stand on edge of bench with heels hanging",
+        "Lift as high as possible to the tips of your toes",
+        "Squeeze calves at the top",
+        "Lower heels below bench level"
       ],
       "commonMistakes": [
-        "No hagas un recorrido demasiado corto",
+        "Don't make the range too short",
         "Evita usar impulso",
-        "No apresures la fase excéntrica"
+        "Don't rush the eccentric phase"
       ],
       "muscles_secondary": [
         15
@@ -612,7 +612,7 @@
     {
       "id": 34,
       "name": "Bench Dip",
-      "description": "Manos en un banco, pies en el suelo, baja para trabajar tríceps con menos intensidad.",
+      "description": "Hands on a bench, feet on the floor, lower to work Triceps with less intensity.",
       "skill": "Variaciones de fondos",
       "equipment": [
         12
@@ -635,15 +635,15 @@
         32
       ],
       "formCues": [
-        "Siéntate en el borde del banco, manos agarrando el borde",
-        "Desliza la cadera fuera del banco, brazos extendidos",
-        "Baja el cuerpo flexionando los codos",
-        "Empuja hacia arriba para volver a la posición inicial"
+        "Sit on edge of bench, hands grabbing edge",
+        "Slide Hip out of bench, Arms Extended",
+        "Lower body by bending elbows",
+        "Push up to return to the starting position"
       ],
       "commonMistakes": [
-        "No vayas demasiado profundo al inicio",
-        "Evita redondear los hombros",
-        "No coloques los pies demasiado hacia adelante"
+        "Don't go too deep initially",
+        "Avoid rounding shoulders",
+        "Don't place feet too far forward"
       ],
       "muscles_secondary": [
         4,
@@ -653,8 +653,8 @@
     {
       "id": 41,
       "name": "Biceps Curl",
-      "description": "Usando bandas elásticas, flexiona las manos hacia los hombros para aislar los bíceps.",
-      "skill": "Variaciones de dominadas",
+      "description": "Using resistance bands, flex hands toward shoulders to isolate biceps.",
+      "skill": "Pull-up Variations",
       "equipment": [
         2
       ],
@@ -675,15 +675,15 @@
       ],
       "progressions": [],
       "formCues": [
-        "Párate erguido, sujeta el peso con agarre supino",
-        "Mantén los codos cerca del torso",
-        "Levanta el peso flexionando los codos",
-        "Baja lentamente durante 2-3 segundos"
+        "Stand upright, Hold the weight with supine grip",
+        "Keep elbows close to the torso",
+        "Lift weight by bending elbows",
+        "Lower slowly durante 2-3 segundos"
       ],
       "commonMistakes": [
-        "No balancees el cuerpo",
+        "Don't sway body",
         "Evita usar impulso",
-        "No estires los codos completamente"
+        "Don't lock elbows completely"
       ],
       "muscles_secondary": [
         19
@@ -692,7 +692,7 @@
     {
       "id": 124,
       "name": "Bicycles",
-      "description": "Un ejercicio dinámico de core realizado acostado boca arriba con las piernas en movimiento de ciclismo mientras llevas el codo opuesto a la rodilla, proporcionando una activación abdominal completa a través de patrones de movimiento rotacional.",
+      "description": "A dynamic Core exercise performed lying face up with legs in cycling motion while bringing opposite elbow to knee, providing complete abdominal activation through rotational movement patterns.",
       "skill": "",
       "equipment": [
         16
@@ -716,15 +716,15 @@
         125
       ],
       "formCues": [
-        "Acuéstate boca arriba, manos detrás de la cabeza",
-        "Lleva el codo opuesto a la rodilla",
-        "Extiende la otra pierna recta",
-        "Alterna lados en movimiento de ciclismo"
+        "Lie on your back, Hands behind your head",
+        "Bring opposite elbow to knee",
+        "extend the other leg straight",
+        "Alternate sides in a cycling motion"
       ],
       "commonMistakes": [
-        "No tires del cuello",
-        "Evita ir demasiado rápido",
-        "No dejes que los codos se abran hacia afuera"
+        "Don't pull on neck",
+        "Avoid going too fast",
+        "Don't let elbows open outward"
       ],
       "muscles_secondary": [
         14
@@ -733,7 +733,7 @@
     {
       "id": 61,
       "name": "Bird Dog",
-      "description": "Desde cuatro puntos, extiende el brazo y la pierna opuestos, equilibrando para activar los músculos profundos del core.",
+      "description": "From all fours, extend opposite arm and leg, balancing to activate deep Core muscles.",
       "skill": "Core",
       "equipment": [],
       "difficulty": [
@@ -748,23 +748,23 @@
         53
       ],
       "formCues": [
-        "Comienza sobre manos y rodillas",
-        "Extiende el brazo y la pierna opuestos",
-        "Mantén las caderas a nivel y cuadradas",
-        "Mantén brevemente, luego alterna"
+        "Start on hands and knees",
+        "Extend arm and opposite leg",
+        "Keep hips level and square",
+        "Hold briefly, luego Alternate"
       ],
       "commonMistakes": [
-        "No dejes que las caderas giren",
-        "Evita arquear la espalda",
-        "No extiendas demasiado"
+        "Don't let hips rotate",
+        "Avoid arching back",
+        "Don't extend too much"
       ],
       "muscles_secondary": []
     },
     {
       "id": 71,
       "name": "Bulgarian Split Squat",
-      "description": "Un pie elevado detrás en un banco, sentadilla con la pierna frontal para trabajar cuádriceps.",
-      "skill": "Sujeción Hollow Body",
+      "description": "One foot elevated behind on a bench, squat with front leg to work quads.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         12
       ],
@@ -789,15 +789,15 @@
         73
       ],
       "formCues": [
-        "Un pie detrás en el banco o step",
-        "Baja las caderas hasta que la rodilla frontal esté a 90 grados",
-        "Impulsa a través del talón frontal para regresar",
-        "Mantén el torso erguido"
+        "One foot back on the bench o step",
+        "Lower the hips until the front knee at 90 degrees",
+        "Push through the front heel to return",
+        "Keep torso upright"
       ],
       "commonMistakes": [
-        "No dejes que la rodilla frontal avance demasiado sobre los pies",
-        "Evita rango de movimiento incompleto",
-        "No te inclines hacia adelante excesivamente"
+        "Don't let front knee advance too far over feet",
+        "Avoid incomplete range of motion",
+        "Don't lean forward excessively"
       ],
       "muscles_secondary": [
         7,
@@ -807,8 +807,8 @@
     {
       "id": 99,
       "name": "Burpee",
-      "description": "Sentadilla, salta hacia atrás a plancha, flexión, luego salta hacia arriba: un ejercicio de acondicionamiento corporal completo.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Squat, jump back to plank, push-up, then jump up: a full-body conditioning exercise.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         15
       ],
@@ -833,15 +833,15 @@
         104
       ],
       "formCues": [
-        "Comienza de pie, baja a sentadilla",
-        "Lanza los pies hacia atrás a plancha",
-        "Haz una flexión",
-        "Salta los pies hacia adelante y explota hacia arriba"
+        "Start standing, lower to Squat",
+        "Throw the feet backward to plank",
+        "Haz una Push-up",
+        "Jump feet forward and Explode upward"
       ],
       "commonMistakes": [
-        "No te saltes la flexión",
-        "Evita lanzar las piernas demasiado ancho",
-        "No hunda la posición de plancha"
+        "Don't skip the push-up",
+        "Avoid throwing legs too wide",
+        "Don't sink the position of plank"
       ],
       "muscles_secondary": [
         2,
@@ -853,8 +853,8 @@
     {
       "id": 84,
       "name": "Calf Raise",
-      "description": "De pie, eleva los talones del suelo, trabajando pantorrillas con el peso corporal en un movimiento simple.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Standing, lift heels from floor, working calves with bodyweight in a simple movement.",
+      "skill": "Hollow Body Hold",
       "equipment": [],
       "difficulty": [
         1
@@ -869,23 +869,23 @@
         85
       ],
       "formCues": [
-        "Párate con los pies a la anchura de los hombros",
-        "Eleva hasta la punta de los pies lo más alto posible",
-        "Contrae pantorrillas en la parte superior",
-        "Baja lentamente"
+        "Stand with the feet at shoulder width",
+        "Lift as high as possible to the tips of your toes",
+        "Squeeze calves at the top",
+        "Lower slowly"
       ],
       "commonMistakes": [
-        "No bloquees las rodillas bruscamente",
-        "Evita ir demasiado rápido",
-        "No eleves solo hasta la mitad"
+        "Don't lock knees abruptly",
+        "Avoid going too fast",
+        "Don't lift only halfway"
       ],
       "muscles_secondary": []
     },
     {
       "id": 12,
       "name": "Chin-Up",
-      "description": "Palmas facing hacia ti, sube para activar más los bíceps que los dorsales, un clásico ejercicio de espalda.",
-      "skill": "Variaciones de dominadas",
+      "description": "Palms facing you, pull up to activate more the biceps than the lats, a classic back exercise.",
+      "skill": "Pull-up Variations",
       "equipment": [
         6
       ],
@@ -909,15 +909,15 @@
         11
       ],
       "formCues": [
-        "Agarre prono (palmas hacia ti), a la anchura de los hombros",
-        "Mantén los codos cerca del cuerpo",
-        "Lleva la barbilla por encima de la barra",
-        "Contrae bíceps en la parte superior"
+        "Pronated grip (palms toward you), at shoulder width",
+        "Keep elbows close to body",
+        "Bring your chin over the bar",
+        "Squeeze Biceps at the top"
       ],
       "commonMistakes": [
-        "No balancees las piernas",
-        "Evita ir demasiado shallow en la parte superior",
-        "No apresures la fase excéntrica"
+        "Don't sway legs",
+        "Avoid going too shallow at the top",
+        "Don't rush the eccentric phase"
       ],
       "muscles_secondary": [
         9,
@@ -928,8 +928,8 @@
     {
       "id": 95,
       "name": "Clamshell",
-      "description": "Acostado de lado con las rodillas dobladas, abre las rodillas como una almeja para trabajar los abductores.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Lying on side with bent knees, open knees like a clam to work abductors.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         16
       ],
@@ -951,15 +951,15 @@
         94
       ],
       "formCues": [
-        "Acuéstate de lado, rodillas dobladas a 90 grados",
-        "Mantén los pies juntos, eleva la rodilla superior",
-        "Contrae glúteo medio en la parte superior",
-        "Baja lentamente"
+        "Lie on your side, Knees bent at 90 degrees",
+        "Keep feet together, lift the top knee",
+        "Squeeze medial glute at the top",
+        "Lower slowly"
       ],
       "commonMistakes": [
-        "No dejes que la espalda se ruede hacia atrás",
-        "Evita usar impulso para levantar",
-        "No dejes que los pies se separen"
+        "Don't let the back roll backward",
+        "Avoid using momentum to lift",
+        "No dejes que los Foots se separen"
       ],
       "muscles_secondary": [
         20
@@ -968,8 +968,8 @@
     {
       "id": 4,
       "name": "Clap Push-Up",
-      "description": "Una flexión explosiva donde empujas el suelo lo suficientemente fuerte para aplaudir en el aire, desarrollando potencia y velocidad del pecho.",
-      "skill": "Variaciones de flexiones",
+      "description": "An explosive push-up where you push the ground hard enough to clap in the air, developing chest power and speed.",
+      "skill": "Push-up Variations",
       "equipment": [],
       "difficulty": [
         2
@@ -987,23 +987,23 @@
         10
       ],
       "formCues": [
-        "Explota hacia arriba con potencia máxima",
-        "Aplaudir las manos en el punto más alto del movimiento",
-        "Aterriza suavemente sobre las palmas",
-        "Mantén el core abrochado durante todo el movimiento"
+        "Explode upward with maximum power",
+        "Clap hands at the highest point of the movement",
+        "Land softly on your palms",
+        "Keep core engaged throughout the movement"
       ],
       "commonMistakes": [
-        "No dudes en aplaudir - sé decisivo",
-        "Evita aterrizar con los brazos rectos",
-        "No sacrifiques la forma por altura"
+        "Don't hesitate to clap - be decisive",
+        "Avoid landing with arms straight",
+        "Don't sacrifice form for height"
       ],
       "muscles_secondary": []
     },
     {
       "id": 37,
       "name": "Close-Grip Push-Up",
-      "description": "Manos juntas en una flexión, desplazando el enfoque hacia los tríceps sobre el pecho.",
-      "skill": "Variaciones de flexiones",
+      "description": "Hands together in a Push-up, shifting the focus towards Triceps over chest.",
+      "skill": "Push-up Variations",
       "equipment": [],
       "difficulty": [
         2
@@ -1022,23 +1022,23 @@
         8
       ],
       "formCues": [
-        "Manos bajo el pecho, juntas",
-        "Mantén los codos pegados a las costillas",
-        "Baja el pecho entre las manos",
-        "Enfócate en la activación de tríceps"
+        "Manos Low chest, together",
+        "Keep elbows close to the ribs",
+        "Lower chest between hands",
+        "Focus on the activation of triceps"
       ],
       "commonMistakes": [
-        "No dejes que los codos se abran",
-        "Evita que las caderas se hundan",
-        "No vayas demasiado shallow"
+        "Don't let elbows open",
+        "Avoid hips sinking",
+        "Don't go too shallow"
       ],
       "muscles_secondary": []
     },
     {
       "id": 21,
       "name": "Commando Pull-Up",
-      "description": "Dominada con agarre alterno, tirando de la cabeza hacia un lado y luego el otro, trabajando espalda y bíceps.",
-      "skill": "Variaciones de dominadas",
+      "description": "Pull-up with Alternateting grip, pulling head to one side and then the other, working back and biceps.",
+      "skill": "Pull-up Variations",
       "equipment": [
         6
       ],
@@ -1062,15 +1062,15 @@
         22
       ],
       "formCues": [
-        "Agarra anillas o barras, una mano en cada lado",
-        "Tira del pecho hacia un lado",
-        "Alterna lados con cada repetición",
-        "Mantén el core activado"
+        "Grab rings or bars, one hand on each side",
+        "Pull chest to one side",
+        "Alternatete sides with each rep",
+        "Keep core activated"
       ],
       "commonMistakes": [
-        "No gires el torso excesivamente",
+        "Don't rotate torso excessively",
         "Evita usar impulso",
-        "No dejes que un lado haga todo el trabajo"
+        "Don't let one side do all the work"
       ],
       "muscles_secondary": [
         9,
@@ -1082,8 +1082,8 @@
     {
       "id": 90,
       "name": "Cossack Squat",
-      "description": "Sentadilla con postura ancha desplazando el peso de lado a lado, estirando y fortaleciendo los aductores.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Wide stance squat shifting weight side to side, stretching and strengthening adductors.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         15
       ],
@@ -1107,15 +1107,15 @@
         89
       ],
       "formCues": [
-        "Párate ancho, desplaza el peso hacia un lado",
-        "Agáchate profundamente en una pierna mientras la otra está recta",
-        "Mantén el pie abajo en la pierna que se agacha",
-        "Alterna lados"
+        "Stand wide, shift the weight to one side",
+        "Squat deeply on one leg while the other is straight",
+        "Keep the foot low on the leg that squats",
+        "Alternate sides"
       ],
       "commonMistakes": [
-        "No levantes el pie en la pierna que se agacha",
-        "Evita ir demasiado shallow",
-        "No dejes que la rodilla colapse hacia adentro"
+        "Don't lift the foot on the leg that squats",
+        "Avoid going too shallow",
+        "Don't let knee collapse inward"
       ],
       "muscles_secondary": [
         7,
@@ -1125,8 +1125,8 @@
     {
       "id": 106,
       "name": "Crow Pose",
-      "description": "Similar a la posición de rana pero con las rodillas fuera de los codos, mejorando la fuerza de muñecas y core.",
-      "skill": "Plancha",
+      "description": "Similar to frog position but with knees outside elbows, improving wrist and Core strength.",
+      "skill": "Plank",
       "equipment": [
         16
       ],
@@ -1147,15 +1147,15 @@
       ],
       "progressions": [],
       "formCues": [
-        "Agáchate con las manos a la anchura de los hombros",
-        "Coloca las rodillas en la parte posterior de los brazos superiores",
-        "Inclínate ligeramente hacia adelante",
-        "Levanta un pie, luego el otro"
+        "Squat with hands at shoulder width",
+        "Place knees on back of upper arms",
+        "Lean slightly forward forward",
+        "Levanta One foot, luego el otro"
       ],
       "commonMistakes": [
-        "No dejes que los codos se abran hacia afuera",
-        "Evita mirar demasiado abajo",
-        "No pongas todo el peso en las muñecas"
+        "Don't let elbows open outward",
+        "Avoid looking too low",
+        "Don't put all your weight on the wrists"
       ],
       "muscles_secondary": [
         2,
@@ -1165,7 +1165,7 @@
     {
       "id": 53,
       "name": "Crunch",
-      "description": "Acostado boca arriba, curla los hombros hacia la pelvis para contraer los abdominales directamente.",
+      "description": "Lying face up, curl shoulders toward pelvis to contract abs directly.",
       "skill": "Core",
       "equipment": [],
       "difficulty": [
@@ -1185,22 +1185,22 @@
         55
       ],
       "formCues": [
-        "Acuéstate boca arriba, rodillas dobladas",
-        "Manos detrás de la cabeza o cruzadas en el pecho",
-        "Levanta los hombros del suelo",
-        "Contrae abdominales en la parte superior"
+        "Lie on your back, Knees bent",
+        "Hands behind your head o cruzadas en chest",
+        "Lift shoulders off ground",
+        "Squeeze abs at the top"
       ],
       "commonMistakes": [
-        "No tires del cuello",
-        "Evita ir demasiado alto demasiado pronto",
-        "No rebotes en la parte inferior"
+        "Don't pull on neck",
+        "Avoid going too high too soon",
+        "Don't bounce at bottom"
       ],
       "muscles_secondary": []
     },
     {
       "id": 59,
       "name": "Dead Bug",
-      "description": "Acostado boca arriba, extiende el brazo y la pierna opuestos mientras mantienes el core abrochado, trabajando abdominales profundos.",
+      "description": "Lying face up, extend opposite arm and leg while keeping Core braced, working deep abs.",
       "skill": "Core",
       "equipment": [],
       "difficulty": [
@@ -1215,23 +1215,23 @@
         53
       ],
       "formCues": [
-        "Acuéstate boca arriba, brazos extendidos hacia arriba",
-        "Levanta las piernas a posición de mesa",
-        "Baja el brazo y la pierna opuestos lentamente",
-        "Mantén la espalda baja presionada contra el suelo"
+        "Lie on your back, Arms Extended upward",
+        "Lift the legs to tabletop position",
+        "Lower opposite arm and leg slowly",
+        "Keep back low pressed against the floor"
       ],
       "commonMistakes": [
-        "No dejes que la espalda se arquee fuera del suelo",
-        "Evita apresurar el movimiento",
-        "No empujes demasiado fuerte con las extremidades"
+        "Don't let the back arch off the floor",
+        "Avoid rushing the movement",
+        "Don't push too hard with limbs"
       ],
       "muscles_secondary": []
     },
     {
       "id": 42,
       "name": "Dead Hang",
-      "description": "Cuélgate de una barra todo el tiempo posible, desarrollando resistencia de antebrazo y agarre.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Hang from a bar as long as possible, developing forearm and grip endurance.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         6
       ],
@@ -1251,15 +1251,15 @@
       ],
       "progressions": [],
       "formCues": [
-        "Agarra la barra con ambas manos, brazos extendidos",
-        "Cuelga libremente, deja que los hombros se relajen",
-        "Mantén el core activado ligeramente",
-        "Mantén durante la duración deseada"
+        "Grab bar with both hands, Arms Extended",
+        "Cuelga libremente, deja than shoulders se relajen",
+        "Keep core activated slightly",
+        "Hold during the desired duration"
       ],
       "commonMistakes": [
-        "No eleves los hombros excesivamente",
-        "Evita usar solo el agarre de los dedos",
-        "No rebotes en la parte inferior"
+        "Don't elevate shoulders excessively",
+        "Avoid using only finger grip",
+        "Don't bounce at bottom"
       ],
       "muscles_secondary": [
         9,
@@ -1269,8 +1269,8 @@
     {
       "id": 7,
       "name": "Decline Push-Up",
-      "description": "Pies elevados, manos en el suelo, desplazando el enfoque hacia el pecho superior y hombros en una flexión.",
-      "skill": "Variaciones de flexiones",
+      "description": "Elevated feet, hands on floor, shifting focus to upper chest and shoulders in a push-up.",
+      "skill": "Push-up Variations",
       "equipment": [],
       "difficulty": [
         2
@@ -1289,23 +1289,23 @@
         25
       ],
       "formCues": [
-        "Pies elevados en una superficie estable",
-        "Manos a la anchura de los hombros",
-        "Enfócate en el pecho superior y hombros",
-        "Comienza con una elevación moderada"
+        "Foots Raiseds en una superficie stable",
+        "Hands at shoulder width",
+        "Focus on the chest upper and shoulders",
+        "Start with a moderate elevation"
       ],
       "commonMistakes": [
-        "No dejes que las caderas se hundan por debajo de la línea de los hombros",
-        "Evita ir demasiado profundo demasiado pronto",
-        "No flexiones los brazos demasiado ancho"
+        "Don't let hips sink below of the shoulder line",
+        "Avoid going too deep too soon",
+        "Don't bend arms too wide"
       ],
       "muscles_secondary": []
     },
     {
       "id": 3,
       "name": "Diamond Push-Up",
-      "description": "Manos juntas formando un diamante, trabajando el pecho interno y los tríceps con una desafiante variación de flexión.",
-      "skill": "Variaciones de flexiones",
+      "description": "Hands together forming a diamond, working inner chest and triceps with a challenging push-up variation.",
+      "skill": "Push-up Variations",
       "equipment": [],
       "difficulty": [
         2
@@ -1324,23 +1324,23 @@
         8
       ],
       "formCues": [
-        "Forma un diamante con pulgares e índices",
-        "Mantén los codos cerca de tus costillas",
-        "Baja el pecho hacia la forma de diamante",
-        "Enfócate en la activación de tríceps"
+        "Form a diamond with thumbs and index fingers",
+        "Keep elbows close to your ribs",
+        "Lower chest into diamond shape",
+        "Focus on the activation of triceps"
       ],
       "commonMistakes": [
-        "No dejes que los codos se abran",
-        "Evita que las caderas se hundan",
-        "No vayas demasiado shallow en el movimiento"
+        "Don't let elbows open",
+        "Avoid hips sinking",
+        "Don't go too shallow in movement"
       ],
       "muscles_secondary": []
     },
     {
       "id": 82,
       "name": "Donkey Kick",
-      "description": "Sobre cuatro puntos, patea una pierna hacia atrás y hacia arriba, aislando los glúteos para fuerza y tono.",
-      "skill": "Sujeción Hollow Body",
+      "description": "On all fours, kick one leg back and up, isolating glutes for strength and tone.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         16
       ],
@@ -1362,15 +1362,15 @@
         79
       ],
       "formCues": [
-        "Comienza sobre manos y rodillas",
-        "Levanta una pierna con la rodilla doblada a 90 grados",
-        "Patea el talón hacia el techo",
-        "Contrae glúteos en la parte superior"
+        "Start on hands and knees",
+        "Lift one leg with knee bent at 90 degrees",
+        "Kick the heel toward the ceiling",
+        "Squeeze Glutes at the top"
       ],
       "commonMistakes": [
-        "No estires la pierna demasiado",
-        "Evita rotar las caderas hacia arriba",
-        "No apresures el movimiento"
+        "Don't stretch leg too much",
+        "Avoid rotating hips upward",
+        "Don't rush the movement"
       ],
       "muscles_secondary": [
         11
@@ -1379,8 +1379,8 @@
     {
       "id": 49,
       "name": "Dragon Flag",
-      "description": "Acostado en un banco, levanta las piernas y caderas rectas hacia arriba, luego baja lentamente, un ejercicio avanzado de abdominales.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Lying on a bench, lift straight legs and hips up, then Lower slowly, an advanced abs exercise.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         12
       ],
@@ -1401,15 +1401,15 @@
       ],
       "progressions": [],
       "formCues": [
-        "Acuéstate en el banco, agarra detrás de la cabeza",
-        "Levanta todo el cuerpo como una línea recta",
-        "Baja lentamente con control",
-        "Activa los abdominales intensamente durante todo el movimiento"
+        "Lie on the bench, grab behind the head",
+        "Lift the entire body as a straight line",
+        "Lower slowly with control",
+        "Activate abs intensely throughout the movement"
       ],
       "commonMistakes": [
-        "No te rompas en la cintura",
+        "Don't break at waist",
         "Evita usar impulso",
-        "No vayas demasiado profundo al inicio"
+        "Don't go too deep initially"
       ],
       "muscles_secondary": [
         6,
@@ -1419,8 +1419,8 @@
     {
       "id": 43,
       "name": "Finger Pull-Up",
-      "description": "Sube usando solo las yemas de los dedos en una barra, mejorando la fuerza de antebrazo y agarre.",
-      "skill": "Variaciones de dominadas",
+      "description": "Pull up using only finger pads on a bar, improving forearm and grip strength.",
+      "skill": "Pull-up Variations",
       "equipment": [],
       "difficulty": [
         3
@@ -1439,23 +1439,23 @@
         15
       ],
       "formCues": [
-        "Agarra la barra solo con las yemas de los dedos",
-        "Realiza la dominada con fuerza de los dedos",
-        "Progresa gradualmente desde dominadas regulares",
-        "Activa todo el cuerpo"
+        "Grab the bar with just your fingertips",
+        "Perform the Pull-up with finger strength",
+        "Progress Gradually from regular Pull-ups",
+        "Activate entire body"
       ],
       "commonMistakes": [
-        "No lo intentes demasiado pronto",
-        "Evita usar agarre de palma en su lugar",
-        "No dejes que los dedos se resbalen"
+        "Don't try too soon",
+        "Avoid using palm grip instead",
+        "Don't let fingers slip"
       ],
       "muscles_secondary": []
     },
     {
       "id": 98,
       "name": "Fire Hydrant",
-      "description": "Sobre cuatro puntos, levanta una pierna hacia el lado, imitando un perro en una hidrante, para abductores.",
-      "skill": "Sujeción Hollow Body",
+      "description": "On all fours, lift one leg to the side, imitating a dog on a hydrant, for abductors.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         16
       ],
@@ -1475,15 +1475,15 @@
       ],
       "progressions": [],
       "formCues": [
-        "Comienza sobre manos y rodillas",
-        "Levanta una pierna hacia el lado, rodilla doblada a 90",
-        "Mantén el tobillo sobre la rodilla",
-        "Baja con control"
+        "Start on hands and knees",
+        "Lift one leg to side, knee bent at 90",
+        "Keep ankle over knee",
+        "Lower with control"
       ],
       "commonMistakes": [
-        "No dejes que la cadera gire hacia adelante",
-        "Evita ir demasiado alto inicialmente",
-        "No apresures el movimiento"
+        "Don't let Hip rotate forward",
+        "Avoid going too high initially",
+        "Don't rush the movement"
       ],
       "muscles_secondary": [
         8,
@@ -1493,7 +1493,7 @@
     {
       "id": 125,
       "name": "Flutter",
-      "description": "Un ejercicio de aislamiento abdominal realizado acostado boca arriba donde alternas levantando y bajando las piernas en un movimiento de aleteo, trabajando abdominales inferiores y flexores de cadera para el desarrollo de fuerza del core.",
+      "description": "An abdominal isolation exercise performed lying face up where you Alternatete lifting and lowering legs in a fluttering motion, working lower abs and hip flexors for Core strength development.",
       "skill": "Core",
       "equipment": [],
       "difficulty": [
@@ -1508,23 +1508,23 @@
         53
       ],
       "formCues": [
-        "Acuéstate boca arriba, brazos a los lados",
-        "Levanta las piernas ligeramente del suelo",
-        "Alterna las piernas en un pequeño movimiento de tijera",
-        "Mantén el core activado"
+        "Lie on your back, Arms to the sides",
+        "Lift legs slightly off ground",
+        "Alternate the legs in a small scissors movement",
+        "Keep core activated"
       ],
       "commonMistakes": [
-        "No dejes que las piernas se hundan al suelo",
-        "Evita patear demasiado alto",
-        "No arquees la espalda"
+        "No dejes que legs se hundan to the floor",
+        "Avoid kicking too high",
+        "Don't arch the back"
       ],
       "muscles_secondary": []
     },
     {
       "id": 105,
       "name": "Frog Stand",
-      "description": "Equilibrio sobre las manos con las rodillas descansando en los codos, un paso principiante hacia la plancha.",
-      "skill": "Plancha",
+      "description": "Balance on hands with knees resting on elbows, a beginner step towards Plank.",
+      "skill": "Plank",
       "equipment": [
         16
       ],
@@ -1547,15 +1547,15 @@
         106
       ],
       "formCues": [
-        "Agáchate bajo con las manos en el suelo entre los pies",
-        "Coloca las rodillas en los brazos para soporte",
-        "Levanta un pie, luego el otro para flotar",
-        "Equilibra con el core activado"
+        "Squat low with hands on the floor between the feet",
+        "Place knees on arms for support",
+        "Lift one foot, then the other to float",
+        "Balance with Core activated"
       ],
       "commonMistakes": [
-        "No dejes que los codos colapsen hacia adentro",
-        "Evita poner demasiado peso en los hombros",
-        "No apresures el despegue"
+        "Don't let elbows collapse inward",
+        "Avoid putting too much weight on shoulders",
+        "Don't rush takeoff"
       ],
       "muscles_secondary": [
         6
@@ -1564,7 +1564,7 @@
     {
       "id": 16,
       "name": "Front Lever",
-      "description": "Mantén el cuerpo paralelo al suelo desde una barra, un ejercicio estático para fuerza de espalda y core.",
+      "description": "Hold body parallel to floor from a bar, a static exercise for back and Core strength.",
       "skill": "Palanca frontal",
       "equipment": [
         6
@@ -1587,15 +1587,15 @@
       ],
       "progressions": [],
       "formCues": [
-        "Cuélgate de la barra con brazos rectos",
-        "Activa dorsales y core firmemente",
-        "Levanta el cuerpo hasta estar paralelo al suelo",
-        "Mantén los brazos rectos durante todo el movimiento"
+        "Hang from the bar with arms straight",
+        "Activate lats and Core firmly",
+        "Lift the body until parallel to the floor",
+        "Keep arms straight throughout the movement"
       ],
       "commonMistakes": [
-        "No flexiones los codos",
-        "Evita hacer puente en las caderas",
-        "No dejes que las piernas bajen por debajo de la horizontal"
+        "Don't bend elbows",
+        "Avoid bridging hips",
+        "Don't let legs drop below horizontal"
       ],
       "muscles_secondary": [
         13,
@@ -1606,7 +1606,7 @@
     {
       "id": 114,
       "name": "Front Lever Pull",
-      "description": "Desde una suspensión, tira hacia una palanca frontal y mantén brevemente, desarrollando fuerza dinámica.",
+      "description": "From a hang, pull toward a front lever and hold briefly, developing dynamic strength.",
       "skill": "Palanca frontal",
       "equipment": [
         6
@@ -1629,14 +1629,14 @@
       ],
       "progressions": [],
       "formCues": [
-        "Comienza en posición de palanca frontal",
-        "Tira del cuerpo hacia la barra con brazos rectos",
-        "Mantén el core apretado durante todo el movimiento",
-        "Controla la descendencia"
+        "Start in position front lever position",
+        "Pull body to bar with arms straight",
+        "Keep Core tight throughout the movement",
+        "Control the descent"
       ],
       "commonMistakes": [
-        "No flexiones los codos durante el tirón",
-        "Evita hacer puente en las caderas",
+        "Don't bend elbows during the pull",
+        "Avoid bridging hips",
         "No uses impulso"
       ],
       "muscles_secondary": [
@@ -1647,8 +1647,8 @@
     {
       "id": 79,
       "name": "Glute Bridge",
-      "description": "Acostado boca arriba, eleva las caderas apretando los glúteos, un ejercicio básico de activación para fuerza de glúteos.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Lying face up, lift hips squeezing glutes, a basic activation exercise for glute strength.",
+      "skill": "Hollow Body Hold",
       "equipment": [],
       "difficulty": [
         1
@@ -1663,23 +1663,23 @@
         80
       ],
       "formCues": [
-        "Acuéstate boca arriba, rodillas dobladas, pies planos",
-        "Eleva las caderas hasta que hombros a rodillas estén en línea",
-        "Contrae glúteos en la parte superior",
-        "Baja lentamente"
+        "Lie on your back, knees bent, feet flat",
+        "Lift the hips until shoulders to knees are in line",
+        "Squeeze Glutes at the top",
+        "Lower slowly"
       ],
       "commonMistakes": [
-        "No arquees la espalda baja excesivamente",
-        "Evita ir demasiado shallow",
-        "No empujes solo con los talones"
+        "Don't arch lower back excessively",
+        "Avoid going too shallow",
+        "Don't push only with heels"
       ],
       "muscles_secondary": []
     },
     {
       "id": 76,
       "name": "Glute-Ham Raise",
-      "description": "En un banco, curla el cuerpo hacia arriba desde las rodillas, un ejercicio avanzado de isquiotibiales y glúteos.",
-      "skill": "Sujeción Hollow Body",
+      "description": "On a bench, curl body up from knees, an advanced hamstring and glute exercise.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         12
       ],
@@ -1702,15 +1702,15 @@
         75
       ],
       "formCues": [
-        "Ancla los pies debajo de las almohadillas, rodillas en la almohadilla",
-        "Baja el cuerpo extendiendo en la rodilla",
-        "Usa los isquiotibiales para tirar hacia arriba",
-        "Mantén el core activado"
+        "Ancla los Foots deLow de las almohadillas, Knees en la almohadilla",
+        "Lower body extending the knee",
+        "Use hamstrings to pull up",
+        "Keep core activated"
       ],
       "commonMistakes": [
-        "No dejes que las caderas se hundan demasiado",
-        "Evita usar impulso para regresar",
-        "No redondees la espalda"
+        "Don't let hips sink demasiado",
+        "Avoid using momentum to return",
+        "Don't round back"
       ],
       "muscles_secondary": [
         16
@@ -1719,8 +1719,8 @@
     {
       "id": 120,
       "name": "Hammer Pull Up",
-      "description": "Una variación avanzada de dominada usando anillas gimnásticas o un agarre grueso que enfatiza la activación de bíceps a través de la posición de agarre neutro en la parte superior de cada repetición.",
-      "skill": "Variaciones de dominadas",
+      "description": "An advanced pull-up variation using gymnastic rings or a thick grip that emphasizes bicep activation through neutral grip position at the top of each rep.",
+      "skill": "Pull-up Variations",
       "equipment": [],
       "difficulty": [
         3
@@ -1738,23 +1738,23 @@
         22
       ],
       "formCues": [
-        "Agarre neutro (palmas facing entre sí)",
-        "Mantén los codos cerca del cuerpo",
-        "Tira del pecho hacia la barra",
-        "Contrae espalda en la parte superior"
+        "Neutral grip (palms facing each other)",
+        "Keep elbows close to body",
+        "Pull chest to bar",
+        "Contrae Back at the top"
       ],
       "commonMistakes": [
-        "No dejes que las palmas giren durante el tirón",
+        "Don't let the palms rotate during the pull",
         "Evita usar impulso",
-        "No vayas demasiado shallow"
+        "Don't go too shallow"
       ],
       "muscles_secondary": []
     },
     {
       "id": 77,
       "name": "Hamstring Curl with Band",
-      "description": "Acostado boca abajo, curla las piernas contra la resistencia de la banda, aislando efectivamente los isquiotibiales.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Lying face down, curl legs against band resistance, effectively isolating hamstrings.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         2
       ],
@@ -1776,15 +1776,15 @@
         78
       ],
       "formCues": [
-        "Adjunta la banda al tobillo, ancla el extremo opuesto",
-        "Acuéstate boca abajo o párate, curla el talón hacia el glúteo",
-        "Contrae isquiotibiales en la parte superior",
-        "Baja lentamente"
+        "Attach the band to the ankle, anchor the opposite end",
+        "Lie face down or stand, curl the heel toward the glute",
+        "Squeeze hamstrings at the top",
+        "Lower slowly"
       ],
       "commonMistakes": [
-        "No uses impulso para curlar hacia arriba",
-        "Evita elevar las caderas durante el movimiento",
-        "No apresures la fase excéntrica"
+        "Don't use momentum to curl up",
+        "Avoid elevating hips during the movement",
+        "Don't rush the eccentric phase"
       ],
       "muscles_secondary": [
         8
@@ -1793,7 +1793,7 @@
     {
       "id": 23,
       "name": "Handstand",
-      "description": "Equilibra sobre las manos con los pies en el aire, desarrollando estabilidad y fuerza de hombros.",
+      "description": "Balance on hands with feet in air, developing stability and shoulder strength.",
       "skill": "Pino",
       "equipment": [],
       "difficulty": [
@@ -1811,22 +1811,22 @@
         26
       ],
       "formCues": [
-        "Comienza con pino contra la pared para estabilidad",
-        "Mantén las muñecas sobre los hombros",
-        "Activa todo el cuerpo firmemente",
-        "Mira a las manos, no al suelo"
+        "Start with handstand against wall for stability",
+        "Keep wrists over shoulders",
+        "Activate entire body firmly",
+        "Look at hands, not to the floor"
       ],
       "commonMistakes": [
-        "No hagas puente en las caderas",
-        "Evita caminar los pies demasiado abajo por la pared",
-        "No arquees la espalda baja"
+        "Don't bridge hips",
+        "Avoid walking feet too low down the wall",
+        "Don't arch lower back"
       ],
       "muscles_secondary": []
     },
     {
       "id": 26,
       "name": "Handstand Push-Up",
-      "description": "Desde un pino, baja la cabeza al suelo y empuja hacia arriba, un potente ejercicio de hombros.",
+      "description": "From a stand, lower head to floor and push up, a powerful shoulder exercise.",
       "skill": "Pino",
       "equipment": [],
       "difficulty": [
@@ -1843,23 +1843,23 @@
         24
       ],
       "formCues": [
-        "Salta a pino contra la pared",
-        "Baja la cabeza hacia el suelo gradualmente",
-        "Empuja hacia arriba con tríceps y hombros",
-        "Mantén el core apretado durante todo el movimiento"
+        "Jump to handstand against wall",
+        "Lower head to ground gradually",
+        "Push up with Triceps and shoulders",
+        "Keep Core tight throughout the movement"
       ],
       "commonMistakes": [
-        "No camines los pies demasiado abajo por la pared",
-        "Evita flexionar los codos hacia afuera",
-        "No apresures la descendencia"
+        "Don't walk feet too low down wall",
+        "Avoid bending elbows outward",
+        "Don't rush the descendencia"
       ],
       "muscles_secondary": []
     },
     {
       "id": 66,
       "name": "Hanging Knee Raise",
-      "description": "Cuélgate de una barra, eleva las rodillas al pecho, trabajando flexores de cadera y abdominales.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Hang from a bar, raise knees to chest, working hip flexors and abs.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         6
       ],
@@ -1881,15 +1881,15 @@
         48
       ],
       "formCues": [
-        "Cuélgate de la barra con brazos rectos",
-        "Eleva las rodillas hacia el pecho",
-        "Controla el movimiento en ambas direcciones",
-        "Mantén el core activado, sin balanceo"
+        "Hang from the bar with arms straight",
+        "Eleva knees hacia chest",
+        "Control the movement in both directions",
+        "Keep core activated, without swinging"
       ],
       "commonMistakes": [
-        "No uses impulso para balancearte",
-        "Evita redondear la espalda",
-        "No eleves demasiado rápido"
+        "Don't use momentum to balance",
+        "Avoid rounding the back",
+        "Don't elevate too quickly"
       ],
       "muscles_secondary": [
         6
@@ -1898,8 +1898,8 @@
     {
       "id": 48,
       "name": "Hanging Leg Raise",
-      "description": "Cuélgate de una barra, eleva las piernas rectas a 90 grados, enfocándote en abdominales inferiores.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Hang from a bar, lift legs straight to 90 degrees, focusing on lower abs.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         6
       ],
@@ -1922,15 +1922,15 @@
         49
       ],
       "formCues": [
-        "Cuélgate de la barra, brazos rectos",
-        "Eleva las piernas a la horizontal o más alto",
-        "Controla la descendencia completamente",
-        "Mantén el core apretado durante todo el movimiento"
+        "Hang from the bar, arms straight",
+        "Lift legs to horizontal or higher",
+        "Control the descent completely",
+        "Keep Core tight throughout the movement"
       ],
       "commonMistakes": [
-        "No flexiones las rodillas durante el levantamiento",
-        "Evita balancear el cuerpo",
-        "No dejes que las piernas bajen demasiado rápido"
+        "Don't bend knees during lift",
+        "Avoid swaying body",
+        "Don't let legs drop too quickly"
       ],
       "muscles_secondary": [
         6,
@@ -1940,8 +1940,8 @@
     {
       "id": 81,
       "name": "Hip Thrust",
-      "description": "Apoya los hombros en un banco, impulsa las caderas hacia arriba con los pies planos, enfocándote en la potencia de glúteos.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Place shoulders on a bench, thrust hips up with flat feet, focusing on glute power.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         12
       ],
@@ -1963,15 +1963,15 @@
         83
       ],
       "formCues": [
-        "Espalda superior en el banco, pies en el suelo",
-        "Impulsa a través de los talones para levantar las caderas",
-        "Contrae glúteos en la parte superior",
-        "Baja con control"
+        "Upper back on bench, feet on floor",
+        "Push through the heels to lift hips",
+        "Squeeze Glutes at the top",
+        "Lower with control"
       ],
       "commonMistakes": [
-        "No arquees la espalda baja excesivamente",
-        "Evita ir demasiado shallow",
-        "No empujes con las puntas de los pies"
+        "Don't arch lower back excessively",
+        "Avoid going too shallow",
+        "Don't push with balls of feet"
       ],
       "muscles_secondary": [
         6,
@@ -1981,8 +1981,8 @@
     {
       "id": 46,
       "name": "Hollow Body Hold",
-      "description": "Acostado boca arriba, eleva brazos y piernas ligeramente, formando una forma de 'banana' para trabajar abdominales.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Lying face up, lift arms and legs slightly, forming a 'banana' shape to work abs.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         16
       ],
@@ -2005,15 +2005,15 @@
         52
       ],
       "formCues": [
-        "Acuéstate boca arriba, brazos extendidos sobre la cabeza",
-        "Levanta hombros y pies del suelo",
-        "Presiona la espalda baja contra el suelo",
-        "Mantén con respiración constante"
+        "Lie on your back, Arms Extended over your head",
+        "Lift shoulders and feet off ground",
+        "Press lower back against floor",
+        "Keep constant breathing"
       ],
       "commonMistakes": [
-        "No dejes que la espalda baja se arquee",
-        "Evita elevar demasiado las extremidades",
-        "No mantengas la respiración"
+        "Don't let the back arch",
+        "Avoid elevating limbs too much",
+        "Don't hold your breath"
       ],
       "muscles_secondary": [
         16
@@ -2022,7 +2022,7 @@
     {
       "id": 109,
       "name": "Hollow Rock",
-      "description": "Rock back and forth in a hollow body position, enhancing core stability.",
+      "description": "Rock back and forth in a hollow body position, enhancing Core stability.",
       "skill": "Hollow Body Hold",
       "equipment": [],
       "difficulty": [
@@ -2043,7 +2043,7 @@
         "Start in hollow body position",
         "Rock forward and backward gently",
         "Keep lower back pressed to ground",
-        "Maintain core engagement"
+        "Maintain Core engagement"
       ],
       "commonMistakes": [
         "Don't let back come off floor",
@@ -2055,8 +2055,8 @@
     {
       "id": 56,
       "name": "Human Flag",
-      "description": "Sujeta tu cuerpo de lado desde un poste, un ejercicio extremo de oblicuos y hombros.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Hold your body sideways from a post, an extreme oblique and shoulder exercise.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         14
       ],
@@ -2079,15 +2079,15 @@
         65
       ],
       "formCues": [
-        "Agarra el poste con una mano arriba",
-        "Levanta el cuerpo lateralmente",
-        "Extiende la pierna superior hacia arriba",
-        "Mantén el core apretado"
+        "Grab post with one hand above",
+        "Lift the body laterally",
+        "Extend upper leg upward",
+        "Keep Core tight"
       ],
       "commonMistakes": [
-        "No dejes que las caderas caigan",
+        "Don't let hips drop",
         "Evita usar impulso",
-        "No te muevas demasiado rápido"
+        "Don't move too quickly"
       ],
       "muscles_secondary": [
         2,
@@ -2099,7 +2099,7 @@
     {
       "id": 121,
       "name": "In and Out",
-      "description": "Acostado boca arriba, lleva el codo opuesto a la rodilla alternando en un movimiento de pedaleo que trabaja los oblicuos y el recto abdominal.",
+      "description": "Lying face up, bring opposite elbow to knee Alternateting in a pedaling motion that works obliques and rectus abdominis.",
       "skill": "",
       "equipment": [
         15
@@ -2125,15 +2125,15 @@
         123
       ],
       "formCues": [
-        "Manos detrás de la cabeza, pies del suelo",
-        "Lleva el codo derecho a la rodilla izquierda mientras extiendes la pierna derecha",
-        "Alterna en un movimiento de pedaleo",
-        "Mantén la parte baja de la espalda presionada contra el suelo"
+        "Hands behind head, feet off ground",
+        "Bring right elbow to left knee while extending right leg",
+        "Alternate in a pedaling motion",
+        "maintain lower back pressed against floor"
       ],
       "commonMistakes": [
-        "No tires del cuello",
-        "No te muevas demasiado rápido",
-        "No levantes demasiado la cabeza"
+        "Don't pull on neck",
+        "Don't move too quickly",
+        "Don't lift head too much"
       ],
       "muscles_secondary": [
         2
@@ -2142,8 +2142,8 @@
     {
       "id": 6,
       "name": "Incline Push-Up",
-      "description": "Manos en una superficie elevada reducen la dificultad, enfocándose en el pecho inferior con una flexión simple.",
-      "skill": "Variaciones de flexiones",
+      "description": "Hands on an elevated surface to reduce difficulty, focusing on lower chest with a simple push-up.",
+      "skill": "Push-up Variations",
       "equipment": [],
       "difficulty": [
         1
@@ -2157,15 +2157,15 @@
         1
       ],
       "formCues": [
-        "Coloca las manos en una superficie elevada",
-        "Mantén el cuerpo en línea recta",
-        "Baja el pecho hacia la superficie",
-        "Empuja hacia arriba con fuerza"
+        "Place hands on elevated surface",
+        "Keep body in straight line",
+        "Lower chest to the surface",
+        "Push up with power"
       ],
       "commonMistakes": [
-        "No dejes que las caderas se hundan",
-        "Evita ir demasiado bajo al inicio",
-        "No flexiones los codos demasiado"
+        "Don't let hips sink",
+        "Avoid going too low initially",
+        "Don't bend elbows too much"
       ],
       "muscles_secondary": []
     },
@@ -2256,7 +2256,7 @@
     {
       "id": 102,
       "name": "Jumping Jack",
-      "description": "Baja lentamente desde una posición de L-sit, una progresión para el L-sit completo.",
+      "description": "Slowly lower from an L-sit position, a progression for the full L-sit.",
       "skill": "L-Sit",
       "equipment": [],
       "difficulty": [
@@ -2271,15 +2271,15 @@
         99
       ],
       "formCues": [
-        "Comienza en posición de L-sit",
-        "Baja las piernas lentamente",
-        "Toma 5-10 segundos para descender",
-        "Construye fuerza para la posición completa"
+        "Start in position de L-sit",
+        "Lower legs slowly",
+        "Take 5-10 seconds to lower",
+        "Build strength for the full position"
       ],
       "commonMistakes": [
-        "No bajes rápidamente",
+        "Don't lower quickly",
         "Evita usar impulso",
-        "No flexiones las rodillas"
+        "Don't bend knees"
       ],
       "muscles_secondary": []
     },
@@ -2328,7 +2328,7 @@
     {
       "id": 47,
       "name": "L-Sit",
-      "description": "Mantén las piernas rectas mientras te soportas sobre las manos, trabajando abdominales y flexores de cadera.",
+      "description": "Keep legs straight while supporting on hands, working abs and hip flexors.",
       "skill": "L-Sit",
       "equipment": [
         5
@@ -2350,15 +2350,15 @@
       ],
       "progressions": [],
       "formCues": [
-        "Siéntate en el suelo, manos a los lados",
-        "Empuja el cuerpo hacia arriba con los brazos",
-        "Extiende las piernas horizontalmente",
-        "Mantén con core apretado y hombros activados"
+        "Sit on the floor, hands to the sides",
+        "Push the body up with the Arms",
+        "Extend legs horizontally",
+        "Keep Core squeezed and shoulders activated"
       ],
       "commonMistakes": [
-        "No dejes que las caderas caigan",
-        "Evita flexionar los codos",
-        "No balancees el cuerpo"
+        "Don't let hips drop",
+        "Avoid bending elbows",
+        "Don't sway body"
       ],
       "muscles_secondary": [
         2,
@@ -2368,8 +2368,8 @@
     {
       "id": 65,
       "name": "Leg Raise",
-      "description": "Acostado boca arriba en posición de cuerpo hueco, balancea brazos y piernas arriba y abajo manteniendo la tensión abdominal.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Lying face up in hollow body position, swing arms and legs up and down maintaining abdominal tension.",
+      "skill": "Hollow Body Hold",
       "equipment": [],
       "difficulty": [
         1
@@ -2383,23 +2383,23 @@
         66
       ],
       "formCues": [
-        "Acuéstate boca arriba, brazos sobre la cabeza",
-        "Levanta hombros y pies del suelo en posición de cuerpo hueco",
-        "Balancea brazos y piernas de forma controlada",
-        "Mantén la espalda baja presionada contra el suelo"
+        "Lie on your back, Arms over your head",
+        "Lift shoulders and feet from floor in position of hollow body",
+        "Balance Arms and Legs in controlled manner",
+        "Keep back low pressed against the floor"
       ],
       "commonMistakes": [
-        "No dejes que la espalda baja se separe del suelo",
-        "Evita balancearte demasiado rápido",
-        "No flexiones las rodillas"
+        "Don't let the lower back separate from floor",
+        "Avoid balancing too quickly",
+        "Don't bend knees"
       ],
       "muscles_secondary": []
     },
     {
       "id": 100,
       "name": "Mountain Climber",
-      "description": "En posición de plancha, alterna llevando las rodillas al pecho rápidamente, un ejercicio de cardio y core.",
-      "skill": "Sujeción Hollow Body",
+      "description": "In plank position, Alternatete bringing knees to chest quickly, a cardio and Core exercise.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         16
       ],
@@ -2422,15 +2422,15 @@
         5
       ],
       "formCues": [
-        "Comienza en posición de plancha",
-        "Lleva una rodilla al pecho rápidamente",
-        "Alterna piernas en movimiento de carrera",
-        "Mantén las caderas bajas"
+        "Start in position of plank",
+        "Bring one knee to chest quickly",
+        "Alternate Legs in a running motion",
+        "Keep hips low"
       ],
       "commonMistakes": [
-        "No dejes que las caderas se eleven",
-        "Evita ir demasiado rápido",
-        "No dejes que la espalda se hunda"
+        "Don't let hips rise",
+        "Avoid going too fast",
+        "Don't let the back se hunda"
       ],
       "muscles_secondary": [
         2,
@@ -2442,7 +2442,7 @@
     {
       "id": 101,
       "name": "Muscle-Up",
-      "description": "Combina una dominada explosiva con una transición a fondos, un movimiento compuesto avanzado de calistenia.",
+      "description": "Combine a pull-up explosive with a transition to support, a compound movement advanced calisthenics.",
       "skill": "Muscle-up",
       "equipment": [],
       "difficulty": [
@@ -2463,22 +2463,22 @@
       ],
       "progressions": [],
       "formCues": [
-        "Realiza una dominada explosiva o kip",
-        "Transiciona rápidamente en la parte superior de la dominada",
-        "Empuja a posición de fondos",
-        "Baja de vuelta a la posición colgando"
+        "Realiza una Pull-up explosiva o kip",
+        "Transition quickly at the top of the pull-up",
+        "Push to support position",
+        "Lower back to the hanging position"
       ],
       "commonMistakes": [
-        "No demores la transición",
-        "Evita que los hombros se rueden hacia adelante",
-        "No uses demasiado impulso"
+        "Don't delay the transition",
+        "Evita than shoulders se rueden forward",
+        "Don't use too much momentum"
       ],
       "muscles_secondary": []
     },
     {
       "id": 112,
       "name": "Muscle-Up Negative",
-      "description": "Baja lentamente desde la parte superior de un muscle-up, una progresión para el movimiento completo.",
+      "description": "Slowly lower from the top of a muscle-up, a progression for the full movement.",
       "skill": "Muscle-up",
       "equipment": [
         11
@@ -2506,14 +2506,14 @@
         101
       ],
       "formCues": [
-        "Comienza en la parte superior de un muscle-up (posición de fondos)",
-        "Baja lentamente con control",
-        "Toma 5-10 segundos para descender",
-        "Construye fuerza para la repetición completa"
+        "Start at the top of a muscle-up (support position)",
+        "Lower slowly with control",
+        "Take 5-10 seconds to lower",
+        "Build strength for the full repetition"
       ],
       "commonMistakes": [
-        "No bajes rápidamente",
-        "Evita perder el control durante la transición",
+        "Don't lower quickly",
+        "Avoid losing control during the transition",
         "No uses impulso"
       ],
       "muscles_secondary": [
@@ -2525,8 +2525,8 @@
     {
       "id": 78,
       "name": "Natural Glute-Ham Raise",
-      "description": "Arrodíllate y baja el cuerpo usando isquiotibiales sin equipamiento, una variación con peso corporal.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Kneel and lower body using hamstrings without equipment, a bodyweight variation.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         16
       ],
@@ -2549,15 +2549,15 @@
         76
       ],
       "formCues": [
-        "Acuéstate boca abajo, ancla los pies debajo de muebles",
-        "Tira del cuerpo hacia arriba usando isquiotibiales y glúteos",
-        "Controla la descendencia completamente",
-        "Mantén el core apretado"
+        "Lie face down, anchor the feet below furniture",
+        "Pull body up using hamstrings and Glutes",
+        "Control the descent completely",
+        "Keep Core tight"
       ],
       "commonMistakes": [
-        "No uses impulso para subir",
-        "Evita ir demasiado profundo al inicio",
-        "No arquees la espalda excesivamente"
+        "No uses impulso to step up",
+        "Avoid going too deep initially",
+        "Don't arch back excessively"
       ],
       "muscles_secondary": [
         16
@@ -2566,8 +2566,8 @@
     {
       "id": 19,
       "name": "Negative Pull-Up",
-      "description": "Baja lentamente desde la parte superior de una dominada, construyendo fuerza para dominadas completas.",
-      "skill": "Variaciones de dominadas",
+      "description": "Slowly lower from the top of a pull-up, building strength for full pull-ups.",
+      "skill": "Pull-up Variations",
       "equipment": [],
       "difficulty": [
         1
@@ -2583,23 +2583,23 @@
         11
       ],
       "formCues": [
-        "Comienza en la posición superior con la barbilla sobre la barra",
-        "Baja lo más lentamente posible",
-        "Toma 5-10 segundos para la descendencia",
-        "Controla todo el rango de movimiento"
+        "Start in the position top with the chin over the bar",
+        "Lower as slowly as possible possible",
+        "Take 5-10 seconds for descent",
+        "Control the full range of motion"
       ],
       "commonMistakes": [
-        "No bajes rápidamente",
-        "Evita perder el control",
-        "No uses rebote en la parte inferior"
+        "Don't lower quickly",
+        "Avoid losing control",
+        "Don't use bounce at bottom"
       ],
       "muscles_secondary": []
     },
     {
       "id": 74,
       "name": "Nordic Hamstring Curl",
-      "description": "Arrodíllate, baja el torso hacia adelante con los pies anclados, trabajando isquiotibiales con fuerza excéntrica.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Kneel, lower torso forward with feet anchored, working hamstrings with eccentric strength.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         16
       ],
@@ -2622,15 +2622,15 @@
         78
       ],
       "formCues": [
-        "Arrodíllate, ancla los pies debajo de un objeto estable",
-        "Baja el cuerpo con control usando isquiotibiales",
-        "Usa las manos para empujar hacia arriba inicialmente",
-        "Construye fuerza progresivamente"
+        "Kneel, anchor the feet below of an object stable",
+        "Lower body with control using hamstrings",
+        "Use hands to push up initially",
+        "Build strength progressively"
       ],
       "commonMistakes": [
-        "No dejes que las rodillas salgan del suelo",
+        "Don't let knees come off ground",
         "Evita usar impulso",
-        "No vayas demasiado profundo demasiado pronto"
+        "Don't go too deep too soon"
       ],
       "muscles_secondary": [
         6,
@@ -2640,7 +2640,7 @@
     {
       "id": 40,
       "name": "One-Arm Chin-Up",
-      "description": "Sube con un brazo en una barra, un desafío extremo de bíceps y espalda.",
+      "description": "Pull up with one arm on a bar, an extreme bicep and back challenge.",
       "skill": "Dominada a una mano",
       "equipment": [
         6
@@ -2663,15 +2663,15 @@
       ],
       "progressions": [],
       "formCues": [
-        "Domina las dominadas regulares primero",
-        "Usa banda elástica para asistencia inicialmente",
-        "Mantén el cuerpo recto, sin balanceo",
-        "Progresa gradualmente"
+        "Master regular Pull-ups first",
+        "Use resistance band for assistance initially",
+        "Keep body straight, without swinging",
+        "Progress Gradually"
       ],
       "commonMistakes": [
-        "No gires el cuerpo",
+        "Don't rotate body",
         "Evita usar impulso",
-        "No comprometas la forma"
+        "Don't compromise form"
       ],
       "muscles_secondary": [
         9,
@@ -2682,7 +2682,7 @@
     {
       "id": 24,
       "name": "One-Arm Handstand",
-      "description": "Equilibra sobre una mano, un desafío avanzado de estabilidad de hombro y core.",
+      "description": "Balance on one hand, an advanced shoulder stability and Core challenge.",
       "skill": "Pino",
       "equipment": [],
       "difficulty": [
@@ -2697,23 +2697,23 @@
       ],
       "progressions": [],
       "formCues": [
-        "Domina el pino contra la pared primero",
-        "Practica contra la pared un brazo a la vez",
-        "Mantén el cuerpo apretado y recto",
-        "Progresa gradualmente"
+        "Master handstand against wall first",
+        "Practice against wall one arm at a time",
+        "Keep body squeezed and straight",
+        "Progress Gradually"
       ],
       "commonMistakes": [
-        "No lo intentes demasiado pronto",
-        "Evita usar impulso para subir",
-        "No dejes que las caderas giren"
+        "Don't try too soon",
+        "Evita usar impulso to step up",
+        "Don't let hips rotate"
       ],
       "muscles_secondary": []
     },
     {
       "id": 15,
       "name": "One-Arm Pull-Up",
-      "description": "Sube tu cuerpo con un brazo, un movimiento avanzado para espalda y bíceps.",
-      "skill": "Variaciones de dominadas",
+      "description": "Raise your body with one arm, an advanced back and bicep movement.",
+      "skill": "Pull-up Variations",
       "equipment": [],
       "difficulty": [
         3
@@ -2729,23 +2729,23 @@
         30
       ],
       "formCues": [
-        "Domina las variaciones asistidas primero",
-        "Usa banda elástica para ayuda inicialmente",
-        "Mantén el cuerpo recto, sin balanceo",
-        "Progresa gradualmente"
+        "Master assisted variations first",
+        "Use resistance band for help initially",
+        "Keep body straight, without swinging",
+        "Progress Gradually"
       ],
       "commonMistakes": [
-        "No gires el cuerpo",
+        "Don't rotate body",
         "Evita usar impulso",
-        "No comprometas la forma por repeticiones"
+        "Don't compromise form for reps"
       ],
       "muscles_secondary": []
     },
     {
       "id": 10,
       "name": "One-Arm Push-Up",
-      "description": "Realizado con un brazo, requiriendo significativa fuerza de pecho, hombro y core.",
-      "skill": "Variaciones de flexiones",
+      "description": "Performed with one arm, requiring significant chest, shoulder, and Core strength.",
+      "skill": "Push-up Variations",
       "equipment": [],
       "difficulty": [
         3
@@ -2760,22 +2760,22 @@
       ],
       "progressions": [],
       "formCues": [
-        "Domina las flexiones inclinadas primero",
-        "Amplía la postura para estabilidad",
-        "Mantén el brazo que trabaja a 45 grados",
-        "Progresa gradualmente con progresiones"
+        "Master incline push-ups first",
+        "Widen the stance for stability",
+        "keep working arm at 45 degrees",
+        "Progress Gradually with progressions"
       ],
       "commonMistakes": [
-        "No gires el torso",
-        "Evita rango de movimiento parcial",
-        "No colapses el hombro que trabaja"
+        "Don't rotate torso",
+        "Avoid partial range of motion",
+        "Don't collapse working shoulder"
       ],
       "muscles_secondary": []
     },
     {
       "id": 111,
       "name": "Parallel Bar Support",
-      "description": "Mantén el cuerpo erguido entre barras paralelas, desarrollando estabilidad de hombro y tríceps.",
+      "description": "Hold body upright between parallel bars, developing shoulder and tricep stability.",
       "skill": "Variaciones de fondos",
       "equipment": [
         1
@@ -2799,15 +2799,15 @@
         112
       ],
       "formCues": [
-        "Mantén la posición entre barras paralelas",
-        "Brazos rectos, cuerpo vertical",
-        "Activa hombros y core",
-        "Mantén el pecho erguido"
+        "Hold the position between parallel bars",
+        "arms straight, body vertical",
+        "Activate shoulders and Core",
+        "Keep chest upright"
       ],
       "commonMistakes": [
-        "No dejes que los hombros se rueden hacia adelante",
-        "Evita bloquear las rodillas bruscamente",
-        "No te relajes en la parte inferior"
+        "No dejes than shoulders se rueden forward",
+        "Avoid locking knees abruptly",
+        "Don't relax at bottom"
       ],
       "muscles_secondary": [
         1,
@@ -2817,8 +2817,8 @@
     {
       "id": 25,
       "name": "Pike Push-Up",
-      "description": "Bisagra en las caderas con los pies en el suelo, empujando hacia arriba para trabajar hombros en un press vertical.",
-      "skill": "Variaciones de flexiones",
+      "description": "Hinge at hips with feet on floor, pushing up to work shoulders in a vertical press.",
+      "skill": "Push-up Variations",
       "equipment": [],
       "difficulty": [
         2
@@ -2837,23 +2837,23 @@
         10
       ],
       "formCues": [
-        "Comienza en posición de perro boca abajo",
-        "Camina los pies más cerca, eleva las caderas alto",
-        "Baja la cabeza hacia el suelo flexionando los codos",
-        "Empuja de vuelta a posición de pike"
+        "Start in position de perro face down",
+        "Walk feet closer, Lift hips high",
+        "Lower head to ground by bending elbows",
+        "Push back to pike position"
       ],
       "commonMistakes": [
-        "No dejes que las caderas se hundan durante el movimiento",
-        "Evita flexionar demasiado en la cintura",
-        "No vayas demasiado shallow"
+        "Don't let hips sink during the movement",
+        "Avoid bending too much at the waist",
+        "Don't go too shallow"
       ],
       "muscles_secondary": []
     },
     {
       "id": 68,
       "name": "Pistol Squat",
-      "description": "Agáchate sobre una pierna con la otra extendida hacia adelante, requiriendo fuerza de cuádriceps y equilibrio.",
-      "skill": "Sentadilla pistol",
+      "description": "Squat on one leg with other extended forward, requiring quad strength and balance.",
+      "skill": "Pistol Squat",
       "equipment": [
         15
       ],
@@ -2877,15 +2877,15 @@
         73
       ],
       "formCues": [
-        "Párate sobre una pierna, la otra extendida hacia adelante",
-        "Mantén el pecho erguido y core apretado",
-        "Baja lo más posible",
-        "Usa el brazo para equilibrio si es necesario"
+        "Stand on one leg, other extended forward",
+        "Keep chest upright and core squeezed",
+        "Lower as much as possible",
+        "Usa arm para equilibrio si es necesario"
       ],
       "commonMistakes": [
-        "No dejes que la rodilla colapse hacia adentro",
-        "Evita que el talón se eleve del suelo",
-        "No redondees la espalda"
+        "Don't let knee collapse inward",
+        "Avoid heel lifting from floor",
+        "Don't round back"
       ],
       "muscles_secondary": [
         7,
@@ -2895,8 +2895,8 @@
     {
       "id": 27,
       "name": "Planche",
-      "description": "Mantén el cuerpo paralelo al suelo sobre las manos, un intenso ejercicio estático de hombro y pecho.",
-      "skill": "Plancha",
+      "description": "Hold body parallel to floor on hands, an intense static shoulder and chest exercise.",
+      "skill": "Plank",
       "equipment": [
         5
       ],
@@ -2919,15 +2919,15 @@
       ],
       "progressions": [],
       "formCues": [
-        "Plancha completa - cuerpo paralelo al suelo",
-        "Brazos rectos, manos empujando fuerte",
-        "Activa todo el core y hombros",
-        "Mantén durante una duración breve"
+        "Full plank - body parallel to floor",
+        "arms straight, hands pushing Strong",
+        "Activate entire Core and shoulders",
+        "Hold for a short duration"
       ],
       "commonMistakes": [
-        "No flexiones los codos durante la sujeción",
-        "Evita que las caderas se hundan",
-        "No lo intentes sin progresiones"
+        "Don't bend elbows during the hold",
+        "Avoid hips sinking",
+        "Don't try without progressions"
       ],
       "muscles_secondary": [
         9,
@@ -2938,8 +2938,8 @@
     {
       "id": 115,
       "name": "Planche Lean",
-      "description": "Una progresión fundamental de plancha donde inclinas tu cuerpo hacia adelante en un ángulo mientras soportas peso sobre tus manos, construyendo la fuerza de hombros y core necesaria para la posición de plancha completa.",
-      "skill": "Plancha",
+      "description": "A fundamental plank progression where you lean your body forward at an angle while supporting weight on your hands, building shoulder and Core strength needed for full plank position.",
+      "skill": "Plank",
       "equipment": [
         15
       ],
@@ -2966,15 +2966,15 @@
         116
       ],
       "formCues": [
-        "Comienza en posición de flexión",
-        "Inclínate hacia adelante gradualmente sobre las muñecas",
-        "Mantén los brazos rectos",
-        "Construye fuerza de hombros lentamente"
+        "Start in position de Push-up",
+        "Lean forward Gradually over the wrists",
+        "Keep arms straight",
+        "Build shoulder strength slowly"
       ],
       "commonMistakes": [
-        "No flexiones los codos durante la inclinación",
-        "Evita ir demasiado lejos demasiado pronto",
-        "No dejes que las muñecas colapsen"
+        "Don't bend elbows during the lean",
+        "Avoid going too far too soon",
+        "Don't let the wrists collapse"
       ],
       "muscles_secondary": [
         4,
@@ -2984,7 +2984,7 @@
     {
       "id": 45,
       "name": "Plank",
-      "description": "Mantén una posición recta del cuerpo sobre antebrazos y puntas de los pies, activando abdominales para estabilidad.",
+      "description": "Hold a straight body position on forearms and toe tips, activating abs for stability.",
       "skill": "Core",
       "equipment": [],
       "difficulty": [
@@ -2999,22 +2999,22 @@
         53
       ],
       "formCues": [
-        "Antebrazos en el suelo, codos bajo los hombros",
-        "Mantén el cuerpo en línea recta desde la cabeza hasta los talones",
-        "Activa el core y glúteos firmemente",
-        "Respira constantemente durante la sujeción"
+        "AnteArms on the floor, codos Low shoulders",
+        "Keep body in straight line from the head to the heels",
+        "Activate Core and Glutes firmly",
+        "Breathe constantly during the hold"
       ],
       "commonMistakes": [
-        "No dejes que las caderas caigan",
-        "Evita elevar las caderas demasiado alto",
-        "No contengas la respiración"
+        "Don't let hips drop",
+        "Avoid elevating hips too high",
+        "Don't hold the breath"
       ],
       "muscles_secondary": []
     },
     {
       "id": 123,
       "name": "Plank Knee to Elbow",
-      "description": "Una variación de plancha donde llevas las rodillas alternadas hacia los codos opuestos mientras mantienes una posición de plancha estable, activando músculos profundos del core incluyendo oblicuos y transverso abdominal para mejorar la estabilidad.",
+      "description": "A plank variation where you bring Alternateting knees to opposite elbows while maintaining a stable plank position, activating deep Core muscles including obliques and transverse abdominis to improve stability.",
       "skill": "",
       "equipment": [
         16
@@ -3039,15 +3039,15 @@
         124
       ],
       "formCues": [
-        "Comienza en posición de plancha",
-        "Lleva la rodilla hacia el codo del mismo lado",
-        "Mantén el core activado y estable",
-        "Alterna lados rítmicamente"
+        "Start in position of plank",
+        "Bring knee to elbow on the same side",
+        "Keep core activated and stable",
+        "Alternate sides rhythmically"
       ],
       "commonMistakes": [
-        "No dejes que las caderas se eleven o hundan",
-        "Evita apresurar el movimiento",
-        "No pierdas la posición de plancha"
+        "Don't let hips rise or sink",
+        "Avoid rushing the movement",
+        "Don't alter the position of plank"
       ],
       "muscles_secondary": [
         6
@@ -3056,7 +3056,7 @@
     {
       "id": 126,
       "name": "Plank Side to Side",
-      "description": "Una variación lateral de plancha donde desplazas el peso de lado a lado mientras mantienes soporte con un codo, construyendo fuerza de oblicuos y mejorando la estabilidad unilateral del core para movimientos avanzados de peso corporal.",
+      "description": "A lateral plank variation where you shift weight side to side while maintaining support with one elbow, building oblique strength and improving unilateral Core stability for advanced bodyweight movements.",
       "skill": "",
       "equipment": [
         16
@@ -3081,15 +3081,15 @@
         127
       ],
       "formCues": [
-        "Comienza en plancha alta con los pies anchos",
-        "Rota el cuerpo para tocar una cadera con el suelo",
-        "Regresa al centro y rota al otro lado",
-        "Mantén el core apretado durante todo el movimiento"
+        "Start in high plank with feet wide",
+        "Rotate body to touch Hip to ground",
+        "Return to center and rotate to the other side",
+        "Keep Core tight throughout the movement"
       ],
       "commonMistakes": [
-        "No te hundas a través de la espalda baja",
+        "Don't sink through the lower back",
         "Evita usar solo impulso",
-        "No eleves las caderas demasiado alto"
+        "Don't elevate hips too high"
       ],
       "muscles_secondary": [
         3
@@ -3098,8 +3098,8 @@
     {
       "id": 60,
       "name": "Plank with Leg Lift",
-      "description": "En una plancha, eleva una pierna a la vez, mejorando la estabilidad del transverso abdominal.",
-      "skill": "Sujeción Hollow Body",
+      "description": "In a Plank, Lift one leg at a time, improving transverse abdominis stability.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         16
       ],
@@ -3123,15 +3123,15 @@
         58
       ],
       "formCues": [
-        "Comienza en plancha sobre antebrazos",
-        "Eleva una pierna sin rotar las caderas",
-        "Mantén el core activado durante todo el movimiento",
-        "Alterna piernas o mantén"
+        "Start in plank on forearms",
+        "Lift one leg without rotating hips",
+        "Keep core activated throughout the movement",
+        "Alternate legs or maintain"
       ],
       "commonMistakes": [
-        "No dejes que las caderas se eleven",
-        "Evita elevar la cadera levantada",
-        "No flexiones la rodilla de apoyo"
+        "Don't let hips rise",
+        "Avoid lifting raised Hip",
+        "No flexiones knee of support"
       ],
       "muscles_secondary": [
         8
@@ -3140,8 +3140,8 @@
     {
       "id": 8,
       "name": "Plyo Push-Up",
-      "description": "Empuja explosivamente para levantar las manos del suelo, mejorando la potencia del pecho y hombros.",
-      "skill": "Variaciones de flexiones",
+      "description": "Push explosively to lift hands off floor, improving chest and shoulder power.",
+      "skill": "Push-up Variations",
       "equipment": [],
       "difficulty": [
         2
@@ -3160,23 +3160,23 @@
         25
       ],
       "formCues": [
-        "Movimiento explosivo hacia arriba",
-        "Genera potencia máxima desde el pecho",
-        "Las manos salen completamente del suelo",
-        "Aterriza suavemente y baja inmediatamente"
+        "Explosive movement upward",
+        "Generate maximum power from chest",
+        "Hands lift completely off ground",
+        "Land softly and lower immediately"
       ],
       "commonMistakes": [
-        "No aterrices con los codos bloqueados",
-        "Evita un empuje débil",
-        "No comprometas la forma por altura"
+        "Don't land with locked elbows",
+        "Avoid a weak push",
+        "Don't compromise form for height"
       ],
       "muscles_secondary": []
     },
     {
       "id": 11,
       "name": "Pull-Up",
-      "description": "Cuélgate de una barra y tira de la barbilla por encima de ella, trabajando dorsales, bíceps y espalda superior con un rango de movimiento completo.",
-      "skill": "Variaciones de dominadas",
+      "description": "Hang from a bar and pull chin over it, working lats, biceps, and upper back with full range of motion.",
+      "skill": "Pull-up Variations",
       "equipment": [],
       "difficulty": [
         2
@@ -3198,23 +3198,23 @@
         13
       ],
       "formCues": [
-        "Agarra la barra con agarre prono, ligeramente más ancho que los hombros",
-        "Cuelga con los brazos completamente extendidos",
-        "Tira del pecho hacia la barra",
-        "Contrae las escápulas juntas"
+        "Grab the bar with pronated grip, slightly wider than shoulders",
+        "Hang with Arms fully Extended",
+        "Pull chest to bar",
+        "Squeeze the scapulas together"
       ],
       "commonMistakes": [
-        "No uses impulso o balanceo",
-        "Evita repeticiones parciales en la parte superior",
-        "No eleves los hombros en lugar de tirar"
+        "Don't use momentum or swinging",
+        "Evita repeticiones parciales at the top",
+        "Don't elevate shoulders instead of pulling"
       ],
       "muscles_secondary": []
     },
     {
       "id": 1,
       "name": "Push-Up",
-      "description": "Un ejercicio fundamental donde bajas el pecho al suelo y empujas hacia arriba, activando el pecho, hombros y tríceps.",
-      "skill": "Variaciones de flexiones",
+      "description": "A fundamental exercise where you lower chest to floor and push up, activating chest, shoulders, and triceps.",
+      "skill": "Push-up Variations",
       "equipment": [],
       "difficulty": [
         1
@@ -3233,22 +3233,22 @@
         2
       ],
       "formCues": [
-        "Mantén el core apretado durante todo el movimiento",
-        "Mantén una línea recta desde la cabeza hasta los talones",
-        "Exhala al empujar hacia arriba, inhala al bajar",
-        "Mantén los codos a 45 grados respecto a tu cuerpo"
+        "Keep Core tight throughout the movement",
+        "Keep a straight line from the head to the heels",
+        "Exhale when pushing up, inhale when lowering",
+        "Keep elbows a 45 grados respecto a tu cuerpo"
       ],
       "commonMistakes": [
-        "No dejes que las caderas se hundan o se eleven",
-        "Evita abrir los codos a 90 grados",
-        "No te detengas a mitad del movimiento"
+        "Don't let hips sink or rise",
+        "Avoid opening elbows at 90 degrees",
+        "Don't stop halfway"
       ],
       "muscles_secondary": []
     },
     {
       "id": 127,
       "name": "Reach Up",
-      "description": "Un ejercicio de movilidad y activación del core realizado de pie o sentado donde alcanzas los brazos sobre la cabeza mientras arqueas ligeramente la espalda, promoviendo la extensión de la columna torácica y la movilidad de hombros esenciales para la progresión de plancha.",
+      "description": "A mobility and Core activation exercise performed standing or sitting where you reach arms overhead while slightly arching the back, promoting thoracic spine extension and shoulder mobility essential for plank progression.",
       "skill": "",
       "equipment": [
         16
@@ -3268,23 +3268,23 @@
       "prerequisites": [],
       "progressions": [],
       "formCues": [
-        "Párate erguido, brazos sobre la cabeza",
-        "Estira todo el cuerpo hacia arriba",
-        "Mantén brevemente en la parte superior",
-        "Baja lentamente con control"
+        "Stand upright, Arms over your head",
+        "Stretch entire body upward",
+        "Hold briefly at the top",
+        "Lower slowly with control"
       ],
       "commonMistakes": [
-        "No arquees la espalda baja excesivamente",
+        "Don't arch lower back excessively",
         "Evita usar impulso para alcanzar",
-        "No apresures el movimiento"
+        "Don't rush the movement"
       ],
       "muscles_secondary": []
     },
     {
       "id": 64,
       "name": "Reverse Hyperextension",
-      "description": "Acostado boca abajo, eleva las piernas desde un banco, trabajando espalda baja y glúteos.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Lying face down, lift legs from a bench, working lower back and glutes.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         12
       ],
@@ -3305,15 +3305,15 @@
       ],
       "progressions": [],
       "formCues": [
-        "Acuéstate boca abajo, agarra la barra detrás de la cabeza",
-        "Eleva las piernas hacia el techo",
-        "Contrae glúteos en la parte superior",
-        "Baja con control"
+        "Lie face down, Grab the bar behind the head",
+        "Lift legs toward the ceiling",
+        "Squeeze Glutes at the top",
+        "Lower with control"
       ],
       "commonMistakes": [
-        "No arquees la espalda baja excesivamente",
+        "Don't arch lower back excessively",
         "Evita usar impulso",
-        "No balancees las piernas"
+        "Don't sway legs"
       ],
       "muscles_secondary": [
         11
@@ -3322,8 +3322,8 @@
     {
       "id": 39,
       "name": "Ring Chin-Up",
-      "description": "Dominada en anillas inestables, aumentando la activación de bíceps y estabilizadores.",
-      "skill": "Variaciones de dominadas",
+      "description": "Pull-up on unstable rings, increasing bicep and stabilizer activation.",
+      "skill": "Pull-up Variations",
       "equipment": [
         11
       ],
@@ -3347,15 +3347,15 @@
         40
       ],
       "formCues": [
-        "Agarra las anillas con las palmas facing hacia ti",
-        "Deja que las anillas giren naturalmente",
-        "Tira del pecho hacia las anillas",
-        "Mantén el core activado para estabilidad"
+        "Grab rings with Palms facing you",
+        "Let rings rotate naturally",
+        "Pull chest to rings",
+        "Keep core activated for stability"
       ],
       "commonMistakes": [
-        "No luches contra el giro de las anillas",
-        "Evita usar demasiado impulso",
-        "No dejes que los hombros se rueden hacia adelante"
+        "Don't fight ring rotation",
+        "Avoid using too much momentum",
+        "No dejes than shoulders se rueden forward"
       ],
       "muscles_secondary": [
         9,
@@ -3366,7 +3366,7 @@
     {
       "id": 33,
       "name": "Ring Dip",
-      "description": "Realiza fondos en anillas inestables, aumentando la demanda de tríceps y músculos estabilizadores.",
+      "description": "Perform dips on unstable rings, increasing tricep and stabilizer muscle demand.",
       "skill": "Variaciones de fondos",
       "equipment": [
         11
@@ -3389,15 +3389,15 @@
         1
       ],
       "formCues": [
-        "Ajusta las anillas a la altura del pecho",
-        "Agarra las anillas firmemente, brazos extendidos",
-        "Baja con control en anillas inestables",
-        "Empuja hasta la extensión completa"
+        "Adjust rings to chest height",
+        "Grab rings firmly, Arms Extended",
+        "Lower with control on unstable rings",
+        "Push to the full extension"
       ],
       "commonMistakes": [
-        "No dejes que las anillas giren demasiado",
-        "Evita perder el equilibrio",
-        "No apresures el movimiento"
+        "Don't let the rings rotate too much",
+        "Avoid losing balance",
+        "Don't rush the movement"
       ],
       "muscles_secondary": [
         4,
@@ -3407,8 +3407,8 @@
     {
       "id": 108,
       "name": "Ring Row",
-      "description": "Tira del cuerpo hacia arriba desde una suspensión baja en anillas, trabajando espalda y bíceps con dificultad ajustable.",
-      "skill": "Variaciones de dominadas",
+      "description": "Pull body up from a low suspension on rings, working back and biceps with adjustable difficulty.",
+      "skill": "Pull-up Variations",
       "equipment": [
         11
       ],
@@ -3431,14 +3431,14 @@
         119
       ],
       "formCues": [
-        "Cuélgate de las anillas con brazos extendidos",
-        "Tira del pecho hacia las anillas",
-        "Contrae las escápulas juntas",
-        "Baja con control"
+        "Hang from the rings with arms Extended",
+        "Pull chest to rings",
+        "Squeeze the scapulas together",
+        "Lower with control"
       ],
       "commonMistakes": [
-        "No dejes que las anillas giren demasiado",
-        "Evita ir demasiado shallow",
+        "Don't let the rings rotate too much",
+        "Avoid going too shallow",
         "No uses impulso"
       ],
       "muscles_secondary": [
@@ -3449,7 +3449,7 @@
     {
       "id": 118,
       "name": "Rows",
-      "description": "Un movimiento fundamental de tracción horizontal realizado mientras cuelgas de anillas o barras paralelas, activando dorsales, romboides y deltoides posteriores con un movimiento ascendente controlado del torso.",
+      "description": "A fundamental horizontal pulling movement performed while hanging from rings or parallel bars, activating lats, rhomboids, and posterior deltoids with a controlled upward torso movement.",
       "skill": "",
       "equipment": [
         6
@@ -3474,15 +3474,15 @@
         41
       ],
       "formCues": [
-        "Inclínate ligeramente con la espalda plana",
-        "Tira el peso hacia el pecho inferior o abdominales",
-        "Contrae los músculos de la espalda en la parte superior",
-        "Controla la descendencia"
+        "Lean slightly forward with flat Back",
+        "Pull weight to lower chest or abdominals",
+        "Squeeze the muscles of the back at the top",
+        "Control the descent"
       ],
       "commonMistakes": [
-        "No uses impulso para balancearte",
-        "Evita redondear la espalda",
-        "No tires demasiado alto"
+        "Don't use momentum to balance",
+        "Avoid rounding the back",
+        "Don't pull too high"
       ],
       "muscles_secondary": [
         19
@@ -3491,8 +3491,8 @@
     {
       "id": 55,
       "name": "Russian Twist",
-      "description": "Siéntate, gira el torso de lado a lado con los pies fuera del suelo, activando oblicuos.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Sit, rotate torso side to side with feet off floor, activating obliques.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         16
       ],
@@ -3514,15 +3514,15 @@
         65
       ],
       "formCues": [
-        "Siéntate con rodillas dobladas, pies levantados",
-        "Inclínate ligeramente hacia atrás para activar el core",
-        "Rota el torso de lado a lado",
-        "Mantén el pecho erguido durante todo el movimiento"
+        "Sit with knees bent, feet lifted",
+        "Lean slightly forward backward to activate core",
+        "Rotate torso side to side",
+        "Keep chest upright throughout the movement"
       ],
       "commonMistakes": [
-        "No uses impulso para balancearte",
-        "Evita redondear completamente la espalda",
-        "No gires la espalda baja en lugar de los abdominales"
+        "Don't use momentum to balance",
+        "Avoid completely rounding the back",
+        "Don't rotate lower back instead of abs"
       ],
       "muscles_secondary": [
         6
@@ -3531,8 +3531,8 @@
     {
       "id": 31,
       "name": "Shoulder Tap",
-      "description": "En una plancha, toca el hombro opuesto con una mano, activando hombros y core.",
-      "skill": "Variaciones de flexiones",
+      "description": "In a plank, touch opposite shoulder with one hand, activating shoulders and Core.",
+      "skill": "Push-up Variations",
       "equipment": [
         16
       ],
@@ -3555,15 +3555,15 @@
         100
       ],
       "formCues": [
-        "Comienza en posición de plancha",
-        "Mantén las caderas estables y cuadradas",
-        "Toca el hombro opuesto con cada mano",
-        "Mantén una forma de plancha perfecta"
+        "Start in position of plank",
+        "Keep hips stable and square",
+        "Touch opposite shoulder with each hand",
+        "Keep a perfect plank form"
       ],
       "commonMistakes": [
-        "No dejes que las caderas giren o se eleven",
-        "Evita levantar una pierna para alcanzar",
-        "No apresures las tocas"
+        "Don't let hips rotate or rise",
+        "Avoid lifting a leg to reach",
+        "Don't rush the touches"
       ],
       "muscles_secondary": [
         6
@@ -3572,8 +3572,8 @@
     {
       "id": 57,
       "name": "Side Hanging Raise",
-      "description": "Cuélgate de una barra, eleva las piernas lateralmente para trabajar oblicuos.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Hang from a bar, lift legs laterally to work obliques.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         6
       ],
@@ -3593,15 +3593,15 @@
       ],
       "progressions": [],
       "formCues": [
-        "Cuélgate de la barra, inclínate hacia un lado",
-        "Eleva el cuerpo lateralmente usando el core",
-        "Mantén los brazos rectos durante todo el movimiento",
-        "Alterna lados"
+        "Hang from the bar, lean to one side",
+        "Elevate the body laterally using core",
+        "Keep arms straight throughout the movement",
+        "Alternate sides"
       ],
       "commonMistakes": [
-        "No uses impulso para balancearte",
-        "Evita flexionar los codos para ayudar",
-        "No dejes que las caderas se hundan"
+        "Don't use momentum to balance",
+        "Avoid bending elbows for help",
+        "Don't let hips sink"
       ],
       "muscles_secondary": [
         6,
@@ -3611,8 +3611,8 @@
     {
       "id": 89,
       "name": "Side Lunge",
-      "description": "Da un paso hacia el lado y agáchate, trabajando aductores y mejorando la movilidad lateral.",
-      "skill": "Sujeción Hollow Body",
+      "description": "step to the side and squat, working adductors and improving lateral mobility.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         15
       ],
@@ -3636,15 +3636,15 @@
         90
       ],
       "formCues": [
-        "Da un paso hacia un lado en estocada",
-        "Mantén la otra pierna recta",
-        "Flexiona la rodilla de trabajo, mantén el pie abajo",
-        "Empuja de vuelta al inicio"
+        "Step to one side in lunge",
+        "Keep the other leg straight",
+        "Bend support knee, Keep the foot low",
+        "Push back al inicio"
       ],
       "commonMistakes": [
-        "No dejes que la pierna de apoyo se flexione",
-        "Evita rango de movimiento incompleto",
-        "No dejes que el pie de trabajo se gire hacia adentro"
+        "Don't let support leg bend",
+        "Avoid incomplete range of motion",
+        "Don't let support foot turn inward"
       ],
       "muscles_secondary": [
         7,
@@ -3654,8 +3654,8 @@
     {
       "id": 54,
       "name": "Side Plank",
-      "description": "Soporta el cuerpo sobre un antebrazo y el lado del pie, manteniendo para trabajar oblicuos.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Support body on one forearm and side of foot, holding to work obliques.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         16
       ],
@@ -3677,15 +3677,15 @@
         51
       ],
       "formCues": [
-        "Acuéstate de lado, apóyate en un antebrazo",
-        "Apila los pies o desalinea para estabilidad",
-        "Eleva las caderas para formar una línea recta",
-        "Mantén con el core activado"
+        "Lie on your side, support on one forearm",
+        "Stack the feet or slightly stagger for stability",
+        "Lift the hips to form a straight line",
+        "Keep core activated"
       ],
       "commonMistakes": [
-        "No dejes que las caderas se hundan",
-        "Evita rodar hacia adelante o hacia atrás",
-        "No eleves la cadera demasiado alto"
+        "Don't let hips sink",
+        "Avoid rolling forward or backward",
+        "Don't elevate Hip too high"
       ],
       "muscles_secondary": [
         8
@@ -3694,8 +3694,8 @@
     {
       "id": 94,
       "name": "Side-Lying Leg Raise",
-      "description": "Acostado de lado, eleva la pierna superior, aislando abductores para estabilidad de cadera.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Lying on side, lift top leg, isolating abductors for hip stability.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         16
       ],
@@ -3718,15 +3718,15 @@
         96
       ],
       "formCues": [
-        "Acuéstate de lado, piernas apiladas",
-        "Eleva la pierna superior manteniéndola recta",
-        "Baja lentamente hasta justo por encima del suelo",
-        "Contrae cadera externa en la parte superior"
+        "Lie on your side, Legs stacked",
+        "Lift the upper leg keeping it straight",
+        "Lower slowly until just above ground",
+        "Squeeze hip external at the top"
       ],
       "commonMistakes": [
-        "No dejes que las caderas se rueden hacia atrás",
-        "Evita usar impulso para levantar",
-        "No eleves demasiado alto inicialmente"
+        "Don't let hips roll backward",
+        "Avoid using momentum to lift",
+        "Don't elevate too high initially"
       ],
       "muscles_secondary": [
         8
@@ -3735,8 +3735,8 @@
     {
       "id": 85,
       "name": "Single-Leg Calf Raise",
-      "description": "Eleva el talón en una pierna, aumentando la fuerza y estabilidad de pantorrillas de forma unilateral.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Lift heel on one leg, increasing unilateral calf strength and stability.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         15
       ],
@@ -3758,15 +3758,15 @@
         86
       ],
       "formCues": [
-        "Párate sobre una pierna, la otra ligeramente hacia adelante",
-        "Eleva hasta la punta del pie de apoyo",
-        "Mantén el equilibrio sin sujetarte",
-        "Baja lentamente"
+        "Stand on one leg, the other slightly forward",
+        "Elevate to the tip of the supporting foot",
+        "Maintain balance without holding",
+        "Lower slowly"
       ],
       "commonMistakes": [
-        "No dejes que la rodilla de apoyo se flexione",
+        "Don't let support knee bend",
         "Evita usar impulso",
-        "No apresures el movimiento"
+        "Don't rush the movement"
       ],
       "muscles_secondary": [
         7,
@@ -3776,8 +3776,8 @@
     {
       "id": 80,
       "name": "Single-Leg Glute Bridge",
-      "description": "Eleva las caderas con una pierna extendida, trabajando glúteos de forma unilateral con un desafío añadido.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Lift hips with one leg extended, working glutes unilaterally with added challenge.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         16
       ],
@@ -3799,15 +3799,15 @@
         81
       ],
       "formCues": [
-        "Una pierna extendida, la otra doblada",
-        "Eleva las caderas usando la pierna de apoyo",
-        "Contrae el glúteo de trabajo en la parte superior",
-        "Baja con control"
+        "One leg extended, the other bent",
+        "Lift the hips using the supporting leg",
+        "Squeeze the glute of the lower at the top",
+        "Lower with control"
       ],
       "commonMistakes": [
-        "No dejes que el pie de apoyo se levante",
-        "Evita elevar las caderas hacia un lado",
-        "No vayas demasiado shallow"
+        "Don't let support foot lift",
+        "Avoid elevating hips to one side",
+        "Don't go too shallow"
       ],
       "muscles_secondary": [
         6,
@@ -3817,8 +3817,8 @@
     {
       "id": 75,
       "name": "Single-Leg Romanian Deadlift",
-      "description": "Bisagra en las caderas en una pierna, bajando el torso para trabajar isquiotibiales y mejorar el equilibrio.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Hinge at hips on one leg, lowering torso to work hamstrings and improve balance.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         15
       ],
@@ -3841,15 +3841,15 @@
         77
       ],
       "formCues": [
-        "Párate sobre una pierna, ligera flexión de rodilla",
-        "Bisagra en la cadera, extiende la otra pierna hacia atrás",
-        "Mantén la pierna de apoyo ligeramente doblada",
-        "Regresa contrayendo glúteos"
+        "Stand on one leg, slight push-up of knee",
+        "Hinge at the hip, extend the other leg backward",
+        "Keep the leg of support slightly bent",
+        "Return by squeezing Glutes"
       ],
       "commonMistakes": [
-        "No dejes que la rodilla de apoyo colapse",
-        "Evita redondear la espalda baja",
-        "No vayas demasiado profundo al inicio"
+        "Don't let support knee collapse",
+        "Avoid rounding lower back",
+        "Don't go too deep initially"
       ],
       "muscles_secondary": [
         16,
@@ -3859,8 +3859,8 @@
     {
       "id": 107,
       "name": "Skin the Cat",
-      "description": "Rota hacia atrás a través de una suspensión en anillas o barra, una progresión de movilidad y palanca posterior.",
-      "skill": "Palanca posterior",
+      "description": "Rotate back through a suspension on rings or bar, a mobility and back lever progression.",
+      "skill": "Back Lever",
       "equipment": [
         11
       ],
@@ -3884,15 +3884,15 @@
         114
       ],
       "formCues": [
-        "Cuélgate de la barra con anillas o rig",
-        "Camina los pies hacia adelante mientras rotas el cuerpo",
-        "Baja hasta que la espalda esté contra la barra",
-        "Invierte el movimiento lentamente"
+        "Hang from the bar with rings or rig",
+        "Walk feet forward while rotating body",
+        "Lower until the back is against the bar",
+        "Invert the movement slowly"
       ],
       "commonMistakes": [
-        "No gires demasiado rápido",
+        "Don't rotate too quickly",
         "Evita usar impulso",
-        "No sueltes el agarre prematuramente"
+        "Don't release grip prematurely"
       ],
       "muscles_secondary": [
         12,
@@ -3902,7 +3902,7 @@
     {
       "id": 117,
       "name": "Skull Crushers",
-      "description": "Un ejercicio efectivo de aislamiento de tríceps realizado acostado boca arriba, bajando un peso o resistencia hacia tu frente y luego extendiendo los brazos hacia arriba para trabajar la cabeza del tríceps.",
+      "description": "An effective tricep isolation exercise performed lying face up, lowering a weight or resistance toward your forehead and then extending arms upward to work tricep head.",
       "skill": "",
       "equipment": [
         15
@@ -3921,23 +3921,23 @@
       "prerequisites": [],
       "progressions": [],
       "formCues": [
-        "Acuéstate en el banco, sujeta la barra sobre la cabeza",
-        "Baja la barra hacia la frente flexionando los codos",
-        "Extiende los brazos de vuelta al inicio",
-        "Mantén los brazos superiores estacionarios"
+        "Lie on the bench, hold bar over head",
+        "Lower bar to forehead by bending elbows",
+        "Extend arms back to start",
+        "Keep the arms upper stationary"
       ],
       "commonMistakes": [
-        "No rebotes la barra contra la frente",
-        "Evita mover los hombros durante el ejercicio",
-        "No uses demasiado peso"
+        "Don't bounce bar against forehead",
+        "Avoid moving shoulders during exercise",
+        "Don't use too much weight"
       ],
       "muscles_secondary": []
     },
     {
       "id": 9,
       "name": "Spiderman Push-Up",
-      "description": "Lleva una rodilla al codo durante una flexión, activando pecho y oblicuos simultáneamente.",
-      "skill": "Variaciones de flexiones",
+      "description": "Bring one knee to elbow during a push-up, activating chest and obliques simultaneously.",
+      "skill": "Push-up Variations",
       "equipment": [],
       "difficulty": [
         2
@@ -3956,23 +3956,23 @@
         8
       ],
       "formCues": [
-        "Amplia separación de manos",
-        "Lleva la rodilla al codo del mismo lado al bajar",
-        "Alterna lados con cada repetición",
-        "Controla el movimiento completamente"
+        "Widen hand separation",
+        "Bring knee to elbow on same side when lowering",
+        "Alternatete sides with each rep",
+        "Control the movement completely"
       ],
       "commonMistakes": [
-        "No dejes que la cadera gire",
-        "Evita apresurar el movimiento de la rodilla",
-        "No colapses el pecho"
+        "Don't let Hip rotate",
+        "Avoid rushing the knee movement",
+        "Don't collapse chest"
       ],
       "muscles_secondary": []
     },
     {
       "id": 67,
       "name": "Squat",
-      "description": "Flexiona rodillas y caderas para bajar el cuerpo, luego párate, un ejercicio básico de cuádriceps y glúteos.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Bend knees and hips to lower body, then stand, a basic quad and glute exercise.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         15
       ],
@@ -3997,15 +3997,15 @@
         72
       ],
       "formCues": [
-        "Pies a la anchura de los hombros",
-        "Mantén el pecho erguido, core apretado",
-        "Baja caderas hacia atrás y abajo",
-        "Impulsa a través de los talones para levantarte"
+        "Foots at shoulder width",
+        "Keep chest upright, core squeezed",
+        "Lower hips backward and down",
+        "Push through the heels to stand up"
       ],
       "commonMistakes": [
-        "No dejes que las rodillas se hundan hacia adentro",
-        "Evita levantar los talones del suelo",
-        "No redondees la espalda baja"
+        "Don't let knees sink inward",
+        "Avoid lifting heels from the floor",
+        "Don't round back baja"
       ],
       "muscles_secondary": [
         7,
@@ -4015,8 +4015,8 @@
     {
       "id": 96,
       "name": "Standing Abduction",
-      "description": "Con una banda alrededor de las piernas, empuja una pierna hacia el lado contra la resistencia.",
-      "skill": "Sujeción Hollow Body",
+      "description": "With a band around legs, push one leg to the side against resistance.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         2
       ],
@@ -4038,15 +4038,15 @@
         97
       ],
       "formCues": [
-        "Párate erguido, banda alrededor de los tobillos",
-        "Eleva una pierna hacia el lado manteniéndola recta",
-        "Contrae cadera externa en la parte superior",
-        "Baja con control"
+        "Stand upright, banda alrededor de los tobillos",
+        "Lift one leg to the side keeping it straight",
+        "Squeeze hip external at the top",
+        "Lower with control"
       ],
       "commonMistakes": [
-        "No te inclines hacia afuera de la pierna de trabajo",
-        "Evita usar impulso para levantar",
-        "No flexiones la pierna de trabajo"
+        "Don't lean away from support leg",
+        "Avoid using momentum to lift",
+        "Don't bend support leg"
       ],
       "muscles_secondary": [
         8
@@ -4055,8 +4055,8 @@
     {
       "id": 72,
       "name": "Step-Up",
-      "description": "Sube a un banco con una pierna, impulsando a través del talón para trabajar cuádriceps.",
-      "skill": "Sujeción Hollow Body",
+      "description": "step up onto a bench with one leg, pushing through the heel to work quads.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         12
       ],
@@ -4080,15 +4080,15 @@
         71
       ],
       "formCues": [
-        "Párate frente a una caja o step",
-        "Impulsa a través de un pie para subir",
-        "Lleva el otro pie para quedarte de pie a su lado",
-        "Baja con control"
+        "Stand in front of a box or step",
+        "Push through of one foot to step up",
+        "Lleva el otro Foot para quedarte de Foot a su lado",
+        "Lower with control"
       ],
       "commonMistakes": [
-        "No empujes con el pie trasero",
-        "Evita rango de movimiento incompleto",
-        "No lideres con la rodilla al bajar"
+        "Don't push with back foot",
+        "Avoid incomplete range of motion",
+        "Don't lead with knee when lowering"
       ],
       "muscles_secondary": [
         7
@@ -4097,7 +4097,7 @@
     {
       "id": 113,
       "name": "Straddle L-Sit",
-      "description": "Mantén las piernas abiertas en un L-sit, avanzando la fuerza del core y flexores de cadera.",
+      "description": "Keep legs spread in an L-sit, advancing Core and hip flexor strength.",
       "skill": "L-Sit",
       "equipment": [
         5
@@ -4121,15 +4121,15 @@
         5
       ],
       "formCues": [
-        "Siéntate entre barras, piernas abiertas ancho",
-        "Eleva las piernas a posición horizontal",
-        "Mantén el core activado y espalda plana",
-        "Baja lentamente cuando estés cansado"
+        "Sit between bars, legs open wide",
+        "Lift legs to horizontal position",
+        "Keep Core activated and Back flat",
+        "Lower slowly when you're tired"
       ],
       "commonMistakes": [
-        "No dejes que las rodillas se hundan hacia abajo",
-        "Evita redondear la espalda",
-        "No uses los brazos para subir"
+        "Don't let knees sink down",
+        "Avoid rounding the back",
+        "Don't use arms to step up"
       ],
       "muscles_secondary": [
         2,
@@ -4139,8 +4139,8 @@
     {
       "id": 29,
       "name": "Straddle Planche",
-      "description": "Piernas abiertas ancho en una sujeción de plancha, aumentando la demanda de hombros.",
-      "skill": "Plancha",
+      "description": "Legs open wide in a plank hold, increasing the demand on shoulders.",
+      "skill": "Plank",
       "equipment": [
         5
       ],
@@ -4165,15 +4165,15 @@
         27
       ],
       "formCues": [
-        "Comienza en posición de flexión con postura ancha",
-        "Inclínate hacia adelante, brazos rectos",
-        "Eleva las piernas con las rodillas ligeramente dobladas hacia afuera",
-        "Mantén el cuerpo en línea horizontal"
+        "Start in Push-up position with wide stance",
+        "Lean forward, arms straight",
+        "Lift legs with knees slightly bent outwards",
+        "Keep the body in a horizontal line"
       ],
       "commonMistakes": [
-        "No flexiones los codos durante el levantamiento",
-        "Evita que las caderas se hundan",
-        "No apresures la progresión"
+        "Don't bend elbows during the lift",
+        "Avoid hips sinking",
+        "Don't rush the progression"
       ],
       "muscles_secondary": [
         9,
@@ -4184,8 +4184,8 @@
     {
       "id": 92,
       "name": "Sumo Squat",
-      "description": "Sentadilla con postura ancha con los pies hacia afuera, enfatizando aductores y muslos internos.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Wide stance squat with feet out, emphasizing adductors and inner thighs.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         15
       ],
@@ -4209,15 +4209,15 @@
         89
       ],
       "formCues": [
-        "Postura ancha, pies apuntando hacia afuera",
-        "Baja caderas hacia abajo y entre las piernas",
-        "Mantén el pecho erguido durante todo el movimiento",
-        "Impulsa a través de los talones para levantarte"
+        "Wide stance, feet pointing outward",
+        "Lower Hips down and between legs",
+        "Keep chest upright throughout the movement",
+        "Push through the heels to stand up"
       ],
       "commonMistakes": [
-        "No dejes que las rodillas se hundan hacia adentro",
-        "Evita ir demasiado shallow",
-        "No redondees la espalda"
+        "Don't let knees sink inward",
+        "Avoid going too shallow",
+        "Don't round back"
       ],
       "muscles_secondary": [
         7,
@@ -4227,8 +4227,8 @@
     {
       "id": 62,
       "name": "Superman Hold",
-      "description": "Acostado boca abajo, eleva brazos y piernas del suelo, manteniendo para fortalecer la espalda baja.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Lying face down, lift arms and legs from floor, holding to strengthen lower back.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         16
       ],
@@ -4252,15 +4252,15 @@
         63
       ],
       "formCues": [
-        "Acuéstate boca abajo, brazos extendidos hacia adelante",
-        "Levanta el pecho y las piernas del suelo",
-        "Mantén la espalda baja activada",
-        "Mantén el cuello neutro"
+        "Lie face down, Arms Extended forward",
+        "Lift chest and legs off ground",
+        "Keep back low activated",
+        "maintain el Neck neutro"
       ],
       "commonMistakes": [
-        "No hiperextiendas el cuello",
-        "Evita elevar demasiado alto inicialmente",
-        "No contengas la respiración"
+        "Don't hyperextend neck",
+        "Avoid elevating too high initially",
+        "Don't hold the breath"
       ],
       "muscles_secondary": [
         9
@@ -4269,8 +4269,8 @@
     {
       "id": 110,
       "name": "Supine Leg Raise",
-      "description": "Acostado boca arriba, eleva las piernas a vertical y baja lentamente, trabajando abdominales inferiores y flexores de cadera.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Lying face up, lift legs to vertical and Lower slowly, working lower abs and hip flexors.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         16
       ],
@@ -4292,15 +4292,15 @@
         65
       ],
       "formCues": [
-        "Acuéstate boca arriba, brazos a los lados",
-        "Eleva las piernas manteniéndolas rectas",
-        "Controla la fase de bajada",
-        "Mantén la espalda baja presionada hacia abajo"
+        "Lie on your back, Arms to the sides",
+        "Lift legs keeping them straight",
+        "Control the lowering phase",
+        "Keep back pressed to floor"
       ],
       "commonMistakes": [
-        "No dejes que la espalda se eleve del suelo",
-        "Evita usar impulso para levantar",
-        "No bloquees las rodillas bruscamente"
+        "Don't let the back lift off the floor",
+        "Avoid using momentum to lift",
+        "Don't lock knees abruptly"
       ],
       "muscles_secondary": [
         6
@@ -4309,8 +4309,8 @@
     {
       "id": 44,
       "name": "Towel Hang",
-      "description": "Cuélgate de toallas sobre una barra, desafiando antebrazos y agarre intensamente.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Hang from towels over a bar, challenging forearms and grip intensely.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         6
       ],
@@ -4330,15 +4330,15 @@
       ],
       "progressions": [],
       "formCues": [
-        "Cuelga una toalla sobre la barra",
-        "Agarra cada extremo con una mano",
-        "Cuelga durante la duración",
-        "Enfócate en agarre y estabilidad de hombros"
+        "Hang a towel over the bar",
+        "Grab each end with one hand",
+        "Hang for the duration",
+        "Focus on grip and shoulder stability"
       ],
       "commonMistakes": [
-        "No dejes que la toalla se resbale de las manos",
-        "Evita usar solo el agarre de los dedos",
-        "No eleves los hombros"
+        "Don't let the towel slip from your hands",
+        "Avoid using only finger grip",
+        "Don't elevate shoulders"
       ],
       "muscles_secondary": [
         9,
@@ -4348,8 +4348,8 @@
     {
       "id": 22,
       "name": "Towel Pull-Up",
-      "description": "Agarra toallas sobre una barra para subir, mejorando la fuerza de agarre junto con el trabajo de espalda.",
-      "skill": "Variaciones de dominadas",
+      "description": "Grip towels over a bar to pull up, improving grip strength along with back work.",
+      "skill": "Pull-up Variations",
       "equipment": [],
       "difficulty": [
         2
@@ -4366,22 +4366,22 @@
         15
       ],
       "formCues": [
-        "Cuélgate de la toalla drapada sobre la barra",
-        "Agarra la toalla con ambas manos",
-        "Lleva la barbilla por encima de la toalla",
-        "Enfócate en fuerza de agarre y dominada"
+        "Hang from the towel draped over the bar",
+        "Grab towel with both hands",
+        "Bring your chin over the towel",
+        "Focus on grip strength and pull-up"
       ],
       "commonMistakes": [
-        "No dejes que la toalla se deslice",
-        "Evita perder el agarre durante la repetición",
-        "No balancees el cuerpo"
+        "Don't let the towel slip",
+        "Avoid losing the grip during the repetition",
+        "Don't sway body"
       ],
       "muscles_secondary": []
     },
     {
       "id": 32,
       "name": "Tricep Dip",
-      "description": "Baja el cuerpo entre barras paralelas y empuja hacia arriba, trabajando tríceps eficazmente.",
+      "description": "Lower body between parallel bars and push up, working triceps effectively.",
       "skill": "Variaciones de fondos",
       "equipment": [
         1
@@ -4404,15 +4404,15 @@
         33
       ],
       "formCues": [
-        "Manos en una superficie estable, piernas extendidas",
-        "Mantén los codos cerca del cuerpo",
-        "Baja caderas hacia el suelo",
-        "Empuja a través de tríceps para regresar"
+        "Hands on a surface stable, Legs extendidas",
+        "Keep elbows close to body",
+        "Lower Hips to the floor",
+        "Push through triceps to return"
       ],
       "commonMistakes": [
-        "No dejes que los codos se abran",
-        "Evita ir demasiado profundo",
-        "No bloquees los codos en la parte superior"
+        "Don't let elbows open",
+        "Avoid going too deep",
+        "No bloquees elbows at the top"
       ],
       "muscles_secondary": [
         4,
@@ -4422,7 +4422,7 @@
     {
       "id": 38,
       "name": "Triceps Extension",
-      "description": "Usando una banda elástica sobre la cabeza, extiende los brazos para aislar tríceps.",
+      "description": "Using a resistance band over head, extend arms to isolate triceps.",
       "skill": "Variaciones de fondos",
       "equipment": [
         2
@@ -4445,15 +4445,15 @@
         37
       ],
       "formCues": [
-        "Siéntate en el banco con mancuerna sobre la cabeza",
-        "Baja el peso detrás de la cabeza flexionando el codo",
-        "Extiende el brazo de vuelta al inicio",
-        "Mantén el brazo superior estacionario"
+        "Sit on the bench with dumbbell on head",
+        "Lower weight behind head by bending elbow",
+        "Extend arm back to start",
+        "maintain arm superior estacionario"
       ],
       "commonMistakes": [
-        "No uses impulso para levantar",
-        "Evita abrir el codo hacia afuera",
-        "No dejes que el torso se balancee"
+        "Don't use momentum to lift",
+        "Evita abrir elbow hacia afuera",
+        "Don't let torso sway"
       ],
       "muscles_secondary": [
         5
@@ -4462,7 +4462,7 @@
     {
       "id": 18,
       "name": "Tuck Front Lever",
-      "description": "Rodillas recogidas al pecho mientras mantienes paralelo, una progresión hacia la palanca frontal completa.",
+      "description": "Knees gathered to chest while maintaining parallel, a progression towards the full front lever.",
       "skill": "Variaciones con recuento",
       "equipment": [
         6
@@ -4487,15 +4487,15 @@
         107
       ],
       "formCues": [
-        "Recoge las rodillas al pecho mientras cuelgas",
-        "Activa los dorsales completamente",
-        "Eleva las caderas fuera de la posición vertical",
-        "Mantén los brazos rectos y bloqueados"
+        "Bring knees to chest while hanging",
+        "Activate lats completely",
+        "Lift the hips out of the vertical position",
+        "Keep arms straight y bloqueados"
       ],
       "commonMistakes": [
-        "No flexiones los codos para ayudar",
-        "Evita que la espalda se redondee",
-        "No uses impulso para subir"
+        "Don't bend elbows for helpr",
+        "Avoid back rounding",
+        "No uses impulso to step up"
       ],
       "muscles_secondary": [
         13,
@@ -4506,8 +4506,8 @@
     {
       "id": 103,
       "name": "Tuck Jump",
-      "description": "Salta y recoge las rodillas al pecho en el aire, trabajando piernas, core y cardio.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Jump and bring knees to chest in air, working legs, Core, and cardio.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         15
       ],
@@ -4529,15 +4529,15 @@
       ],
       "progressions": [],
       "formCues": [
-        "Comienza de pie",
-        "Salta explosivamente hacia arriba, llevando las rodillas al pecho",
-        "Aterriza suavemente sobre la punta de los pies",
-        "Prepárate inmediatamente para la siguiente repetición"
+        "Start standing",
+        "Jump explosively upward, bringing knees to chest",
+        "Land softly on the balls of your feet",
+        "Get ready immediately for the next rep"
       ],
       "commonMistakes": [
-        "No aterrices con las piernas rectas",
-        "Evita aterrizar pesadamente con toda la planta del pie",
-        "No dejes que las rodillas colapsen hacia adentro"
+        "Don't land with straight legs",
+        "Avoid landing heavily with entire foot",
+        "Don't let knees collapse inward"
       ],
       "muscles_secondary": [
         6,
@@ -4547,7 +4547,7 @@
     {
       "id": 51,
       "name": "Tuck L-Sit",
-      "description": "Rodillas recogidas mientras mantienes una posición de L-sit, una progresión hacia el L-sit completo.",
+      "description": "Knees recogidas mientras mantienes unto position de L-sit, una progression hacia el L-sit completo.",
       "skill": "Variaciones con recuento",
       "equipment": [
         5
@@ -4571,15 +4571,15 @@
         47
       ],
       "formCues": [
-        "Comienza en posición recogida, rodillas al pecho",
-        "Eleva las caderas y piernas con fuerza del core",
-        "Mantén los brazos rectos para soporte",
-        "Progresa al L-sit completo gradualmente"
+        "Start in tuck position, knees to chest",
+        "Lift the hips and Legs with core power",
+        "Keep arms straight para soporte",
+        "Progress to full L-sit gradually"
       ],
       "commonMistakes": [
-        "No flexiones los codos para soporte",
+        "Don't bend elbows para soporte",
         "Evita usar impulso",
-        "No apresures la progresión"
+        "Don't rush the progression"
       ],
       "muscles_secondary": [
         2,
@@ -4589,7 +4589,7 @@
     {
       "id": 28,
       "name": "Tuck Planche",
-      "description": "Rodillas recogidas mientras mantienes paralelo sobre las manos, una progresión de plancha.",
+      "description": "Knees gathered while maintaining parallel on hands, a progression of plank.",
       "skill": "Variaciones con recuento",
       "equipment": [
         5
@@ -4615,15 +4615,15 @@
         29
       ],
       "formCues": [
-        "Comienza en posición de flexión, manos cerca de las caderas",
-        "Inclínate hacia adelante con brazos rectos",
-        "Levanta los pies del suelo, rodillas al pecho",
-        "Mantén brevemente, luego baja"
+        "Start in Push-up position, hands near hips",
+        "Lean forward with arms straight",
+        "Lift feet off ground, knees to chest",
+        "Hold briefly, then lower"
       ],
       "commonMistakes": [
-        "No flexiones los codos durante el levantamiento",
-        "Evita ir demasiado profundo al inicio",
-        "No colapses los hombros"
+        "Don't bend elbows during the lift",
+        "Avoid going too deep initially",
+        "Don't collapse shoulders"
       ],
       "muscles_secondary": [
         9,
@@ -4634,8 +4634,8 @@
     {
       "id": 116,
       "name": "Tuck Planche Hold",
-      "description": "Mantén tu cuerpo en posición de recuento con las rodillas dobladas y cerca del pecho mientras te equilibras sobre las manos, desarrollando estabilidad crítica de hombros y activación del core para habilidades avanzadas de calistenia.",
-      "skill": "Plancha",
+      "description": "Hold your body in tuck position with knees bent and close to chest while balancing on hands, developing critical shoulder stability and Core activation for advanced calisthenics skills.",
+      "skill": "Plank",
       "equipment": [
         15
       ],
@@ -4657,15 +4657,15 @@
       ],
       "progressions": [],
       "formCues": [
-        "Manos cerca de las caderas, inclínate hacia adelante",
-        "Levanta los pies con las rodillas al pecho",
-        "Mantén los brazos rectos y bloqueados",
-        "Mantén brevemente, activa intensamente"
+        "Hands near hips, lean forward",
+        "Lift feet with knees to chest",
+        "Keep arms straight y bloqueados",
+        "Hold briefly, activate intensely"
       ],
       "commonMistakes": [
-        "No flexiones los codos durante la sujeción",
-        "Evita que los hombros colapsen",
-        "No vayas demasiado profundo al inicio"
+        "Don't bend elbows during the hold",
+        "Avoid letting shoulders collapse",
+        "Don't go too deep initially"
       ],
       "muscles_secondary": [
         2,
@@ -4675,7 +4675,7 @@
     {
       "id": 122,
       "name": "Twist Sit Up",
-      "description": "Un ejercicio abdominal sentado en el suelo con las piernas extendidas, girando el torso para llevar el codo opuesto a la rodilla en un movimiento controlado que trabaja los oblicuos y el recto abdominal.",
+      "description": "A seated abdominal exercise on the floor with legs extended, rotating torso to bring opposite elbow to knee in a controlled movement that works obliques and rectus abdominis.",
       "skill": "",
       "equipment": [
         16
@@ -4697,15 +4697,15 @@
       ],
       "progressions": [],
       "formCues": [
-        "Acuéstate boca arriba, rodillas dobladas",
-        "Siéntate mientras rotas el torso",
-        "Lleva el codo opuesto a la rodilla",
-        "Alterna lados con cada repetición"
+        "Lie on your back, Knees bent",
+        "Sit while rotating torso",
+        "Bring opposite elbow to knee",
+        "Alternatete sides with each rep"
       ],
       "commonMistakes": [
-        "No uses impulso para subir",
-        "No tires del cuello",
-        "No apresures la rotación"
+        "No uses impulso to step up",
+        "Don't pull on neck",
+        "Don't rush the rotation"
       ],
       "muscles_secondary": [
         6
@@ -4714,7 +4714,7 @@
     {
       "id": 50,
       "name": "V-Sit",
-      "description": "Siéntate con las piernas y el torso elevados en forma de V, manteniendo para activar abdominales y flexores de cadera.",
+      "description": "Sit with legs and torso elevated in a V shape, holding to activate abs and hip flexors.",
       "skill": "L-Sit",
       "equipment": [],
       "difficulty": [
@@ -4729,22 +4729,22 @@
         58
       ],
       "formCues": [
-        "Siéntate con piernas y torso formando forma de V",
-        "Levanta los pies del suelo, equilibra en los isquiones",
-        "Extiende las manos hacia adelante o sujeta las espinillas",
-        "Mantén la espalda recta"
+        "Sit with legs and torso forming V shape",
+        "Lift feet off ground, balance on ischium",
+        "Extend hands forward or hold shins",
+        "Keep the Back straight"
       ],
       "commonMistakes": [
-        "No dejes que la espalda se redondee excesivamente",
-        "Evita flexionar las rodillas demasiado",
-        "No te inclines hacia atrás sobre el suelo"
+        "Don't let the back round excessively",
+        "Avoid bending knees too much",
+        "Don't lean backward onto floor"
       ],
       "muscles_secondary": []
     },
     {
       "id": 30,
       "name": "Wall Handstand",
-      "description": "Practica pino contra una pared, fortaleciendo los hombros y el equilibrio.",
+      "description": "Practice handstand against a wall, strengthening shoulders and balance.",
       "skill": "Pino",
       "equipment": [],
       "difficulty": [
@@ -4759,23 +4759,23 @@
         23
       ],
       "formCues": [
-        "Salta hacia la pared con la espalda hacia ella",
-        "Sube los pies por la pared gradualmente",
-        "Mantén el cuerpo en línea recta",
-        "Activa el core y los glúteos"
+        "Jump toward wall with back to it",
+        "Raise feet up the wall gradually",
+        "Keep body in straight line",
+        "Activate Core and Glutes"
       ],
       "commonMistakes": [
-        "No hagas puente en las caderas",
-        "Evita subir los pies demasiado abajo",
-        "No arquees la espalda baja"
+        "Don't bridge hips",
+        "Avoid raising feet too low",
+        "Don't arch lower back"
       ],
       "muscles_secondary": []
     },
     {
       "id": 69,
       "name": "Wall Sit",
-      "description": "Apóyate contra una pared, mantén una posición sentada, un ejercicio isométrico de resistencia de cuádriceps.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Lean against a wall, maintain a seated position, a quad resistance isometric exercise.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         17
       ],
@@ -4799,15 +4799,15 @@
         67
       ],
       "formCues": [
-        "Espalda contra la pared, pies hacia adelante",
-        "Siéntate hasta que los muslos estén paralelos al suelo",
-        "Mantén el core activado",
-        "Respira constantemente"
+        "Back against wall, feet forward",
+        "Sit until thighs are parallel to the floor",
+        "Keep core activated",
+        "Breathe constantly"
       ],
       "commonMistakes": [
-        "No dejes que las rodillas avancen demasiado sobre los pies",
-        "Evita que la espalda se deslice por la pared",
-        "No empujes solo con los talones"
+        "Don't let knees advance too far over feet",
+        "Avoid back sliding down wall",
+        "Don't push only with heels"
       ],
       "muscles_secondary": [
         7
@@ -4816,8 +4816,8 @@
     {
       "id": 88,
       "name": "Weighted Calf Raise",
-      "description": "Sujeta un peso o usa un chaleco con peso, eleva los talones para aumentar la resistencia de pantorrilla.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Hold a weight or use a weighted vest, lift heels to increase calf resistancella.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         13
       ],
@@ -4837,15 +4837,15 @@
       ],
       "progressions": [],
       "formCues": [
-        "Sujeta una mancuerna o disco en una mano",
-        "Párate erguido, eleva los talones",
-        "Enfócate en la contracción de pantorrilla",
-        "Controla ambas fases"
+        "Hold dumbbell or plate in one hand",
+        "Stand upright, eleva los talones",
+        "Focus on calf contraction",
+        "Control both phases"
       ],
       "commonMistakes": [
-        "No te inclines con el peso",
+        "Don't lean with weight",
         "Evita usar impulso",
-        "No hagas un recorrido demasiado corto"
+        "Don't make the range too short"
       ],
       "muscles_secondary": [
         7
@@ -4854,7 +4854,7 @@
     {
       "id": 36,
       "name": "Weighted Dip",
-      "description": "Añade peso a las fondos usando un chaleco o cinturón, intensificando el trabajo de tríceps.",
+      "description": "Add weight to dips using a vest or belt, intensifying tricep work.",
       "skill": "Variaciones de fondos",
       "equipment": [
         13
@@ -4875,15 +4875,15 @@
       ],
       "progressions": [],
       "formCues": [
-        "Comienza con poco peso y progresa gradualmente",
-        "Mantén una forma estricta durante todo el movimiento",
-        "Controla ambas fases por igual",
-        "Activa el core para evitar balanceo"
+        "Start with light weight and progress gradually",
+        "Keep a estricta throughout the movement",
+        "Control both phases equally",
+        "Activate core para evitar Swing"
       ],
       "commonMistakes": [
-        "No añadas demasiado peso demasiado pronto",
+        "Don't add too much weight too soon",
         "Evita usar impulso",
-        "No dejes que los hombros se rueden hacia adelante"
+        "No dejes than shoulders se rueden forward"
       ],
       "muscles_secondary": [
         4,
@@ -4893,8 +4893,8 @@
     {
       "id": 83,
       "name": "Weighted Hip Thrust",
-      "description": "Añade peso sobre las caderas durante un empuje de cadera, intensificando la activación de glúteos.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Add weight on hips during a hip thrust, intensifying glute activation.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         13
       ],
@@ -4914,15 +4914,15 @@
       ],
       "progressions": [],
       "formCues": [
-        "Coloca el disco de peso sobre las caderas",
-        "Mantén la forma correcta de empuje de cadera",
-        "Enfócate en la contracción de glúteos",
-        "Controla ambas fases"
+        "Place weight plate on hips",
+        "maintain the correct form of hip push",
+        "Focus on glute contraction",
+        "Control both phases"
       ],
       "commonMistakes": [
-        "No dejes que la barra se salga de las caderas",
+        "Don't let bar come off hips",
         "Evita usar impulso",
-        "No sacrifiques la forma por más peso"
+        "Don't sacrifice form for more weight"
       ],
       "muscles_secondary": [
         6,
@@ -4932,8 +4932,8 @@
     {
       "id": 13,
       "name": "Wide Pull-Up",
-      "description": "Manos más anchas que los hombros para maximizar la activación de dorsales durante la dominada.",
-      "skill": "Variaciones de dominadas",
+      "description": "Hands wider than shoulders to maximize lat activation during the pull-up.",
+      "skill": "Pull-up Variations",
       "equipment": [
         6
       ],
@@ -4955,15 +4955,15 @@
       ],
       "progressions": [],
       "formCues": [
-        "Agarra la barra a 1.5x la anchura de los hombros",
-        "Mantén el core activado",
-        "Tira del pecho hacia el centro de la barra",
-        "Siente cómo se activan los dorsales durante todo el movimiento"
+        "Grab the bar at 1.5x the width of shoulders",
+        "Keep core activated",
+        "Pull chest to center of bar",
+        "Feel how the lats activate throughout the movement"
       ],
       "commonMistakes": [
-        "No te inclines hacia atrás demasiado",
-        "Evita rango de movimiento incompleto",
-        "No dejes que los hombros se rueden hacia adelante"
+        "Don't lean backward too much",
+        "Avoid incomplete range of motion",
+        "No dejes than shoulders se rueden forward"
       ],
       "muscles_secondary": [
         9,
@@ -4974,8 +4974,8 @@
     {
       "id": 2,
       "name": "Wide Push-Up",
-      "description": "Manos colocadas más anchas que los hombros para enfatizar la activación del pecho sobre los tríceps, realizado bajando y subiendo el cuerpo.",
-      "skill": "Variaciones de flexiones",
+      "description": "Hands placed wider than shoulders to emphasize chest activation over triceps, performed by lowering and raising body.",
+      "skill": "Push-up Variations",
       "equipment": [],
       "difficulty": [
         1
@@ -4994,23 +4994,23 @@
         8
       ],
       "formCues": [
-        "Separa las manos a 1.5x la anchura de los hombros",
-        "Mantén el core activado durante todo el movimiento",
-        "Baja el pecho al centro entre las manos",
-        "Controla la bajada durante 2-3 segundos"
+        "Separate hands to 1.5x shoulder width",
+        "Keep core activated throughout the movement",
+        "Lower chest to center between hands",
+        "Control the lowering for 2-3 seconds"
       ],
       "commonMistakes": [
-        "No dejes que los hombros se eleven hacia las orejas",
-        "Evita rango de movimiento incompleto",
-        "No gires las caderas de lado a lado"
+        "Don't let shoulders rise towards ears",
+        "Avoid incomplete range of motion",
+        "Don't rotate hips side to side"
       ],
       "muscles_secondary": []
     },
     {
       "id": 58,
       "name": "Windshield Wipers",
-      "description": "Cuelga de una barra, balancea las piernas de lado a lado como limpiaparabrisas, trabajando los oblicuos.",
-      "skill": "Sujeción Hollow Body",
+      "description": "Hang from a bar, swing legs side to side like windshield wipers, working obliques.",
+      "skill": "Hollow Body Hold",
       "equipment": [
         6
       ],
@@ -5033,15 +5033,15 @@
         65
       ],
       "formCues": [
-        "Acuéstate boca arriba, brazos extendidos a los lados",
-        "Levanta las piernas y llévalas hacia un lado",
-        "Baja con control, luego lleva al otro lado",
-        "Mantén los hombros en el suelo"
+        "Lie on your back, Arms Extended to the sides",
+        "Lift the legs and take them to one side",
+        "Lower with control, then bring to the other side",
+        "maintain shoulders on the floor"
       ],
       "commonMistakes": [
-        "No dejes que los hombros se eleven del suelo",
+        "No dejes than shoulders se eleven del suelo",
         "Evita usar impulso",
-        "No bajes demasiado rápido"
+        "Don't lower too quickly"
       ],
       "muscles_secondary": [
         6,
@@ -5052,121 +5052,121 @@
   "muscles": [
     {
       "id": 1,
-      "name": "Bíceps braquial",
+      "name": "Biceps",
       "is_front": true,
       "name_en": "Biceps"
     },
     {
       "id": 2,
-      "name": "Deltoides anterior",
+      "name": "Shoulders",
       "is_front": true,
       "name_en": "Shoulders"
     },
     {
       "id": 3,
-      "name": "Serrato anterior",
+      "name": "Serratus",
       "is_front": true,
       "name_en": "Serratus"
     },
     {
       "id": 4,
-      "name": "Pectoral mayor",
+      "name": "Chest",
       "is_front": true,
       "name_en": "Chest"
     },
     {
       "id": 5,
-      "name": "Tríceps braquial",
+      "name": "Triceps",
       "is_front": false,
       "name_en": "Triceps"
     },
     {
       "id": 6,
-      "name": "Recto abdominal",
+      "name": "Abs",
       "is_front": true,
       "name_en": "Abs"
     },
     {
       "id": 7,
-      "name": "Gastrocnemio",
+      "name": "Calves",
       "is_front": false,
       "name_en": "Calves"
     },
     {
       "id": 8,
-      "name": "Glúteo mayor",
+      "name": "Glutes",
       "is_front": false,
       "name_en": "Glutes"
     },
     {
       "id": 9,
-      "name": "Trapecio",
+      "name": "Trapezius",
       "is_front": false,
       "name_en": "Trapezius"
     },
     {
       "id": 10,
-      "name": "Cuádriceps femoral",
+      "name": "Quads",
       "is_front": true,
       "name_en": "Quads"
     },
     {
       "id": 11,
-      "name": "Bíceps femoral",
+      "name": "Hamstrings",
       "is_front": false,
       "name_en": "Hamstrings"
     },
     {
       "id": 12,
-      "name": "Dorsal ancho",
+      "name": "Lats",
       "is_front": false,
       "name_en": "Lats"
     },
     {
       "id": 13,
-      "name": "Braquial",
+      "name": "Brachialis",
       "is_front": true,
       "name_en": "Brachialis"
     },
     {
       "id": 14,
-      "name": "Oblicuo externo",
+      "name": "Obliques",
       "is_front": true,
       "name_en": "Obliques"
     },
     {
       "id": 15,
-      "name": "Sóleo",
+      "name": "Soleus",
       "is_front": true,
       "name_en": "Soleus"
     },
     {
       "id": 16,
-      "name": "Erectores de la espina",
+      "name": "Lower back",
       "is_front": false,
       "name_en": "Lower back"
     },
     {
       "id": 17,
-      "name": "Redondo",
+      "name": "Teres",
       "is_front": false,
       "name_en": "Teres"
     },
     {
       "id": 18,
-      "name": "Deltoides posterior",
+      "name": "Posterior Deltoid",
       "is_front": false,
       "name_en": "Posterior Deltoid"
     },
     {
       "id": 19,
-      "name": "Antebrazo",
+      "name": "Forearm",
       "is_front": true,
       "name_en": "Forearm"
     },
     {
       "id": 20,
-      "name": "Aductores",
+      "name": "Adductors",
       "is_front": true,
       "name_en": "Adductors"
     }
@@ -5175,17 +5175,17 @@
     {
       "id": 1,
       "name": "beginner",
-      "label": "Principiante"
+      "label": "Beginner"
     },
     {
       "id": 2,
       "name": "intermediate",
-      "label": "Intermedio"
+      "label": "Intermediate"
     },
     {
       "id": 3,
       "name": "advanced",
-      "label": "Avanzado"
+      "label": "Advanced"
     }
   ],
   "routines": [
@@ -5282,7 +5282,7 @@
           "restTime": 45
         }
       ],
-      "description": "Entrenamiento enfocado en músculos de empuje: pecho, hombros y tríceps",
+      "description": "Training focused on pushing muscles: chest, shoulders and triceps",
       "difficulty": "beginner",
       "category": 17,
       "duration": 45
@@ -5386,7 +5386,7 @@
           "restTime": 45
         }
       ],
-      "description": "Entrenamiento enfocado en músculos de jalón: espalda, bíceps y antebrazos",
+      "description": "Training focused on pulling muscles: back, biceps and forearms",
       "difficulty": "beginner",
       "category": 18,
       "duration": 45
@@ -5484,7 +5484,7 @@
           "restTime": 45
         }
       ],
-      "description": "Entrenamiento específico para fortalecer el core: abdominales, lumbares y estabilidad",
+      "description": "Specific training to strengthen the core: abdominals, lower back and stability",
       "difficulty": "intermediate",
       "category": 19,
       "duration": 50

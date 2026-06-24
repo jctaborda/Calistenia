@@ -1,8 +1,8 @@
 // Undo Service - Handles temporary storage of deleted items and restore functionality
-import { saveDeletedItem, getDeletedItemsByType, deleteDeletedItem, clearExpiredDeletedItems } from './database.js';
+import { saveDeletedItem, getDeletedItemsByType, deleteDeletedItem, clearExpiredDeletedItems, exercisesLoad } from './database.js';
 import { loadExercises, saveExercises } from './storage.js';
 import { modulesLoad, routinesLoad, storeExercises, storeModules, storeRoutines } from './database.js';
-import { saveModules } from './modules-service.js';
+import { saveModules, loadModules } from './modules-service.js';
 import { show } from './toast-service.js';
 import { UNDO_RETENTION_MS, UNDO_CLEANUP_INTERVAL_MS, UNDO_TOAST_DURATION_MS, CLEANUP_INITIAL_DELAY_MS } from '../constants.js';
 let undoToasts = new Map(); // Track active undo toast notifications
@@ -113,7 +113,7 @@ let success = false;
        break;
 
      case 'module':
-       const modules = await modulesLoad();
+       const modules = await loadModules();
        if (!modules.find(m => m.id === deletedItem.originalId)) {
          modules.push(deletedItem.item);
          await saveModules(modules);
@@ -130,12 +130,45 @@ let success = false;
        success = true;
        break;
   case 'body-metric':
-// Body metrics are part of user state stored in localStorage
-// Full implementation would require storing bodyMetrics in IndexedDB
-show('Body metric deleted (30-day undo available for exercises/modules/routines only)', 'info');
-// In a full implementation, you'd need to restore from deletedItem.item back to user.bodyMetrics
-success = true;
-break;
+    // Restore body metric to user state
+    const state = window.getState();
+    const user = { ...(state.user || {}) };
+    user.bodyMetrics = user.bodyMetrics || [];
+    
+    // Check if already exists
+    if (!user.bodyMetrics.some(m => m.index === deletedItem.originalId)) {
+      user.bodyMetrics.push(deletedItem.item);
+      // Renumber indices
+      user.bodyMetrics = user.bodyMetrics.map((metric, i) => ({
+        ...metric,
+        index: i
+      }));
+      
+      updateState({ user });
+      // Re-render profile view
+      if (window.calisthenics && window.calisthenics.renderProfileView) {
+        window.calisthenics.renderProfileView();
+      }
+    }
+    success = true;
+    break;
+    
+  case 'workout-history':
+    // Restore workout to history
+    const historyState = window.getState();
+    const history = historyState.history || [];
+    
+    // Check if already exists
+    if (!history.some((_, i) => i === deletedItem.originalId)) {
+      history.splice(deletedItem.originalId, 0, deletedItem.item);
+      updateState({ history });
+      // Re-render profile view
+      if (window.calisthenics && window.calisthenics.renderProfileView) {
+        window.calisthenics.renderProfileView();
+      }
+    }
+    success = true;
+    break;
   default:
 console.warn('Unknown item type for restore:', type);
 }

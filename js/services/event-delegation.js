@@ -425,7 +425,7 @@ async function handleDeleteRoutines(type, id) {
       const confirmed = await showConfirmationModal(`Are you sure you want to delete "${routine.name}"? This action cannot be undone.`);
       if (confirmed) {
         try {
-          saveForUndo('routine', routine, routine.id);
+          await saveForUndo('routine', routine, routine.id);
           await dbDeleteRoutine(routine.id);
           // Reload routines from IndexedDB and update state
           const refreshedRoutines = await routinesLoad();
@@ -445,23 +445,26 @@ function handleDeleteMetric(index) {
   showConfirmationModal('Delete this metric?').then(confirmed => {
     if (!confirmed) return;
   
-  const state = window.getState();
-  const user = { ...(state.user || {}) };
-  user.bodyMetrics = user.bodyMetrics || [];
+    const state = window.getState();
+    const user = { ...(state.user || {}) };
+    user.bodyMetrics = user.bodyMetrics || [];
   
-  const metricToDelete = user.bodyMetrics[index];
-  if (metricToDelete) {
-    saveForUndo('body-metric', metricToDelete, index);
-  }
+    const metricToDelete = user.bodyMetrics[index];
+    if (metricToDelete) {
+      saveForUndo('body-metric', metricToDelete, index);
+    }
   
-  user.bodyMetrics.splice(index, 1);
-  user.bodyMetrics = user.bodyMetrics.map((metric, i) => ({
-    ...metric,
-    index: i
-  }));
+    user.bodyMetrics.splice(index, 1);
+    user.bodyMetrics = user.bodyMetrics.map((metric, i) => ({
+      ...metric,
+      index: i
+    }));
   
-  updateState({ user });
-  // Re-render will be triggered by state change if view supports it
+    updateState({ user });
+    // Re-render profile view
+    if (window.calisthenics && window.calisthenics.renderProfileView) {
+      window.calisthenics.renderProfileView();
+    }
   });
 }
 
@@ -474,7 +477,10 @@ function handleDeleteWorkoutHistory(index) {
     saveForUndo('workout-history', historyItem, index);
     const newHistory = state.history.filter((_, i) => i !== index);
     updateState({ history: newHistory });
-    // Re-render will be triggered by state change if view supports it
+    // Re-render profile view
+    if (window.calisthenics && window.calisthenics.renderProfileView) {
+      window.calisthenics.renderProfileView();
+    }
   });
 }
 

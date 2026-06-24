@@ -72,7 +72,7 @@ export class ErrorBoundaryService {
       <div class="error-container">
         <h2>${errorTitle}</h2>
         <div class="error-content">
-          <p class="error-message">${this.sanitizeErrorMessage(error.message)}</p>
+          <p class="error-message">${this.escapeHtml(this.sanitizeErrorMessage(error.message))}</p>
           <p class="error-context">Context: ${this.escapeHtml(context)}</p>
           <details>
             <summary>Show technical details</summary>
