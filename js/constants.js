@@ -26,7 +26,6 @@ export const NUMERIC_INPUT_MAX = 10000;
 export const IMAGE_URL_MAX_LENGTH = 500;
 
 // UI constants
-export const ROUTINE_DEFAULT_DURATION = 30;
 export const ROUTINE_DESCRIPTION_MAX_LENGTH = 2000;
 export const PATTERN_MAX_LENGTH = 100;
 
@@ -35,9 +34,6 @@ export const VIEW_INIT_DELAY_MS = 100;
 
 // Cleanup initial delay (ms)
 export const CLEANUP_INITIAL_DELAY_MS = 5000;
-
-// Virtual scrolling threshold
-export const VIRTUAL_SCROLL_THRESHOLD = 100;
 
 // SVG diagram dimensions
 export const SVG_DIAGRAM_SIZE = 100;

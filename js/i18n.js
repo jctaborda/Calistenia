@@ -9,7 +9,9 @@ const translations = {
     'nav.routines': 'Routines',
     'nav.exercises': 'Exercises',
     'nav.skills': 'Skills',
+    'nav.progress': 'Progress',
     'nav.profile': 'Profile',
+    'nav.settings': 'Settings',
     'nav.back': 'Back',
     'nav.create': 'Create',
 
@@ -135,6 +137,9 @@ const translations = {
     'active_workout.next_set': 'Next Set',
     'active_workout.adjust': 'Adjust',
     'active_workout.swap_exercise': 'Swap Exercise',
+    'active_workout.no_active_workout': 'No active workout.',
+    'active_workout.exercise_data_not_found': 'Exercise data not found.',
+    'active_workout.exercise_not_found': 'Exercise not found.',
     'toast.work_time': 'Work time!',
     'toast.rest_time': 'Rest time!',
 
@@ -150,6 +155,7 @@ const translations = {
     'completion.rate_advanced': 'Too Hard',
     'completion.save': 'Save Workout',
     'completion.home': 'Back to Home',
+    'completion.skip': 'Skip Logging',
 
     // Workout Summary
     'summary.title': 'Workout Summary',
@@ -159,7 +165,8 @@ const translations = {
     'summary.exercises': 'Exercises',
     'summary.rating': 'Rating',
     'summary.no_data': 'No workout data available.',
-
+    'summary.custom_workout': 'Custom Workout',
+    'workout_detail.not_found': 'Workout not found.',
     // Skill Modules
     'skills.title': 'Skill Modules',
     'skills.browse': 'Browse all skill modules',
@@ -181,13 +188,74 @@ const translations = {
     'skills_tree.all_categories': 'All Categories',
     'skills_tree.all_difficulties': 'All Difficulties',
 
+    // Progress & Analytics
+    'progress.title': 'Progress & Analytics',
+    'progress.total_workouts': 'Total Workouts',
+    'progress.current_streak': 'Day Streak',
+    'progress.upcoming': 'Scheduled',
+    'progress.completion_rate': 'Completion',
+    'progress.weekly_volume': 'Weekly Volume',
+    'progress.exercise_prs': 'Exercise PRs',
+    'progress.weight_progress': 'Weight Progress',
+    'progress.weight_progress_exercises': 'Weight Progression by Exercise',
+    'progress.muscle_balance': 'Muscle Balance',
+    'progress.duration_trends': 'Duration Trends',
+    'progress.schedules': 'Schedules',
+    'progress.schedule_workout': 'Schedule a Workout',
+    'progress.recurring': 'Recurring',
+    'progress.top_prs': 'Top Personal Records',
+    'progress.muscle_details': 'Muscle Group Details',
+    'progress.upcoming_workouts': 'Upcoming Workouts',
+    'progress.recurring_workouts': 'Recurring Workouts',
+    'progress.day_of_week': ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    'progress.scheduled_success': 'Workout scheduled successfully!',
+    'progress.duration_stats': 'Duration Statistics',
+    'progress.avg_duration': 'Average Duration',
+    'progress.max_duration': 'Longest Workout',
+    'progress.min_duration': 'Shortest Workout',
+
+    // Settings
+    'settings.title': 'Settings',
+    'settings.units': 'Units',
+    'settings.unit_system': 'Unit System',
+    'settings.notifications': 'Notifications',
+    'settings.enable_notifications': 'Enable Notifications',
+    'settings.workout_reminders': 'Workout Reminders',
+    'settings.achievement_notifications': 'Achievement Notifications',
+    'settings.appearance': 'Appearance',
+    'settings.theme': 'Theme',
+    'settings.font_size': 'Font Size',
+    'settings.voice_cues': 'Voice Cues',
+    'settings.enable_voice_cues': 'Enable Voice Cues',
+    'settings.data_management': 'Data Management',
+    'settings.export_data': 'Export Data',
+    'settings.import_data': 'Import Data',
+    'settings.clear_data': 'Clear All Data',
+    'settings.about': 'About',
+    'settings.app_version': 'Version',
+    'settings.app_description': 'Calisthenics Mastery - Your personal trainer for bodyweight exercises',
+    'settings.units_updated': 'Units updated',
+    'settings.theme_updated': 'Theme updated',
+    'settings.data_exported': 'Data exported successfully!',
+    'settings.confirm_import': 'This will replace your current data. Continue?',
+    'settings.data_imported': 'Data imported successfully! Please refresh the page.',
+    'settings.refresh_prompt': 'Please refresh the page to apply changes. Refresh now?',
+    'settings.import_error': 'Failed to import data: ',
+    'settings.confirm_clear': 'Are you sure you want to clear all your data? This cannot be undone!',
+    'settings.data_cleared': 'All data cleared. Please refresh the page.',
+
     // Profile
     'profile.title': 'Profile',
     'profile.data_management': 'Data Management',
     'profile.data_management_desc': 'Backup & Restore: Export your workout history and routines, or restore from a backup file.',
     'profile.export_import': '📤 Export / Import Data',
+    'profile.notifications': 'Notifications',
+    'profile.notifications_desc': 'Receive reminders for rest timers, workout streaks, and scheduled workouts.',
+    'profile.enable_notifications': 'Enable Notifications',
     'profile.name': 'Name',
     'profile.level': 'Level',
+    'profile.storage_usage': 'Storage Usage',
+    'profile.clear_data': 'Clear All Data',
     'profile.body_metrics': 'Body Metrics',
     'profile.weight': 'Weight (kg/lbs):',
     'profile.weight_placeholder': 'e.g., 70',
@@ -210,6 +278,8 @@ const translations = {
     'profile.weight_validation': 'Please enter a valid weight.',
     'profile.body_fat_validation': 'Please enter a valid body fat percentage.',
     'profile.body_fat_range': 'Body fat percentage must be between 0 and 100',
+    'profile.weight_performance_correlation': 'Weight vs Performance',
+    'profile.weight_performance_desc': 'Green line shows your weight over time. Blue bars show total reps completed in workouts on the same day.',
 
     // Builder
     'builder.title': 'Create Routine',
@@ -288,6 +358,9 @@ const translations = {
     'common.start': 'Start',
     'common.add': 'Add',
     'common.remove': 'Remove',
+    'common.back': 'Back',
+    'common.select_routine': 'Select Routine',
+    'common.schedule': 'Schedule',
 
     // Workout workflow
     'workflow.confirm_finish': 'Are you sure you want to finish this workout?',
@@ -342,6 +415,7 @@ const translations = {
     // Routine Details
     'routine_details.edit': 'Edit Routine',
     'routine_details.copy': '📋 Copy Routine',
+    'routine_details.generate_warmup': '🔄 Auto Warm-up',
     'routine_details.delete': 'Delete Routine',
     'routine_details.target_muscles': 'Target Muscles',
     'routine_details.exercises_section': 'Exercises',
@@ -352,6 +426,10 @@ const translations = {
     'routine_details.delete_action': 'This action cannot be undone.',
     'routine_details.delete_success': 'Routine deleted successfully!',
     'routine_details.delete_error': 'Error deleting routine: ',
+
+    // Admin
+    'admin.title': 'Administración de Módulos',
+    'admin.create': 'Crear Módulo',
 
     // Builder
     'builder.back_routines': 'Back to Routines',
@@ -397,6 +475,7 @@ const translations = {
     // Exercise Details
     'exercise_details.no_description': 'No description available.',
     'exercise_details.none_specified': 'None specified',
+    'exercise_details.progression_none': "None - you've mastered this exercise!",
     'exercise_details.image': 'image',
     'exercise_details.not_found': 'Exercise not found.',
     'exercise_details.exercise_information': 'Exercise Information',
@@ -419,7 +498,6 @@ const translations = {
     'exercise_details.no_common_mistakes': 'No common mistakes noted',
     'exercise_details.no_data': 'No data',
     'exercise_details.prereq_none': 'None - this is a starting exercise',
-    'exercise_details.progression_none': "None - you've mastered this exercise!",
     'exercise_details.favorite': 'Favorite',
 
     // Workout Completion
@@ -431,6 +509,8 @@ const translations = {
 
     // Skill Module Detail
     'skill_module_detail.no_description': 'No description available.',
+    'skill_module_detail.category': 'Category',
+    'skill_module_detail.difficulty': 'Difficulty',
     'skill_module_detail.na': 'N/A',
     'skill_module_detail.mixed': 'mixed',
 
@@ -440,7 +520,7 @@ const translations = {
     // Onboarding
     'onboarding.name_validation': 'Please enter your name.',
     'onboarding.welcome': 'Welcome to Calisthenics Mastery',
-    'onboarding.subtitle': "Let's personalize your experience",
+    'onboarding.fitness_level': 'Fitness Level',
 
     // Data labels (dynamic)
     'data.pushup': 'Push-Up',
@@ -450,10 +530,6 @@ const translations = {
     'data.core': 'Core',
     'data.planche': 'Planche',
     'data.front_lever': 'Front Lever',
-
-    // Admin
-    'admin.title': 'Module Admin',
-    'admin.create': 'Create Module',
 
     // Upgrade prompt (SW update)
     'sw_update.message': 'A new version of the app is available. Would you like to update?',
@@ -473,6 +549,12 @@ const translations = {
     'difficulty.beginner': 'Beginner',
     'difficulty.intermediate': 'Intermediate',
     'difficulty.advanced': 'Advanced',
+
+    // Install Banner
+    'install_banner.title': 'Install App',
+    'install_banner.description': 'Get offline access and a better experience!',
+    'install_banner.install': 'Install',
+    'install_banner.later': 'Later',
   },
   es: {
     // Header & Navigation
@@ -481,6 +563,7 @@ const translations = {
     'nav.routines': 'Rutinas',
     'nav.exercises': 'Ejercicios',
     'nav.skills': 'Habilidades',
+    'nav.progress': 'Progreso',
     'nav.profile': 'Perfil',
     'nav.back': 'Atrás',
     'nav.create': 'Crear',
@@ -607,6 +690,9 @@ const translations = {
     'active_workout.next_set': 'Siguiente Serie',
     'active_workout.adjust': 'Ajustar',
     'active_workout.swap_exercise': 'Cambiar Ejercicio',
+    'active_workout.no_active_workout': 'Sin entrenamiento activo.',
+    'active_workout.exercise_data_not_found': 'Datos de ejercicio no encontrados.',
+    'active_workout.exercise_not_found': 'Ejercicio no encontrado.',
     'toast.work_time': '¡Tiempo de trabajo!',
     'toast.rest_time': '¡Descanso!',
 
@@ -622,6 +708,7 @@ const translations = {
     'completion.rate_advanced': 'Muy Difícil',
     'completion.save': 'Guardar Entrenamiento',
     'completion.home': 'Volver al Inicio',
+    'completion.skip': 'Saltar Registro',
 
     // Workout Summary
     'summary.title': 'Resumen del Entrenamiento',
@@ -631,7 +718,8 @@ const translations = {
     'summary.exercises': 'Ejercicios',
     'summary.rating': 'Calificación',
     'summary.no_data': 'No hay datos de entrenamiento disponibles.',
-
+    'summary.custom_workout': 'Entrenamiento Personalizado',
+    'workout_detail.not_found': 'Entrenamiento no encontrado.',
     // Skill Modules
     'skills.title': 'Módulos de Habilidades',
     'skills.browse': 'Explorar todos los módulos de habilidades',
@@ -653,13 +741,42 @@ const translations = {
     'skills_tree.all_categories': 'Todas las Categorías',
     'skills_tree.all_difficulties': 'Todas las Dificultades',
 
+    // Progress & Analytics
+    'progress.title': 'Progreso y Análisis',
+    'progress.total_workouts': 'Entrenamientos Totales',
+    'progress.current_streak': 'Racha Actual',
+    'progress.upcoming': 'Programados',
+    'progress.completion_rate': 'Completados',
+    'progress.weekly_volume': 'Volumen Semanal',
+    'progress.exercise_prs': 'Récords de Ejercicios',
+    'progress.muscle_balance': 'Equilibrio Muscular',
+    'progress.duration_trends': 'Tendencias de Duración',
+    'progress.schedules': 'Programación',
+    'progress.schedule_workout': 'Programar Entrenamiento',
+    'progress.recurring': 'Recurrente',
+    'progress.top_prs': 'Récords Personales Principales',
+    'progress.muscle_details': 'Detalles de Grupos Musculares',
+    'progress.upcoming_workouts': 'Entrenamientos Programados',
+    'progress.recurring_workouts': 'Entrenamientos Recurrentes',
+    'progress.day_of_week': ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+    'progress.scheduled_success': '¡Entrenamiento programado exitosamente!',
+    'progress.duration_stats': 'Estadísticas de Duración',
+    'progress.avg_duration': 'Duración Promedio',
+    'progress.max_duration': 'Entrenamiento Más Largo',
+    'progress.min_duration': 'Entrenamiento Más Corto',
+
     // Profile
     'profile.title': 'Perfil',
     'profile.data_management': 'Gestión de Datos',
     'profile.data_management_desc': 'Copia de Seguridad y Restauración: Exporta tu historial de entrenamientos y rutinas, o restaura desde un archivo de respaldo.',
     'profile.export_import': '📤 Exportar / Importar Datos',
+    'profile.notifications': 'Notificaciones',
+    'profile.notifications_desc': 'Recibe recordatorios para tiempos de descanso, rachas de entrenamientos y entrenamientos programados.',
+    'profile.enable_notifications': 'Habilitar Notificaciones',
     'profile.name': 'Nombre',
     'profile.level': 'Nivel',
+    'profile.storage_usage': 'Uso de Almacenamiento',
+    'profile.clear_data': 'Borrar Todos los Datos',
     'profile.body_metrics': 'Métricas Corporales',
     'profile.weight': 'Peso (kg/lbs):',
     'profile.weight_placeholder': 'ej., 70',
@@ -682,6 +799,8 @@ const translations = {
     'profile.weight_validation': 'Por favor ingresa un peso válido.',
     'profile.body_fat_validation': 'Por favor ingresa un porcentaje válido de grasa corporal.',
     'profile.body_fat_range': 'El porcentaje de grasa corporal debe estar entre 0 y 100',
+    'profile.weight_performance_correlation': 'Peso vs Rendimiento',
+    'profile.weight_performance_desc': 'La línea verde muestra tu peso con el tiempo. Las barras azules muestran el total de repeticiones completadas en entrenamientos del mismo día.',
 
     // Builder
     'builder.title': 'Crear Rutina',
@@ -760,6 +879,9 @@ const translations = {
     'common.start': 'Iniciar',
     'common.add': 'Agregar',
     'common.remove': 'Quitar',
+    'common.back': 'Atrás',
+    'common.select_routine': 'Seleccionar Rutina',
+    'common.schedule': 'Programación',
 
     // Workout workflow
     'workflow.confirm_finish': '¿Estás seguro de que quieres terminar este entrenamiento?',
@@ -795,11 +917,13 @@ const translations = {
     'module_admin.delete_confirm': '¿Estás seguro de que quieres eliminar ',
     'module_admin.delete_action': '? Esta acción no se puede deshacer.',
     'module_admin.delete_error': 'Error al eliminar el módulo: ',
+    'module_admin.deleted': '¡Módulo eliminado exitosamente!',
 
     // Shared Workout
     'shared_workout.title': 'Entrenamiento Compartido',
     'shared_workout.not_found': 'Entrenamiento No Encontrado',
     'shared_workout.not_found_desc': 'El entrenamiento compartido que buscas no existe o ha sido eliminado.',
+    'shared_workout.back': 'Volver al Inicio',
     'shared_workout.back': 'Volver al Inicio',
     'shared_workout.shared_on': 'Compartido el',
     'shared_workout.comments': 'Comentarios',
@@ -813,16 +937,21 @@ const translations = {
     // Routine Details
     'routine_details.edit': 'Editar Rutina',
     'routine_details.copy': '📋 Copiar Rutina',
+    'routine_details.generate_warmup': '🔄 Calentamiento Auto',
     'routine_details.delete': 'Eliminar Rutina',
     'routine_details.target_muscles': 'Músculos Objetivo',
     'routine_details.exercises_section': 'Ejercicios',
     'routine_details.unknown_exercise': 'Ejercicio Desconocido (ID: ',
     'routine_details.routine_copy_clipboard': '¡Rutina copiada al portapapeles!',
-    'routine_details.routine_copy_failed': 'Error al copiar la rutina al portapapeles.',
+    'routine_details.routine_copy_failed': 'Falló copiar rutina al portapapeles.',
     'routine_details.delete_confirm': '¿Estás seguro de que quieres eliminar ',
     'routine_details.delete_action': 'Esta acción no se puede deshacer.',
-    'routine_details.delete_success': '¡Rutina eliminada exitosamente!',
-    'routine_details.delete_error': 'Error al eliminar la rutina: ',
+    'routine_details.delete_success': '¡Rutina eliminada con éxito!',
+    'routine_details.delete_error': 'Error al eliminar rutina: ',
+
+    // Admin
+    'admin.title': 'Administración de Módulos',
+    'admin.create': 'Crear Módulo',
 
     // Builder
     'builder.back_routines': 'Volver a Rutinas',
@@ -891,6 +1020,7 @@ const translations = {
     'exercise_details.no_data': 'Sin datos',
     'exercise_details.prereq_none': 'Ninguno - este es un ejercicio inicial',
     'exercise_details.progression_none': 'Ninguno - ¡has dominado este ejercicio!',
+    'exercise_details.image': 'imagen',
     'exercise_details.favorite': 'Favorito',
 
     // Workout Completion
@@ -902,6 +1032,8 @@ const translations = {
 
     // Skill Module Detail
     'skill_module_detail.no_description': 'No hay descripción disponible.',
+    'skill_module_detail.category': 'Categoría',
+    'skill_module_detail.difficulty': 'Dificultad',
     'skill_module_detail.na': 'N/A',
     'skill_module_detail.mixed': 'mezclado',
 
@@ -911,6 +1043,8 @@ const translations = {
     // Onboarding
     'onboarding.name_validation': 'Por favor ingresa tu nombre.',
     'onboarding.welcome': 'Bienvenido a Dominio de Calistenia',
+    'onboarding.fitness_level': 'Nivel de Aptitud',
+    'onboarding.name_label': 'Tu Nombre',
 
     // Data labels (dynamic)
     'data.pushup': 'Flexión',
@@ -921,12 +1055,14 @@ const translations = {
     'data.planche': 'Planche',
     'data.front_lever': 'Palanca Frontal',
 
-    // Admin
-    'admin.title': 'Administración de Módulos',
-    'admin.create': 'Crear Módulo',
+    // Install Banner
+    'install_banner.title': 'Instalar App',
+    'install_banner.description': '¡Obtén acceso sin conexión y una mejor experiencia!',
+    'install_banner.install': 'Instalar',
+    'install_banner.later': 'Más tarde',
 
     // Upgrade prompt (SW update)
-    'sw_update.message': 'Hay una nueva versión de la aplicación disponible. ¿Quieres actualizar?',
+    'sw_update.message': 'Una nueva versión de la app está disponible. ¿Quieres actualizar?',
     'sw_update.yes': 'Actualizar',
     'sw_update.no': 'Ahora no',
 
@@ -943,7 +1079,41 @@ const translations = {
     'difficulty.beginner': 'Principiante',
     'difficulty.intermediate': 'Intermedio',
     'difficulty.advanced': 'Avanzado',
-  }
+
+    // Settings
+    'settings.title': 'Configuración',
+    'settings.units': 'Unidades',
+    'settings.unit_system': 'Sistema de Unidades',
+    'settings.notifications': 'Notificaciones',
+    'settings.enable_notifications': 'Habilitar Notificaciones',
+    'settings.workout_reminders': 'Recordatorios de Entrenamiento',
+    'settings.achievement_notifications': 'Notificaciones de Logros',
+    'settings.appearance': 'Apariencia',
+    'settings.theme': 'Tema',
+    'settings.font_size': 'Tamaño de Fuente',
+    'settings.voice_cues': 'Indicadores de Voz',
+    'settings.enable_voice_cues': 'Habilitar Indicadores de Voz',
+    'settings.data_management': 'Gestión de Datos',
+    'settings.export_data': 'Exportar Datos',
+    'settings.import_data': 'Importar Datos',
+    'settings.clear_data': 'Borrar Todos los Datos',
+    'settings.about': 'Acerca de',
+    'settings.app_version': 'Versión',
+    'settings.app_description': 'Calisthenics Mastery - Tu entrenador personal para ejercicios de calistenia',
+    'settings.units_updated': 'Unidades actualizadas',
+    'settings.theme_updated': 'Tema actualizado',
+    'settings.data_exported': '¡Datos exportados con éxito!',
+    'settings.confirm_import': 'Esto reemplazará tus datos actuales. ¿Continuar?',
+    'settings.data_imported': '¡Datos importados con éxito! Por favor actualiza la página.',
+    'settings.refresh_prompt': 'Por favor actualiza la página para aplicar los cambios. ¿Actualizar ahora?',
+    'settings.import_error': 'Error al importar datos: ',
+    'settings.confirm_clear': '¿Estás seguro de que quieres borrar todos tus datos? ¡Esto no se puede deshacer!',
+    'settings.data_cleared': 'Todos los datos borrados. Por favor actualiza la página.',
+
+    // Progress - Weight Progression
+    'progress.weight_progress': 'Progreso de Peso',
+    'progress.weight_progress_exercises': 'Progreso de Peso por Ejercicio',
+  },
 };
 
 /**

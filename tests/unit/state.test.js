@@ -25,7 +25,7 @@ describe('State Management Service', () => {
       expect(state).toHaveProperty('activeWorkout');
       expect(state).toHaveProperty('history');
       expect(state).toHaveProperty('exercises');
-      expect(state).toHaveProperty('programs');
+      expect(state).toHaveProperty('routines');
       expect(state).toHaveProperty('categories');
       expect(state).toHaveProperty('equipment');
       expect(state).toHaveProperty('muscles');
@@ -443,6 +443,147 @@ describe('State Management Service', () => {
       updateState(safeUpdate);
       
       expect(getState().user.name).toBe('Test');
+    });
+  });
+
+  describe('Mutation Detection', () => {
+    let consoleWarnSpy;
+
+    beforeEach(() => {
+      consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+      consoleWarnSpy.mockRestore();
+    });
+
+    it('should allow safe immutable updates without warning', () => {
+      initializeState();
+      
+      // Safe update with spread operator
+      updateState({ user: { ...getState().user, name: 'Test' } });
+      
+      expect(consoleWarnSpy).not.toHaveBeenCalledWith(
+        expect.stringContaining('WARNING')
+      );
+    });
+
+    it('should detect when passing existing state array directly', () => {
+      initializeState();
+      updateState({ history: [{ id: 1, date: '2024-01-01' }] });
+      
+      // Create a new array that contains a reference to an existing item
+      const existingItem = getState().history[0];
+      
+      // This simulates a common bug pattern where developers
+      // accidentally pass existing references
+      const badUpdate = { 
+        history: [{ ...existingItem, id: 2 }]  // Spread creates new object, should be safe
+      };
+      
+      updateState(badUpdate);
+      
+      // Should NOT warn because spread operator creates new object
+      expect(consoleWarnSpy).not.toHaveBeenCalledWith(
+        expect.stringContaining('WARNING')
+      );
+    });
+
+    it('should handle array updates without false positives', () => {
+      initializeState();
+      updateState({ history: [{ id: 1 }] });
+      
+      // Create new array with spread (safe pattern)
+      updateState({ history: [...getState().history, { id: 2 }] });
+      
+      const state = getState();
+      expect(state.history).toHaveLength(2);
+      
+      expect(consoleWarnSpy).not.toHaveBeenCalledWith(
+        expect.stringContaining('WARNING')
+      );
+    });
+
+    it('should detect mutations in deeply nested structures', () => {
+      initializeState();
+      updateState({
+        user: {
+          name: 'Test',
+          profile: {
+            age: 30,
+            preferences: {
+              theme: 'dark'
+            }
+          }
+        }
+      });
+      
+      // Spread operator creates new objects at each level (safe)
+      const safeUpdate = {
+        user: {
+          ...getState().user,
+          profile: {
+            ...getState().user.profile,
+            age: 31
+          }
+        }
+      };
+      
+      updateState(safeUpdate);
+      
+      expect(getState().user.profile.age).toBe(31);
+      expect(consoleWarnSpy).not.toHaveBeenCalledWith(
+        expect.stringContaining('WARNING')
+      );
+    });
+  });
+
+  describe('Defensive Copying', () => {
+    it('should create new array instances on update', () => {
+      initializeState();
+      updateState({ history: [{ id: 1 }] });
+      
+      const originalHistory = getState().history;
+      updateState({ history: [{ id: 2 }] });
+      
+      const newHistory = getState().history;
+      
+      // Should be different array instances
+      expect(newHistory).not.toBe(originalHistory);
+      expect(newHistory).toHaveLength(1);
+      expect(newHistory[0].id).toBe(2);
+    });
+
+    it('should create new object instances on deep merge', () => {
+      initializeState();
+      updateState({ user: { name: 'Test', profile: { age: 25 } } });
+      
+      const originalUser = getState().user;
+      updateState({ user: { name: 'NewName' } });
+      
+      const newUser = getState().user;
+      
+      // Should be different object instances
+      expect(newUser).not.toBe(originalUser);
+      expect(newUser.name).toBe('NewName');
+      // Deep merge preserves existing properties (profile: { age: 25 })
+      expect(newUser.profile).toEqual({ age: 25 });
+    });
+
+    it('should preserve immutability after state update', () => {
+      initializeState();
+      updateState({ user: { name: 'Test' } });
+      
+      const state1 = getState();
+      
+      // Mutate returned state
+      state1.user.name = 'Mutated';
+      
+      // Get fresh state
+      const state2 = getState();
+      
+      // Original should be unchanged
+      expect(state2.user.name).toBe('Test');
     });
   });
 });

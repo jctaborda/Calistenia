@@ -2,12 +2,13 @@
 // Follows exercise-form-service pattern with proper CRUD operations
 
 import { renderHeader } from '../components/header.js';
+import { renderSpinner, hideSpinner } from '../components/spinner.js';
 import { t } from '../i18n.js';
 import { getState, updateState } from '../services/state.js';
 import { ModuleStore } from '../services/modules-service.js';
 import { saveForUndo } from '../services/undo-service.js';
-import { fetchSkillModules } from '../services/api.js';
 import { show } from '../services/toast-service.js';
+import { showConfirmation } from '../services/confirmation-modal.js';
 import { escapeHtml } from '../utils/html.js';
 
 export async function renderModuleAdminView(editId = null) {
@@ -15,6 +16,40 @@ export async function renderModuleAdminView(editId = null) {
   const state = getState();
   const exercises = state.exercises || [];
   const categories = state.categories || [];
+  
+  // Remove any existing event listeners to prevent duplicates (memory leak fix)
+  if (main.dataset.moduleAdminViewListener === 'true') {
+    // Remove all event listeners
+    main.removeEventListener('change', main._handleModuleAdminChange);
+    main.removeEventListener('click', main._handleModuleAdminClick);
+    main.removeEventListener('submit', main._handleModuleAdminSubmit);
+    
+    // Remove drag events from selected list
+    const selectedList = main.querySelector('#selected-exercises-list');
+    if (selectedList) {
+      selectedList.removeEventListener('dragstart', main._handleDragStart);
+      selectedList.removeEventListener('dragend', main._handleDragEnd);
+      selectedList.removeEventListener('dragover', main._handleDragOver);
+      selectedList.removeEventListener('dragleave', main._handleDragLeave);
+      selectedList.removeEventListener('drop', main._handleDrop);
+    }
+    
+    // Remove search input listener
+    const searchInput = main.querySelector('#exercise-search');
+    if (searchInput && searchInput._handleSearchInput) {
+      searchInput.removeEventListener('input', searchInput._handleSearchInput);
+    }
+    
+    delete main.dataset.moduleAdminViewListener;
+    delete main._handleModuleAdminChange;
+    delete main._handleModuleAdminClick;
+    delete main._handleModuleAdminSubmit;
+    delete main._handleDragStart;
+    delete main._handleDragEnd;
+    delete main._handleDragOver;
+    delete main._handleDragLeave;
+    delete main._handleDrop;
+  }
   
   // Load existing module if editing
   let editingModule = null;
@@ -98,7 +133,6 @@ export async function renderModuleAdminView(editId = null) {
               placeholder="${t('module_admin.name_placeholder')}"
               value="${escapeHtml(formData.name)}"
               required
-              class="input-gray"
             >
           </div>
           
@@ -111,7 +145,6 @@ export async function renderModuleAdminView(editId = null) {
               class="filter-input"
               rows="4"
               placeholder="${t('module_admin.description_placeholder')}"
-              class="textarea-full"
             >${escapeHtml(formData.description)}</textarea>
           </div>
           
@@ -123,7 +156,6 @@ export async function renderModuleAdminView(editId = null) {
               <select 
                 id="module-difficulty" 
                 class="filter-input"
-                class="input-gray"
               >
                 <option value="beginner" ${formData.difficulty === 'beginner' ? 'selected' : ''}>${t('difficulty.beginner')}</option>
                 <option value="intermediate" ${formData.difficulty === 'intermediate' ? 'selected' : ''}>${t('difficulty.intermediate')}</option>
@@ -138,7 +170,6 @@ export async function renderModuleAdminView(editId = null) {
               <select 
                 id="module-category" 
                 class="filter-input"
-                class="input-gray"
               >
                 <option value="">${t('module_admin.select_category')}</option>
                 ${categoryOptions}
@@ -169,7 +200,6 @@ export async function renderModuleAdminView(editId = null) {
               id="exercise-search" 
               class="filter-input"
               placeholder="${t('exercises.search')}..."
-              class="input-gray"
             >
           </div>
           
@@ -180,20 +210,20 @@ export async function renderModuleAdminView(editId = null) {
                        return `
                          <div class="${itemClass}" \
                               data-ex-id="${exercise.id}">
-                  <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
-                    <div>
-                      <strong>${escapeHtml(exercise.name)}</strong>
-                      <div class="text-sm text-gray-600">
-                        ${exercise.description ? escapeHtml(exercise.description.substring(0, 100)) + (exercise.description.length > 100 ? '...' : '') : t('common.none')}
-                      </div>
-                    </div>
-                    <input type="checkbox" 
-                           data-ex-id="${exercise.id}" 
-                           ${isSelected ? 'checked disabled' : ''}
-                           class="ml-1rem">
-                  </label>
+              <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+                <div>
+                  <strong>${escapeHtml(exercise.name)}</strong>
+                  <div class="text-sm text-gray-600">
+                    ${exercise.description ? escapeHtml(exercise.description.substring(0, 100)) + (exercise.description.length > 100 ? '...' : '') : t('common.none')}
+                  </div>
                 </div>
-              `;
+                <input type="checkbox" 
+                       data-ex-id="${exercise.id}" 
+                       ${isSelected ? 'checked disabled' : ''}
+                       class="ml-1rem">
+              </label>
+            </div>
+          `;
             }).join('')}
           </div>
         </div>
@@ -218,128 +248,83 @@ export async function renderModuleAdminView(editId = null) {
   
   // ==================== EVENT HANDLERS ====================
   
-  // Form submission
-  const form = main.querySelector('#module-form');
-  if (form) {
-    form.addEventListener('submit', handleFormSubmit);
-  }
-  
-  // Exercise search
-  const searchInput = main.querySelector('#exercise-search');
-  if (searchInput) {
-    searchInput.addEventListener('input', handleExerciseSearch);
-  }
-  
-  // Exercise checkbox delegation
-  main.addEventListener('change', (e) => {
-    if (e.target.matches('input[type="checkbox"][data-ex-id]')) {
-      const exId = parseInt(e.target.dataset.exId);
-      toggleExerciseSelection(exId, e.target.checked);
+  // Form submission handler
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    
+    const name = main.querySelector('#module-name').value.trim();
+    const description = main.querySelector('#module-description').value.trim();
+    const difficulty = main.querySelector('#module-difficulty').value;
+    const category = main.querySelector('#module-category').value.trim();
+    
+    if (!name) {
+      show(t('module_admin.enter_name'), 'error');
+      main.querySelector('#module-name').focus();
+      return;
     }
-  });
-  
-  // Remove exercise button delegation
-  main.addEventListener('click', (e) => {
-    if (e.target.matches('.remove-exercise-btn')) {
-      const exId = parseInt(e.target.dataset.exId);
-      toggleExerciseSelection(exId, false);
+    
+    if (selectedExerciseIds.length === 0) {
+      show(t('module_admin.select_exercise'), 'error');
+      return;
     }
-  });
-  
-  // Clear exercise selection button
-  main.addEventListener('click', (e) => {
-    if (e.target.matches('[data-reset-exercises]')) {
-      selectedExerciseIds = [];
-      updateSelectedExercisesUI();
-    }
-  });
-  
-  // Delete module button
-  main.addEventListener('click', async (e) => {
-    if (e.target.matches('[data-confirm-delete]')) {
-      const editId = e.target.dataset.editId;
-      const confirmed = await showConfirmationModal('Are you sure you want to delete this module?');
-      if (confirmed) {
-        try {
-          await ModuleStore.delete(editId);
-          show(t('module_admin.deleted'), 'success');
+    
+    const moduleData = {
+      id: editId || undefined, // Let service generate ID if not editing
+      name,
+      description,
+      difficulty,
+      category,
+      exercises: selectedExerciseIds
+    };
+    
+    const submitBtn = main.querySelector('button[type="submit"]');
+    
+    if (editId) {
+      // Update existing module
+      submitBtn.disabled = true;
+      submitBtn.textContent = t('common.loading');
+      document.body.insertAdjacentHTML('beforeend', renderSpinner());
+      
+      ModuleStore.update(moduleData)
+        .then(() => {
+          // No undo needed for updates - only for deletions
+          show(t('module_admin.updated'), 'success');
           window.location.hash = '#skill-modules';
-        } catch (error) {
-          console.error('Error deleting module:', error);
-          show(t('module_admin.delete_error') + error.message, 'error');
-        }
-      }
+        })
+        .catch(error => {
+          console.error('Error updating module:', error);
+          show(t('module_admin.update_error') + error.message, 'error');
+          submitBtn.disabled = false;
+          submitBtn.textContent = editId ? t('module_admin.save') : t('module_admin.title_create');
+        })
+        .finally(() => {
+          hideSpinner();
+        });
+    } else {
+      // Create new module
+      submitBtn.disabled = true;
+      submitBtn.textContent = t('common.loading');
+      document.body.insertAdjacentHTML('beforeend', renderSpinner());
+      
+      ModuleStore.add(moduleData)
+        .then(() => {
+          show(t('module_admin.created'), 'success');
+          window.location.hash = '#skill-modules';
+        })
+        .catch(error => {
+          console.error('Error creating module:', error);
+          show(t('module_admin.create_error') + error.message, 'error');
+          submitBtn.disabled = false;
+          submitBtn.textContent = editId ? t('module_admin.save') : t('module_admin.title_create');
+        })
+        .finally(() => {
+          hideSpinner();
+        });
     }
-  });
+  };
   
-  // Drag-and-drop reorder for selected exercises
-  setupDragAndDrop();
-  
-  // ==================== HELPER FUNCTIONS ====================
-  
-  function setupDragAndDrop() {
-    const selectedList = main.querySelector('#selected-exercises-list');
-    if (!selectedList) return;
-    
-    let draggedItem = null;
-    let draggedIndex = null;
-    
-    selectedList.addEventListener('dragstart', (e) => {
-      const item = e.target.closest('.selected-exercise-item');
-      if (!item) return;
-      draggedItem = item;
-      draggedIndex = parseInt(item.dataset.exId);
-      item.style.opacity = '0.4';
-      e.dataTransfer.effectAllowed = 'move';
-    });
-    
-    selectedList.addEventListener('dragend', (e) => {
-      if (draggedItem) {
-        draggedItem.style.opacity = '';
-      }
-      draggedItem = null;
-      draggedIndex = null;
-      // Remove any visual drop indicators
-      main.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
-    });
-    
-    selectedList.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      e.dataTransfer.dropEffect = 'move';
-      
-      const item = e.target.closest('.selected-exercise-item');
-      if (!item || item === draggedItem) return;
-      
-      // Remove drag-over from all items
-      main.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
-      item.classList.add('drag-over');
-    });
-    
-    selectedList.addEventListener('dragleave', (e) => {
-      const item = e.target.closest('.selected-exercise-item');
-      if (item) item.classList.remove('drag-over');
-    });
-    
-    selectedList.addEventListener('drop', (e) => {
-      e.preventDefault();
-      const targetItem = e.target.closest('.selected-exercise-item');
-      if (!targetItem || !draggedItem) return;
-      
-      const targetIndex = parseInt(targetItem.dataset.exId);
-      
-      // Reorder selectedExerciseIds
-      const fromIdx = selectedExerciseIds.indexOf(draggedIndex);
-      const toIdx = selectedExerciseIds.indexOf(targetIndex);
-      
-      if (fromIdx !== -1 && toIdx !== -1 && fromIdx !== toIdx) {
-        const [moved] = selectedExerciseIds.splice(fromIdx, 1);
-        selectedExerciseIds.splice(toIdx, 0, moved);
-        updateSelectedExercisesUI();
-      }
-    });
-  }
-  
-  function handleExerciseSearch(e) {
+  // Exercise search handler
+  const handleExerciseSearch = (e) => {
     const searchTerm = e.target.value.toLowerCase().trim();
     const exerciseItems = main.querySelectorAll('.exercise-item');
     
@@ -353,7 +338,160 @@ export async function renderModuleAdminView(editId = null) {
         item.classList.add('hidden');
       }
     });
+  };
+  
+  // Change handler (checkboxes)
+  const handleModuleAdminChange = (e) => {
+    if (e.target.matches('input[type="checkbox"][data-ex-id]')) {
+      const exId = parseInt(e.target.dataset.exId);
+      toggleExerciseSelection(exId, e.target.checked);
+    }
+  };
+  
+  // Click handler (delegated)
+  const handleModuleAdminClick = (e) => {
+    // Remove exercise button
+    if (e.target.matches('.remove-exercise-btn')) {
+      const exId = parseInt(e.target.dataset.exId);
+      toggleExerciseSelection(exId, false);
+    }
+    
+    // Clear exercise selection button
+    if (e.target.matches('[data-reset-exercises]')) {
+      selectedExerciseIds = [];
+      updateSelectedExercisesUI();
+    }
+    
+    // Delete module button
+    if (e.target.matches('[data-confirm-delete]')) {
+      const editIdBtn = e.target.dataset.editId;
+      const deleteBtn = e.target;
+      showConfirmation('Are you sure you want to delete this module?').then((confirmed) => {
+        if (confirmed) {
+          deleteBtn.disabled = true;
+          deleteBtn.textContent = t('common.loading');
+          document.body.insertAdjacentHTML('beforeend', renderSpinner());
+          
+          ModuleStore.delete(editIdBtn)
+            .then(() => {
+              show(t('module_admin.deleted'), 'success');
+              window.location.hash = '#skill-modules';
+            })
+            .catch(error => {
+              console.error('Error deleting module:', error);
+              show(t('module_admin.delete_error') + error.message, 'error');
+              deleteBtn.disabled = false;
+              deleteBtn.textContent = t('common.delete') + ' Module';
+            })
+            .finally(() => {
+              hideSpinner();
+            });
+        }
+      });
+    }
+  };
+  
+  // Drag-and-drop handlers
+  let draggedItem = null;
+  let draggedIndex = null;
+  
+  const handleDragStart = (e) => {
+    const item = e.target.closest('.selected-exercise-item');
+    if (!item) return;
+    draggedItem = item;
+    draggedIndex = parseInt(item.dataset.exId);
+    item.style.opacity = '0.4';
+    e.dataTransfer.effectAllowed = 'move';
+  };
+  
+  const handleDragEnd = (e) => {
+    if (draggedItem) {
+      draggedItem.style.opacity = '';
+    }
+    draggedItem = null;
+    draggedIndex = null;
+    // Remove any visual drop indicators
+    main.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+  };
+  
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    
+    const item = e.target.closest('.selected-exercise-item');
+    if (!item || item === draggedItem) return;
+    
+    // Remove drag-over from all items
+    main.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+    item.classList.add('drag-over');
+  };
+  
+  const handleDragLeave = (e) => {
+    const item = e.target.closest('.selected-exercise-item');
+    if (item) item.classList.remove('drag-over');
+  };
+  
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const targetItem = e.target.closest('.selected-exercise-item');
+    if (!targetItem || !draggedItem) return;
+    
+    const targetIndex = parseInt(targetItem.dataset.exId);
+    
+    // Reorder selectedExerciseIds
+    const fromIdx = selectedExerciseIds.indexOf(draggedIndex);
+    const toIdx = selectedExerciseIds.indexOf(targetIndex);
+    
+    if (fromIdx !== -1 && toIdx !== -1 && fromIdx !== toIdx) {
+      const [moved] = selectedExerciseIds.splice(fromIdx, 1);
+      selectedExerciseIds.splice(toIdx, 0, moved);
+      updateSelectedExercisesUI();
+    }
+  };
+  
+  // ==================== ATTACH EVENT LISTENERS ====================
+  
+  // Form submission
+  const form = main.querySelector('#module-form');
+  if (form) {
+    form.addEventListener('submit', handleFormSubmit);
   }
+  
+  // Exercise search
+  const searchInput = main.querySelector('#exercise-search');
+  if (searchInput) {
+    searchInput.addEventListener('input', handleExerciseSearch);
+    searchInput._handleSearchInput = handleExerciseSearch;
+  }
+  
+  // Exercise checkbox delegation
+  main.addEventListener('change', handleModuleAdminChange);
+  main._handleModuleAdminChange = handleModuleAdminChange;
+  
+  // Remove exercise button delegation + clear button + delete button
+  main.addEventListener('click', handleModuleAdminClick);
+  main._handleModuleAdminClick = handleModuleAdminClick;
+  
+  // Drag-and-drop reorder for selected exercises
+  const selectedList = main.querySelector('#selected-exercises-list');
+  if (selectedList) {
+    selectedList.addEventListener('dragstart', handleDragStart);
+    selectedList.addEventListener('dragend', handleDragEnd);
+    selectedList.addEventListener('dragover', handleDragOver);
+    selectedList.addEventListener('dragleave', handleDragLeave);
+    selectedList.addEventListener('drop', handleDrop);
+    
+    main._handleDragStart = handleDragStart;
+    main._handleDragEnd = handleDragEnd;
+    main._handleDragOver = handleDragOver;
+    main._handleDragLeave = handleDragLeave;
+    main._handleDrop = handleDrop;
+  }
+  
+  // Mark that listeners have been added
+  main.dataset.moduleAdminViewListener = 'true';
+  
+  // ==================== HELPER FUNCTIONS ====================
   
   function toggleExerciseSelection(exId, isSelected) {
     if (isSelected) {
@@ -370,7 +508,7 @@ export async function renderModuleAdminView(editId = null) {
   
   function updateSelectedExercisesUI() {
     const selectedList = main.querySelector('#selected-exercises-list');
-    const clearButton = main.querySelector('#selected-exercises-display button');
+    const clearButton = main.querySelector('[data-reset-exercises]');
     
     // Always ensure the list container exists
     if (!selectedList) {
@@ -428,14 +566,6 @@ export async function renderModuleAdminView(editId = null) {
       `;
     }).join('');
     
-    // Re-attach remove button listeners
-    selectedList.querySelectorAll('.remove-exercise-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const exId = parseInt(btn.dataset.exId);
-        toggleExerciseSelection(exId, false);
-      });
-    });
-    
     // Update available exercises visibility
     const availableItems = main.querySelectorAll('.exercise-item');
     availableItems.forEach(item => {
@@ -455,68 +585,10 @@ export async function renderModuleAdminView(editId = null) {
     }
   }
   
-  function handleFormSubmit(e) {
-    e.preventDefault();
-    
-    const name = main.querySelector('#module-name').value.trim();
-    const description = main.querySelector('#module-description').value.trim();
-    const difficulty = main.querySelector('#module-difficulty').value;
-    const category = main.querySelector('#module-category').value.trim();
-    
-    if (!name) {
-      show(t('module_admin.enter_name'), 'error');
-      main.querySelector('#module-name').focus();
-      return;
-    }
-    
-    if (selectedExerciseIds.length === 0) {
-      show(t('module_admin.select_exercise'), 'error');
-      return;
-    }
-    
-    const moduleData = {
-      id: editId || undefined, // Let service generate ID if not editing
-      name,
-      description,
-      difficulty,
-      category,
-      exercises: selectedExerciseIds
-    };
-    
-    if (editId) {
-      // Update existing module
-      ModuleStore.update(moduleData)
-        .then(() => {
-          // No undo needed for updates - only for deletions
-          show(t('module_admin.updated'), 'success');
-          window.location.hash = '#skill-modules';
-        })
-        .catch(error => {
-          console.error('Error updating module:', error);
-          show(t('module_admin.update_error') + error.message, 'error');
-        });
-    } else {
-      // Create new module
-      ModuleStore.add(moduleData)
-        .then(() => {
-          show(t('module_admin.created'), 'success');
-          window.location.hash = '#skill-modules';
-        })
-        .catch(error => {
-          console.error('Error creating module:', error);
-          show(t('module_admin.create_error') + error.message, 'error');
-        });
-    }
-  }
-  
   // ==================== EXPOSED FUNCTIONS ====================
   
-  // Removed - now handled by event delegation service
-  // window.resetExerciseSelection = function() {...}
-  // window.confirmDelete = function() {...}
-  
   // Export for router
-  }
+}
 
 // Named + default export for maximum flexibility (Pattern 3)
 export default { render: renderModuleAdminView };

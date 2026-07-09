@@ -17,7 +17,7 @@ Una Progressive Web App (PWA) para entrenar calistenia de forma estructurada, co
 
 - **Frontend**: Vanilla JavaScript ES6+, HTML5, CSS3
 - **Backend**: Node.js + Express 5.1.0 (servidor estático HTTPS)
-- **Base de Datos**: LocalStorage del navegador
+- **Base de Datos**: IndexedDB del navegador (offline-first)
 - **PWA**: Service Worker, Web App Manifest
 
 ## 📦 Instalación
@@ -105,7 +105,7 @@ Los datos se almacenan en archivos JSON.
 ## 🚨 Consideraciones
 
 ### Limitaciones Actuales
-1. **Datos locales solo**: Todo se guarda en localStorage del navegador (no sincronización cloud)
+1. **Datos locales solo**: Todo se guarda en IndexedDB del navegador (no sincronización cloud)
 2. **Sin autenticación**: No hay sistema de usuarios o login
 3. **Backend mínimo**: El servidor solo sirve archivos estáticos, no hay API REST real
 4. **Certificados SSL auto-firmados**: Advertencias de seguridad en desarrollo

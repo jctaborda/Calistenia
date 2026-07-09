@@ -6,10 +6,13 @@ import { formatWorkoutSummary } from '../utils/workout-summary.js';
 
 export function renderWorkoutSummaryView() {
   const main = document.getElementById('app');
-  const { history = [] } = getState();
+  const { history = [], exercises = [] } = getState();
   
   // Get the most recent workout
   const lastWorkout = history.length > 0 ? history[history.length - 1] : null;
+  
+  // Calculate total volume (reps × weight) if weight data available
+  const totalVolume = lastWorkout ? calculateTotalVolume(lastWorkout) : 0;
   
   // Get unlocked achievements to display
   const unlockedAchievements = getUnlockedAchievements();
@@ -18,10 +21,7 @@ export function renderWorkoutSummaryView() {
     <div class="card">
   <h1>Workout Complete!</h1>
   
-  ${lastWorkout ? `
-  <h2>${lastWorkout.routine.name}</h2>
-  <p>You completed ${lastWorkout.exercises.length} exercises today! Great work!</p>
-  ` : ''}
+  ${lastWorkout ? `\n  <h2>${lastWorkout.routine?.name || t('summary.custom_workout')}</h2>\n  <p>You completed ${lastWorkout.exercises?.length || 0} exercises today! Great work!</p>\n  ${totalVolume > 0 ? `<p class="volume-stats"><strong>Total Volume:</strong> ${totalVolume} kg</p>` : ''}\n  ` : ''}
   
   ${unlockedAchievements.length > 0 ? `
   <div class="achievements-section">
@@ -137,3 +137,27 @@ function showAdaptiveSuggestion(rating) {
 
 // Named + default export for maximum flexibility (Pattern 3)
 export default { render: renderWorkoutSummaryView };
+
+/**
+ * Calculate total volume (reps × weight) for workout
+ * @param {Object} workout - Workout object
+ * @returns {number} Total volume in kg
+ */
+function calculateTotalVolume(workout) {
+  let totalVolume = 0;
+  
+  (workout.exercises || []).forEach(exercise => {
+    const sets = exercise.actualRepsWithWeight || exercise.actualReps.map(reps => ({ reps }));
+    
+    sets.forEach(set => {
+      const reps = typeof set === 'object' ? set.reps : set;
+      const weight = typeof set === 'object' ? (set.weight || 0) : 0;
+      
+      if (weight > 0) {
+        totalVolume += reps * weight;
+      }
+    });
+  });
+  
+  return totalVolume;
+}

@@ -2,21 +2,14 @@ import { renderHeader } from '../components/header.js';
 import { getState, updateState } from '../services/state.js';
 import { formatDate } from '../utils/date-formatter.js';
 import { t } from '../i18n.js';
+import { escapeHtml } from '../utils/html.js';
+import { getDifficultyColor } from '../utils/helpers.js';
 
 // Simple number formatter: adds K suffix for thousands
 function formatNumber(num) {
   if (!num || num === 0) return '0';
   if (num >= 1000) return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
   return num.toString();
-}
-
-// Get difficulty color for badge class names
-function getDifficultyColor(difficulty) {
-  const d = (difficulty || '').toLowerCase();
-  if (d.includes('beginner') || d.includes('principiante')) return 'beginner';
-  if (d.includes('intermediate') || d.includes('intermedio')) return 'intermediate';
-  if (d.includes('advanced') || d.includes('avanzado')) return 'advanced';
-  return 'intermediate';
 }
 
 // Helper function to calculate total reps from workout progress
@@ -153,23 +146,10 @@ function getRatingLabel(rating) {
   return t(`difficulty.${raw.toLowerCase()}`) || raw;
 }
 
-// Helper function to start workout from home button
-function startWorkoutFromHome(routine) {
-  updateState({
-    activeWorkout: {
-      routine: routine,
-      progress: {},
-      currentExerciseIndex: 0,
-      currentSetIndex: 0,
-      workoutMode: 'manual' // Always manual mode
-    }
-  });
-  window.location.hash = '#active-workout';
-}
-
 /**
  * Renders the home page view with welcome message, quick stats, 
  * recent workouts, and featured content
+ * @returns {Promise<string>} HTML string for home view
  */
 async function renderHomeView() {
   const state = getState();
@@ -190,7 +170,7 @@ async function renderHomeView() {
     <div class="home-container">
   <!-- Welcome Section -->
   <section class="welcome-section">
-  <h1>${t('home.welcome', { name: user.name })}! 👋</h1>
+  <h1>${t('home.welcome', { name: escapeHtml(user.name) })}! 👋</h1>
   <p class="subtitle">${t('home.subtitle')}</p>
   </section>
 
@@ -250,7 +230,7 @@ async function renderHomeView() {
   <section class="quick-actions">
   <h2 class="card-title">${t('home.quick_actions.title')}</h2>
   <div class="action-grid">
-  <button class="action-card" data-nav="#routines">
+  <button class="action-card" data-nav="#routines" aria-label="Start routine">
   <svg class="action-icon" viewBox="0 0 24 24" fill="currentColor">
     <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
   </svg>
@@ -258,14 +238,14 @@ async function renderHomeView() {
   <span class="action-desc">${t('home.quick_actions.start_routine.desc')}</span>
   </button>
   
-  <button class="action-card" data-action="create-routine">
+  <button class="action-card" data-action="create-routine" aria-label="Create new routine">
   <svg class="action-icon" viewBox="0 0 24 24" fill="currentColor">
     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
   </svg>
   <span class="action-title">${t('home.quick_actions.create_routine.title')}</span>
   <span class="action-desc">${t('home.quick_actions.create_routine.desc')}</span>
   </button>
-  <button class="action-card" data-nav="#skills-tree">
+  <button class="action-card" data-nav="#skills-tree" aria-label="View skill tree">
   <svg class="action-icon" viewBox="0 0 24 24" fill="currentColor">
     <path d="M12 17.3l6.18-3.73L21 12l-5.5-4.33L17 4l-5 3-5-3-.5 3.67L3 12l2.82 1.57z"/>
   </svg>
@@ -273,7 +253,7 @@ async function renderHomeView() {
   <span class="action-desc">${t('home.quick_actions.skill_tree.desc')}</span>
   </button>
   
-  <button class="action-card" data-nav="#exercises">
+  <button class="action-card" data-nav="#exercises" aria-label="Browse exercises">
   <svg class="action-icon" viewBox="0 0 24 24" fill="currentColor">
     <path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.8-.7"/>
   </svg>
@@ -291,10 +271,10 @@ async function renderHomeView() {
   ${state.routines.slice(0, 3).map(routine => `
   <div class="routine-card">
   <div class="routine-header">
-  <h3>${routine.name}</h3>
-  <span class="difficulty-badge difficulty-${getDifficultyColor(routine.difficulty)}">${routine.difficulty || '${t("exercises.intermediate")}'}</span>
+  <h3>${escapeHtml(routine.name)}</h3>
+  <span class="difficulty-badge difficulty-${getDifficultyColor(routine.difficulty)}">${routine.difficulty || t('exercises.intermediate')}</span>
   </div>
-  <p class="routine-desc">${routine.description || 'A comprehensive workout routine'}</p>
+  <p class="routine-desc">${escapeHtml(routine.description || 'A comprehensive workout routine')}</p>
   <div class="routine-stats">
   <span>📅 ${routine.duration || `${t('routine_details.duration')}: 30 min`}</span>
   <span>💪 ${routine.exercises?.length || 0} exercises</span>
@@ -315,7 +295,7 @@ async function renderHomeView() {
   ${recentWorkouts.map(workout => `
   <div class="workout-item">
   <div class="workout-header">
-  <span class="workout-title">${workout.routine?.name || t('summary.custom_workout')}</span>
+  <span class="workout-title">${escapeHtml(workout.routine?.name || t('summary.custom_workout'))}</span>
   <span class="workout-date">${formatDate(workout.date)}</span>
   </div>
   <div class="workout-details">

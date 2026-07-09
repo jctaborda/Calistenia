@@ -2,8 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { initializeState } from '../../js/services/state.js';
 import { openDatabase } from '../../js/services/database.js';
 import { storeExercises } from '../../js/services/database.js';
-import { storePrograms } from '../../js/services/database.js';
-import { storeModules } from '../../js/services/database.js';
+import { storeRoutines } from '../../js/services/database.js';
 
 describe('Integration Tests', () => {
   beforeEach(async () => {
@@ -118,10 +117,10 @@ describe('Integration Tests', () => {
         initializeState();
         await openDatabase();
         
-        // Store a test program
-        const testProgram = {
-          id: 'test-program',
-          name: 'Test Program',
+        // Store a test routine
+        const testRoutine = {
+          id: 'test-routine',
+          name: 'Test Routine',
           exercises: [
             { id: 'ex-1', name: 'Push-Up', sets: 3, reps: 10 },
             { id: 'ex-2', name: 'Squat', sets: 3, reps: 15 }
@@ -130,17 +129,17 @@ describe('Integration Tests', () => {
           cooldown: []
         };
         
-        await storePrograms([testProgram]);
+        await storeRoutines([testRoutine]);
         
-        // Verify program was stored
-        const programsService = await import('../../js/services/database.js');
-        const programs = await programsService.programsLoad();
+        // Verify routine was stored
+        const routinesService = await import('../../js/services/database.js');
+        const routines = await routinesService.routinesLoad();
         
-        expect(programs).toHaveLength(1);
-        expect(programs[0].name).toBe('Test Program');
+        expect(routines).toHaveLength(1);
+        expect(routines[0].name).toBe('Test Routine');
         
         // Clean up
-        await storePrograms([]);
+        await storeRoutines([]);
       } catch (error) {
         // Database may not be available in test environment
         expect(true).toBe(true);
@@ -173,13 +172,13 @@ describe('Integration Tests', () => {
         initializeState();
         await openDatabase();
         
-        const testProgram = {
-          id: 'test-prog-1',
-          name: 'Test Program',
+        const testRoutine = {
+          id: 'test-routine-1',
+          name: 'Test Routine',
           exercises: []
         };
         
-        await storePrograms([testProgram]);
+        await storeRoutines([testRoutine]);
         
         // Export
         const exportService = await import('../../js/services/export-import.js');
@@ -190,10 +189,10 @@ describe('Integration Tests', () => {
         
         const parsed = JSON.parse(exportData);
         expect(parsed.version).toBe('1.0');
-        expect(parsed.programs).toHaveLength(1);
+        expect(parsed.routines).toHaveLength(1);
         
         // Clean up
-        await storePrograms([]);
+        await storeRoutines([]);
       } catch (error) {
         // May fail in test environment
         expect(true).toBe(true);

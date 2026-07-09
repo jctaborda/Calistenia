@@ -59,9 +59,14 @@ export class ValidationService {
    * @returns {{valid: boolean, error: string|null}}
    */
   static isValidImageUrl(url) {
+    // Early return for empty/optional URLs
+    if (!url || url === null || url === undefined || String(url).length === 0) {
+      return { valid: true, error: null };
+    }
+    
     // Check if it's a valid absolute URL (http://, https://)
     try {
-      if (url.startsWith('http://') || url.startsWith('https://')) {
+      if (String(url).startsWith('http://') || String(url).startsWith('https://')) {
         new URL(url);
         return { valid: true, error: null };
       }
@@ -87,9 +92,14 @@ export class ValidationService {
    * @returns {{valid: boolean, error: string|null}}
    */
   static isValidVideoUrl(url) {
+    // Early return for empty/optional URLs
+    if (!url || url === null || url === undefined || String(url).length === 0) {
+      return { valid: true, error: null };
+    }
+    
     // Check if it's a valid absolute URL (http://, https://)
     try {
-      if (url.startsWith('http://') || url.startsWith('https://')) {
+      if (String(url).startsWith('http://') || String(url).startsWith('https://')) {
         new URL(url);
         return { valid: true, error: null };
       }
@@ -338,12 +348,13 @@ function showMessage(text, type) {
     const msgEl = messageEls[0];
     msgEl.textContent = text;
     msgEl.className = `message ${type}`;
-    msgEl.classList.add('visible');
+    msgEl.style.display = 'block';
     
     setTimeout(() => {
-      msgEl.classList.remove('visible');
+      msgEl.style.display = 'none';
     }, TOAST_TIMEOUTS.info);
   } else {
-    // Fallback: alert (shouldn't happen in normal usage)
+    // Log error for debugging since there's no UI to show
+    console.error(`Validation error: ${text}`);
   }
 }

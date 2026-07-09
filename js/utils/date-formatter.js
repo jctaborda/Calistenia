@@ -18,10 +18,12 @@ export function formatDate(isoString, options = {}) {
   
   // Relative date format (default)
   if (mode === 'relative') {
-    if (diffDays === 0) return 'Today';
-    if (diffDays === 1) return 'Yesterday';
-    if (diffDays < 7) return `${diffDays} days ago`;
-    if (diffDays < 14) return `Last week`;
+    // Use locale-aware relative date strings
+    const formatter = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' });
+    if (diffDays === 0) return formatter.format(0, 'day');
+    if (diffDays === 1) return formatter.format(-1, 'day');
+    if (diffDays < 7) return formatter.format(-diffDays, 'day');
+    if (diffDays < 14) return formatter.format(-1, 'week');
     
     // For older dates, check if within current year
     const showYear = now.getFullYear() !== targetDate.getFullYear();
@@ -59,31 +61,31 @@ export function formatDate(isoString, options = {}) {
 }
 
 // Format for time-only display
-export function formatTime(isoString) {
+export function formatTime(isoString, locale = 'en-US') {
   if (!isoString) return '-';
   
   const date = new Date(isoString);
   if (isNaN(date.getTime())) return '-';
   
-  return date.toLocaleTimeString('en-US', {
+  return date.toLocaleTimeString(locale, {
     hour: '2-digit',
     minute: '2-digit'
   });
 }
 
 // Format for timeline/comparison display
-export function formatTimelineDate(isoString) {
+export function formatTimelineDate(isoString, locale = 'en-US') {
   const date = new Date(isoString);
   if (isNaN(date.getTime())) return '-';
   
-  return date.toLocaleDateString('en-US', {
+  return date.toLocaleDateString(locale, {
     month: 'short',
     day: 'numeric'
   });
 }
 
 // Format for workout completion details
-export function formatWorkoutDate(isoString, includeTime = true) {
+export function formatWorkoutDate(isoString, includeTime = true, locale = 'en-US') {
   if (!isoString) return '-';
   
   const date = new Date(isoString);
@@ -100,18 +102,18 @@ export function formatWorkoutDate(isoString, includeTime = true) {
   const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
   
   if (diffDays === 0) {
-    return includeTime ? 'Today' : '';
+    return includeTime ? new Intl.RelativeTimeFormat(locale, { numeric: 'auto' }).format(0, 'day') : '';
   }
   
   if (includeTime) {
     const showYear = now.getFullYear() !== targetDate.getFullYear();
-    const datePart = date.toLocaleDateString('en-US', {
+    const datePart = date.toLocaleDateString(locale, {
       month: 'short',
       day: 'numeric',
       year: showYear ? 'numeric' : undefined
     });
     
-    const timePart = date.toLocaleTimeString('en-US', {
+    const timePart = date.toLocaleTimeString(locale, {
       hour: '2-digit',
       minute: '2-digit'
     });
@@ -119,22 +121,22 @@ export function formatWorkoutDate(isoString, includeTime = true) {
     return `${datePart}, ${timePart}`;
   }
   
-  return formatDate(isoString, { mode: 'relative' });
+  return formatDate(isoString, { mode: 'relative', locale });
 }
 
 // Format for progress chart labels
-export function formatChartDate(isoString) {
+export function formatChartDate(isoString, locale = 'en-US') {
   const date = new Date(isoString);
   if (isNaN(date.getTime())) return '-';
   
-  return date.toLocaleDateString('en-US', {
+  return date.toLocaleDateString(locale, {
     month: 'short',
     day: 'numeric'
   });
 }
 
 // Get formatted date range for workout history
-export function formatDateRange(startDate, endDate) {
+export function formatDateRange(startDate, endDate, locale = 'en-US') {
   const start = new Date(startDate);
   const end = new Date(endDate);
   
@@ -148,8 +150,8 @@ export function formatDateRange(startDate, endDate) {
     month: sameMonth ? undefined : 'short'
   };
   
-  const startDateStr = start.toLocaleDateString('en-US', options);
-  const endDateStr = end.toLocaleDateString('en-US', {
+  const startDateStr = start.toLocaleDateString(locale, options);
+  const endDateStr = end.toLocaleDateString(locale, {
     month: sameYear ? options.month : undefined,
     day: 'numeric',
     year: sameYear ? undefined : 'numeric'

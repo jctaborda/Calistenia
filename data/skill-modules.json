@@ -27,7 +27,7 @@
       "name": "Dip Mastery",
       "description": "Build upper body pushing strength with dip variations",
       "difficulty": "intermediate",
-      "category": "",
+      "category": "Push",
       "exercises": [
         117,
         34,
@@ -44,7 +44,7 @@
       "name": "Handstand Foundation",
       "description": "Learn to balance on your hands with progressive drills",
       "difficulty": "intermediate",
-      "category": "",
+      "category": "Push",
       "exercises": [
         25,
         30,
@@ -86,7 +86,7 @@
       "name": "Core Strength Basics",
       "description": "Essential ab exercises for a strong foundation",
       "difficulty": "beginner",
-      "category": "",
+      "category": "Core",
       "exercises": [
         45,
         59,

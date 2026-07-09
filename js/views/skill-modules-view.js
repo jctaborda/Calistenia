@@ -6,21 +6,37 @@ import { fetchSkillModules } from '../services/api.js';
 import { ModuleStore } from '../services/modules-service.js';
 import { saveForUndo } from '../services/undo-service.js';
 import { show } from '../services/toast-service.js';
+import { showConfirmation } from '../services/confirmation-modal.js';
+import { escapeHtml } from '../utils/html.js';
+import { isModuleCompleted } from '../utils/helpers.js';
 
 export async function renderSkillModulesView() {
   const main = document.getElementById('app');
   
-  // Remove any existing event listeners to prevent duplicates
-  if (main.dataset.skillModulesViewListener) {
-    main.removeEventListener('click', main.dataset.skillModulesViewListener);
+  // Remove any existing event listeners to prevent duplicates (memory leak fix)
+  if (main.dataset.skillModulesViewListener === 'true') {
+    // Remove delegated click handler
+    main.removeEventListener('click', main._handleSkillModulesClick);
+    
+    // Remove keyboard handler from document
+    if (main._handleSkillModulesKeydown) {
+      document.removeEventListener('keydown', main._handleSkillModulesKeydown);
+    }
+    
+    // Clean up individual button listeners (stored as dataset)
+    const createModuleBtn = main.querySelector('#create-module-btn');
+    if (createModuleBtn && createModuleBtn._inlineClickListener) {
+      createModuleBtn.removeEventListener('click', createModuleBtn._inlineClickListener);
+    }
+    
+    const skillsTreeBtn = main.querySelector('#skills-tree-btn');
+    if (skillsTreeBtn && skillsTreeBtn._inlineClickListener) {
+      skillsTreeBtn.removeEventListener('click', skillsTreeBtn._inlineClickListener);
+    }
+    
     delete main.dataset.skillModulesViewListener;
-  }
-  
-  // Remove any existing keyboard handlers
-  if (main.dataset.keyboardHandler) {
-    // The keyboard handler is on document, we need to track it differently
-    // For now, we'll just let it accumulate (it's harmless)
-    // A better solution would be to store the handler reference globally
+    delete main._handleSkillModulesClick;
+    delete main._handleSkillModulesKeydown;
   }
   
   // Check if we should show tree view by default (from localStorage or hash)
@@ -49,28 +65,6 @@ export async function renderSkillModulesView() {
   
   const history = getState().history || [];
   
-  // Calculate progress for each module (percentage of exercises completed)
-  function calculateModuleProgress(module) {
-    if (!module.exercises || module.exercises.length === 0) return 0;
-    
-    const completedExercises = new Set();
-    
-    for (const workout of history) {
-      if (workout.exercises) {
-        for (const exercise of workout.exercises) {
-          if (module.exercises.includes(exercise.exerciseId)) {
-            // Check if actually completed (positive reps)
-            if (exercise.actualReps && exercise.actualReps.some(r => r > 0)) {
-              completedExercises.add(exercise.exerciseId);
-            }
-          }
-        }
-      }
-    }
-    
-    return Math.round((completedExercises.size / module.exercises.length) * 100);
-  }
-  
   main.innerHTML = renderHeader() + `
     <div class="card">
       <div class="view-header">
@@ -83,14 +77,14 @@ export async function renderSkillModulesView() {
       
       <ul class="modules-list">
         ${modulesData.map(module => {
-          const progress = calculateModuleProgress(module);
+          const progress = isModuleCompleted(module.exercises, history) ? 100 : 0;
           const isCompleted = progress === 100;
           
           return `
             <li class="module-item">
               <div class="workout-card module-card">
-                <h3 class="module-title">${module.name}</h3>
-                <p class="module-description">${module.description}</p>
+                <h3 class="module-title">${escapeHtml(module.name)}</h3>
+                <p class="module-description">${escapeHtml(module.description || '')}</p>
                 <div class="module-tags">
                   <span class="tag">${module.category || t('skill_modules.uncategorized')}</span>
                   <span class="tag difficulty-${module.difficulty}">${module.difficulty}</span>
@@ -109,28 +103,28 @@ export async function renderSkillModulesView() {
     </div>
   `;
   
-  // Create New Module button handler
-  const createModuleBtn = main.querySelector('#create-module-btn');
-  if (createModuleBtn) {
-    createModuleBtn.addEventListener('click', () => {
+  // Create delegated click handler for all button interactions
+  const handleSkillModulesClick = async (e) => {
+    const target = e.target;
+    
+    // Create New Module button
+    if (target.id === 'create-module-btn') {
       updateState({ editingModule: null, editingProgram: null });
       window.location.hash = '#module-admin';
-    });
-  }
-
-  // Skills Tree button handler
-  const skillsTreeBtn = main.querySelector('#skills-tree-btn');
-  if (skillsTreeBtn) {
-    skillsTreeBtn.addEventListener('click', () => {
+      return;
+    }
+    
+    // Skills Tree button
+    if (target.id === 'skills-tree-btn') {
       window.location.hash = '#skills-tree';
-    });
-  }
-  
-  // Module action button handlers (View, Edit, Delete)
-  main.querySelectorAll('.module-action-btn').forEach(btn => {
-    btn.addEventListener('click', e => {
-      const type = btn.getAttribute('data-type');
-      const id = btn.getAttribute('data-id');
+      return;
+    }
+    
+    // Module action buttons (View, Edit, Delete)
+    const moduleActionBtn = target.closest('.module-action-btn');
+    if (moduleActionBtn) {
+      const type = moduleActionBtn.getAttribute('data-type');
+      const id = moduleActionBtn.getAttribute('data-id');
       
       if (type === 'view') {
         window.location.hash = `#skill-module/${id}`;
@@ -139,21 +133,24 @@ export async function renderSkillModulesView() {
         window.location.hash = `#module-admin/${id}`;
       } else if (type === 'delete') {
         const module = modulesData.find(m => String(m.id) === String(id));
-        if (module && confirm(t('module_admin.delete_confirm') + '"' + module.name + '"? ' + t('module_admin.delete_action'))) {
-          // Delete the module via service
-          ModuleStore.delete(id)
-            .then(() => {
-              // Save for undo before refreshing
-              saveForUndo('module', module, id);
-              
-              // Reload modules to reflect changes
-              fetchSkillModules().then(newModules => {
-                window.location.hash = '#skill-modules';
+        if (module) {
+          const confirmed = await showConfirmation(t('module_admin.delete_confirm') + '"' + module.name + '"? ' + t('module_admin.delete_action'));
+          if (confirmed) {
+            // Delete the module via service
+            ModuleStore.delete(id)
+              .then(() => {
+                // Save for undo before refreshing
+                saveForUndo('module', module, id);
+                
+                // Reload modules to reflect changes
+                fetchSkillModules().then(newModules => {
+                  window.location.hash = '#skill-modules';
+                });
+              })
+              .catch(err => {
+                show(t('module_admin.delete_error') + err.message, 'error');
               });
-            })
-            .catch(err => {
-              show(t('module_admin.delete_error') + err.message, 'error');
-            });
+          }
         }
       } else if (type === 'start') {
         const module = modulesData.find(m => String(m.id) === String(id));
@@ -161,20 +158,27 @@ export async function renderSkillModulesView() {
           window.location.hash = `#skill-module/${id}`;
         }
       }
-    });
-  });
+    }
+  };
   
-  // Store reference to keyboard handler for cleanup
-  const keyboardHandler = (e) => {
+  // Add delegated click handler
+  main.addEventListener('click', handleSkillModulesClick);
+  main._handleSkillModulesClick = handleSkillModulesClick;
+  
+  // Keyboard shortcut for new module (Ctrl+N)
+  const handleSkillModulesKeydown = (e) => {
     if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
       e.preventDefault();
+      const createModuleBtn = main.querySelector('#create-module-btn');
       createModuleBtn?.click();
     }
   };
   
-  // Add keyboard shortcuts for new module (Ctrl+N)
-  document.addEventListener('keydown', keyboardHandler);
-  main.dataset.keyboardHandler = 'true';
+  document.addEventListener('keydown', handleSkillModulesKeydown);
+  main._handleSkillModulesKeydown = handleSkillModulesKeydown;
+  
+  // Mark that listeners have been added
+  main.dataset.skillModulesViewListener = 'true';
   
   if (showTreeView) {
     window.location.hash = '#skills-tree';

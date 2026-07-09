@@ -205,17 +205,30 @@ export class WorkoutTimerService {
   }
 
   /**
-   * Start HIIT interval timer
-   * @param {number} intervalTime - Work interval in seconds
+   * Start HIIT interval timer with proper work/rest countdown
+   * @param {number} workTime - Work interval in seconds
+   * @param {number} restTime - Rest interval in seconds (optional, defaults to workTime)
    * @param {object} options - Configuration
    * @param {Function} options.onWorkStart - Callback when work phase starts
    * @param {Function} options.onWorkEnd - Callback when work phase ends
+   * @param {Function} options.onRestStart - Callback when rest phase starts
    * @param {Function} options.onRestEnd - Callback when rest phase ends
+   * @param {number} options.rounds - Number of rounds (optional, null for continuous)
    */
-  startHIITTimer(intervalTime, options = {}) {
-    const { onWorkStart = () => {}, onWorkEnd = () => {}, onRestEnd = () => {} } = options;
+  startHIITTimer(workTime, restTime = workTime, options = {}) {
+    const { 
+      onWorkStart = () => {}, 
+      onWorkEnd = () => {}, 
+      onRestStart = () => {}, 
+      onRestEnd = () => {},
+      rounds = null 
+    } = options;
 
     let isWorking = true;
+    let currentRound = 0;
+    let roundTimer = null;
+    let timeLeft = workTime;
+    
     const timerContainer = document.getElementById('hiit-timer-display');
     const startBtn = document.getElementById('start-hiit-btn');
 
@@ -225,28 +238,64 @@ export class WorkoutTimerService {
     this.stopHIITTimer();
 
     const updateDisplay = () => {
-      const remaining = isWorking ? intervalTime : intervalTime; // For simplicity, rest = work time
+      const phaseClass = isWorking ? 'work' : 'rest';
+      const phaseText = isWorking ? 'WORK' : 'REST';
+      const roundDisplay = rounds !== null ? `Round ${currentRound + 1}/${rounds}` : '';
+      
       timerContainer.innerHTML = `
         <div class="hiit-timer-active">
-          <span class="hiit-phase ${isWorking ? 'work' : 'rest'}">${isWorking ? 'WORK' : 'REST'}</span>
-          <span class="hiit-time">${remaining}s</span>
+          <span class="hiit-phase ${phaseClass}">${phaseText}</span>
+          <span class="hiit-time">${timeLeft}s</span>
+          ${roundDisplay ? `<span class="hiit-round">${roundDisplay}</span>` : ''}
         </div>
       `;
     };
 
-    const togglePhase = () => {
-      isWorking = !isWorking;
-      updateDisplay();
-
+    const nextPhase = () => {
       if (isWorking) {
-        onWorkStart();
-      } else {
+        // Transition from work to rest
         onWorkEnd();
-        // Auto-start rest phase timer (simplified for now)
-        setTimeout(() => {
-          onRestEnd();
-        }, intervalTime * 1000);
+        isWorking = false;
+        timeLeft = restTime;
+        onRestStart();
+        
+        // Schedule rest phase end
+        roundTimer = setTimeout(() => {
+          completeRound();
+        }, restTime * 1000);
+      } else {
+        // Transition from rest to work
+        onRestEnd();
+        currentRound++;
+        
+        // Check if we've completed all rounds
+        if (rounds !== null && currentRound >= rounds) {
+          timerContainer.innerHTML = `
+            <div class="hiit-timer-active">
+              <span class="hiit-phase complete">COMPLETE</span>
+              <span class="hiit-time">🎉</span>
+            </div>
+          `;
+          this.stopHIITTimer();
+          return;
+        }
+        
+        isWorking = true;
+        timeLeft = workTime;
+        onWorkStart();
+        
+        // Schedule work phase end
+        roundTimer = setTimeout(() => {
+          nextPhase();
+        }, workTime * 1000);
       }
+      
+      updateDisplay();
+    };
+
+    const completeRound = () => {
+      clearTimeout(roundTimer);
+      nextPhase();
     };
 
     // Initial display
@@ -256,13 +305,21 @@ export class WorkoutTimerService {
     startBtn.addEventListener('click', () => {
       startBtn.disabled = true;
       startBtn.textContent = 'Running...';
-      togglePhase();
+      onWorkStart();
+      nextPhase();
     }, { once: true });
 
     this.activeTimer = {
       stop: () => {
+        clearTimeout(roundTimer);
         startBtn.disabled = false;
         startBtn.textContent = 'Start Interval';
+        timerContainer.innerHTML = `
+          <div class="hiit-timer-active">
+            <span class="hiit-phase">READY</span>
+            <span class="hiit-time">${workTime}s work / ${restTime}s rest</span>
+          </div>
+        `;
       }
     };
   }

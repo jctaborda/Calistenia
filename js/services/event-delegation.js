@@ -10,6 +10,7 @@ import { ModuleStore } from './modules-service.js';
 import { show } from './toast-service.js';
 import { showConfirmation as showConfirmationModal } from './confirmation-modal.js';
 import { formatWorkoutSummary } from '../utils/workout-summary.js';
+import { escapeHtml } from '../utils/html.js';
 import { deleteRoutine as dbDeleteRoutine } from './database.js';
 import { routinesLoad } from './database.js';
 import { storeSharedComments, loadSharedComments } from './database.js';
@@ -33,6 +34,7 @@ export function initializeEventDelegation(mainElement) {
   const workoutHandler = handleWorkoutClick;
   const errorBoundaryHandler = handleErrorCodeClick;
   const formHandler = handleFormSubmit;
+  const headerHandler = handleHeaderClicks;
   
   mainElement.addEventListener('click', navHandler);
   mainElement.addEventListener('click', routineHandler);
@@ -42,6 +44,7 @@ export function initializeEventDelegation(mainElement) {
   mainElement.addEventListener('click', workoutHandler);
   mainElement.addEventListener('click', errorBoundaryHandler);
   mainElement.addEventListener('submit', formHandler);
+  mainElement.addEventListener('click', headerHandler);
   
   handlers = [
     { el: mainElement, type: 'click', fn: navHandler },
@@ -52,6 +55,7 @@ export function initializeEventDelegation(mainElement) {
     { el: mainElement, type: 'click', fn: workoutHandler },
     { el: mainElement, type: 'click', fn: errorBoundaryHandler },
     { el: mainElement, type: 'submit', fn: formHandler },
+    { el: mainElement, type: 'click', fn: headerHandler },
   ];
 }
 
@@ -70,6 +74,39 @@ function handleNavigationClick(e) {
     window.history.back();
   } else {
     window.location.hash = navTarget;
+  }
+}
+
+/**
+ * Handle header clicks (theme toggle, locale toggle)
+ * These are moved here from header.js to persist across header re-renders
+ */
+async function handleHeaderClicks(e) {
+  const themeToggle = e.target.closest('#theme-toggle');
+  if (themeToggle) {
+    e.preventDefault();
+    const i18n = await import('../i18n.js');
+    const isDark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    const icon = themeToggle.querySelector('.icon');
+    if (icon) {
+      icon.textContent = isDark ? i18n.t('theme.light') : i18n.t('theme.dark');
+    }
+    return;
+  }
+  
+  const localeToggle = e.target.closest('#locale-toggle');
+  if (localeToggle) {
+    e.preventDefault();
+    const i18n = await import('../i18n.js');
+    const locales = i18n.getAvailableLocales();
+    const current = i18n.getLocale();
+    const idx = locales.findIndex(l => l.code === current);
+    const next = locales[(idx + 1) % locales.length].code;
+    i18n.setLocale(next);
+    // localeChange event will be dispatched by setLocale
+    // main.js listens for it and re-renders everything
+    return;
   }
 }
 
@@ -94,38 +131,6 @@ function handleRoutinesClick(e) {
     const type = startDetailsBtn.dataset.type;
     const id = startDetailsBtn.dataset.id;
     handleStartRoutines(type, id);
-    return;
-  }
-  
-  // Edit routine button
-  const editBtn = e.target.closest('[data-edit-routine]');
-  if (editBtn) {
-    e.preventDefault();
-    const type = editBtn.dataset.type;
-    const id = editBtn.dataset.id;
-    handleEditRoutines(type, id);
-    return;
-  }
-  
-  // Copy routine button
-  const copyBtn = e.target.closest('[data-copy-routine]');
-  if (copyBtn) {
-    e.preventDefault();
-    const type = copyBtn.dataset.type;
-    const id = copyBtn.dataset.id;
-    handleCopyRoutines(type, id);
-    return;
-  }
-  
-  // Delete routine button
-  const deleteBtn = e.target.closest('[data-delete-routine]');
-  if (deleteBtn) {
-    e.preventDefault();
-    const type = deleteBtn.dataset.type;
-    const id = deleteBtn.dataset.id;
-    handleDeleteRoutines(type, id).catch(err => {
-      console.error('Delete routine error:', err);
-    });
     return;
   }
 }
@@ -384,6 +389,14 @@ function handleFormSubmit(e) {
     handleCommentSubmit(e.target);
     return;
   }
+  
+  // Onboarding form - handled inline in onboarding-view.js, don't intercept
+  const onboardingForm = e.target.closest('#onboarding-form');
+  if (onboardingForm) {
+    // Let the inline handler in onboarding-view.js handle this
+    // Don't prevent default here
+    return;
+  }
 }
 
 /**
@@ -581,15 +594,15 @@ function handleBodyMetricsSubmit(form) {
     return;
   }
   
-  // Validate body fat if provided
+  // Validate body fat if provided using constants
   if (bodyFatInput.value && bodyFatInput.value.trim() !== '') {
     const bodyFatValidation = window.ValidationService.validateNumber(bodyFatInput.value);
     if (!bodyFatValidation.valid) {
       show(bodyFatValidation.error, 'error');
       return;
     }
-    if (bodyFat < 0 || bodyFat > 100) {
-      show('Body fat percentage must be between 0 and 100', 'error');
+    if (bodyFat < window.calisthenics.constants.BODY_FAT_MIN || bodyFat > window.calisthenics.constants.BODY_FAT_MAX) {
+      show(`Body fat percentage must be between ${window.calisthenics.constants.BODY_FAT_MIN} and ${window.calisthenics.constants.BODY_FAT_MAX}`, 'error');
       return;
     }
   }
@@ -624,11 +637,15 @@ async function handleCommentSubmit(form) {
   const text = textInput.value.trim();
   
   if (!name || !text) {
-    show('Please enter both a name and comment.', 'error');
+    show(t('shared_workout.enter_name_comment'), 'error');
     return;
   }
   
   const workoutId = form.dataset.workoutId;
+  if (!workoutId) {
+    console.error('Workout ID not found on comment form');
+    return;
+  }
   
   // Load existing comments from IndexedDB
   let comments;
@@ -640,8 +657,8 @@ async function handleCommentSubmit(form) {
   }
   
   comments.push({
-    name,
-    text,
+    name: escapeHtml(name),
+    text: escapeHtml(text),
     date: new Date().toISOString()
   });
   
@@ -650,7 +667,7 @@ async function handleCommentSubmit(form) {
     await storeSharedComments(workoutId, comments);
   } catch (error) {
     console.error('Error saving comments to IndexedDB:', error);
-    show('Failed to save comment.', 'error');
+    show(t('shared_workout.comment_save_error') || 'Failed to save comment.', 'error');
     return;
   }
   
@@ -658,37 +675,10 @@ async function handleCommentSubmit(form) {
   nameInput.value = '';
   textInput.value = '';
   
-  if (window.renderSharedWorkoutView) {
-    window.renderSharedWorkoutView(workoutId);
+  // Trigger re-render by dispatching state change
+  if (window.calisthenics && window.calisthenics.renderSharedWorkoutView) {
+    window.calisthenics.renderSharedWorkoutView(workoutId);
   }
-}
-
-/**
- * Show a confirmation modal (replaces intrusive browser confirm())
- * @param {string} message - Confirmation message
- * @returns {Promise<boolean>} Resolves true if confirmed, false if cancelled
- */
-
-// Re-exported from confirmation-modal.js — do not modify here
-
-/**
- * Handle create routine action from home view
- */
-function handleCreateRoutine() {
-  const state = window.getState();
-  const user = { ...(state.user || {}) };
-  
-  // Initialize customRoutines if not exists
-  user.customRoutines = user.customRoutines || [];
-  
-  window.updateState({
-    user,
-    createNewRoutines: true,
-    editingRoutines: null,
-    editingModule: null
-  });
-  
-  window.location.hash = '#builder';
 }
 
 /**
@@ -696,31 +686,6 @@ function handleCreateRoutine() {
  */
 export function setCurrentEditingModule(module) {
   window.currentEditingModule = module;
-}
-
-/**
- * Expose handleToggleFavorite globally for exercises view
- */
-export function exposeToggleFavorite() {
-  // Find the handleToggleFavorite function and expose it
-  // This is a workaround since we can't directly reference it from outside the module
-  window.handleToggleFavorite = function(exerciseId) {
-    const state = window.getState();
-    const user = state.user || {};
-    let favoriteExerciseIds = user.favoriteExerciseIds || [];
-    
-    // Normalize exerciseId to string for consistent comparison
-    const normalizedId = String(exerciseId);
-    
-    // Toggle the exercise in favorites using String comparison
-    if (favoriteExerciseIds.some(id => String(id) === normalizedId)) {
-      favoriteExerciseIds = favoriteExerciseIds.filter(id => String(id) !== normalizedId);
-    } else {
-      favoriteExerciseIds.push(normalizedId);
-    }
-    
-    window.updateState({ user: { ...user, favoriteExerciseIds } });
-  };
 }
 
 /**
@@ -732,4 +697,15 @@ export function cleanupEventDelegation() {
   });
   handlers = [];
   mainElementRef = null;
+}
+
+/**
+ * Initialize toggle favorite functionality
+ * This is a no-op now since favorite toggling is handled by the main event delegation
+ * but kept for backward compatibility
+ */
+export function exposeToggleFavorite() {
+  // Favorite toggling is already handled by initializeEventDelegation
+  // This function is kept for API compatibility
+  console.log('Toggle favorite is enabled via event delegation');
 }

@@ -3,6 +3,8 @@
  * Separated from view to keep business logic organized
  */
 
+import { workoutTimerService } from './workout-timer-service.js';
+
 export class WorkoutWorkflowService {
   /**
    * Get warmup length from routine (cached per call)
@@ -25,7 +27,7 @@ export class WorkoutWorkflowService {
 
     // Determine workout phases
     const warmupLength = this._getWarmupLength(routine);
-    const mainExercisesLength = routine.exercises.length;
+    const mainExercisesLength = (routine.exercises && routine.exercises.length) ? routine.exercises.length : 0;
     const cooldownLength = (routine.cooldown && routine.cooldown.length) ? routine.cooldown.length : 0;
     const totalExercises = warmupLength + mainExercisesLength + cooldownLength;
 
@@ -71,7 +73,7 @@ export class WorkoutWorkflowService {
    */
   getCurrentPhase(exerciseIndex, routine) {
     const warmupLength = this._getWarmupLength(routine);
-    const mainExercisesLength = routine.exercises.length;
+    const mainExercisesLength = (routine.exercises && routine.exercises.length) ? routine.exercises.length : 0;
 
     if (exerciseIndex < warmupLength) {
       return 'warmup';
@@ -90,7 +92,7 @@ export class WorkoutWorkflowService {
    */
   getPhaseInfo(globalExerciseIndex, routine) {
     const warmupLength = this._getWarmupLength(routine);
-    const mainExercisesLength = routine.exercises.length;
+    const mainExercisesLength = (routine.exercises && routine.exercises.length) ? routine.exercises.length : 0;
 
     if (globalExerciseIndex < warmupLength) {
       return { phase: 'warmup', localIndex: globalExerciseIndex };
@@ -152,7 +154,7 @@ export class WorkoutWorkflowService {
     } else if (phase === 'cooldown') {
       totalInPhase = (routine.cooldown && routine.cooldown.length) ? routine.cooldown.length : 0;
     } else {
-      totalInPhase = routine.exercises.length;
+      totalInPhase = (routine.exercises && routine.exercises.length) ? routine.exercises.length : 0;
     }
 
     return localIndex >= totalInPhase - 1;

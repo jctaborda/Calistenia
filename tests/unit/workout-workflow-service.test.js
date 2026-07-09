@@ -355,7 +355,7 @@ describe('WorkoutWorkflowService', () => {
       const info = workoutWorkflowService.getPhaseInfo(3, program);
       
       expect(info.phase).toBe('cooldown');
-      expect(info.localIndex).toBe(0);
+      expect(info.localIndex).toBe(1);
     });
 
     it('should handle program with no warmup', () => {

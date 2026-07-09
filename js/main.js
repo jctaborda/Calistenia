@@ -8,11 +8,11 @@ import { renderWorkoutSummaryView } from './views/workout-summary-view.js';
 import { renderWorkoutCompletionView } from './views/workout-completion-view.js';
 import { renderOnboardingView } from './views/onboarding-view.js';
 import { renderProfileView } from './views/profile-view.js';
+import { renderSettingsView } from './views/settings-view.js';
 import { renderBuilderView } from './views/builder-view.js';
 import { renderExercisesView } from './views/exercises-view.js';
 import { renderRoutineDetailsView } from './views/routine-details-view.js';
 import { fetchExercises, fetchRoutines, fetchCategories, fetchEquipment, fetchMuscles, fetchDifficulties, fetchSkillModules } from './services/api.js';
-import { getExerciseProgressData } from './utils/workout-summary.js';
 import { renderSkillModulesView } from './views/skill-modules-view.js';
 import { renderSkillModuleDetailView } from './views/skill-module-detail-view.js';
 import { renderSharedWorkoutView } from './views/shared-workout-view.js';
@@ -20,6 +20,7 @@ import { renderErrorView as renderErrorViewModule } from './views/error-view.js'
 import { showConfirmation } from './services/confirmation-modal.js';
 import { renderSpinner, hideSpinner } from './components/spinner.js';
 import { renderSkillsTreeView } from './views/skills-tree-view.js';
+import { renderProgressView } from './views/progress-view.js';
 import { renderHeader } from './components/header.js';
 import { initializeDataCache, isCacheStale, syncDataCache } from './services/data-cache.js';
 import { renderExportImportView } from './views/export-import-view.js';
@@ -30,15 +31,16 @@ import { renderModuleAdminView } from './views/module-admin-view.js';
 import { initializeEventDelegation, exposeToggleFavorite } from './services/event-delegation.js';
 import { setLogLevel } from './services/logger.js';
 import { ValidationService } from './services/validation.js';
-import { VIEW_INIT_DELAY_MS, ERROR_BOUNDARY_MAX_RETRIES } from './constants.js';
-
-console.log('[main.js] Module loaded');
+import { VIEW_INIT_DELAY_MS } from './constants.js';
+import { installPromptService } from './services/install-prompt-service.js';
+import { t } from './i18n.js';
+import './components/install-banner.js';
+import { registerGlobalErrorHandlers } from './services/error-boundary-service.js';
 
 // Configure production logging
-setLogLevel('DEBUG');
+setLogLevel('WARN');
 
 initializeState();
-console.log('[main.js] State initialized');
 
 // ==================== Root-Level Error Boundary ====================
 // Top-level catch-all for any unhandled errors before/during routing
@@ -56,34 +58,31 @@ function installRootErrorHandler() {
     }
   }
 
-  // Catch unhandled promise rejections
+  // Catch unhandled promise rejections - let error-boundary-service handle specific cases
   window.addEventListener('unhandledrejection', (event) => {
-    event.preventDefault();
-    showRootError('An unexpected error occurred. Please refresh the page.');
+    console.warn('Unhandled promise rejection:', event.reason);
   });
-
-  // Catch uncaught synchronous errors
+  
+  // Catch uncaught synchronous errors - let error-boundary-service handle specific cases
   window.addEventListener('error', (event) => {
-    event.preventDefault();
-    showRootError('An unexpected error occurred. Please refresh the page.');
+    console.warn('Uncaught error:', event.error);
   });
 }
 
 installRootErrorHandler();
 
+// Register global error handlers for comprehensive error tracking
+registerGlobalErrorHandlers();
+
 // Wait for complete cache initialization AND sync before starting router
 async function initializeApp() {
-  console.log('[main.js] initializeApp started');
   try {
     await initializeDataCache();
-    console.log('[main.js] Data cache initialized');
 
     // Check if server data has changed since last sync
     try {
       if (await isCacheStale()) {
-        console.log('[main.js] Cache stale, syncing...');
         await syncDataCache();
-        console.log('[main.js] Cache synced');
       }
     } catch (err) {
       console.warn('Cache sync check failed:', err);
@@ -93,9 +92,7 @@ async function initializeApp() {
   }
 
   // Now that cache is fully initialized and synced, start the router
-  console.log('[main.js] Starting router...');
   router();
-  console.log('[main.js] Router called');
 
   // Initialize event delegation after router is set up
   setTimeout(() => {
@@ -105,6 +102,18 @@ async function initializeApp() {
       exposeToggleFavorite();
     }
   }, VIEW_INIT_DELAY_MS);
+
+  // Initialize PWA install prompt service
+  installPromptService.init();
+
+  // Handle messages from Service Worker (push notifications, background sync)
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.addEventListener('message', (event) => {
+      if (event.data?.type === 'NAVIGATE') {
+        window.location.hash = event.data.hash;
+      }
+    });
+  }
 
   // Mark that initialization is complete to prevent double calls
   window.appInitialized = true;
@@ -302,6 +311,8 @@ const renderRoutes = {
   '#workout-completion': { view: 'workout-completion-view.js', fn: 'renderWorkoutCompletionView', args: [], awaitRender: true },
   '#summary':    { view: 'workout-summary-view.js', fn: 'renderWorkoutSummaryView', args: [], awaitRender: true },
   '#profile':    { view: 'profile-view.js',    fn: 'renderProfileView',    args: [], awaitRender: true },
+  '#settings':   { view: 'settings-view.js',   fn: 'renderSettingsView',   args: [], awaitRender: true },
+  '#progress':   { view: 'progress-view.js',   fn: 'renderProgressView',   args: [], awaitRender: true },
   '#export-import': { view: 'export-import-view.js', fn: 'renderExportImportView', args: [], awaitRender: true },
   '#builder':    { view: 'builder-view.js',    fn: 'renderBuilderView',    args: [], awaitRender: true },
   '#skill-modules': { view: 'skill-modules-view.js', fn: 'renderSkillModulesView', args: [], awaitRender: true },
@@ -359,13 +370,42 @@ function resolveRoute(hash) {
 }
 
 async function router() {
-  console.log('[main.js] router() called, hash:', window.location.hash);
-  const needsInitialLoad = !getState().exercises || getState().exercises.length === 0 ||
-                           !getState().routines || getState().routines.length === 0;
-
-  // If data is not loaded, show spinner and load it
+  // Cleanup any existing view listeners before rendering new view (prevents memory leaks)
+  const main = document.getElementById('app');
+  if (main) {
+    // Call cleanup function if exists (set by previous view)
+    if (main._currentViewCleanup && typeof main._currentViewCleanup === 'function') {
+      main._currentViewCleanup();
+      delete main._currentViewCleanup;
+    }
+  }
+  
+  // Get fresh state
+  const state = getState();
+  const hash = window.location.hash;
+  
+  // Handle unauthenticated users FIRST - before loading data
+  if (!state.user && hash !== '#onboarding' && !hash.startsWith('#shared-workout/')) {
+    // Show onboarding view directly without loading all data
+    const main = document.getElementById('app');
+    if (main) {
+      const viewModule = await import('./views/onboarding-view.js');
+      const wrapped = ErrorBoundaryService.wrapView(viewModule, 'onboarding-view.js');
+      if (wrapped.render) {
+        await wrapped.render();
+      }
+    }
+    return;
+  }
+  
+  // Load data if needed (only if not onboarding)
+  const needsInitialLoad = !state.exercises || state.exercises.length === 0 ||
+                           !state.routines || state.routines.length === 0;
+  
   if (needsInitialLoad) {
-    document.getElementById('app').innerHTML = renderSpinner();
+    const main = document.getElementById('app');
+    if (!main) return;
+    main.innerHTML = renderSpinner();
 
     await Promise.all([
       ensureExercisesLoaded(),
@@ -378,16 +418,6 @@ async function router() {
     ]);
 
     hideSpinner();
-  }
-
-  // Get fresh state after loading completes
-  const state = getState();
-  const hash = window.location.hash;
-
-  // Handle unauthenticated users
-  if (!state.user && hash !== '#onboarding' && !hash.startsWith('#shared-workout/')) {
-    window.location.hash = '#onboarding';
-    return;
   }
 
   try {
@@ -458,55 +488,119 @@ window.addEventListener('hashchange', router);
 
 // Listen for locale changes and re-render the current view + header
 document.addEventListener('localeChange', async () => {
+  const currentHash = window.location.hash || '#home';
+    
+  // Clear current view content first
+  const main = document.getElementById('app');
+  if (main) {
+    main.innerHTML = '';
+  }
+    
+  // Update header
   const header = document.getElementById('app-header');
   if (header) {
     header.outerHTML = renderHeader();
   }
-
-  // 1. Clear IndexedDB data cache and reload from new locale file
+    
+  // Single consolidated cache reload with loading state
   try {
     const dataCache = await import('./services/data-cache.js');
     await dataCache.reloadCacheForLocale();
-  } catch (err) {
-    console.warn('Could not reload data cache on locale change:', err);
-  }
-
-  // 2. Clear JS in-memory caches
-  try {
-    const apiModule = await import('./services/api.js');
-    apiModule.clearAllCaches();
-  } catch (err) {
-    console.warn('Could not clear API cache:', err);
-  }
-
-  try {
-    const storageModule = await import('./services/storage.js');
-    storageModule.clearExercisesCache();
-  } catch (err) {
-    console.warn('Could not clear storage cache:', err);
-  }
-
-  // 3. Load all data fresh from IndexedDB (already repopulated by reloadCacheForLocale)
-  try {
+      
+    // Reload all data from IndexedDB
     const { fetchExercises, fetchRoutines, fetchCategories, fetchEquipment, fetchMuscles, fetchDifficulties } = await import('./services/api.js');
+    const { fetchSkillModules } = await import('./services/api.js');
     updateState({
       exercises: await fetchExercises(),
       routines: await fetchRoutines(),
       categories: await fetchCategories(),
       equipment: await fetchEquipment(),
       muscles: await fetchMuscles(),
-      difficulties: await fetchDifficulties()
+      difficulties: await fetchDifficulties(),
+      modules: await fetchSkillModules()
     });
+      
+    // Re-render current view with new locale
+    window.location.hash = ''; // Clear hash to force router to use currentHash
+    await new Promise(resolve => setTimeout(resolve, 10)); // Allow DOM update
+    window.location.hash = currentHash;
   } catch (err) {
     console.warn('Could not reload data on locale change:', err);
+    // Fallback: just re-render current view
+    router();
   }
-
-  // 4. Re-render current view
-  router();
 });
 
 // Initialize undo service after main app is ready
 initUndoService();
+
+// ==================== Background Data Sync Check ====================
+// Periodically check for data updates when online
+async function checkForDataUpdates() {
+  // Only check if we're online
+  if (!navigator.onLine) {
+    return;
+  }
+  
+  try {
+    const db = await import('./services/database.js');
+    const { getDataFilename } = await import('./services/data-cache.js');
+    
+    const filename = getDataFilename();
+    
+    // Fetch data version from network
+    const response = await fetch(filename + '?t=' + Date.now());
+    if (!response.ok) {
+      return;
+    }
+    
+    const newData = await response.json();
+    const currentVersion = await db.loadDataVersion();
+    
+    // Compare versions
+    if (newData.dataVersion && currentVersion !== newData.dataVersion) {
+      const { show } = await import('./services/toast-service.js');
+      show('Updating exercise data...', 'info');
+      
+      // Sync the cache
+      const { syncDataCache } = await import('./services/data-cache.js');
+      await syncDataCache();
+      
+      // Re-render current view to reflect updates
+      router();
+      
+      show('Data updated successfully!', 'success');
+    }
+  } catch (error) {
+    console.warn('[DataSync] Error checking for updates:', error);
+  }
+}
+
+// Check for updates periodically (every 5 minutes when online)
+let lastCheckTime = 0;
+const CHECK_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes
+
+function scheduleDataSyncCheck() {
+  // Check on page load if we've been away
+  const timeSinceLastCheck = Date.now() - lastCheckTime;
+  if (timeSinceLastCheck > CHECK_INTERVAL_MS || lastCheckTime === 0) {
+    checkForDataUpdates();
+  }
+  
+  // Schedule next check
+  setTimeout(() => {
+    lastCheckTime = Date.now();
+    scheduleDataSyncCheck();
+  }, CHECK_INTERVAL_MS);
+}
+
+// Listen for online/offline events
+window.addEventListener('online', () => {
+  checkForDataUpdates();
+});
+
+// Start background sync check after a delay
+setTimeout(scheduleDataSyncCheck, 30000); // First check after 30 seconds
 
 // ==================== Public API: window.calisthenics ====================
 // All public APIs are exposed through this namespace instead of polluting window directly
@@ -562,7 +656,7 @@ if ('serviceWorker' in navigator) {
           newWorker.addEventListener('statechange', () => {
             if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
               // New service worker is available
-              showConfirmation('A new version of the app is available. Would you like to update?').then(confirmed => {
+              showConfirmation(t('sw_update.message')).then(confirmed => {
                 if (confirmed) {
                   newWorker.postMessage({ type: 'SKIP_WAITING' });
                   window.location.reload();
@@ -574,12 +668,24 @@ if ('serviceWorker' in navigator) {
       });
 
       // Handle service worker controller change
+      let reloading = false;
       navigator.serviceWorker.addEventListener('controllerchange', () => {
-        window.location.reload();
+        if (!reloading) {
+          reloading = true;
+          window.location.reload();
+        }
       });
 
     }).catch(err => {
       console.error('Service Worker registration failed:', err);
     });
+  });
+
+  // Handle messages from Service Worker (push notifications, background sync)
+  navigator.serviceWorker.addEventListener('message', (event) => {
+    if (event.data?.type === 'NAVIGATE') {
+      window.location.hash = event.data.hash;
+    }
+    // Add handlers for other SW message types as needed
   });
 }

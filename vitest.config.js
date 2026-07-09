@@ -19,7 +19,7 @@ export default {
         '**/*.html'
       ]
     },
-    testTimeout: 10000,
+    testTimeout: 5000,
     restoreMocks: true
   }
 };

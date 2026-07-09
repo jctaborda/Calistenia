@@ -34,7 +34,6 @@ export async function renderExerciseForm(editId) {
   const isEditing = !!actualEditId;
   
   app.innerHTML = renderHeader() + `
-    <link href="./css/style.css" rel="stylesheet">
     <div class="card">
       ${getFormHTML(isEditing, actualEditId)}
     </div>`;
@@ -54,7 +53,7 @@ function getFormHTML(isEditing, editId) {
   
   return `
     <div class="exercise-form-container">
-      <div id="message" class="message"></div>
+      <div id="message" class="message" role="alert" aria-live="polite" aria-atomic="true"></div>
 
       <h2>${title}</h2>
 

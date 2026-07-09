@@ -1,10 +1,86 @@
 /**
  * ErrorBoundaryService - Provides error handling and recovery mechanisms for the application
  * Implements error boundaries with retry functionality to prevent app crashes
+ * Includes global error handlers for error, unhandledrejection, and IndexedDB errors
  */
 
 import { renderHeader } from '../components/header.js';
 import { ERROR_BOUNDARY_MAX_RETRIES } from '../constants.js';
+
+// Global error handler registration (call once on app init)
+let globalHandlersRegistered = false;
+
+/**
+ * Register global error handlers for the application
+ * Should be called once during app initialization
+ */
+export function registerGlobalErrorHandlers() {
+  if (globalHandlersRegistered) {
+    console.warn('[ErrorBoundary] Global handlers already registered');
+    return;
+  }
+  
+  // Handle uncaught JS errors (script errors, DOM errors)
+  window.addEventListener('error', (event) => {
+    const errorInfo = {
+      type: 'error',
+      message: event.message || 'Unknown error',
+      filename: event.filename || window.location.href,
+      lineno: event.lineno,
+      colno: event.colno,
+      error: event.error,
+      timestamp: new Date().toISOString()
+    };
+    
+    console.error('[Global Error Handler]', errorInfo);
+    ErrorBoundaryService.logAndReport(errorInfo);
+  });
+  
+  // Handle unhandled promise rejections
+  window.addEventListener('unhandledrejection', (event) => {
+    const errorInfo = {
+      type: 'unhandledrejection',
+      message: event.reason?.message || String(event.reason),
+      reason: event.reason,
+      timestamp: new Date().toISOString()
+    };
+    
+    // Prevent default only for known error types to avoid hiding real issues
+    if (errorInfo.message.includes('Failed to fetch') || 
+        errorInfo.message.includes('quota')) {
+      event.preventDefault();
+    }
+    
+    console.error('[Global Rejection Handler]', errorInfo);
+    ErrorBoundaryService.logAndReport(errorInfo);
+  });
+  
+  // Handle IndexedDB errors (wrapped in try/catch in database.js)
+  // IndexedDB errors are already handled at transaction level in database.js
+  // This handler catches any uncaught IndexedDB exceptions
+  const originalOpenDB = indexedDB.open.bind(indexedDB);
+  indexedDB.open = function(name, version) {
+    try {
+      return originalOpenDB(name, version);
+    } catch (error) {
+      const errorInfo = {
+        type: 'indexeddb',
+        message: 'IndexedDB operation failed',
+        operation: 'open',
+        database: name,
+        version: version,
+        error: error,
+        timestamp: new Date().toISOString()
+      };
+      console.error('[Global IndexedDB Handler]', errorInfo);
+      ErrorBoundaryService.logAndReport(errorInfo);
+      throw error;
+    }
+  };
+  
+  globalHandlersRegistered = true;
+  console.log('[ErrorBoundary] Global error handlers registered');
+}
 
 export class ErrorBoundaryService {
   // Store for tracking retry attempts per view
@@ -146,6 +222,53 @@ export class ErrorBoundaryService {
   }
 
   /**
+   * Log and report error information
+   * @param {Object} errorInfo - Error information object
+   */
+  static logAndReport(errorInfo) {
+    // Log to console with timestamp
+    console.error(`[ErrorReport] ${errorInfo.type.toUpperCase()}: ${errorInfo.message}`, errorInfo);
+    
+    // In production, this could send to error tracking service (Sentry, etc.)
+    // For now, we just log to console
+    if (typeof window !== 'undefined' && window.__ERROR_TRACKING__) {
+      try {
+        window.__ERROR_TRACKING__.captureException(errorInfo);
+      } catch (e) {
+        console.error('Failed to report error to tracking service:', e);
+      }
+    }
+  }
+
+  /**
+   * Wrap async operations with try/catch and error reporting
+   * @param {Function} asyncFn - Async function to wrap
+   * @param {string} context - Context for error reporting
+   * @returns {Function} - Wrapped async function
+   */
+  static wrapAsync(asyncFn, context = 'Async Operation') {
+    return async (...args) => {
+      try {
+        return await asyncFn(...args);
+      } catch (error) {
+        const errorInfo = {
+          type: 'async-operation',
+          message: error.message || 'Unknown error',
+          context: context,
+          stack: error.stack,
+          timestamp: new Date().toISOString()
+        };
+        
+        console.error(`[Async Error] ${context}:`, error);
+        this.logAndReport(errorInfo);
+        
+        // Re-throw to allow caller to handle
+        throw error;
+      }
+    };
+  }
+
+  /**
    * Wrap a view rendering function with error boundaries
    * @param {string} viewName - Name of the view for error context
    * @returns {Object} - Object with wrapped render and init functions
@@ -177,24 +300,4 @@ export class ErrorBoundaryService {
   static resetRetry(context) {
     this.retryAttempts.set(context, 0);
   }
-
-  /**
-   * Global error handler to catch unhandled exceptions
-   */
-  static installGlobalHandlers() {
-    // Handle uncaught promise rejections
-    window.addEventListener('unhandledrejection', (event) => {
-      console.error('Unhandled Promise Rejection:', event.reason);
-      // Don't show UI for all rejections - only log them
-    });
-
-    // Handle uncaught errors
-    window.addEventListener('error', (event) => {
-      console.error('Uncaught Error:', event.error);
-      // Don't show UI for all errors to avoid disrupting user experience
-    });
-  }
 }
-
-// Install global handlers immediately
-ErrorBoundaryService.installGlobalHandlers();

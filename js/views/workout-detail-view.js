@@ -12,7 +12,7 @@ export function renderWorkoutDetailView(workoutIndex) {
   const workout = history[workoutIndex];
 
   if (!workout) {
-    main.innerHTML = renderHeader() + '<div class="card"><p>Workout not found.</p></div>';
+    main.innerHTML = renderHeader() + '<div class="card"><p>' + t('workout_detail.not_found') + '</p></div>';
     return;
   }
 
@@ -74,6 +74,7 @@ export function renderWorkoutDetailView(workoutIndex) {
                   <tr>
                     <th>Set</th>
                     <th>Reps</th>
+                    ${workout.exercises[exIndex]?.actualRepsWithWeight ? '<th>Weight (kg)</th>' : ''}
                     <th>Set Time</th>
                     <th>Rest Time</th>
                   </tr>
@@ -83,6 +84,7 @@ export function renderWorkoutDetailView(workoutIndex) {
                     const setDetail = stats.setDetails[exIndex]?.[setIndex];
                     const setTime = setDetail?.setTime ?? 0;
                     const restTime = setDetail?.restTime ?? 0;
+                    const weight = exercise.actualRepsWithWeight?.[setIndex]?.weight || 0;
                     
                     // Don't show rest time for the last set
                     const isLastSet = (exercise.actualReps || []).length - 1 === setIndex;
@@ -92,6 +94,7 @@ export function renderWorkoutDetailView(workoutIndex) {
                     <tr>
                       <td>${setIndex + 1}</td>
                       <td><strong>${reps}</strong></td>
+                      ${weight > 0 ? `<td><strong>${weight}</strong> kg</td>` : '<td>-</td>'}
                       <td>${setTime > 0 ? formatDuration(setTime) : '-'}</td>
                       <td>${displayRestTime > 0 ? formatDuration(displayRestTime) : (isLastSet ? '-' : '-')}</td>
                     </tr>

@@ -1,13 +1,12 @@
 // views/builder-view.js - Routine builder (no more custom routines)
 import { renderHeader } from '../components/header.js';
+import { renderSpinner, hideSpinner } from '../components/spinner.js';
 import { t } from '../i18n.js';
 import { getState, updateState } from '../services/state.js';
-import { fetchSkillModules } from '../services/api.js';
 import { ModuleStore } from '../services/modules-service.js';
-import { saveForUndo } from '../services/undo-service.js';
-import { storeRoutines, routinesLoad } from '../services/database.js';
-import { loadAllRoutines } from '../services/data-cache.js';
 import { show } from '../services/toast-service.js';
+import { escapeHtml } from '../utils/html.js';
+import { openDatabase, STORES } from '../services/database.js';
 
 export async function renderBuilderView() {
   const main = document.getElementById('app');
@@ -80,7 +79,7 @@ export async function renderBuilderView() {
         </div>
         
         ${createNewRoutine || isEditingRoutine ? `
-        <div class="card margin-bottom-1" class="mt-2rem">
+        <div class="card margin-bottom-1 mt-2rem">
           <h3>${t('builder.routine_details')}</h3>
           
           <div class="form-group">
@@ -111,7 +110,8 @@ export async function renderBuilderView() {
             <label for="routine-difficulty">${t('builder.difficulty')}</label>
             <select id="routine-difficulty" name="difficulty" class="input-accent">
               <option value="">${t('builder.select_difficulty')}</option>
-              ${difficulties.map(diff => `\n                <option value="${diff.label}" ${isEditingRoutine && String(editingRoutine.routine?.difficulty).toLowerCase() === String(diff.label).toLowerCase() ? 'selected' : ''}>
+              ${difficulties.map(diff => `
+                <option value="${diff.label}" ${isEditingRoutine && String(editingRoutine.routine?.difficulty).toLowerCase() === String(diff.label).toLowerCase() ? 'selected' : ''}>
                   ${diff.label}
                 </option>
               `).join('')}
@@ -133,7 +133,7 @@ export async function renderBuilderView() {
           </div>
         </div>
         ` : `
-        <div class="card margin-bottom-1" class="mt-2rem">
+        <div class="card margin-bottom-1 mt-2rem">
           <h3>${t('builder.module_details')}</h3>
           
           <div class="form-group">
@@ -353,12 +353,6 @@ export async function renderBuilderView() {
     });
   }
 
-  function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-  }
-
   const filterInput = main.querySelector('#available-exercise-filter');
   if (filterInput) {
     filterInput.addEventListener('input', (e) => {
@@ -453,9 +447,18 @@ export async function renderBuilderView() {
         };
       }
 
-      // For modules - save to IndexedDB via ModuleStore
-      if (!isEditingRoutine && !createNewRoutine) {
-        try {
+      // Show loading state on submit button
+      const submitBtn = main.querySelector('.form-submit-btn');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = t('common.loading');
+        document.body.insertAdjacentHTML('beforeend', renderSpinner());
+      }
+
+      try {
+        // For modules - save to IndexedDB via ModuleStore
+        if (!isEditingRoutine && !createNewRoutine) {
           const moduleDescription = main.querySelector('#routine-description')?.value.trim() || '';
           const moduleCategory = main.querySelector('#routine-category')?.value;
           const moduleDifficulty = main.querySelector('#routine-difficulty')?.value;
@@ -498,18 +501,11 @@ export async function renderBuilderView() {
             show(t('builder.module_created'), 'success');
             window.location.hash = '#skill-modules';
           }
-        } catch (error) {
-          console.error('Error saving module:', error);
-          show(t('builder.save_error') + error.message, 'error');
-        }
-      } else if (createNewRoutine) {
-        // Create new routine - load existing, add new, save all
-        try {
-          // Load existing routines from IndexedDB
-          const existingRoutines = await routinesLoad();
-          
-          const newRoutine = {
-            id: existingRoutines.length + 1,
+        } else if (createNewRoutine || isEditingRoutine) {
+          // Save routine to IndexedDB
+          const routineId = isEditingRoutine ? parseInt(editingId, 10) : Date.now();
+          const routineData = {
+            id: routineId,
             name,
             ...routineDetails,
             exercises: selectedExercises.map(ex => ({
@@ -519,60 +515,41 @@ export async function renderBuilderView() {
               restTime: ex.restTime
             }))
           };
+
+          const database = await openDatabase();
+          const transaction = database.transaction([STORES.ROUTINES], 'readwrite');
+          const store = transaction.objectStore(STORES.ROUTINES);
           
-          // Get all routines from IndexedDB and add new one
-          const allRoutines = [...existingRoutines, newRoutine];
+          const putRequest = store.put(routineData);
           
-          // Save to IndexedDB using storeRoutines
-          await storeRoutines(allRoutines);
+          await new Promise((resolve, reject) => {
+            putRequest.onsuccess = () => resolve();
+            putRequest.onerror = () => reject(putRequest.error);
+          });
           
-          // Update state to reflect the new routines
-          updateState({ routines: allRoutines });
+          // Refresh routines from IndexedDB and update state
+          const { fetchRoutines } = await import('../services/api.js');
+          const refreshedRoutines = await fetchRoutines();
+          updateState({ 
+            routines: refreshedRoutines,
+            editingRoutine: null
+          });
           
-          show(t('builder.routine_created'), 'success');
-          window.location.hash = '#routines';
-        } catch (error) {
-          console.error('Error creating routine:', error);
-          console.error('Error details:', error.message);
-          show(t('builder.routine_error') + error.message, 'error');
-        }
-      } else {
-        // Update existing routine - load, modify, save all
-        try {
-          // Load routines from cache (IndexedDB with in-memory fallback)
-          const allRoutines = await loadAllRoutines();
-          
-          const routineIndex = allRoutines.findIndex(p => String(p.id) === String(editingId));
-          if (routineIndex === -1) {
-            show(t('builder.routine_not_found'), 'error');
-            return;
+          if (isEditingRoutine) {
+            show(t('builder.routine_updated'), 'success');
+          } else {
+            show(t('builder.routine_created'), 'success');
           }
           
-          const updatedRoutine = {
-            id: editingId,
-            name,
-            ...routineDetails,
-            exercises: selectedExercises.map(ex => ({
-              exerciseId: ex.exerciseId,
-              sets: ex.sets,
-              reps: ex.reps,
-              restTime: ex.restTime
-            }))
-          };
-          
-          allRoutines[routineIndex] = updatedRoutine;
-          
-          // Save to IndexedDB using storeRoutines
-          await storeRoutines(allRoutines);
-          
-          // Update state to reflect the changes
-          updateState({ routines: allRoutines });
-          
-          show('Routine updated successfully!', 'success');
-          window.location.hash = '#routine-details/' + editingId;
-        } catch (error) {
-          console.error('Error updating routine:', error);
-          show(t('builder.routine_update_error') + error.message, 'error');
+          window.location.hash = '#routines';
+        }
+      } catch (error) {
+        console.error('Error saving:', error);
+        show(t('builder.save_error') + error.message, 'error');
+      } finally {
+        hideSpinner();
+        if (submitBtn) {
+          submitBtn.disabled = false;
         }
       }
     });

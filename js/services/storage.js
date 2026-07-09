@@ -14,16 +14,10 @@ import {
 } from './database.js';
 import { getLocale } from '../i18n.js';
 import { loadFromCacheOrFetch } from './cache-utils.js';
+import { getDataFilename } from './data-cache.js';
+import { generateNextId } from '../utils/array.js';
 
 let exercisesCache = null;
-
-/**
- * Get the appropriate data filename based on current locale
- */
-function getDataFilename() {
-  const locale = getLocale();
-  return locale === 'es' ? './data/data-es.json' : './data/data.json';
-}
 
 export async function loadExercises() {
   // Try IndexedDB first (migrated from localStorage)
@@ -91,10 +85,8 @@ export const ExerciseStore = {
   async add(exercise) {
     const exercises = await this.getAll();
     
-    // Generate new ID (max numeric id + 1)
-    const numericIds = exercises.map(e => e.id).filter(id => typeof id === 'number' && !isNaN(id));
-    const maxId = numericIds.length > 0 ? Math.max(...numericIds) : 0;
-    exercise.id = maxId + 1;
+    // Generate new ID using utility function
+    exercise.id = generateNextId(exercises);
     
     exercises.push(exercise);
     await saveExercises(exercises);
@@ -130,7 +122,7 @@ export const ExerciseStore = {
 };
 
 // Generic CRUD store for any data type from locale-specific data.json
-export function createStore(name, filename) {
+export function createStore(name) {
   // For now, just load from locale-specific data.json (read-only for reference data)
   return {
     async getAll() {

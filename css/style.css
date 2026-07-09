@@ -15,13 +15,15 @@
     --gray-800: #343A40;
     --gray-900: #212529;
    
-    
     /* Spacing */
     --spacing-xs: 0.25rem;
     --spacing-sm: 0.5rem;
     --spacing-md: 1rem;
     --spacing-lg: 1.5rem;
     --spacing-xl: 2rem;
+    
+    /* Font sizes */
+    --font-size-base: 1rem;
     
     /* Border radius */
     --radius-sm: 4px;
@@ -46,6 +48,81 @@
     --btn-secondary-hover: #5a6268;
     --btn-link: #007bff;
     --btn-link-hover: #0056b3;
+
+    /* Emoji font stack for Chrome and other browsers */
+    --emoji-font: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", system-ui, sans-serif;
+
+/* ============================================
+   EMOJI FONT SUPPORT - Fix Chrome emoji display
+   ============================================ */
+*, *::before, *::after {
+    font-family: var(--emoji-font);
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.stat-icon-wrapper,
+.action-icon,
+.badge,
+.stat-number,
+.stat-label,
+.routine-stats,
+.workout-details,
+.welcome-section h1 {
+    font-family: inherit;
+}
+
+.achievement-emoji {
+    font-family: var(--emoji-font);
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+:root {
+    text-rendering: optimizeLegibility;
+}
+
+/* ============================================
+   CRITICAL CSS - Must load before JS
+   Used for preventing FOUC and initial render
+   ============================================ */
+/* Base body styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Layout constraints */
+html, body {
+    height: 100%;
+    min-height: 100vh;
+}
+
+/* App container */
+#app {
+    background: #f5f5f5;
+}
+
+/* Card reset for immediate rendering */
+.card {
+    opacity: 1 !important;
+    transition: none !important;
+}
+
+/* Loading state - hide app until CSS is ready */
+body.loading #app {
+    visibility: hidden;
+}
+
+body:not(.loading) #app {
+    visibility: visible;
+}
     --body-bg: #f5f7fa;
     --text-primary: #222;
     --text-light: #b0b0b0;
@@ -80,13 +157,10 @@
     --btn-difficulty-hard: #FF5722;
     --btn-share: #9C27B0;
     --light-hover: #FFC98A;
-    --gradient-orange: #ff9a7b;
-    --gradient-blue: #c3cfe2;
     --drag-bg: #f5f5f5;
     --shadow-blue-1: rgba(25, 118, 210, 0.08);
     --shadow-blue-2: rgba(25, 118, 210, 0.12);
     --shadow-blue-3: rgba(25, 118, 210, 0.07);
-    --shadow-gold: rgba(255, 215, 0, 0.3);
     
     /* Dark mode specific */
     --dark-border: #444;
@@ -98,23 +172,25 @@
     --suggestion-bg: #fff3e0;
 }
 
+/* ===== RESET ===== */
 html {
   box-sizing: border-box;
 }
 *, *:before, *:after {
   box-sizing: inherit;
 }
+
+/* ===== BASE STYLES ===== */
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Color Emoji', sans-serif;
-  display:block;
-  margin: 0;
-  padding: 0;
+  display: block;
   background: var(--body-bg);
   color: var(--text-primary);
   font-size: 16px;
   line-height: 1.6;
 }
 
+/* ===== LAYOUT ===== */
 main {
   padding: 2rem 1rem;
   max-width: 700px;
@@ -194,6 +270,7 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text-primary);
 }
 
+/* ===== COMPONENTS ===== */
 button, .btn {
   background: var(--btn-primary);
   color: var(--white);
@@ -258,22 +335,16 @@ input:focus, select:focus, textarea:focus {
 }
 
 ul {
-  padding-left: 1.2em;
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
 }
+
 li {
   margin-bottom: 0.5em;
   font-size: 1rem;
 } 
 
-/* Utility classes */
-.margin-top-1 {
-  margin-top: 1rem;
-}
-
-.margin-bottom-1 {
-  margin-bottom: 1rem;
-}
-
+/* ===== UTILITIES ===== */
 .margin-y-1 {
   margin: 1rem 0;
 }
@@ -282,7 +353,6 @@ li {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  margin-top: 1rem;
 }
 
 .flex-1 {
@@ -294,162 +364,23 @@ li {
 }
 
 /* Higher specificity for hidden overlays so .hidden wins over .bottom-sheet-overlay { display: flex } */
-body .bottom-sheet-overlay.hidden {
-  display: none !important;
+/* Placed after .bottom-sheet-overlay definition to override without !important */
+.bottom-sheet-overlay.hidden {
+  display: none;
 }
 
 /* Spacing utilities */
-.mt-sm { margin-top: 0.5rem; }
-.mt-md { margin-top: 1rem; }
-.mt-lg { margin-top: 1.5rem; }
-.mt-xl { margin-top: 2rem; }
-.mb-sm { margin-bottom: 0.5rem; }
-.mb-md { margin-bottom: 1rem; }
-.mb-lg { margin-bottom: 1.5rem; }
 .w-100 { width: 100%; }
-.m-0 { margin: 0; }
-
-/* Layout utilities */
-.d-flex { display: flex; }
-.d-block { display: block; }
-.gap-sm { gap: 0.5rem; }
-.gap-md { gap: 1rem; }
-.gap-lg { gap: 2rem; }
-.flex-wrap { flex-wrap: wrap; }
-.justify-between { justify-content: space-between; }
-.align-center { align-items: center; }
-.text-center { text-align: center; }
 
 /* Text utilities */
 .text-muted { color: var(--gray-600); }
-.text-small { font-size: 0.875rem; }
-.text-lg { font-size: 1.25rem; }
-.text-2xl { font-size: 2rem; }
-.text-bold { font-weight: 600; }
 .text-success { color: var(--success); }
-
-/* Visual utilities */
-.opacity-70 { opacity: 0.7; }
-.cursor-pointer { cursor: pointer; }
-.rounded-md { border-radius: 8px; }
-.img-thumb { max-width: 200px; border-radius: 8px; }
-.media-video { max-width: 300px; border-radius: 8px; display: block; }
-#filter-overlay.bottom-sheet-overlay-flex { display: none !important; }
-.border-left-accent { opacity: 0.5; border-left: 4px solid var(--gray-400); }
-
-/* Input utilities */
-.input-full {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid var(--gray-300);
-  border-radius: var(--radius-sm);
-}
-.textarea-full {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid var(--gray-300);
-  border-radius: var(--radius-sm);
-  resize: vertical;
-}
-
-/* Scrollable container */
-.scrollable {
-  max-height: 400px;
-  overflow-y: auto;
-}
 
 /* Form label */
 .form-label {
   display: block;
   font-weight: 600;
   margin-bottom: 0.5rem;
-}
-
-/* Grid layouts */
-.grid-2col {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-/* Empty state */
-.empty-state-text {
-  color: var(--gray-600);
-  text-align: center;
-  padding: 2rem;
-}
-
-/* Header row */
-.header-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* Flex row with margin */
-.flex-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* Flex row with cursor */
-.flex-pointer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-}
-
-/* Inline text muted */
-.inline-muted {
-  font-size: 0.875rem;
-  color: var(--gray-600);
-}
-
-/* Flex with gap and top margin */
-.flex-gap-lg {
-  display: flex;
-  gap: 1rem;
-  margin-top: 2rem;
-}
-
-/* Flex grow */
-.flex-grow {
-  flex: 1;
-}
-
-/* Margin left */
-.ml-md {
-  margin-left: 1rem;
-}
-
-/* Margin top */
-.mt-md {
-  margin-top: 1rem;
-}
-
-/* Scrollable with top margin */
-.scrollable-mt {
-  margin-top: 1rem;
-  max-height: 400px;
-  overflow-y: auto;
-}
-
-/* Builder form inputs with accent border */
-.builder-select {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid var(--accent);
-  border-radius: 4px;
-}
-
-.builder-textarea {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid var(--accent);
-  border-radius: 4px;
-  min-height: 80px;
 }
 
 /* Set duration font size */
@@ -473,48 +404,11 @@ body .bottom-sheet-overlay.hidden {
   margin-top: 4px;
 }
 
-/* Scrollable tall */
-.scrollable-tall {
-  overflow-x: auto;
+/* Scrollable with top margin */
+.scrollable-mt {
+  margin-top: 1rem;
+  max-height: 400px;
   overflow-y: auto;
-  max-height: 70vh;
-}
-
-/* Scrollable short */
-.scrollable-short {
-  position: relative;
-  overflow-x: auto;
-  overflow-y: auto;
-  max-height: 30vh;
-}
-
-/* Legend card bg */
-.bg-gray-100 {
-  background: var(--gray-100);
-}
-
-/* Builder exercise dropzone */
-.dropzone {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid var(--accent);
-  border-radius: 4px;
-  min-height: 80px;
-}
-
-.dropzone-sm {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid var(--accent);
-  border-radius: 4px;
-}
-
-/* Builder scrollable */
-.scrollable-builder {
-  margin-top: 2rem;
-  max-height: 350px;
-  overflow-y: auto;
-  padding-right: 0.5rem;
 }
 
 /* Exercise form grid */
@@ -555,18 +449,38 @@ body .bottom-sheet-overlay.hidden {
   background: linear-gradient(135deg, var(--warning) 0%, var(--warning-dark) 100%);
 }
 
-.btn-link {
-  background: none;
-  border: none;
-  color: var(--primary, var(--btn-link));
-  text-decoration: underline;
-  cursor: pointer;
-  padding: 0;
-  font-size: inherit;
-  font-weight: normal;
-  box-shadow: none;
-  margin: 0;
+/* Recently Deleted section */
+.deleted-section {
+  border: 2px dashed var(--gray-400);
+  margin-top: 2rem;
 }
+
+.deleted-section .section-title {
+  color: var(--gray-700);
+  font-size: 1.1rem;
+}
+
+.deleted-card {
+  opacity: 0.8;
+  border-left: 3px solid var(--gray-400);
+}
+
+.deleted-card .deleted-date {
+  font-size: 0.8rem;
+  color: var(--gray-600);
+  font-style: italic;
+}
+
+.deleted-card .routine-actions {
+  gap: 0.5rem;
+}
+
+.deleted-card .btn {
+  padding: 0.4em 0.8em;
+  font-size: 0.9rem;
+}
+
+
 
 .btn-link:hover {
   background: none;
@@ -589,8 +503,22 @@ body .bottom-sheet-overlay.hidden {
   transform: rotate(2deg);
 }
 
+/* Drag handle - use BEM modifier for hover state */
+.drag-handle {
+  cursor: move;
+  user-select: none;
+  padding: 0.5rem;
+  background: var(--drag-bg);
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.2s;
+}
+
 .drag-handle:hover {
-  background: var(--tag-bg) !important;
+  background: var(--tag-bg);
 }
 
 /* Lists */
@@ -615,6 +543,23 @@ body .bottom-sheet-overlay.hidden {
 .exercise-card:hover, .workout-card:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
+}
+
+/* Difficulty-based left border coloring for exercise cards */
+.exercise-card {
+    border-left: 6px solid transparent;
+}
+
+.exercise-card.difficulty-beginner {
+    border-left-color: #22c55e; /* green */
+}
+
+.exercise-card.difficulty-intermediate {
+    border-left-color: #eab308; /* yellow */
+}
+
+.exercise-card.difficulty-advanced {
+    border-left-color: #ef4444; /* red */
 }
 
 /* Card variants */
@@ -647,15 +592,11 @@ body .bottom-sheet-overlay.hidden {
   cursor: pointer;
   transition: transform 0.3s;
 }
-.exercises-list {
-    display: grid;
-    gap: var(--spacing-lg);
-    margin-bottom: var(--spacing-xl);
-}
 
-.difficulty-beginner {  border-left: 4px solid var(--btn-start);}
-.difficulty-intermediate { border-left: 4px solid var(--btn-edit);}
-.difficulty-advanced { border-left: 4px solid var(--btn-delete);}
+
+
+
+
 
 .tags {
   display: flex;
@@ -784,20 +725,7 @@ body .bottom-sheet-overlay.hidden {
   flex-wrap: wrap;
 }
 
-.pagination-btn {
-  background: var(--white);
-  color: var(--btn-primary);
-  border: 1px solid var(--btn-primary);
-  border-radius: 6px;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  min-width: 2.5rem;
-  text-align: center;
-  display: inline-block;
-}
+
 
 .pagination-btn:hover {
   background: var(--btn-primary);
@@ -806,25 +734,9 @@ body .bottom-sheet-overlay.hidden {
   box-shadow: 0 2px 8px rgba(25, 118, 210, 0.2);
 }
 
-.pagination-current {
-  background: var(--btn-primary);
-  color: var(--white);
-  border: 1px solid var(--btn-primary);
-  border-radius: 6px;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-  min-width: 2.5rem;
-  text-align: center;
-  display: inline-block;
-}
 
-.pagination-ellipsis {
-  color: var(--btn-secondary);
-  padding: 0.5rem 0.25rem;
-  font-size: 0.9rem;
-  font-weight: 500;
-}
+
+
 
 .pagination-nav-btn {
   background: var(--white);
@@ -923,18 +835,7 @@ body .bottom-sheet-overlay.hidden {
 }
 
 /* Modal styles for exercise swap and set adjustment */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9998;
-}
+
 
 .modal-content {
   background: var(--white);
@@ -968,17 +869,7 @@ select:focus {
   outline-offset: 2px;
 }
 
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
+
 
 /* High contrast mode */
 @media (prefers-contrast: high) {
@@ -1035,7 +926,19 @@ html.dark .progress-card,
 html.dark .exercise-item {
   background: var(--dark-card-bg);
   color: var(--tag-bg);
-  border: 1px solid var(--gray-800);
+}
+
+/* Dark mode difficulty border colors */
+html.dark .exercise-card.difficulty-beginner {
+    border-left-color: #4ade80; /* lighter green for dark mode */
+}
+
+html.dark .exercise-card.difficulty-intermediate {
+    border-left-color: #facc15; /* lighter yellow for dark mode */
+}
+
+html.dark .exercise-card.difficulty-advanced {
+    border-left-color: #f87171; /* lighter red for dark mode */
 }
 
 html.dark input, 
@@ -1076,12 +979,6 @@ html.dark .btn:hover {
   background: var(--dark-btn-hover);
 }
 
-html.dark .pagination-btn {
-  background: var(--dark-card-bg);
-  color: var(--btn-primary);
-  border-color: var(--btn-primary);
-}
-
 html.dark .pagination-btn:hover {
   background: var(--btn-primary);
   color: var(--white);
@@ -1115,10 +1012,6 @@ html.dark .theme-toggle:hover {
 }
 
 /* Modal dark mode */
-html.dark .modal {
-  background: rgba(0, 0, 0, 0.7);
-}
-
 html.dark .modal-content {
   background: var(--dark-card-bg);
   color: var(--tag-bg);
@@ -1161,12 +1054,7 @@ html.dark .error-message {
   text-align: center;
 }
 
-.form-tabs {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  border-bottom: 2px solid var(--gray-300);
-}
+
 
 .tab-btn {
   padding: 0.75rem 1.5rem;
@@ -1190,34 +1078,16 @@ html.dark .error-message {
   border-bottom-color: var(--btn-primary);
 }
 
-.form-section {
-  display: none;
-}
+
 
 .form-section.active {
   display: block;
 }
 
 /* Form tab navigation */
-.form-tabs {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
-  border-bottom: 2px solid var(--border-color);
-  padding-bottom: 0;
-}
 
-.form-tab {
-  padding: 0.75rem 1.5rem;
-  background: transparent;
-  border: none;
-  border-bottom: 3px solid transparent;
-  color: var(--text-secondary);
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
+
+
 
 .form-tab:hover {
   color: var(--text-primary);
@@ -1350,9 +1220,7 @@ html.dark .error-message {
   margin-bottom: 1rem;
 }
 
-.search-box {
-  margin-bottom: 1rem;
-}
+
 
 .exercise-item {
   padding: 1rem;
@@ -1363,12 +1231,22 @@ html.dark .error-message {
   justify-content: space-between;
   align-items: center;
   box-shadow: 0 2px 4px var(--shadow-md);
+  border-left: 6px solid transparent;
 }
 
-.exercise-item-actions {
-  display: flex;
-  gap: 0.5rem;
+.exercise-item.difficulty-beginner {
+  border-left-color: #22c55e; /* green */
 }
+
+.exercise-item.difficulty-intermediate {
+  border-left-color: #eab308; /* yellow */
+}
+
+.exercise-item.difficulty-advanced {
+  border-left-color: #ef4444; /* red */
+}
+
+
 
 .loading {
   text-align: center;
@@ -1399,10 +1277,6 @@ html.dark .tab-btn.active {
   color: var(--dark-accent);
 }
 
-html.dark .form-tabs {
-  border-bottom-color: var(--gray-800);
-}
-
 html.dark .form-group input,
 html.dark .form-group textarea,
 html.dark .form-group select {
@@ -1423,6 +1297,19 @@ html.dark .exercise-item {
   background: var(--dark-input-bg);
   color: var(--tag-bg);
   box-shadow: none;
+  border-left: 6px solid transparent;
+}
+
+html.dark .exercise-item.difficulty-beginner {
+  border-left-color: #4ade80; /* lighter green for dark mode */
+}
+
+html.dark .exercise-item.difficulty-intermediate {
+  border-left-color: #facc15; /* lighter yellow for dark mode */
+}
+
+html.dark .exercise-item.difficulty-advanced {
+  border-left-color: #f87171; /* lighter red for dark mode */
 }
 
 html.dark .message.success {
@@ -1458,9 +1345,7 @@ html.dark .loading {
     flex-direction: column;
   }
 
-  .form-tabs {
-    flex-wrap: wrap;
-  }
+  
 
   .tab-btn {
     flex: 1;
@@ -1591,6 +1476,22 @@ html.dark .loading {
   margin-bottom: 2rem;
 }
 
+.module-card {
+  border-left: 6px solid transparent;
+}
+
+.module-card.difficulty-beginner {
+  border-left-color: #22c55e; /* green */
+}
+
+.module-card.difficulty-intermediate {
+  border-left-color: #eab308; /* yellow */
+}
+
+.module-card.difficulty-advanced {
+  border-left-color: #ef4444; /* red */
+}
+
 .module-card h3 {
   margin: 0 0 0.5rem 0;
 }
@@ -1656,6 +1557,19 @@ html.dark .loading {
 
 .exercise-progression-card {
   cursor: pointer;
+  border-left: 6px solid transparent;
+}
+
+.exercise-progression-card.difficulty-beginner {
+  border-left-color: #22c55e; /* green */
+}
+
+.exercise-progression-card.difficulty-intermediate {
+  border-left-color: #eab308; /* yellow */
+}
+
+.exercise-progression-card.difficulty-advanced {
+  border-left-color: #ef4444; /* red */
 }
 
 .exercise-header {
@@ -1727,22 +1641,19 @@ html.dark .loading {
 }
 
 .node:hover circle {
-  stroke: var(--warning-orange) !important;
-  stroke-width: 3px !important;
+  stroke: var(--warning-orange);
+  stroke-width: 3px;
   cursor: pointer;
 }
 
 .exercise-label {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
   text-shadow: 0 1px 2px rgba(255,255,255,0.8);
-  fill: var(--gray-800) !important;
+  fill: var(--gray-800);
   font-weight: 600;
 }
 
-.text {
-  user-select: none;
-  -webkit-user-select: none;
-}
+
 
 /* Legend card styles */
 .legend-card h3 {
@@ -1861,9 +1772,7 @@ html.dark .loading {
    =================================================================== */
 
 /* Builder View */
-.form-section {
-  padding: 1rem;
-}
+
 
 .routine-name-input {
   width: 100%;
@@ -2234,11 +2143,6 @@ html.dark .loading {
   color: var(--orange-900);
 }
 
-ul {
-  margin: 0.5rem 0;
-  padding-left: 1.5rem;
-}
-
 small {
   display: block;
   margin-top: 0.5rem;
@@ -2254,20 +2158,7 @@ small {
 }
 
 /* Undo Toast Notification */
-.undo-toast {
-  position: fixed;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--gray-800);
-  color: var(--white);
-  padding: 1rem 1.5rem;
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-lg);
-  z-index: 10000;
-  animation: toast-slide-up 0.3s ease-out;
-  max-width: calc(100vw - 48px);
-}
+
 
 @keyframes toast-slide-up {
   from {
@@ -2373,23 +2264,7 @@ small {
   border-radius: var(--radius-sm);
 }
 
-.delete-history-btn {
-  background: var(--btn-danger);
-  color: white;
-  border: none;
-  border-radius: var(--radius-sm);
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 1.25rem;
-  line-height: 1;
-  padding: 0;
-  margin-left: 1rem;
-  transition: background 0.2s, transform 0.2s;
-}
+
 
 .delete-history-btn:hover {
   background: var(--btn-danger-hover);
@@ -2616,6 +2491,19 @@ small {
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s ease;
+  border-left: 6px solid transparent;
+}
+
+.routine-card.difficulty-beginner {
+  border-left-color: #22c55e; /* green */
+}
+
+.routine-card.difficulty-intermediate {
+  border-left-color: #eab308; /* yellow */
+}
+
+.routine-card.difficulty-advanced {
+  border-left-color: #ef4444; /* red */
 }
 
 .routine-card:hover {
@@ -2644,9 +2532,9 @@ small {
   text-transform: uppercase;
 }
 
-.difficulty-beginner { background: var(--diff-beginner-bg); color: var(--diff-beginner-text); }
-.difficulty-intermediate { background: var(--diff-intermediate-bg); color: var(--diff-intermediate-text); }
-.difficulty-advanced { background: var(--diff-advanced-bg); color: var(--diff-advanced-text); }
+
+
+
 
 .routine-desc {
   color: var(--gray-600);
@@ -2725,9 +2613,9 @@ html.dark .routine-meta-item {
   font-size: 0.8rem;
 }
 
-.rating-beginner { background: var(--diff-beginner-bg); color: var(--diff-beginner-text); }
-.rating-intermediate { background: var(--diff-intermediate-bg); color: var(--diff-intermediate-text); }
-.rating-advanced { background: var(--diff-advanced-bg); color: var(--diff-advanced-text); }
+
+
+
 
 .no-data {
   text-align: center;
@@ -2801,6 +2689,45 @@ html.dark .routine-desc,
 html.dark .routine-stats,
 html.dark .workout-date {
   color: var(--dark-text-muted);
+}
+
+/* Dark mode difficulty border colors for module cards */
+html.dark .module-card.difficulty-beginner {
+  border-left-color: #4ade80; /* lighter green for dark mode */
+}
+
+html.dark .module-card.difficulty-intermediate {
+  border-left-color: #facc15; /* lighter yellow for dark mode */
+}
+
+html.dark .module-card.difficulty-advanced {
+  border-left-color: #f87171; /* lighter red for dark mode */
+}
+
+/* Dark mode difficulty border colors for routine cards */
+html.dark .routine-card.difficulty-beginner {
+  border-left-color: #4ade80; /* lighter green for dark mode */
+}
+
+html.dark .routine-card.difficulty-intermediate {
+  border-left-color: #facc15; /* lighter yellow for dark mode */
+}
+
+html.dark .routine-card.difficulty-advanced {
+  border-left-color: #f87171; /* lighter red for dark mode */
+}
+
+/* Dark mode difficulty border colors for exercise progression cards */
+html.dark .exercise-progression-card.difficulty-beginner {
+  border-left-color: #4ade80; /* lighter green for dark mode */
+}
+
+html.dark .exercise-progression-card.difficulty-intermediate {
+  border-left-color: #facc15; /* lighter yellow for dark mode */
+}
+
+html.dark .exercise-progression-card.difficulty-advanced {
+  border-left-color: #f87171; /* lighter red for dark mode */
 }
 
 html.dark .action-card:hover {
@@ -2937,10 +2864,7 @@ html.dark h2 {
   background: var(--gray-100);
 }
 
-.muscle-diagram-section {
-  margin-bottom: 2rem;
-  overflow: hidden;
-}
+
 
 .muscle-diagram-front,
 .muscle-diagram-back {
@@ -2972,12 +2896,7 @@ html.dark h2 {
   z-index: 2;
 }
 
-.diagram-title {
-  font-size: var(--font-size-lg);
-  font-weight: 600;
-  color: var(--primary);
-  margin-bottom: 1rem;
-}
+
 
 .form-cues-list,
 .mistakes-list {
@@ -2993,11 +2912,6 @@ html.dark h2 {
 .mistakes-list li {
   margin-bottom: 0.25rem;
   color: var(--error, var(--error));
-}
-
-.text-muted {
-  color: var(--gray-500);
-  font-style: italic;
 }
 
 /* Dark mode for exercise details */
@@ -3040,7 +2954,7 @@ html.dark .content-value {
   bottom: 0;
   width: 100%;
   height: 100%;
-  z-index: 999999;
+  z-index: 999;
   background: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
@@ -3580,9 +3494,7 @@ html.dark .content-value {
 }
 
 /* For margin-top: 0.5rem containers */
-.mt-05rem {
-  margin-top: 0.5rem;
-}
+
 
 /* For margin-top: 1rem containers */
 .mt-1rem {
@@ -3595,14 +3507,10 @@ html.dark .content-value {
 }
 
 /* For margin-right: 1rem */
-.mr-1rem {
-  margin-right: 1rem;
-}
+
 
 /* For margin: 0 auto centering */
-.mx-auto {
-  margin: 0 auto;
-}
+
 
 /* For max-width: 400px */
 .max-w-400 {
@@ -3621,11 +3529,6 @@ html.dark .content-value {
   flex: 1;
 }
 
-/* For color: var(--success) */
-.text-success {
-  color: var(--success);
-}
-
 /* For color: var(--gray-600) */
 .text-gray-600 {
   color: var(--gray-600);
@@ -3636,15 +3539,8 @@ html.dark .content-value {
   font-size: 0.875rem;
 }
 
-/* For font-size: 1.5rem */
-.text-2xl {
-  font-size: 1.5rem;
-}
-
 /* For font-weight: bold */
-.font-bold {
-  font-weight: bold;
-}
+
 
 /* For min-height: 80px */
 .min-h-80 {
@@ -3652,9 +3548,7 @@ html.dark .content-value {
 }
 
 /* For max-height: 350px */
-.max-h-350 {
-  max-height: 350px;
-}
+
 
 /* For small button */
 .btn-sm {
@@ -3663,12 +3557,7 @@ html.dark .content-value {
 }
 
 /* For card with margin-top and scroll */
-.card-scroll {
-  margin-top: 2rem;
-  max-height: 350px;
-  overflow-y: auto;
-  padding-right: 0.5rem;
-}
+
 
 /* For form input with accent border */
 .input-accent {
@@ -3679,20 +3568,10 @@ html.dark .content-value {
 }
 
 /* For form input with gray border */
-.input-gray {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid var(--gray-300);
-  border-radius: 4px;
-}
+
 
 /* For multi-select form input */
-.select-full {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid var(--accent);
-  border-radius: 4px;
-}
+
 
 /* For textarea form input */
 .textarea-accent {
@@ -3757,19 +3636,9 @@ html.dark .content-value {
   max-height: 30vh;
 }
 
-/* For cursor pointer */
-.cursor-pointer {
-  cursor: pointer;
-}
-
 /* For pointer-events: none */
 .pointer-events-none {
   pointer-events: none;
-}
-
-/* For margin-top: 2rem buttons */
-.mt-2rem {
-  margin-top: 2rem;
 }
 
 /* For legend card */
@@ -3790,29 +3659,16 @@ html.dark .content-value {
 }
 
 /* For no-wrap text */
-.no-wrap {
-  white-space: nowrap;
-}
+
 
 /* For text-wrap */
-.text-wrap {
-  word-break: break-word;
-}
+
 
 /* For text ellipsis */
-.text-ellipsis {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
+
 
 /* For text line clamp */
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
+
 
 
 /* Drag-and-drop reorder styles for module admin selected exercises */
@@ -3842,4 +3698,203 @@ html.dark .content-value {
   font-size: 1.2rem;
   user-select: none;
   flex-shrink: 0;
+}
+
+/* Install Banner */
+.install-banner {
+  position: fixed;
+  bottom: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary);
+  color: var(--white);
+  padding: var(--spacing-md, 1rem) var(--spacing-lg, 1.5rem);
+  border-radius: var(--radius-lg, 16px) var(--radius-lg, 16px) 0 0;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 9999;
+  min-width: 320px;
+  max-width: 90vw;
+  transition: bottom 0.3s ease-in-out;
+}
+
+.install-banner.visible {
+  bottom: 0;
+}
+
+.install-banner-content {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md, 1rem);
+  flex-wrap: wrap;
+}
+
+.install-banner-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.install-banner-text {
+  flex: 1;
+  min-width: 200px;
+}
+
+.install-banner-text strong {
+  display: block;
+  font-size: 1rem;
+  margin-bottom: var(--spacing-xs, 0.25rem);
+}
+
+.install-banner-text p {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.install-banner-actions {
+  display: flex;
+  gap: var(--spacing-sm, 0.5rem);
+  flex-shrink: 0;
+}
+
+.install-banner .btn-sm {
+  padding: var(--spacing-sm, 0.5rem) var(--spacing-md, 1rem);
+  font-size: 0.85rem;
+}
+
+/* Form Validation Styles */
+input.error, select.error, textarea.error {
+  border-color: var(--btn-danger, #dc3545);
+  border-width: 2px;
+  outline: none;
+}
+
+input.error:focus, select.error:focus, textarea.error:focus {
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.25);
+}
+
+.error-message {
+  color: var(--btn-danger, #dc3545);
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  margin-left: 0.25rem;
+  display: block;
+}
+
+.form-group.has-error .error-message {
+  display: block;
+}
+
+.form-group.has-error input,
+.form-group.has-error select,
+.form-group.has-error textarea {
+  border-color: var(--btn-danger, #dc3545);
+}
+
+/* ===== CONFIRMATION MODAL ===== */
+
+.confirm-modal-content {
+  background: var(--white, #FFFFFF);
+  border-radius: 8px;
+  padding: 1.5rem;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.confirm-modal-content h2 {
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+  color: var(--text-primary, #222);
+}
+.confirm-modal-content p {
+  color: var(--text-primary, #222);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.confirm-modal-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+/* ===== DARK MODE SUPPORT ===== */
+
+/* Dark mode bottom-sheet styles */
+html.dark .bottom-sheet {
+  background: var(--dark-card-bg, #1e1e1e);
+  border-color: var(--dark-border, #444);
+}
+
+html.dark .bottom-sheet-content {
+  background: var(--dark-card-bg, #1e1e1e);
+  color: var(--white, #FFFFFF);
+}
+
+html.dark .bottom-sheet-header {
+  background: var(--dark-header-bg, #1f1f1f);
+  border-bottom-color: var(--dark-border, #444);
+}
+
+html.dark .bottom-sheet-header h3 {
+  color: var(--white, #FFFFFF);
+}
+
+html.dark .bottom-sheet-footer {
+  background: var(--dark-header-bg, #1f1f1f);
+  border-top-color: var(--dark-border, #444);
+}
+
+html.dark .checkbox-item {
+  background: var(--dark-input-bg, #2a2a2a);
+  border-color: var(--dark-border, #444);
+  color: var(--white, #FFFFFF);
+}
+
+html.dark .filter-group h4 {
+  color: var(--white, #FFFFFF);
+}
+
+/* Dark mode install banner styles */
+html.dark .install-banner {
+  background: var(--dark-header-bg, #1f1f1f);
+  border-top-color: var(--dark-accent, #42a5f5);
+  color: var(--white, #FFFFFF);
+}
+
+html.dark .install-banner a {
+  color: var(--dark-accent, #42a5f5);
+}
+
+/* Dark mode skills tree inline colors */
+html.dark .skill-tree-node.prerequisite {
+  background: var(--prereq-bg, #1565c0);
+  color: var(--white, #FFFFFF);
+}
+
+html.dark .skill-tree-node.completed {
+  background: var(--completion-bg, #2e7d32);
+  color: var(--white, #FFFFFF);
+}
+
+html.dark .skill-tree-node.current {
+  background: var(--unlock-bg, #ef6c00);
+  color: var(--white, #FFFFFF);
+}
+
+html.dark .skill-tree-node.locked {
+  background: var(--gray-800, #343a40);
+  color: var(--gray-300, #ced4da);
+}
+
+/* Screen reader only - visually hidden but accessible */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

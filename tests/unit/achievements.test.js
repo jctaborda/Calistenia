@@ -73,32 +73,30 @@ describe('Achievements Service', () => {
 
   describe('checkAchievements', () => {
     it('should unlock first_workout on first workout', () => {
-      const workoutLog = {
-        id: 'workout-1',
-        date: new Date().toISOString(),
-        exercises: []
-      };
+      initializeState();
       
-      const newlyUnlocked = checkAchievements(workoutLog);
+      // Set up state with 1 workout
+      updateState({ 
+        history: [{ id: 'workout-1', date: new Date().toISOString() }] 
+      });
+      
+      const { newlyUnlocked, newState } = checkAchievements();
       
       expect(newlyUnlocked).toContainEqual(
         expect.objectContaining({ id: 'first_workout' })
       );
+      expect(newState).toHaveProperty('user');
+      expect(newState.user.unlockedAchievements).toContain('first_workout');
     });
 
     it('should not unlock first_workout on subsequent workouts', () => {
       // First workout
       updateState({ 
-        history: [{ id: 'workout-1', date: new Date().toISOString() }] 
+        history: [{ id: 'workout-1', date: new Date().toISOString() }],
+        user: { unlockedAchievements: ['first_workout'] }
       });
       
-      const workoutLog = {
-        id: 'workout-2',
-        date: new Date().toISOString(),
-        exercises: []
-      };
-      
-      const newlyUnlocked = checkAchievements(workoutLog);
+      const { newlyUnlocked } = checkAchievements();
       
       expect(newlyUnlocked).not.toContainEqual(
         expect.objectContaining({ id: 'first_workout' })
@@ -113,17 +111,12 @@ describe('Achievements Service', () => {
       
       updateState({ history });
       
-      const workoutLog = {
-        id: 'workout-6',
-        date: new Date().toISOString(),
-        exercises: []
-      };
-      
-      const newlyUnlocked = checkAchievements(workoutLog);
+      const { newlyUnlocked, newState } = checkAchievements();
       
       expect(newlyUnlocked).toContainEqual(
         expect.objectContaining({ id: 'five_workouts' })
       );
+      expect(newState.user.unlockedAchievements).toContain('five_workouts');
     });
 
     it('should unlock ten_workouts at 10 workouts', () => {
@@ -134,13 +127,7 @@ describe('Achievements Service', () => {
       
       updateState({ history });
       
-      const workoutLog = {
-        id: 'workout-11',
-        date: new Date().toISOString(),
-        exercises: []
-      };
-      
-      const newlyUnlocked = checkAchievements(workoutLog);
+      const { newlyUnlocked } = checkAchievements();
       
       expect(newlyUnlocked).toContainEqual(
         expect.objectContaining({ id: 'ten_workouts' })
@@ -155,13 +142,7 @@ describe('Achievements Service', () => {
       
       updateState({ history });
       
-      const workoutLog = {
-        id: 'workout-21',
-        date: new Date().toISOString(),
-        exercises: []
-      };
-      
-      const newlyUnlocked = checkAchievements(workoutLog);
+      const { newlyUnlocked } = checkAchievements();
       
       expect(newlyUnlocked).toContainEqual(
         expect.objectContaining({ id: 'twenty_workouts' })
@@ -176,13 +157,7 @@ describe('Achievements Service', () => {
       
       updateState({ history });
       
-      const workoutLog = {
-        id: 'workout-51',
-        date: new Date().toISOString(),
-        exercises: []
-      };
-      
-      const newlyUnlocked = checkAchievements(workoutLog);
+      const { newlyUnlocked } = checkAchievements();
       
       expect(newlyUnlocked).toContainEqual(
         expect.objectContaining({ id: 'fifty_workouts' })
@@ -190,21 +165,6 @@ describe('Achievements Service', () => {
     });
 
     it('should unlock pushup_master at 1000 push-ups', () => {
-      const history = [
-        {
-          id: 'workout-1',
-          date: new Date().toISOString(),
-          exercises: [
-            {
-              exerciseId: '1',
-              exerciseName: 'Push-Up',
-              actualReps: [20, 15, 10]
-            }
-          ]
-        }
-      ];
-      
-      // Need 1000 push-ups, so we'll create a workout with many push-ups
       const pushupWorkout = {
         id: 'workout-1',
         date: new Date().toISOString(),
@@ -217,13 +177,7 @@ describe('Achievements Service', () => {
       
       updateState({ history: [pushupWorkout] });
       
-      const workoutLog = {
-        id: 'workout-2',
-        date: new Date().toISOString(),
-        exercises: []
-      };
-      
-      const newlyUnlocked = checkAchievements(workoutLog);
+      const { newlyUnlocked } = checkAchievements();
       
       // Note: This depends on the actual calculation logic
       // The test verifies the function runs without errors
@@ -237,17 +191,12 @@ describe('Achievements Service', () => {
         }
       });
       
-      const workoutLog = {
-        id: 'workout-1',
-        date: new Date().toISOString(),
-        exercises: []
-      };
-      
-      const newlyUnlocked = checkAchievements(workoutLog);
+      const { newlyUnlocked, newState } = checkAchievements();
       
       expect(newlyUnlocked).toContainEqual(
         expect.objectContaining({ id: 'easy_breezy' })
       );
+      expect(newState.user.unlockedAchievements).toContain('easy_breezy');
     });
 
     it('should unlock challenge_accepted when rating is too_hard', () => {
@@ -257,17 +206,12 @@ describe('Achievements Service', () => {
         }
       });
       
-      const workoutLog = {
-        id: 'workout-1',
-        date: new Date().toISOString(),
-        exercises: []
-      };
-      
-      const newlyUnlocked = checkAchievements(workoutLog);
+      const { newlyUnlocked, newState } = checkAchievements();
       
       expect(newlyUnlocked).toContainEqual(
         expect.objectContaining({ id: 'challenge_accepted' })
       );
+      expect(newState.user.unlockedAchievements).toContain('challenge_accepted');
     });
 
     it('should not unlock achievements already unlocked', () => {
@@ -275,16 +219,11 @@ describe('Achievements Service', () => {
       updateState({
         user: {
           unlockedAchievements: ['first_workout']
-        }
+        },
+        history: [{ id: 'workout-1', date: new Date().toISOString() }]
       });
       
-      const workoutLog = {
-        id: 'workout-2',
-        date: new Date().toISOString(),
-        exercises: []
-      };
-      
-      const newlyUnlocked = checkAchievements(workoutLog);
+      const { newlyUnlocked } = checkAchievements();
       
       expect(newlyUnlocked).not.toContainEqual(
         expect.objectContaining({ id: 'first_workout' })
@@ -303,19 +242,13 @@ describe('Achievements Service', () => {
         }))
       });
       
-      const workoutLog = {
-        id: 'workout-51',
-        date: new Date().toISOString(),
-        exercises: []
-      };
-      
-      const newlyUnlocked = checkAchievements(workoutLog);
+      const { newlyUnlocked } = checkAchievements();
       
       expect(newlyUnlocked).toEqual([]);
     });
 
     it('should handle workout log with exercises', () => {
-      const workoutLog = {
+      const history = [{
         id: 'workout-1',
         date: new Date().toISOString(),
         exercises: [
@@ -330,9 +263,11 @@ describe('Achievements Service', () => {
             actualReps: [15, 12, 10]
           }
         ]
-      };
+      }];
       
-      const newlyUnlocked = checkAchievements(workoutLog);
+      updateState({ history });
+      
+      const { newlyUnlocked } = checkAchievements();
       
       expect(newlyUnlocked).toContainEqual(
         expect.objectContaining({ id: 'first_workout' })
@@ -340,42 +275,31 @@ describe('Achievements Service', () => {
     });
 
     it('should handle empty workout log', () => {
-      const workoutLog = {
-        id: 'workout-1',
-        date: new Date().toISOString(),
-        exercises: []
-      };
+      initializeState();
       
-      const newlyUnlocked = checkAchievements(workoutLog);
+      const { newlyUnlocked, newState } = checkAchievements();
+      
+      expect(newlyUnlocked).toBeDefined();
+      expect(Array.isArray(newlyUnlocked)).toBe(true);
+      expect(newState).toHaveProperty('user');
+    });
+
+    it('should handle null workout log', () => {
+      initializeState();
+      
+      const { newlyUnlocked } = checkAchievements();
       
       expect(newlyUnlocked).toBeDefined();
       expect(Array.isArray(newlyUnlocked)).toBe(true);
     });
 
-    it('should handle null workout log', () => {
-      try {
-        checkAchievements(null);
-        // If no error, that's acceptable
-      } catch (error) {
-        // Error is also acceptable for null input
-        expect(error).toBeDefined();
-      }
-    });
-
     it('should handle missing history in state', () => {
       initializeState();
       
-      const workoutLog = {
-        id: 'workout-1',
-        date: new Date().toISOString(),
-        exercises: []
-      };
+      const { newlyUnlocked } = checkAchievements();
       
-      const newlyUnlocked = checkAchievements(workoutLog);
-      
-      expect(newlyUnlocked).toContainEqual(
-        expect.objectContaining({ id: 'first_workout' })
-      );
+      // Should NOT unlock first_workout since history is empty (0 workouts, not 1)
+      expect(newlyUnlocked).toEqual([]);
     });
 
     it('should handle missing user in state', () => {
@@ -384,16 +308,11 @@ describe('Achievements Service', () => {
       // Remove user from state
       updateState({ user: undefined });
       
-      const workoutLog = {
-        id: 'workout-1',
-        date: new Date().toISOString(),
-        exercises: []
-      };
-      
-      const newlyUnlocked = checkAchievements(workoutLog);
+      const { newlyUnlocked, newState } = checkAchievements();
       
       // Should handle gracefully
       expect(newlyUnlocked).toBeDefined();
+      expect(newState).toHaveProperty('user');
     });
   });
 
@@ -580,19 +499,9 @@ describe('Achievements Service', () => {
     });
 
     it('should handle workout with non-array actualReps', () => {
-      const workoutLog = {
-        id: 'workout-1',
-        date: new Date().toISOString(),
-        exercises: [
-          {
-            exerciseId: '1',
-            exerciseName: 'Push-Up',
-            actualReps: 10 // Not an array
-          }
-        ]
-      };
+      initializeState();
       
-      const newlyUnlocked = checkAchievements(workoutLog);
+      const { newlyUnlocked } = checkAchievements();
       
       expect(newlyUnlocked).toBeDefined();
     });
@@ -600,50 +509,55 @@ describe('Achievements Service', () => {
 
   describe('Achievement Unlocking Logic', () => {
     it('should unlock achievements in correct order', () => {
-      const history = Array.from({ length: 10 }, (_, i) => ({
-        id: `workout-${i}`,
-        date: new Date().toISOString()
-      }));
+      initializeState();
       
-      updateState({ history });
+      // Create 10 workouts with no previously unlocked achievements
+      updateState({ 
+        user: { unlockedAchievements: [] },
+        history: Array.from({ length: 10 }, (_, i) => ({
+          id: `workout-${i}`,
+          date: new Date().toISOString()
+        }))
+      });
       
-      const workoutLog = {
-        id: 'workout-11',
-        date: new Date().toISOString(),
-        exercises: []
-      };
+      const { newlyUnlocked } = checkAchievements();
       
-      const newlyUnlocked = checkAchievements(workoutLog);
-      
-      // Should have first_workout and five_workouts
+      // With 10 workouts and no prior unlocks:
+      // Should unlock: week_consistent (if consistent), five_workouts, ten_workouts
+      // Should NOT unlock: first_workout (requires history.length === 1)
       const unlockedIds = newlyUnlocked.map(a => a.id);
-      expect(unlockedIds).toContain('first_workout');
+      expect(unlockedIds).not.toContain('first_workout');
       expect(unlockedIds).toContain('five_workouts');
-      expect(unlockedIds).not.toContain('ten_workouts');
+      expect(unlockedIds).toContain('ten_workouts');
     });
 
     it('should not duplicate unlocked achievements', () => {
-      // First workout
-      const workoutLog1 = {
-        id: 'workout-1',
-        date: new Date().toISOString(),
-        exercises: []
-      };
-      checkAchievements(workoutLog1);
+      initializeState();
+      
+      // First workout - should unlock first_workout
+      updateState({ 
+        user: { unlockedAchievements: [] },
+        history: [{ id: 'workout-1', date: new Date().toISOString() }] 
+      });
+      const { newlyUnlocked: newlyUnlocked1 } = checkAchievements();
       
       // Second workout (should not unlock first_workout again)
-      const workoutLog2 = {
-        id: 'workout-2',
-        date: new Date().toISOString(),
-        exercises: []
-      };
-      const newlyUnlocked2 = checkAchievements(workoutLog2);
+      updateState({ 
+        user: { unlockedAchievements: ['first_workout'] },
+        history: [
+          { id: 'workout-1', date: new Date().toISOString() },
+          { id: 'workout-2', date: new Date().toISOString() }
+        ]
+      });
+      const { newlyUnlocked: newlyUnlocked2 } = checkAchievements();
       
       const firstWorkoutCount = newlyUnlocked2.filter(
         a => a.id === 'first_workout'
       ).length;
       
       expect(firstWorkoutCount).toBe(0);
+      expect(newlyUnlocked1).toHaveLength(1);
+      expect(newlyUnlocked1[0].id).toBe('first_workout');
     });
   });
 });

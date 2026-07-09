@@ -1,6 +1,8 @@
 import { ACHIEVEMENT_SEVEN_DAYS_MS } from '../constants.js';
 
 import { getState } from './state.js';
+import { show } from './toast-service.js';
+import { voiceCuesService } from './voice-cues-service.js';
 
 // Achievement definitions with emojis and descriptions
 const ACHIEVEMENTS = {
@@ -62,79 +64,95 @@ const ACHIEVEMENTS = {
 
 /**
  * Check for new achievements after workout completion
+ * Returns { newlyUnlocked: [], newState: { user: {...} } } for proper state management
+ * 
+ * @returns {object} { newlyUnlocked: Array, newState: object }
  */
-export function checkAchievements(workoutLog) {
+export function checkAchievements() {
   const state = getState();
   const user = state.user || {};
   const history = state.history || [];
   const unlockedAchievements = user.unlockedAchievements || [];
   
   let newlyUnlocked = [];
+  const newUnlockedIds = [...unlockedAchievements]; // Copy to avoid mutation
+  
+  // Get workout count once for all checks
+  const workoutCount = history.length;
   
   // Check first workout achievement
   if (history.length === 1 && !unlockedAchievements.includes('first_workout')) {
-    unlockAchievement('first_workout', user);
+    newUnlockedIds.push('first_workout');
     newlyUnlocked.push(ACHIEVEMENTS.first_workout);
   }
   
-  // Check workout count achievements
-  const workoutCount = history.length;
-  if (workoutCount >= 5 && !unlockedAchievements.includes('five_workouts')) {
-    unlockAchievement('five_workouts', user);
-    newlyUnlocked.push(ACHIEVEMENTS.five_workouts);
-  }
-  if (workoutCount >= 10 && !unlockedAchievements.includes('ten_workouts')) {
-    unlockAchievement('ten_workouts', user);
-    newlyUnlocked.push(ACHIEVEMENTS.ten_workouts);
-  }
-  if (workoutCount >= 20 && !unlockedAchievements.includes('twenty_workouts')) {
-    unlockAchievement('twenty_workouts', user);
-    newlyUnlocked.push(ACHIEVEMENTS.twenty_workouts);
-  }
-  if (workoutCount >= 50 && !unlockedAchievements.includes('fifty_workouts')) {
-    unlockAchievement('fifty_workouts', user);
-    newlyUnlocked.push(ACHIEVEMENTS.fifty_workouts);
-  }
-  
   // Check consistency: 3 workouts in a week (simple check)
+  // Must check before five_workouts since it requires workoutCount >= 3
   if (workoutCount >= 3 && !unlockedAchievements.includes('week_consistent')) {
     const hasConsistentWeek = checkWeeklyConsistency(history);
     if (hasConsistentWeek) {
-      unlockAchievement('week_consistent', user);
+      newUnlockedIds.push('week_consistent');
       newlyUnlocked.push(ACHIEVEMENTS.week_consistent);
     }
+  }
+  
+  // Check workout count achievements in ascending order
+  if (workoutCount >= 5 && !unlockedAchievements.includes('five_workouts')) {
+    newUnlockedIds.push('five_workouts');
+    newlyUnlocked.push(ACHIEVEMENTS.five_workouts);
+  }
+  if (workoutCount >= 10 && !unlockedAchievements.includes('ten_workouts')) {
+    newUnlockedIds.push('ten_workouts');
+    newlyUnlocked.push(ACHIEVEMENTS.ten_workouts);
+  }
+  if (workoutCount >= 20 && !unlockedAchievements.includes('twenty_workouts')) {
+    newUnlockedIds.push('twenty_workouts');
+    newlyUnlocked.push(ACHIEVEMENTS.twenty_workouts);
+  }
+  if (workoutCount >= 50 && !unlockedAchievements.includes('fifty_workouts')) {
+    newUnlockedIds.push('fifty_workouts');
+    newlyUnlocked.push(ACHIEVEMENTS.fifty_workouts);
   }
   
   // Check push-up master achievement
   const totalPushups = calculateTotalPushups(history);
   if (totalPushups >= 1000 && !unlockedAchievements.includes('pushup_master')) {
-    unlockAchievement('pushup_master', user);
+    newUnlockedIds.push('pushup_master');
     newlyUnlocked.push(ACHIEVEMENTS.pushup_master);
   }
   
   // Check difficulty feedback achievements
   if (!unlockedAchievements.includes('easy_breezy') && user.lastDifficultyRating === 'too_easy') {
-    unlockAchievement('easy_breezy', user);
+    newUnlockedIds.push('easy_breezy');
     newlyUnlocked.push(ACHIEVEMENTS.easy_breezy);
   }
   if (!unlockedAchievements.includes('challenge_accepted') && user.lastDifficultyRating === 'too_hard') {
-    unlockAchievement('challenge_accepted', user);
+    newUnlockedIds.push('challenge_accepted');
     newlyUnlocked.push(ACHIEVEMENTS.challenge_accepted);
   }
   
-  return newlyUnlocked;
-}
-
-/**
- * Unlock an achievement for the user
- */
-function unlockAchievement(achievementId, user) {
-  if (!user.unlockedAchievements) {
-    user.unlockedAchievements = [];
+  // Build new state with updated user
+  const newState = {
+    user: {
+      ...user,
+      unlockedAchievements: newUnlockedIds
+    }
+  };
+  
+  // Show notifications for newly unlocked achievements
+  if (newlyUnlocked.length > 0) {
+    newlyUnlocked.forEach(ach => {
+      // Toast notification
+      show(`🏆 Achievement Unlocked: ${ach.name}! ${ach.description}`, 'success');
+      
+      // Voice cue
+      if (voiceCuesService.isEnabled()) {
+        voiceCuesService.speak(`Achievement unlocked: ${ach.name}. ${ach.description}`);
+      }
+    });
   }
-  if (!user.unlockedAchievements.includes(achievementId)) {
-    user.unlockedAchievements.push(achievementId);
-  }
+  
+  return { newlyUnlocked, newState };
 }
 
 /**

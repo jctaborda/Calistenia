@@ -21,10 +21,15 @@ export async function renderWorkoutCompletionView() {
   const workoutStats = calculateWorkoutStats(activeWorkout);
   
   // Check for new achievements after workout completion
-  const newlyUnlockedAchievements = checkAchievements({ date: new Date().toISOString() });
+  const { newlyUnlocked: newlyUnlockedAchievements, newState } = checkAchievements();
+  
+  // Apply achievement state updates
+  if (newState && Object.keys(newState).length > 0) {
+    updateState(newState);
+  }
   
   // Show toast notifications for newly unlocked achievements
-  if (newlyUnlockedAchievements.length > 0) {
+  if (newlyUnlockedAchievements && newlyUnlockedAchievements.length > 0) {
     newlyUnlockedAchievements.forEach(ach => {
   show(`🎉 Achievement Unlocked: ${ach.name}! ${ach.description}`, 'success');
     });
@@ -66,7 +71,7 @@ export async function renderWorkoutCompletionView() {
   const exercise = exercises.find(e => String(e.id) === String(exerciseData.exerciseId));
   return `
   <div class="card completion-exercise-card">
-  <h3>${exercise ? exercise.name : '${t("completion.unknown_exercise")}'}</h3>
+  <h3>${exercise ? exercise.name : t('completion.unknown_exercise')}</h3>
   <p><strong>Target:</strong> ${exerciseData.sets} sets ✕ ${exerciseData.reps} reps</p>
   
   ${Array.from({ length: exerciseData.sets }, (_, setIndex) => `
@@ -80,6 +85,17 @@ export async function renderWorkoutCompletionView() {
   value="${exerciseData.reps}"
   class="reps-input">
   </label>
+  ${exerciseData.weightSupported ? `\n  <label class="weight-input-label">\n  Weight (kg):
+  <input type="number" 
+  name="exercise-${exerciseIndex}-set-${setIndex}-weight" 
+  min="0" 
+  max="500" 
+  step="0.5"
+  value="0"
+  class="weight-input"
+  placeholder="0">
+  kg
+  </label>` : ''}
   </div>
   `).join('')}
   </div>
@@ -88,7 +104,7 @@ export async function renderWorkoutCompletionView() {
   
   <div class="form-actions">
   <button type="submit" class="btn save-workout-btn">Save Workout Log</button>
-  <button type="button" id="skip-logging-btn" class="btn skip-workout-btn">Skip Logging</button>
+  <button type="button" id="skip-logging-btn" class="btn skip-workout-btn">${t('completion.skip')}</button>
   </div>
   </form>
     </div>
@@ -107,15 +123,25 @@ export async function renderWorkoutCompletionView() {
   const exercise = exercises.find(e => String(e.id) === String(exerciseData.exerciseId));
   const sets = Array.from({ length: exerciseData.sets }, (_, setIndex) => {
   const input = form.querySelector(`input[name="exercise-${exerciseIndex}-set-${setIndex}"]`);
-  return parseInt(input.value) || 0;
+  const reps = parseInt(input.value) || 0;
+  
+  // Collect weight data if available
+  let weight = 0;
+  if (exerciseData.weightSupported) {
+    const weightInput = form.querySelector(`input[name="exercise-${exerciseIndex}-set-${setIndex}-weight"]`);
+    weight = parseFloat(weightInput.value) || 0;
+  }
+  
+  return { reps, weight };
   });
   
   return {
   exerciseId: exerciseData.exerciseId,
-  exerciseName: exercise ? exercise.name : '${t("completion.unknown_exercise")}',
+  exerciseName: exercise ? exercise.name : t('completion.unknown_exercise'),
   targetSets: exerciseData.sets,
   targetReps: exerciseData.reps,
-  actualReps: sets
+  actualReps: sets.map(s => s.reps), // Keep backward compatibility
+  actualRepsWithWeight: sets // New structure with weight data
   };
   }),
   // Include setHistory for detailed timing statistics
@@ -126,9 +152,12 @@ export async function renderWorkoutCompletionView() {
   const state = getState();
   const history = state.history || [];
   updateState({
-  history: [...history, workoutLog],
-  activeWorkout: null
+    history: [...history, workoutLog],
+    activeWorkout: null
   });
+  
+  // Dispatch workout completed event for install prompt tracking
+  document.dispatchEvent(new CustomEvent('workoutCompleted'));
   
   // Navigate to summary with difficulty feedback
   window.location.hash = '#summary';

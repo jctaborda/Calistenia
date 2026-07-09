@@ -11,9 +11,9 @@ import { t } from '../i18n.js';
 import { workoutTimerService } from '../services/workout-timer-service.js';
 import { workoutModalsService } from '../services/workout-modals-service.js';
 import { workoutWorkflowService } from '../services/workout-workflow-service.js';
-
-// State tracking for event listeners
-let stateBound = false;
+import { escapeHtml } from '../utils/html.js';
+import { voiceCuesService } from '../services/voice-cues-service.js';
+import { show } from '../services/toast-service.js';
 
 // Track when set started for duration calculation
 let currentSetStartTime = null;
@@ -26,14 +26,20 @@ let isShowingRestTimer = false;
 
 export function renderActiveWorkoutView() {
   const main = document.getElementById('app');
-  const { activeWorkout, exercises } = getState();
   
   // Clean up any stale timers from previous render before starting new ones
   workoutTimerService.cleanup();
   
+  // Remove stale stateChange listener from previous render (memory leak fix)
+  if (main._handleActiveWorkoutStateChange) {
+    document.removeEventListener('stateChange', main._handleActiveWorkoutStateChange);
+    delete main._handleActiveWorkoutStateChange;
+  }
+  
+  const { activeWorkout, exercises } = getState();
   // Validate workout exists
   if (!activeWorkout || !activeWorkout.routine) {
-    main.innerHTML = renderHeader() + '<div class="card"><p>No active workout.</p></div>';
+    main.innerHTML = renderHeader() + '<div class="card"><p>' + t('active_workout.no_active_workout') + '</p></div>';
     return;
   }
   
@@ -46,27 +52,16 @@ export function renderActiveWorkoutView() {
   const currentExerciseData = workoutWorkflowService.getExerciseData(currentExerciseIndex, routine);
   
   if (!currentExerciseData) {
-    main.innerHTML = renderHeader() + '<div class="card"><p>Exercise data not found.</p></div>';
+    main.innerHTML = renderHeader() + '<div class="card"><p>' + t('active_workout.exercise_data_not_found') + '</p></div>';
     return;
   }
   
   const exercise = exercises.find(e => String(e.id) === String(currentExerciseData.exerciseId));
   
   if (!exercise) {
-    main.innerHTML = renderHeader() + '<div class="card"><p>Exercise not found.</p></div>';
+    main.innerHTML = renderHeader() + '<div class="card"><p>' + t('active_workout.exercise_not_found') + '</p></div>';
     return;
   }
-  
-  // Start live set duration timer using service
-  const setDurationController = workoutTimerService.startTimerCountingUp(0, {
-    container: document.getElementById('set-timer-display'),
-    onTick: (elapsed) => {
-      const durationEl = document.getElementById('set-duration');
-      if (durationEl) {
-        durationEl.textContent = elapsed;
-      }
-    }
-  });
   
   // Get workout configuration
   const isHiitWorkout = workoutWorkflowService.isHIITWorkout(activeWorkout);
@@ -87,6 +82,17 @@ export function renderActiveWorkoutView() {
     localIndex
   });
   
+  // Start live set duration timer using service (AFTER DOM is rendered)
+  const setDurationController = workoutTimerService.startTimerCountingUp(0, {
+    container: document.getElementById('set-timer-display'),
+    onTick: (elapsed) => {
+      const durationEl = document.getElementById('set-duration');
+      if (durationEl) {
+        durationEl.textContent = elapsed;
+      }
+    }
+  });
+  
   // Wire up all event handlers for the view
   wireUpEventHandlers({
     activeWorkout,
@@ -102,11 +108,24 @@ export function renderActiveWorkoutView() {
     exercises
   });
   
-  // Bind state change event listener (only once)
-  if (!stateBound) {
-    document.addEventListener('stateChange', handleStateChange);
-    stateBound = true;
-  }
+  // Bind state change event listener (with cleanup)
+  const handleActiveWorkoutStateChange = () => {
+    // Don't re-render if we're currently showing rest timer
+    // (user is in the middle of resting and will click "Next Set" to advance)
+    if (isShowingRestTimer) {
+      return;
+    }
+    
+    if (window.location.hash === '#active-workout') {
+      renderActiveWorkoutView();
+    } else {
+      // Cleanup all timers when leaving active workout view
+      workoutTimerService.cleanup();
+    }
+  };
+  
+  document.addEventListener('stateChange', handleActiveWorkoutStateChange);
+  main._handleActiveWorkoutStateChange = handleActiveWorkoutStateChange;
 }
 
 /**
@@ -128,7 +147,7 @@ function renderActiveWorkoutTemplate({
   
   return renderHeader() + `
     <div class="card">
-      <h1>${routine.name}</h1>
+      <h1>${escapeHtml(routine.name)}</h1>
       <p><span class="phase-badge" style="background: ${phaseColor}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.9em;">${t(`active_workout.${phase}`)}</span> ${t('active_workout.exercise')} ${currentExerciseIndex + 1} ${t('active_workout.of')} ${totalExercises}</p>
       
       ${isHiitWorkout ? workoutTimerService.renderHiitSection(hiitInterval) : ''}
@@ -139,7 +158,7 @@ function renderActiveWorkoutTemplate({
       </div>
       
       <div class="card card-muted current-exercise-card">
-        <h2>${exercise.name}</h2>
+        <h2>${escapeHtml(exercise.name)}</h2>
         ${!isHiitWorkout ? `
           <p><strong>${t('routine_details.sets')} ${currentSetIndex + 1} ${t('active_workout.of')} ${currentExerciseData.sets}</strong></p>
           <p><strong>${t('routine_details.reps')}:</strong> ${currentExerciseData.reps}</p>
@@ -196,7 +215,8 @@ function wireUpEventHandlers({
       exerciseId: currentExerciseData.exerciseId,
       activeWorkout,
       routine,
-      exercises
+      exercises,
+      currentDifficulty: exercise.difficulty
     }));
   }
   
@@ -308,7 +328,10 @@ function handleNextSetClick() {
         currentRestStartTime = Date.now();
         isShowingRestTimer = true; // Mark that we're showing rest timer
         workoutTimerService.displayRestTimer(restTime, restEl, () => {
-          // Timer completed - user should click "Next Set" to advance
+          // Timer completed - announce rest complete
+          if (voiceCuesService.isEnabled()) {
+            voiceCuesService.announceRestStart(restTime);
+          }
         });
       }
       
@@ -369,6 +392,15 @@ function advanceWorkout(currentExerciseIndex, currentSetIndex, routine) {
     // Now advance the state to next exercise
     updateState({ activeWorkout: result.newState }, { silent: true });
     
+    // Trigger voice cue for next exercise
+    const nextExerciseData = workoutWorkflowService.getExerciseData(result.newState.currentExerciseIndex, routine);
+    if (nextExerciseData) {
+      const nextExercise = exercises.find(e => String(e.id) === String(nextExerciseData.exerciseId));
+      if (nextExercise && voiceCuesService.isEnabled()) {
+        voiceCuesService.announceNextExercise(nextExercise.name);
+      }
+    }
+    
     // Trigger re-render to show the new exercise's set duration
     updateState({ stateChange: true }, { silent: false });
   } else {
@@ -395,24 +427,6 @@ function advanceWorkout(currentExerciseIndex, currentSetIndex, routine) {
 }
 
 /**
- * Handle global state changes to re-render the view
- */
-function handleStateChange() {
-  // Don't re-render if we're currently showing rest timer
-  // (user is in the middle of resting and will click "Next Set" to advance)
-  if (isShowingRestTimer) {
-    return;
-  }
-  
-  if (window.location.hash === '#active-workout') {
-    renderActiveWorkoutView();
-  } else {
-    // Cleanup all timers when leaving active workout view
-    workoutTimerService.cleanup();
-  }
-}
-
-/**
  * Event handlers
  */
 function handleAdjustSets({ exerciseIndex, exerciseData, activeWorkout, routine }) {
@@ -434,13 +448,14 @@ function handleAdjustSets({ exerciseIndex, exerciseData, activeWorkout, routine 
   document.addEventListener('workoutSetsAdjusted', handler);
 }
 
-function handleSwapExercise({ currentExerciseIndex, exerciseId, activeWorkout, routine, exercises }) {
+function handleSwapExercise({ currentExerciseIndex, exerciseId, activeWorkout, routine, exercises, currentDifficulty }) {
   workoutModalsService.showSwapExerciseModal(
     currentExerciseIndex,
     exerciseId,
     activeWorkout,
     routine,
-    exercises
+    exercises,
+    currentDifficulty
   );
   
   const handler = (e) => {
@@ -463,9 +478,15 @@ function handleHIITTimer({ hiitInterval, currentExerciseIndex, currentExerciseDa
   workoutTimerService.startHIITTimer(hiitInterval, {
     onWorkStart: () => {
       workoutModalsService.showToast(t('toast.work_time'), 'success');
+      if (voiceCuesService.isEnabled()) {
+        voiceCuesService.announceHIITWork(hiitInterval);
+      }
     },
     onWorkEnd: () => {
       workoutModalsService.showToast(t('toast.rest_time'), 'warning');
+      if (voiceCuesService.isEnabled()) {
+        voiceCuesService.announceHIITRest(hiitInterval);
+      }
     },
     onRestEnd: () => {
       document.dispatchEvent(new CustomEvent('stateChange'));

@@ -1,8 +1,7 @@
 // Undo Service - Handles temporary storage of deleted items and restore functionality
-import { saveDeletedItem, getDeletedItemsByType, deleteDeletedItem, clearExpiredDeletedItems, exercisesLoad } from './database.js';
+import { saveDeletedItem, getDeletedItemsByType, deleteDeletedItem, clearExpiredDeletedItems, exercisesLoad, routinesLoad } from './database.js';
+import { loadModules, saveModules } from './modules-service.js';
 import { loadExercises, saveExercises } from './storage.js';
-import { modulesLoad, routinesLoad, storeExercises, storeModules, storeRoutines } from './database.js';
-import { saveModules, loadModules } from './modules-service.js';
 import { show } from './toast-service.js';
 import { UNDO_RETENTION_MS, UNDO_CLEANUP_INTERVAL_MS, UNDO_TOAST_DURATION_MS, CLEANUP_INITIAL_DELAY_MS } from '../constants.js';
 let undoToasts = new Map(); // Track active undo toast notifications
@@ -12,14 +11,20 @@ let undoToasts = new Map(); // Track active undo toast notifications
 * @param {Object} item - The full item data that was deleted
 * @param {string|number} originalId - The original ID of the deleted item
 */
+let cleanupScheduled = false;
+
 export async function saveForUndo(type, item, originalId) {
 try {
 await saveDeletedItem(type, item, originalId);
     // Show undo toast notification
 showUndoToast(type, originalId);
-    // Clean up expired items periodically (every hour)
-cleanupExpiredItems();
-} catch (error) {
+    
+    // Schedule next cleanup only if not already scheduled
+    if (!cleanupScheduled) {
+      cleanupScheduled = true;
+      cleanupExpiredItems();
+    }
+  } catch (error) {
 console.error('Failed to save item for undo:', error);
 }
 }
@@ -50,11 +55,15 @@ ${label} deleted.
 `;
   document.body.appendChild(toast);
   // Handle undo button click
-const undoBtn = toast.querySelector('.undo-toast__undo-btn');
-undoBtn.addEventListener('click', async () => {
-await restoreItem(type, originalId);
-dismissUndoToast(type);
-});
+  const undoBtn = toast.querySelector('.undo-toast__undo-btn');
+  const undoHandler = async () => {
+    await restoreItem(type, originalId);
+    dismissUndoToast(type);
+  };
+  undoBtn.addEventListener('click', undoHandler);
+  
+  // Store handler reference for cleanup
+  undoToasts.set(type, { toast, timeoutId, undoHandler });
   // Auto-dismiss after duration
 const timeoutId = setTimeout(() => {
 if (toast.parentNode) {
@@ -70,10 +79,17 @@ undoToasts.delete(type);
 */
 export function dismissUndoToast(type) {
 if (undoToasts.has(type)) {
-const { toast, timeoutId } = undoToasts.get(type);
+const { toast, timeoutId, undoHandler } = undoToasts.get(type);
 clearTimeout(timeoutId);
 if (toast.parentNode) {
 toast.remove();
+}
+// Remove event listener to prevent memory leak
+if (undoHandler) {
+const undoBtn = toast.querySelector('.undo-toast__undo-btn');
+if (undoBtn) {
+undoBtn.removeEventListener('click', undoHandler);
+}
 }
 undoToasts.delete(type);
 }
@@ -132,23 +148,15 @@ let success = false;
   case 'body-metric':
     // Restore body metric to user state
     const state = window.getState();
-    const user = { ...(state.user || {}) };
-    user.bodyMetrics = user.bodyMetrics || [];
+    const existingMetrics = state.user?.bodyMetrics || [];
+    const newItem = deletedItem.item;
     
     // Check if already exists
-    if (!user.bodyMetrics.some(m => m.index === deletedItem.originalId)) {
-      user.bodyMetrics.push(deletedItem.item);
-      // Renumber indices
-      user.bodyMetrics = user.bodyMetrics.map((metric, i) => ({
-        ...metric,
-        index: i
-      }));
+    if (!existingMetrics.some(m => m.index === newItem.index)) {
+      const updatedMetrics = [...existingMetrics, newItem]
+        .map((metric, i) => ({ ...metric, index: i }));
       
-      updateState({ user });
-      // Re-render profile view
-      if (window.calisthenics && window.calisthenics.renderProfileView) {
-        window.calisthenics.renderProfileView();
-      }
+      updateState({ user: { ...state.user, bodyMetrics: updatedMetrics } });
     }
     success = true;
     break;
@@ -156,21 +164,16 @@ let success = false;
   case 'workout-history':
     // Restore workout to history
     const historyState = window.getState();
-    const history = historyState.history || [];
+    const existingHistory = historyState.history || [];
+    const newWorkout = deletedItem.item;
     
-    // Check if already exists
-    if (!history.some((_, i) => i === deletedItem.originalId)) {
-      history.splice(deletedItem.originalId, 0, deletedItem.item);
-      updateState({ history });
-      // Re-render profile view
-      if (window.calisthenics && window.calisthenics.renderProfileView) {
-        window.calisthenics.renderProfileView();
-      }
+    // Check if already exists (by id)
+    if (!existingHistory.some(w => w.id === newWorkout.id)) {
+      const updatedHistory = [...existingHistory, newWorkout];
+      updateState({ history: updatedHistory });
     }
     success = true;
     break;
-  default:
-console.warn('Unknown item type for restore:', type);
 }
     if (success) {
 // Delete from deleted items store
@@ -192,13 +195,16 @@ return false;
 async function cleanupExpiredItems() {
 try {
 const result = await clearExpiredDeletedItems(UNDO_RETENTION_MS);
-if (result.deletedCount > 0) {
-}
     // Schedule next cleanup in 1 hour
-setTimeout(cleanupExpiredItems, UNDO_CLEANUP_INTERVAL_MS);
-} catch (error) {
+    setTimeout(() => {
+      cleanupScheduled = false;
+      cleanupExpiredItems();
+    }, UNDO_CLEANUP_INTERVAL_MS);
+  } catch (error) {
 console.error('Error cleaning up expired items:', error);
-}
+    // Reset flag on error to allow retry
+    cleanupScheduled = false;
+  }
 }
 /**
 * Initialize the undo service - starts periodic cleanup
@@ -208,5 +214,6 @@ export function initUndoService() {
 setTimeout(cleanupExpiredItems, CLEANUP_INITIAL_DELAY_MS); // First cleanup after 5 seconds
   // Log current count
 getDeletedItemsByType('exercise').then(items => {
+  console.log(`Undo service: ${items.length} exercise(s) pending for undo`);
 });
 }

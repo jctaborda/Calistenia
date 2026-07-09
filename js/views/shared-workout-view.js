@@ -4,6 +4,7 @@ import { getState } from '../services/state.js';
 import { formatWorkoutDate, formatDate } from '../utils/date-formatter.js';
 import { show } from '../services/toast-service.js';
 import { loadSharedComments } from '../services/database.js';
+import { escapeHtml } from '../utils/html.js';
 
 export async function renderSharedWorkoutView(workoutId) {
   const main = document.getElementById('app');
@@ -35,12 +36,12 @@ export async function renderSharedWorkoutView(workoutId) {
       <h1>${t('shared_workout.title')}</h1>
       <p>${t('shared_workout.shared_on')} ${formattedDate}</p>
       
-      <h2>${workout.routine.name}</h2>
+      <h2>${escapeHtml(workout.routine.name)}</h2>
       
       <div class="workout-details">
         ${workout.exercises.map((ex, index) => `
           <div class="card shared-workout-card">
-            <h3>${index + 1}. ${ex.exerciseName}</h3>
+            <h3>${index + 1}. ${escapeHtml(ex.exerciseName)}</h3>
             <p><strong>Target:</strong> ${ex.targetSets} sets ✕ ${ex.targetReps} reps</p>
             <p><strong>Completed:</strong> ${ex.actualReps ? ex.actualReps.join(', ') + ' reps per set' : t('shared_workout.not_logged')}</p>
           </div>
@@ -55,8 +56,8 @@ export async function renderSharedWorkoutView(workoutId) {
           <div class="comments-list">
             ${sharedComments.map(comment => `
               <div class="comment">
-                <strong>${comment.name}</strong>
-                <p>${comment.text}</p>
+                <strong>${escapeHtml(comment.name)}</strong>
+                <p>${escapeHtml(comment.text)}</p>
                 <small>${formatDate(comment.date)}</small>
               </div>
             `).join('')}
@@ -78,53 +79,8 @@ export async function renderSharedWorkoutView(workoutId) {
     </div>
   `;
 
-  // Handle comment form submission
-  const commentForm = main.querySelector('#comment-form');
-  if (commentForm) {
-    commentForm.addEventListener('submit', async e => {
-      e.preventDefault();
-      
-      const nameInput = main.querySelector('#comment-name');
-      const textInput = main.querySelector('#comment-text');
-      const name = nameInput.value.trim();
-      const text = textInput.value.trim();
-      
-      if (!name || !text) {
-        show(t('shared_workout.enter_name_comment'), 'error');
-        return;
-      }
-      
-      // Load existing comments from IndexedDB
-      let comments;
-      try {
-        comments = await loadSharedComments(workoutId);
-      } catch (error) {
-        console.error('Error loading comments from IndexedDB:', error);
-        comments = [];
-      }
-      
-      comments.push({
-        name,
-        text,
-        date: new Date().toISOString()
-      });
-      
-      // Save back to IndexedDB
-      try {
-        const { storeSharedComments } = await import('../services/database.js');
-        await storeSharedComments(workoutId, comments);
-      } catch (error) {
-        console.error('Error saving comments to IndexedDB:', error);
-        show(t('shared_workout.comment_save_error') || 'Failed to save comment.', 'error');
-        return;
-      }
-      
-      // Clear form and re-render
-      nameInput.value = '';
-      textInput.value = '';
-      renderSharedWorkoutView(workoutId);
-    });
-  }
+  // Handle comment form submission - delegation handles this, remove local handler
+  // Comment form is handled by event-delegation.js
 }
 
 // Export for router usage

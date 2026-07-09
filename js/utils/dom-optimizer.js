@@ -121,6 +121,7 @@ export function createExerciseCard(exercise, categories, difficulties = []) {
   favoriteBtn.setAttribute('aria-label', 'Toggle favorite');
   
   // Controls
+  // Controls
   const controls = document.createElement('div');
   controls.className = 'exercise-card-controls';
   

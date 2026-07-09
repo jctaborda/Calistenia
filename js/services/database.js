@@ -23,8 +23,8 @@ const DB_NAME = 'calisthenics-db';
  * 3. Test on fresh install and existing DB
  * 4. Update this changelog with new version details
  */
-const DB_VERSION = 8;
-const STORES = {
+export const DB_VERSION = 8;
+export const STORES = {
   EXERCISES: 'exercises',
   WORKOUTS: 'workouts',
   STATE: 'state',
@@ -59,11 +59,25 @@ function isQuotaExceededError(error) {
 }
 
 /**
- * Show a user-friendly message when IndexedDB quota is exceeded.
+ * Show a user-friendly toast message when IndexedDB quota is exceeded.
+ * Includes a button to navigate to profile for data management.
  */
 function showQuotaExceededMessage() {
-  // Use alert as a fallback since we may not have DOM access here
-  alert('Storage full. Please clear old data or use a different browser.');
+  // Import toast service dynamically to avoid circular dependencies
+  import('./toast-service.js').then(({ show }) => {
+    show(
+      'Storage full. Go to Profile to clear old data or export a backup.',
+      'error',
+      {
+        action: {
+          label: 'Go to Profile',
+          onClick: () => { window.location.hash = '#profile'; }
+        }
+      }
+    );
+  }).catch(err => {
+    console.error('Failed to show quota message:', err);
+  });
 }
 
 /**
@@ -129,32 +143,22 @@ export function openDatabase() {
       if (database.objectStoreNames.contains(STORES.MODULES)) {
         const oldStore = database.transaction(STORES.MODULES, 'readwrite').objectStore(STORES.MODULES);
         if (!oldStore.keyPath) {
-          // Save existing entries before recreating the store
-          const keysReq = oldStore.getAllKeys();
-          keysReq.onsuccess = () => {
-            const entries = {};
-            const keys = keysReq.result;
-            let pending = keys.length;
-            keys.forEach(k => {
-              const getReq = oldStore.get(k);
-              getReq.onsuccess = () => {
-                entries[k] = getReq.result;
-                if (--pending === 0) {
-                  // All entries saved, recreate store with keyPath
-                  database.deleteObjectStore(STORES.MODULES);
-                  const newStore = database.createObjectStore(STORES.MODULES, { keyPath: 'lang' });
-                  newStore.createIndex('lang', 'lang', { unique: true });
-                  Object.entries(entries).forEach(([k, v]) => {
-                    if (v) newStore.put(v);
-                  });
-                }
-              };
-            });
-            if (pending === 0) {
-              // No entries, just recreate
+          // Synchronously save existing entries before recreating the store
+          const entries = {};
+          const cursorRequest = oldStore.openCursor();
+          cursorRequest.onsuccess = (event) => {
+            const cursor = event.target.result;
+            if (cursor) {
+              entries[cursor.key] = cursor.value;
+              cursor.continue();
+            } else {
+              // All entries read, now recreate store
               database.deleteObjectStore(STORES.MODULES);
               const newStore = database.createObjectStore(STORES.MODULES, { keyPath: 'lang' });
               newStore.createIndex('lang', 'lang', { unique: true });
+              Object.entries(entries).forEach(([k, v]) => {
+                if (v) newStore.put(v);
+              });
             }
           };
         }
@@ -705,13 +709,13 @@ export async function modulesLoad() {
           enClean.es = esClean;
           resolve(enClean);
         } else {
-          // Always return consistent shape: { modules: [] }
-          resolve({ modules: [] });
+          // Always return consistent shape: { modules: [], es: {} }
+          resolve({ modules: [], es: {} });
         }
       };
       esReq.onerror = () => {
         const { lang: enLang, ...enClean } = enData || {};
-        resolve(enClean || { modules: [] });
+        resolve({ ...enClean, es: {} });
       };
     };
     getRequest.onerror = () => {
@@ -834,12 +838,19 @@ export async function clearExpiredDeletedItems(retentionMs) {
 
 // Shared comments operations
 export async function storeSharedComments(workoutId, commentsArray) {
+  // Sanitize comments before storing (defense in depth)
+  const sanitizedComments = commentsArray.map(comment => ({
+    name: sanitizeCommentText(comment.name),
+    text: sanitizeCommentText(comment.text),
+    date: comment.date
+  }));
+  
   const database = await openDatabase();
   const transaction = database.transaction([STORES.SHARED_COMMENTS], 'readwrite');
   attachTransactionError(transaction);
   const store = transaction.objectStore(STORES.SHARED_COMMENTS);
 
-  const putRequest = store.put({ workoutId, comments: commentsArray });
+  const putRequest = store.put({ workoutId, comments: sanitizedComments });
   putRequest.onerror = () => {
     if (isQuotaExceededError(putRequest.error)) {
       showQuotaExceededMessage();
@@ -851,6 +862,15 @@ export async function storeSharedComments(workoutId, commentsArray) {
     putRequest.onsuccess = () => resolve({ success: true });
     putRequest.onerror = () => reject(putRequest.error);
   });
+}
+
+// Sanitize comment text to prevent XSS
+function sanitizeCommentText(text) {
+  if (typeof text !== 'string') return '';
+  // Escape HTML entities
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
 }
 
 export async function loadSharedComments(workoutId) {

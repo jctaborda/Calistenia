@@ -84,9 +84,9 @@ export async function renderSkillModuleDetailView(moduleId) {
       </div>
 
       <h1 class="module-name">${module.name}</h1>
-      <p class="module-description-text">${module.description || '${t("skill_module_detail.no_description")}'}</p>
-      <p><strong>Category:</strong> ${module.category || '${t("skill_module_detail.na")}'}</p>
-      <p><strong>Difficulty:</strong> ${module.difficulty || '${t("skill_module_detail.mixed")}'}</p>
+      <p class="module-description-text">${module.description || t('skill_module_detail.no_description')}</p>
+      <p><strong>Category:</strong> ${module.category || t('skill_module_detail.na')}</p>
+      <p><strong>Difficulty:</strong> ${module.difficulty || t('skill_module_detail.mixed')}</p>
       <p><strong>Total Exercises:</strong> ${module.exercises.length}</p>
 
       <div class="progression-section">
@@ -121,7 +121,7 @@ export async function renderSkillModuleDetailView(moduleId) {
               : (difficultyClass ? '' : '4px solid var(--gray-400)');
 
             return `
-              <div class="exercise-progression-card ${difficultyClass}" style="cursor: pointer; border-left: ${borderStyle};" data-exercise-id="${exerciseId}">
+              <div class="exercise-progression-card ${difficultyClass}" style="cursor: pointer; border-left: ${isCompleted ? '4px solid #4CAF50' : (difficultyClass ? '' : '4px solid var(--gray-400)')};" data-exercise-id="${exerciseId}">
                 <div class="flex-container">
                   <div class="flex-1">
                     <div class="exercise-header">
@@ -133,13 +133,13 @@ export async function renderSkillModuleDetailView(moduleId) {
                     ${exerciseData ? `
                       <div class="exercise-meta">
                         ${exerciseData.equipment ? `
-                          <span>Equipment: 
+                          <span>${t('exercise_details.equipment_label')}
                             ${Array.isArray(exerciseData.equipment) 
                               ? exerciseData.equipment.map(eqId => {
                                   const equipment = equipmentList.find(e => e.id === eqId);
                                   return equipment ? equipment.name : `Equipment ${eqId}`;
                                 }).join(', ') 
-                              : '${t("skill_module_detail.na")}'}
+                              : t('skill_module_detail.na')}
                           </span>
                         ` : ''}
                         <span>Difficulty: 
@@ -148,7 +148,7 @@ export async function renderSkillModuleDetailView(moduleId) {
                                 const difficulty = difficultiesList.find(d => d.id === diffId);
                                 return difficulty ? difficulty.label : `Difficulty ${diffId}`;
                               }).join(', ') 
-                            : '${t("skill_module_detail.na")}') : '${t("skill_module_detail.na")}'}
+                            : t('skill_module_detail.na')) : t('skill_module_detail.na')}
                         </span>
                       </div>
                    ` : ''}

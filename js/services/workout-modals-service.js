@@ -1,6 +1,19 @@
 import { t } from '../i18n.js';
 import { show as showToastShared } from './toast-service.js';
 import { ValidationService } from './validation.js';
+import { exerciseSuggestionService } from './exercise-suggestion-service.js';
+
+/**
+ * Escape HTML entities for safe text display
+ * @param {string} text - Text to escape
+ * @returns {string} Escaped text
+ */
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
 /**
  * WorkoutModalsService - Handles all modal rendering and interactions for active workouts
  * Separated from view logic to improve code organization and maintainability
@@ -10,19 +23,20 @@ export class WorkoutModalsService {
   /**
    * Show a generic modal with title and content
    * @param {string} title - Modal title
-   * @param {string} content - HTML content for modal body
+   * @param {string} content - HTML content for modal body (will be escaped)
    * @returns {object} Controller to close the modal manually if needed
    */
   show(title, content) {
     const modal = document.createElement('div');
     modal.className = 'modal';
-    const escapedTitle = ValidationService.sanitizeText(title);
-    const escapedContent = ValidationService.sanitizeText(content);
+    const escapedTitle = escapeHtml(title);
+    // Escape content to prevent XSS - treat as plain text, not HTML
+    const escapedContent = escapeHtml(content);
     modal.innerHTML = `
       <div class="modal-content">
         <h2>${escapedTitle}</h2>
         <div class="modal-body">${escapedContent}</div>
-        <button class="btn btn-secondary close-modal">Close</button>
+        <button class="btn btn-secondary close-modal">${t('common.close')}</button>
       </div>
     `;
 
@@ -136,18 +150,47 @@ export class WorkoutModalsService {
       * @param {object} routine - Routine object
       * @param {Array} exercises - Array of all available exercises
       */
-     showSwapExerciseModal(exerciseIndex, originalExerciseId, activeWorkout, routine, exercises) {
-       // Build exercise list (skip current exercise to avoid swapping with itself)
+     showSwapExerciseModal(exerciseIndex, originalExerciseId, activeWorkout, routine, exercises, currentDifficulty) {
+       // Get suggested substitutions first
+       const suggestions = exerciseSuggestionService.getSuggestedSubstitutions(
+         originalExerciseId, 
+         exercises, 
+         currentDifficulty || 'intermediate'
+       );
+
+       // Build exercise list with suggestions highlighted
        const exerciseList = exercises
-         .filter((e, idx) => e.id !== originalExerciseId) // Don't include current exercise
-         .map((e) => `<option value="${e.id}">${e.name}</option>`).join('');
+         .filter((e, idx) => e.id !== originalExerciseId)
+         .map((e) => {
+           const isSuggested = suggestions.some(s => s.id === e.id);
+           const suggestion = suggestions.find(s => s.id === e.id);
+           const suggestionBadge = isSuggested 
+             ? `<span style="color: var(--success, #28a745); font-size: 0.85em; margin-left: 0.5rem;">⭐ ${suggestion.suggestionReason}</span>`
+             : '';
+           return `<option value="${e.id}" data-suggested="${isSuggested}">${e.name} ${suggestionBadge}</option>`;
+         }).join('');
+
+       const suggestionsHtml = suggestions.length > 0 ? `
+         <div style="background: var(--gray-50, #f8f9fa); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+           <strong style="color: var(--success, #28a745);">⭐ Suggestions based on same muscle groups:</strong>
+           <ul style="margin: 0.5rem 0 0 1.5rem; font-size: 0.9em;">
+             ${suggestions.slice(0, 3).map(s => `
+               <li>${s.name} - ${s.suggestionReason}</li>
+             `).join('')}
+           </ul>
+         </div>
+       ` : '';
 
        const content = `
+         ${suggestionsHtml}
          <label for="exercise-select">Select a replacement exercise:</label>
-         <select id="exercise-select" class="form-control" class="mt-05rem">
+         <select id="exercise-select" class="form-control">
            <option value="">-- Select Exercise --</option>
            ${exerciseList}
          </select>
+         <p style="font-size: 0.85em; color: var(--gray-600); margin-top: 0.5rem;">
+           ⭐ Marked exercises target the same muscle groups as your current exercise
+         </p>
        `;
 
        const modalController = this.show(t('active_workout.swap_exercise'), content);

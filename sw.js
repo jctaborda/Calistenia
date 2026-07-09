@@ -1,15 +1,9 @@
 // Service Worker with dynamic cache versioning and auto-cleanup
 // Cache name includes git commit hash + timestamp for reliable invalidation
 
-// Generate a version from package.json + build timestamp
-function generateVersion() {
-  const pkg = { "version": "1.0.0" }; // fallback — real value loaded at build time
-  const now = new Date();
-  const ts = `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}-${String(now.getHours()).padStart(2,'0')}${String(now.getMinutes()).padStart(2,'0')}`;
-  return `${pkg.version}-${ts}`;
-}
-
-const VERSION = generateVersion();
+// Use build-time version if available, otherwise generate dynamically
+// This is injected by scripts/update-sw-version.js during build
+const VERSION = 'commit-46cc2bc';
 const CACHE_NAME = `calisthenics-app-${VERSION}`;
 const MAX_CACHES_TO_KEEP = 5; // Keep last 5 cache versions for rollback safety
 
@@ -17,57 +11,22 @@ const MAX_CACHES_TO_KEEP = 5; // Keep last 5 cache versions for rollback safety
 const APP_SHELL = [
   'index.html',
   'css/style.css',
-  'js/main.js',
-  'js/services/api.js',
+  // Core JS modules for offline support (excluding main.js - fetched fresh)
+  'js/constants.js',
   'js/services/state.js',
-  'js/services/storage.js',
   'js/services/database.js',
-  'js/services/modules-service.js',
-  'js/services/toast-service.js',
-  'js/services/undo-service.js',
-  'js/services/event-delegation.js',
-  'js/services/confirmation-modal.js',
-  'js/services/error-boundary-service.js',
   'js/services/data-cache.js',
   'js/services/cache-utils.js',
-  'js/services/validation.js',
-  'js/services/logger.js',
-  'js/services/achievements.js',
-  'js/services/workout-modals-service.js',
-  'js/services/exercise-form-service.js',
   'js/i18n.js',
-  'js/constants.js',
+  'js/services/logger.js',
+  'js/services/validation.js',
+  'js/services/toast-service.js',
+  'js/services/event-delegation.js',
+  'js/services/confirmation-modal.js',
+  'js/utils/helpers.js',
+  'js/utils/array.js',
   'js/utils/dom-optimizer.js',
-  'js/utils/date-formatter.js',
-  'js/utils/formatters.js',
-  'js/utils/workout-summary.js',
-  'js/utils/html.js',
-  'js/views/home-view.js',
-  'js/views/exercise-details-view.js',
-  'js/views/exercises-view.js',
-  'js/views/routines-view.js',
-  'js/views/routine-details-view.js',
-  'js/views/active-workout-view.js',
-  'js/views/workout-summary-view.js',
-  'js/views/workout-completion-view.js',
-  'js/views/workout-detail-view.js',
-  'js/views/onboarding-view.js',
-  'js/views/profile-view.js',
-  'js/views/builder-view.js',
-  'js/views/exercise-form-view.js',
-  'js/views/skill-modules-view.js',
-  'js/views/skill-module-detail-view.js',
-  'js/views/skills-tree-view.js',
-  'js/views/export-import-view.js',
-  'js/views/module-admin-view.js',
-  'js/views/shared-workout-view.js',
-  'js/views/error-view.js',
-  'js/components/header.js',
-  'js/components/spinner.js',
   'manifest.json',
-  'assets/icons/favicon-32x32.png',
-  'assets/icons/favicon-192x192.png',
-  // Runtime data — needed for offline-first to work on first visit
   'data/data.json',
   'data/data-es.json',
   'data/skill-modules.json',
@@ -112,7 +71,38 @@ const APP_SHELL = [
   'assets/images/muscles/secondary/muscle-16.svg',
   'assets/images/muscles/secondary/muscle-17.svg',
   'assets/images/muscles/secondary/muscle-18.svg',
-  'assets/images/muscles/secondary/muscle-19.svg'
+  'assets/images/muscles/secondary/muscle-19.svg',
+  'assets/images/muscles/secondary/muscle-20.svg',
+  // Exercise thumbnails for offline support (29 thumbnails)
+  'assets/images/exercises/0017-kiJ4Z2K.jpg',
+  'assets/images/exercises/0259-x6KpKpq.jpg',
+  'assets/images/exercises/0276-iny3m5y.jpg',
+  'assets/images/exercises/0279-i5cEhka.jpg',
+  'assets/images/exercises/0283-soIB2rj.jpg',
+  'assets/images/exercises/0471-rQxwMxO.jpg',
+  'assets/images/exercises/0472-I3tsCnC.jpg',
+  'assets/images/exercises/0493-B1EVP9F.jpg',
+  'assets/images/exercises/0514-LIlE5Tn.jpg',
+  'assets/images/exercises/0630-RJgzwny.jpg',
+  'assets/images/exercises/0631-yJUHKTn.jpg',
+  'assets/images/exercises/0638-HjdqmZa.jpg',
+  'assets/images/exercises/0652-lBDjFxJ.jpg',
+  'assets/images/exercises/0662-I4hDWkc.jpg',
+  'assets/images/exercises/0687-XVDdcoj.jpg',
+  'assets/images/exercises/1160-dK9394r.jpg',
+  'assets/images/exercises/1273-wigSg76.jpg',
+  'assets/images/exercises/1306-Snj1wSv.jpg',
+  'assets/images/exercises/1326-T2mxWqc.jpg',
+  'assets/images/exercises/3193-Vvwjz6N.jpg',
+  'assets/images/exercises/3293-72BC5Za.jpg',
+  'assets/images/exercises/3294-A9qxk2F.jpg',
+  'assets/images/exercises/3296-PkCN2lv.jpg',
+  'assets/images/exercises/3297-GaSzzuh.jpg',
+  'assets/images/exercises/3298-BL3GHeY.jpg',
+  'assets/images/exercises/3302-XooAdhl.jpg',
+  'assets/images/exercises/3304-MSfvriJ.jpg',
+  'assets/images/exercises/3360-0Yz8WdV.jpg',
+  'assets/images/exercises/3699-yRpV5TC.jpg'
 ];
 
 // Install event: cache app shell resources
@@ -157,7 +147,7 @@ self.addEventListener('install', event => {
   );
 });
 
-// Fetch event: network-first strategy with fallback
+// Fetch event: optimized offline-first strategy
 self.addEventListener('fetch', event => {
   event.respondWith(
     (async () => {
@@ -175,7 +165,56 @@ self.addEventListener('fetch', event => {
       }
       
       try {
-        // Network-first strategy for most requests
+        // Strategy 1: HTML and CSS -> Cache-first
+        if (request.destination === 'document' || request.destination === 'style') {
+          const cached = await caches.match(request);
+          if (cached) {
+            return cached;
+          }
+          const network = await fetch(request);
+          if (network.ok) {
+            const cache = await caches.open(CACHE_NAME);
+            cache.put(request, network.clone());
+          }
+          return network;
+        }
+        
+        // Strategy 2: JS modules -> Network-first (don't cache modules to avoid corruption)
+        // ES modules need to be fetched fresh to avoid caching issues
+        if (request.destination === 'script') {
+          const network = await fetch(request);
+          if (network.ok) {
+            const cache = await caches.open(CACHE_NAME);
+            cache.put(request, network.clone());
+          }
+          return network;
+        }
+        
+        // Strategy 3: Images and fonts -> Cache-first
+        if (request.destination === 'image' || request.destination === 'font') {
+          const cached = await caches.match(request);
+          if (cached) {
+            return cached;
+          }
+          const network = await fetch(request);
+          if (network.ok) {
+            const cache = await caches.open(CACHE_NAME);
+            cache.put(request, network.clone());
+          }
+          return network;
+        }
+        
+        // Strategy 4: Data JSON files -> Cache-first with network fallback
+        // App will read from IndexedDB, but SW caches files for offline access
+        if (isDataJson(request)) {
+          const cached = await caches.match(request);
+          if (cached) {
+            return cached;
+          }
+          return fetch(request);
+        }
+        
+        // Strategy 5: Everything else -> Network-first with cache fallback
         const networkResponse = await fetch(request);
         
         // If successful, update cache with fresh response
@@ -213,6 +252,14 @@ self.addEventListener('fetch', event => {
     })()
   );
 });
+
+/**
+ * Check if request is for a data JSON file
+ * These are cached for offline access but app reads from IndexedDB
+ */
+function isDataJson(request) {
+  return /\/data\/(data|skill-modules).*\.json$/.test(request.url);
+}
 
 // Activate event: cleanup old caches and take control
 self.addEventListener('activate', event => {
@@ -284,17 +331,24 @@ self.addEventListener('message', event => {
   }
   
   if (event.data && event.data.type === 'GET_VERSION') {
-    event.ports[0].postMessage({ version: VERSION });
+    const port = event.ports?.[0];
+    if (port) {
+      port.postMessage({ version: VERSION });
+    }
   }
   
   if (event.data && event.data.type === 'CLEAR_CACHE') {
+    // Guard port existence
+    const port = event.ports?.[0];
+    if (!port) return;
+    
     // Clear only the current cache version
     caches.delete(CACHE_NAME)
       .then(success => {
-        event.ports[0].postMessage({ success, cacheName: CACHE_NAME });
+        port.postMessage({ success, cacheName: CACHE_NAME });
       })
       .catch(error => {
-        event.ports[0].postMessage({ success: false, error: error.message });
+        port.postMessage({ success: false, error: error.message });
       });
   }
   
@@ -322,22 +376,64 @@ self.addEventListener('message', event => {
           });
       });
   }
-});
 
-// Background sync for offline workouts (optional feature)
-self.addEventListener('sync', event => {
-  if (event.tag === 'sync-workout') {
-    event.waitUntil(
-      (async () => {
-        
-        // Get synced workout data from storage
-        // Note: This requires additional state management in your app
-        const clients = await self.clients.matchAll();
-        clients.forEach(client => {
-          client.postMessage({ type: 'SYNC_COMPLETE', tag: 'sync-workout' });
-        });
-      })()
-    );
+  // Handle scheduled notifications from the main app
+  if (event.data && event.data.type === 'SCHEDULE_NOTIFICATION') {
+    const { delaySeconds, workoutData, streakData, routineData, notificationType } = event.data;
+    
+    // Schedule notification using setTimeout
+    const notificationHandler = setTimeout(() => {
+      let title = '';
+      let body = '';
+      let data = {};
+
+      switch (notificationType) {
+        case 'rest-timer':
+          title = 'Rest Complete!';
+          body = `Time to start: ${workoutData?.exerciseName || 'Next exercise'}`;
+          data = { type: 'rest-complete' };
+          break;
+        case 'streak-reminder':
+          title = 'Workout Streak Reminder';
+          body = streakData?.currentStreak 
+            ? `Current streak: ${streakData.currentStreak} day${streakData.currentStreak !== 1 ? 's' : ''}!` 
+            : 'Keep up the good work!';
+          data = { type: 'streak-reminder' };
+          break;
+        case 'routine-reminder':
+          title = 'Scheduled Workout Time!';
+          body = routineData?.name || 'Your scheduled workout';
+          data = { 
+            type: 'scheduled-workout', 
+            routineId: routineData?.id 
+          };
+          break;
+        default:
+          return;
+      }
+
+      const options = {
+        body: body,
+        icon: 'assets/icons/favicon-192x192.png',
+        badge: 'assets/icons/favicon-32x32.png',
+        tag: `${notificationType}-${Date.now()}`,
+        requireInteraction: false,
+        data: data
+      };
+
+      self.registration.showNotification(title, options);
+      clearTimeout(notificationHandler);
+    }, delaySeconds * 1000);
+
+    // Store the timeout ID so it can be cancelled if needed
+    if (!self.scheduledNotifications) {
+      self.scheduledNotifications = [];
+    }
+    self.scheduledNotifications.push({
+      id: Date.now(),
+      handler: notificationHandler,
+      type: notificationType
+    });
   }
 });
 
@@ -364,15 +460,32 @@ self.addEventListener('notificationclick', event => {
     (async () => {
       const clients = await self.clients.matchAll();
       
+      // Handle different notification types
+      const notificationData = event.notification.data || {};
+      const notificationType = notificationData.type;
+      
+      let targetHash = '#home';
+      
+      if (notificationType === 'rest-complete') {
+        targetHash = '#active-workout';
+      } else if (notificationType === 'scheduled-workout' && notificationData.routineId) {
+        targetHash = `#routine-details/routine/${notificationData.routineId}`;
+      }
+      
       // Open app to appropriate page based on notification type
       if (clients.length > 0) {
-        clients[0].focus();
-        if (clients[0].url === '/active-workout') {
-          return;
+        const client = clients.find(c => c.url.includes('index.html')) || clients[0];
+        client.focus();
+        
+        // Navigate to the appropriate hash
+        if (typeof client.navigate === 'function') {
+          client.navigate(targetHash);
+        } else {
+          await client.postMessage({ type: 'NAVIGATE', hash: targetHash });
         }
-        clients[0].navigate('/active-workout');
       } else {
-        self.clients.openWindow('/active-workout');
+        // Use full URL instead of hash fragment
+        self.clients.openWindow('/index.html' + targetHash);
       }
     })()
   );

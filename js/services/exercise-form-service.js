@@ -1,9 +1,9 @@
 // Exercise Form Service - Handles all exercise form operations including prerequisites, progressions, formCues, and commonMistakes
 // Single form for both add and edit — populated differently depending on editId
 
-import { normalizeArray } from '../utils/array.js';
 import { escapeHtml } from '../utils/html.js';
 import { show } from './toast-service.js';
+import { showConfirmation } from './confirmation-modal.js';
 import { loadExercises as loadExercisesFromStorage, saveExercises as saveExercisesToStorage } from './storage.js';
 
 export async function initExerciseForm(editId, setStateFn) {
@@ -376,6 +376,8 @@ export async function initExerciseForm(editId, setStateFn) {
       }
     } catch (err) {
       console.error('Validation service not available:', err);
+      // Re-throw to prevent submit on validation failure
+      throw err;
     }
     
     data.categories = getCheckedValues('categories');
@@ -452,7 +454,11 @@ export async function initExerciseForm(editId, setStateFn) {
     }
     
     const exercise = references.exercises.find(ex => String(ex.id) === String(editingExerciseId));
-    const confirmed = confirm(`Are you sure you want to delete "${exercise?.name}"? This cannot be undone.`);
+    const confirmed = await showConfirmation(
+      `Delete "${exercise?.name}"?`,
+      'This cannot be undone.',
+      'Delete'
+    );
     
     if (!confirmed) return;
     

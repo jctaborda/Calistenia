@@ -4,6 +4,8 @@ import { t } from '../i18n.js';
 import { getState } from '../services/state.js';
 import { loadAllExercises, loadAllCategories, loadAllDifficulties } from '../services/data-cache.js';
 import { fetchSkillModules } from '../services/api.js';
+import { escapeHtml } from '../utils/html.js';
+import { isExerciseCompleted } from '../utils/helpers.js';
 
 export async function renderSkillsTreeView() {
   const main = document.getElementById('app');
@@ -15,18 +17,6 @@ export async function renderSkillsTreeView() {
 
   // Calculate history early -- needed by exercise processing inside try block
   const history = state.history || [];
-  function isExerciseCompleted(exerciseId) {
-    for (const workout of history) {
-      if (workout.exercises) {
-        for (const ex of workout.exercises) {
-          if (ex.exerciseId === exerciseId && ex.actualReps && ex.actualReps.some(r => r > 0)) {
-            return true;
-          }
-        }
-      }
-    }
-    return false;
-  }
 
   try {
     const exercisesArray = await loadAllExercises();
@@ -89,7 +79,7 @@ export async function renderSkillsTreeView() {
         const associatedModules = exerciseToModules[ex.id] || [];
         const moduleProgress = associatedModules.map(mod => {
           const modExercises = moduleExerciseMap[mod.id].exerciseIds;
-          const completedCount = [...modExercises].filter(eId => isExerciseCompleted(eId)).length;
+          const completedCount = [...modExercises].filter(eId => isExerciseCompleted(eId, history)).length;
           return { moduleId: mod.id, progress: Math.round((completedCount / modExercises.size) * 100) };
         });
 
@@ -126,7 +116,7 @@ export async function renderSkillsTreeView() {
   const moduleCompletionStatus = {};
   modulesData.forEach(mod => {
     const exIds = mod.exercises || [];
-    moduleCompletionStatus[mod.id] = exIds.length > 0 && exIds.every(eId => isExerciseCompleted(eId));
+    moduleCompletionStatus[mod.id] = exIds.length > 0 && exIds.every(eId => isExerciseCompleted(eId, history));
   });
 
   function getNodeProgress(node) {
@@ -134,13 +124,13 @@ export async function renderSkillsTreeView() {
       for (const prereqId of node.prerequisites) {
         const prereqNode = exercisesData.nodes.find(n => n.exerciseId === prereqId);
         if (!prereqNode) continue;
-        if (prereqNode.exerciseId && !isExerciseCompleted(prereqNode.exerciseId)) {
+        if (prereqNode.exerciseId && !isExerciseCompleted(prereqNode.exerciseId, history)) {
           return 0;
         }
       }
     }
     if (node.exerciseId) {
-      return isExerciseCompleted(node.exerciseId) ? 1 : 0;
+      return isExerciseCompleted(node.exerciseId, history) ? 1 : 0;
     }
     return 0;
   }
@@ -154,9 +144,9 @@ export async function renderSkillsTreeView() {
         if (!node) continue;
         const prereqsDone = node.prerequisites.every(prereqId => {
           const prereqNode = exercisesData.nodes.find(n => n.exerciseId === prereqId);
-          return !prereqNode || isExerciseCompleted(prereqNode.exerciseId);
+          return !prereqNode || isExerciseCompleted(prereqNode.exerciseId, history);
         });
-        if (prereqsDone && !isExerciseCompleted(exId)) {
+        if (prereqsDone && !isExerciseCompleted(exId, history)) {
           nextExercises.add(exId);
           break; // First unlockable in this module
         }
@@ -243,9 +233,9 @@ export async function renderSkillsTreeView() {
       });
     });
 
-    // Layout constants
+    // Layout constants - increased vertical spacing to prevent label overlap
     const NODE_SPACING_X = 300;
-    const NODE_SPACING_Y = 55;
+    const NODE_SPACING_Y = 75; // Increased from 55 to give room for exercise labels
     const MODULE_GAP = 30;
     const PADDING = 40;
 
@@ -358,34 +348,34 @@ export async function renderSkillsTreeView() {
 
           let strokeColor, fillColor;
           if (isCompleted) {
-            strokeColor = '#4CAF50';
-            fillColor = '#C8E6C9';
+            strokeColor = 'var(--btn-start, #4CAF50)';
+            fillColor = 'var(--completion-bg, #C8E6C9)';
           } else if (canUnlock) {
-            strokeColor = '#FF9800';
-            fillColor = '#FFF3E0';
+            strokeColor = 'var(--warning-dark, #FF9800)';
+            fillColor = 'var(--unlock-bg, #FFF3E0)';
           } else {
             const prereqStatus = node.prerequisites && node.prerequisites.some(prereqId => {
               const prereqNode = nodeMap[prereqId];
               return prereqNode && getNodeProgress(prereqNode) !== 1;
             });
-            strokeColor = prereqStatus ? '#9E9E9E' : '#2196F3';
-            fillColor = '#E3F2FD';
+            strokeColor = prereqStatus ? 'var(--gray-500, #9E9E9E)' : 'var(--btn-view, #2196F3)';
+            fillColor = 'var(--prereq-bg, #E3F2FD)';
           }
 
           const radius = 20;
           const labelY = y + 45;
 
-          const tooltipData = `data-tooltip-name="${node.name}" data-tooltip-category="${node.category}" data-tooltip-module-progress="${JSON.stringify(node.moduleProgress.map(m => m.progress).join(', '))}"`;
+          const tooltipData = `data-tooltip-name="${escapeHtml(node.name)}" data-tooltip-category="${escapeHtml(node.category)}" data-tooltip-module-progress="${JSON.stringify(node.moduleProgress.map(m => m.progress).join(', '))}"`;
 
           const pulseRing = isNext ? `
-            <circle cx="${x}" cy="${y}" r="${radius + 8}" fill="none" stroke="#FF9800" stroke-width="2" stroke-dasharray="4,3">
+            <circle cx="${x}" cy="${y}" r="${radius + 8}" fill="none" stroke="var(--warning-dark, #FF9800)" stroke-width="2" stroke-dasharray="4,3">
               <animate attributeName="r" values="${radius + 4};${radius + 10};${radius + 4}" dur="2s" repeatCount="indefinite"/>
               <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"/>
             </circle>
           ` : '';
 
           const progressRing = !isCompleted && node.moduleProgress.length > 0 ? `
-            <circle cx="${x}" cy="${y}" r="${radius - 4}" fill="none" stroke="#2196F3" stroke-width="2"
+            <circle cx="${x}" cy="${y}" r="${radius - 4}" fill="none" stroke="var(--btn-view, #2196F3)" stroke-width="2"
               stroke-dasharray="${Math.round(overallModuleProgress / 100 * 2 * Math.PI * (radius - 4))} ${2 * Math.PI * (radius - 4)}"
               transform="rotate(-90 ${x} ${y})"
               opacity="0.6"/>
@@ -394,7 +384,7 @@ export async function renderSkillsTreeView() {
           svgNodes.push(`
             <g class="node" data-node-id="${node.exerciseId}" ${tooltipData}>
               ${isCompleted ? `
-                <circle cx="${x}" cy="${y}" r="${radius + 5}" fill="none" stroke="#4CAF50" stroke-width="3"/>
+                <circle cx="${x}" cy="${y}" r="${radius + 5}" fill="none" stroke="var(--btn-start, #4CAF50)" stroke-width="3"/>
               ` : ''}
               ${pulseRing}
               <circle
@@ -408,21 +398,21 @@ export async function renderSkillsTreeView() {
               />
               ${progressRing}
               ${isCompleted ? `
-                <text x="${x}" y="${y + 3}" text-anchor="middle" font-size="12" fill="#4CAF50" font-weight="bold">✅</text>
+                <text x="${x}" y="${y + 3}" text-anchor="middle" font-size="12" fill="var(--btn-start, #4CAF50)" font-weight="bold">✅</text>
               ` : isNext ? `
-                <text x="${x}" y="${y + 3}" text-anchor="middle" font-size="10" fill="#FF9800" font-weight="bold">→</text>
+                <text x="${x}" y="${y + 3}" text-anchor="middle" font-size="10" fill="var(--warning-dark, #FF9800)" font-weight="bold">→</text>
               ` : ''}
               <text
                 x="${x}"
                 y="${labelY}"
                 text-anchor="middle"
                 font-size="11"
-                fill="#333"
+                fill="var(--gray-900, #333)"
                 font-weight="500"
                 class="exercise-label"
                 class="pointer-events-none"
-              >${node.name}</text>
-              <title>${node.name} (${node.category})${isCompleted ? ' - Completed' : ''}${isNext ? ' - Next Exercise' : ''}</title>
+              >${escapeHtml(node.name)}</text>
+              <title>${escapeHtml(node.name)} (${escapeHtml(node.category)})${isCompleted ? ' - Completed' : ''}${isNext ? ' - Next Exercise' : ''}</title>
             </g>
           `);
         });
@@ -452,12 +442,12 @@ export async function renderSkillsTreeView() {
           const cp2x = targetPos.x - dx * 0.5;
           const cp2y = targetPos.y;
 
-          const isCompleted = isExerciseCompleted(node.exerciseId) && isExerciseCompleted(prereqId);
+          const isCompleted = isExerciseCompleted(node.exerciseId, history) && isExerciseCompleted(prereqId, history);
 
           connectionLines.push(`
             <path
               d="M ${sourcePos.x} ${sourcePos.y} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${targetPos.x} ${targetPos.y}"
-              stroke="${isCompleted ? '#4CAF50' : '#4CAF50'}"
+              stroke="var(--btn-start, #4CAF50)"
               stroke-width="${isCompleted ? '2.5' : '1.5'}"
               stroke-dasharray="${isCompleted ? 'none' : '5,5'}"
               fill="none"
@@ -549,11 +539,46 @@ export async function renderSkillsTreeView() {
   // Get unique categories for filter
   const allCategories = [...new Set(exercisesData.nodes.map(n => n.category))].sort();
 
+  // Remove any existing event listeners to prevent duplicates (memory leak fix)
+  if (main.dataset.skillsTreeViewListener === 'true') {
+    document.removeEventListener('keydown', main._handleSkillsTreeKeydown);
+    const svg = document.getElementById('skills-tree-svg');
+    if (svg) {
+      svg.removeEventListener('click', main._handleSkillsTreeSvgClick);
+    }
+    // Remove filter listeners
+    const searchInput = document.getElementById('tree-search');
+    const categoryFilter = document.getElementById('tree-category-filter');
+    const difficultyFilter = document.getElementById('tree-difficulty-filter');
+    const resetBtn = document.getElementById('tree-reset-filters');
+    
+    if (searchInput && main._handleTreeSearchInput) {
+      searchInput.removeEventListener('input', main._handleTreeSearchInput);
+    }
+    if (categoryFilter && main._handleTreeCategoryChange) {
+      categoryFilter.removeEventListener('change', main._handleTreeCategoryChange);
+    }
+    if (difficultyFilter && main._handleTreeDifficultyChange) {
+      difficultyFilter.removeEventListener('change', main._handleTreeDifficultyChange);
+    }
+    if (resetBtn && main._handleTreeResetClick) {
+      resetBtn.removeEventListener('click', main._handleTreeResetClick);
+    }
+    
+    delete main.dataset.skillsTreeViewListener;
+    delete main._handleSkillsTreeKeydown;
+    delete main._handleSkillsTreeSvgClick;
+    delete main._handleTreeSearchInput;
+    delete main._handleTreeCategoryChange;
+    delete main._handleTreeDifficultyChange;
+    delete main._handleTreeResetClick;
+  }
+
   main.innerHTML = renderHeader() + `
     <div class="card">
       <div class="flex-between mb-1rem">
         <h1>${t('skills_tree.exercise_progression')}</h1>
-        <span style="font-size: 1.5rem; font-weight: bold; color: ${overallProgress >= 80 ? '#4CAF50' : '#2196F3'}">
+        <span style="font-size: 1.5rem; font-weight: bold; color: ${overallProgress >= 80 ? 'var(--btn-start, #4CAF50)' : 'var(--btn-view, #2196F3)'}">
           ${overallProgress}% Complete (${completedNodes}/${totalNodes} exercises)
         </span>
       </div>
@@ -591,7 +616,7 @@ export async function renderSkillsTreeView() {
         ${treeLayout.labels}
       </div>
 
-      <div class="card legend-card" class="mt-2rem legend-card">
+      <div class="card legend-card mt-2rem">
         <h3>Legend</h3>
         <div class="flex-gap-xl">
           <div class="flex-center-gap">
@@ -656,7 +681,8 @@ export async function renderSkillsTreeView() {
     focusedNodeIndex = -1;
   }
 
-  document.addEventListener('keydown', (e) => {
+  // Create handler refs stored on main element for cleanup
+  const handleSkillsTreeKeydown = (e) => {
     const svg = document.getElementById('skills-tree-svg');
     if (!svg) return;
 
@@ -680,18 +706,24 @@ export async function renderSkillsTreeView() {
     } else if (e.key === 'Escape') {
       clearFocus();
     }
-  });
+  };
+
+  // Add keyboard navigation
+  document.addEventListener('keydown', handleSkillsTreeKeydown);
+  main._handleSkillsTreeKeydown = handleSkillsTreeKeydown;
 
   // Add click handlers for nodes
   const svg = document.getElementById('skills-tree-svg');
+  const handleSkillsTreeSvgClick = (e) => {
+    const nodeGroup = e.target.closest('.node');
+    if (nodeGroup) {
+      const exerciseId = nodeGroup.getAttribute('data-node-id');
+      window.location.hash = `#exercise/${exerciseId}`;
+    }
+  };
   if (svg) {
-    svg.addEventListener('click', (e) => {
-      const nodeGroup = e.target.closest('.node');
-      if (nodeGroup) {
-        const exerciseId = nodeGroup.getAttribute('data-node-id');
-        window.location.hash = `#exercise/${exerciseId}`;
-      }
-    });
+    svg.addEventListener('click', handleSkillsTreeSvgClick);
+    main._handleSkillsTreeSvgClick = handleSkillsTreeSvgClick;
   }
 
   // Fix #5: Filter/Search event listeners
@@ -718,15 +750,30 @@ export async function renderSkillsTreeView() {
     }
   }
 
-  if (searchInput) searchInput.addEventListener('input', applyFilters);
-  if (categoryFilter) categoryFilter.addEventListener('change', applyFilters);
-  if (difficultyFilter) difficultyFilter.addEventListener('change', applyFilters);
-  if (resetBtn) resetBtn.addEventListener('click', () => {
+  // Store handler refs for cleanup
+  const handleSearchInput = () => applyFilters();
+  const handleCategoryChange = () => applyFilters();
+  const handleDifficultyChange = () => applyFilters();
+  const handleResetClick = () => {
     searchInput.value = '';
     categoryFilter.value = '';
     difficultyFilter.value = '';
     applyFilters();
-  });
+  };
+
+  if (searchInput) searchInput.addEventListener('input', handleSearchInput);
+  if (categoryFilter) categoryFilter.addEventListener('change', handleCategoryChange);
+  if (difficultyFilter) difficultyFilter.addEventListener('change', handleDifficultyChange);
+  if (resetBtn) resetBtn.addEventListener('click', handleResetClick);
+  
+  // Store handlers on main element for cleanup
+  main._handleTreeSearchInput = handleSearchInput;
+  main._handleTreeCategoryChange = handleCategoryChange;
+  main._handleTreeDifficultyChange = handleDifficultyChange;
+  main._handleTreeResetClick = handleResetClick;
+  
+  // Mark that listeners have been added
+  main.dataset.skillsTreeViewListener = 'true';
 }
 
 // Export for router usage

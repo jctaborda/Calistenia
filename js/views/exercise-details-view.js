@@ -27,6 +27,11 @@ export async function renderExerciseDetailsView(exerciseId) {
     main.innerHTML = renderHeader() + `<div class="card"><p>${t('exercise_details.not_found')}</p></div>`;
     return;
   }
+  
+  // Dispatch exercise viewed event for install prompt tracking
+  document.dispatchEvent(new CustomEvent('exerciseViewed', {
+    detail: { exerciseId: exercise.id, exerciseName: exercise.name }
+  }));
 
   // Sanitize all user-generated content to prevent XSS
   const safe = ValidationService.sanitizeExercise(exercise);
@@ -188,24 +193,20 @@ export async function renderExerciseDetailsView(exerciseId) {
   <!-- Muscle Diagrams -->
   <h2 class="card-title">${t('exercise_details.muscle_engagement')}</h2>
   
-  <div class="muscle-container">
-  <div class="muscle-diagram-section">
-  <h3 class="diagram-title">${t('exercise_details.front_view')}</h3>
-  <div class="muscle-diagram-front">
-  <img src="./assets/images/muscles/muscular_system_front.svg" alt="Muscular System Front" class="base-image" loading="lazy">
-  ${frontImagesSecondary}
-  ${frontImages} 
-  </div>
-  </div>
-  
-  <div class="muscle-diagram-section">
-  <h3 class="diagram-title">${t('exercise_details.back_view')}</h3>
-  <div class="muscle-diagram-back">
-  <img src="./assets/images/muscles/muscular_system_back.svg" alt="Muscular System Back" class="base-image" loading="lazy">
-  ${backImagesSecondary}
-  ${backImages} 
-  </div>
-  </div>
+  <div class="routine-muscle-section">
+    <div class="muscle-container">
+      <div class="muscle-diagram-front">
+        <img src="./assets/images/muscles/muscular_system_front.svg" alt="Muscular System Front" class="base-image" loading="lazy">
+        ${frontImagesSecondary}
+        ${frontImages} 
+      </div>
+      
+      <div class="muscle-diagram-back">
+        <img src="./assets/images/muscles/muscular_system_back.svg" alt="Muscular System Back" class="base-image" loading="lazy">
+        ${backImagesSecondary}
+        ${backImages} 
+      </div>
+    </div>
   </div>
   </div>
     </div>

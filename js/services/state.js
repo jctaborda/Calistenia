@@ -36,25 +36,78 @@ export function getState() {
 export function updateState(updates, enforceImmutable = true) {
   const previousState = JSON.parse(JSON.stringify(state));
   
-  // Merge updates immutably
-  const newState = { ...state, ...updates };
-  
-  if (enforceImmutable && typeof previousState !== 'undefined') {
-    // Check for nested object mutations
-    Object.keys(updates).forEach(key => {
-      const original = previousState[key];
-      const newValue = updates[key];
-      
-      if (original !== undefined && typeof newValue === 'object') {
-        if (!isValidImmutableUpdate(original, newValue)) {
-          console.warn(
-            `WARNING  State mutation detected for '${key}'. ` +
-            `Expected immutable update but found potential direct mutation. ` +
-            `Please use spread operator: { ${key}: { ...${key}, ...updates.${key} } }`
-          );
+  // Deep merge function with defensive copying
+  function deepMerge(target, source) {
+    // Always create a new object/array to avoid reference issues
+    const result = Array.isArray(source) ? [...source] : { ...target };
+    
+    for (const key in source) {
+      if (source.hasOwnProperty(key)) {
+        const sourceValue = source[key];
+        const targetValue = target[key];
+        
+        if (typeof sourceValue === 'object' && sourceValue !== null && !Array.isArray(sourceValue)) {
+          // Recursively merge objects with defensive copy
+          result[key] = deepMerge(targetValue || {}, sourceValue);
+        } else if (Array.isArray(sourceValue)) {
+          // Always create new array copy
+          result[key] = [...sourceValue];
+        } else {
+          // Primitive value - direct assignment is safe
+          result[key] = sourceValue;
         }
       }
-    });
+    }
+    
+    return result;
+  }
+  
+  // Merge updates immutably with deep merge for nested objects
+  const newState = deepMerge(state, updates);
+  
+  if (enforceImmutable) {
+    // Verify that updates don't contain references to existing state objects
+    function detectReferences(obj, path = '', seen = new Set()) {
+      if (obj === null || typeof obj !== 'object') {
+        return false;
+      }
+      
+      if (seen.has(obj)) {
+        return true; // Circular reference detected
+      }
+      
+      seen.add(obj);
+      
+      for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          const value = obj[key];
+          const currentPath = path ? `${path}.${key}` : key;
+          
+          // Check if this value is the same reference as in current state
+          // Only warn for non-null objects/arrays
+          if (value !== null && typeof value === 'object' && key in state) {
+            if (value === state[key]) {
+              console.warn(
+                `WARNING  Potential state mutation at '${currentPath}'. ` +
+                `The update contains a reference to an existing state object. ` +
+                `Please ensure you're creating a new object: { ${key}: { ...${key}, ...updates.${key} } }`
+              );
+              return true;
+            }
+          }
+          
+          if (typeof value === 'object' && value !== null) {
+            if (detectReferences(value, currentPath, seen)) {
+              return true;
+            }
+          }
+        }
+      }
+      
+      return false;
+    }
+    
+    detectReferences(updates);
   }
   
   state = newState;
@@ -110,7 +163,8 @@ export function updateArrayItem(path, index, updater) {
  * @param {*} item - Item to add
  */
 export function addItemToArray(path, item) {
-  const arr = JSON.parse(JSON.stringify(state[path]) || []);
+  const currentValue = state[path];
+  const arr = currentValue ? JSON.parse(JSON.stringify(currentValue)) : [];
   arr.push(item);
   updateState({ [path]: arr });
 }
@@ -131,7 +185,6 @@ export function initializeState() {
   
   // Define default state structure
   const defaultState = {
-    user: null,
     activeWorkout: null,
     history: [],
     exercises: [],
@@ -140,7 +193,22 @@ export function initializeState() {
     equipment: [],
     muscles: [],
     difficulties: [],
-    modules: []
+    modules: [],
+    settings: {
+      units: 'metric', // 'metric' or 'imperial'
+      notifications: {
+        enabled: true,
+        workoutReminders: true,
+        achievements: true
+      },
+      appearance: {
+        theme: 'light', // 'light' or 'dark'
+        fontSize: 'medium' // 'small', 'medium', 'large'
+      },
+      voiceCues: {
+        enabled: true
+      }
+    }
   };
   
   if (saved) {
@@ -155,16 +223,16 @@ export function initializeState() {
       // Merge saved state with defaults, preserving existing values
       state = { ...defaultState, ...parsed };
       
-      // Ensure user object has all expected fields
-      if (!state.user) {
-        state.user = defaultState.user;
-      } else {
+      // Ensure user object has all expected fields if it exists
+      if (state.user) {
         // Add missing user fields
         state.user = { ...defaultState.user, ...state.user };
         // Fix deprecated field name
         if (state.user.autoAdvance) {
           state.user.autoAdvanceAfterRest = state.user.autoAdvance;
           delete state.user.autoAdvance;
+          // Also remove from localStorage to prevent stale data
+          localStorage.setItem('state', JSON.stringify(state));
         }
       }
       
@@ -174,6 +242,7 @@ export function initializeState() {
       state = { ...defaultState };
     }
   } else {
+    // No saved state - user is undefined (triggers onboarding)
     state = { ...defaultState };
   }
 }

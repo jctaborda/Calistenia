@@ -1,125 +1,4 @@
 {
-  "dataVersion": "2026-06-20T23:00:48.956Z",
-  "categories": [
-    {
-      "id": 8,
-      "name": "Brazos"
-    },
-    {
-      "id": 9,
-      "name": "Piernas"
-    },
-    {
-      "id": 10,
-      "name": "Abdominales"
-    },
-    {
-      "id": 11,
-      "name": "Pecho"
-    },
-    {
-      "id": 12,
-      "name": "Espalda"
-    },
-    {
-      "id": 13,
-      "name": "Hombros"
-    },
-    {
-      "id": 14,
-      "name": "Pantorrillas"
-    },
-    {
-      "id": 15,
-      "name": "Cardio"
-    },
-    {
-      "id": 16,
-      "name": "Sin definir"
-    },
-    {
-      "id": 17,
-      "name": "Empuje"
-    },
-    {
-      "id": 18,
-      "name": "Jalón"
-    },
-    {
-      "id": 19,
-      "name": "Cuerpo completo"
-    }
-  ],
-  "equipment": [
-    {
-      "id": 1,
-      "name": "Barras de fondos"
-    },
-    {
-      "id": 2,
-      "name": "Bandas elásticas"
-    },
-    {
-      "id": 3,
-      "name": "Mancuerna"
-    },
-    {
-      "id": 4,
-      "name": "Esterilla de gimnasio"
-    },
-    {
-      "id": 5,
-      "name": "Paralletes"
-    },
-    {
-      "id": 6,
-      "name": "Barra de dominadas"
-    },
-    {
-      "id": 7,
-      "name": "Ninguna (ejercicio con peso corporal)"
-    },
-    {
-      "id": 8,
-      "name": "Banco"
-    },
-    {
-      "id": 9,
-      "name": "Banco inclinado"
-    },
-    {
-      "id": 10,
-      "name": "Pesa rusa"
-    },
-    {
-      "id": 11,
-      "name": "Anillas gimnásticas"
-    },
-    {
-      "id": 12,
-      "name": "Banco/Step"
-    },
-    {
-      "id": 13,
-      "name": "Chaleco/cinturón con peso"
-    },
-    {
-      "id": 14,
-      "name": "Poste/barra vertical"
-    },
-    {
-      "id": 15,
-      "name": "Peso corporal"
-    },
-    {
-      "id": 16,
-      "name": "Suelo"
-    },
-    {
-      "id": 17,
-      "name": "Pared"
-    }
-  ],
   "exercises": [
     {
       "id": 52,
@@ -159,7 +38,8 @@
       "muscles_secondary": [
         2,
         18
-      ]
+      ],
+      "category": 10
     },
     {
       "id": 97,
@@ -197,7 +77,8 @@
       ],
       "muscles_secondary": [
         10
-      ]
+      ],
+      "category": 9
     },
     {
       "id": 91,
@@ -210,8 +91,14 @@
       ],
       "image_url": "",
       "video_url": "",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        10,
+        9
+      ],
+      "muscles": [
+        6,
+        20
+      ],
       "prerequisites": [
         54
       ],
@@ -265,7 +152,8 @@
       ],
       "muscles_secondary": [
         8
-      ]
+      ],
+      "category": 9
     },
     {
       "id": 14,
@@ -278,8 +166,15 @@
       ],
       "image_url": "assets/images/exercises/3293-72BC5Za.jpg",
       "video_url": "assets/videos/exercises/3293-72BC5Za.gif",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        12,
+        8,
+        18
+      ],
+      "muscles": [
+        12,
+        1
+      ],
       "prerequisites": [
         11
       ],
@@ -311,8 +206,15 @@
       ],
       "image_url": "assets/images/exercises/3294-A9qxk2F.jpg",
       "video_url": "assets/videos/exercises/3294-A9qxk2F.gif",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        11,
+        13,
+        17
+      ],
+      "muscles": [
+        4,
+        5
+      ],
       "prerequisites": [
         3,
         9,
@@ -376,7 +278,8 @@
       "muscles_secondary": [
         7,
         20
-      ]
+      ],
+      "category": 9
     },
     {
       "id": 20,
@@ -389,8 +292,15 @@
       ],
       "image_url": "assets/images/exercises/0017-kiJ4Z2K.jpg",
       "video_url": "assets/videos/exercises/0017-kiJ4Z2K.gif",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        12,
+        8,
+        18
+      ],
+      "muscles": [
+        12,
+        1
+      ],
       "prerequisites": [
         119
       ],
@@ -421,8 +331,15 @@
       ],
       "image_url": "",
       "video_url": "",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        12,
+        8,
+        18
+      ],
+      "muscles": [
+        12,
+        1
+      ],
       "prerequisites": [],
       "progressions": [
         20,
@@ -480,7 +397,8 @@
       "muscles_secondary": [
         8,
         11
-      ]
+      ],
+      "category": 12
     },
     {
       "id": 17,
@@ -523,7 +441,8 @@
         13,
         19,
         16
-      ]
+      ],
+      "category": 16
     },
     {
       "id": 104,
@@ -566,7 +485,8 @@
         6,
         14,
         18
-      ]
+      ],
+      "category": 9
     },
     {
       "id": 86,
@@ -607,7 +527,8 @@
       ],
       "muscles_secondary": [
         15
-      ]
+      ],
+      "category": 14
     },
     {
       "id": 34,
@@ -648,7 +569,8 @@
       "muscles_secondary": [
         4,
         2
-      ]
+      ],
+      "category": 8
     },
     {
       "id": 41,
@@ -687,7 +609,8 @@
       ],
       "muscles_secondary": [
         19
-      ]
+      ],
+      "category": 8
     },
     {
       "id": 124,
@@ -728,7 +651,8 @@
       ],
       "muscles_secondary": [
         14
-      ]
+      ],
+      "category": 16
     },
     {
       "id": 61,
@@ -741,8 +665,15 @@
       ],
       "image_url": "",
       "video_url": "",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        10,
+        19
+      ],
+      "muscles": [
+        6,
+        14,
+        16
+      ],
       "prerequisites": [],
       "progressions": [
         53
@@ -802,7 +733,8 @@
       "muscles_secondary": [
         7,
         20
-      ]
+      ],
+      "category": 9
     },
     {
       "id": 99,
@@ -848,7 +780,8 @@
         4,
         5,
         6
-      ]
+      ],
+      "category": 9
     },
     {
       "id": 84,
@@ -861,8 +794,12 @@
       ],
       "image_url": "",
       "video_url": "",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        14
+      ],
+      "muscles": [
+        7
+      ],
       "prerequisites": [],
       "progressions": [
         87,
@@ -923,7 +860,8 @@
         9,
         17,
         18
-      ]
+      ],
+      "category": 12
     },
     {
       "id": 95,
@@ -963,7 +901,8 @@
       ],
       "muscles_secondary": [
         20
-      ]
+      ],
+      "category": 9
     },
     {
       "id": 4,
@@ -976,8 +915,16 @@
       ],
       "image_url": "assets/images/exercises/1273-wigSg76.jpg",
       "video_url": "assets/videos/exercises/1273-wigSg76.gif",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        11,
+        13,
+        17
+      ],
+      "muscles": [
+        4,
+        2,
+        5
+      ],
       "prerequisites": [
         14,
         7,
@@ -1010,8 +957,15 @@
       ],
       "image_url": "assets/images/exercises/0259-x6KpKpq.jpg",
       "video_url": "assets/videos/exercises/0259-x6KpKpq.gif",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        11,
+        13,
+        17
+      ],
+      "muscles": [
+        5,
+        4
+      ],
       "prerequisites": [
         1
       ],
@@ -1077,7 +1031,8 @@
         17,
         18,
         14
-      ]
+      ],
+      "category": 12
     },
     {
       "id": 90,
@@ -1120,7 +1075,8 @@
       "muscles_secondary": [
         7,
         20
-      ]
+      ],
+      "category": 9
     },
     {
       "id": 106,
@@ -1160,21 +1116,31 @@
       "muscles_secondary": [
         2,
         18
-      ]
+      ],
+      "category": 10
     },
     {
       "id": 53,
       "name": "Crunch",
       "description": "Acostado boca arriba, curla los hombros hacia la pelvis para contraer los abdominales directamente.",
       "skill": "Core",
-      "equipment": [],
+      "equipment": [
+        7,
+        15,
+        16
+      ],
       "difficulty": [
         1
       ],
-      "image_url": "",
-      "video_url": "",
-      "categories": [],
-      "muscles": [],
+      "image_url": "assets/images/exercises/53-0274-TFqbd8t.jpg",
+      "video_url": "assets/images/exercises/53-0274-TFqbd8t.gif",
+      "categories": [
+        10
+      ],
+      "muscles": [
+        6,
+        14
+      ],
       "prerequisites": [
         61,
         59,
@@ -1182,7 +1148,10 @@
         45
       ],
       "progressions": [
-        55
+        124,
+        46,
+        121,
+        62
       ],
       "formCues": [
         "Acuéstate boca arriba, rodillas dobladas",
@@ -1208,8 +1177,13 @@
       ],
       "image_url": "assets/images/exercises/0276-iny3m5y.jpg",
       "video_url": "assets/videos/exercises/0276-iny3m5y.gif",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        10,
+        19
+      ],
+      "muscles": [
+        6
+      ],
       "prerequisites": [],
       "progressions": [
         53
@@ -1264,7 +1238,8 @@
       "muscles_secondary": [
         9,
         12
-      ]
+      ],
+      "category": 8
     },
     {
       "id": 7,
@@ -1277,8 +1252,16 @@
       ],
       "image_url": "assets/images/exercises/0279-i5cEhka.jpg",
       "video_url": "assets/videos/exercises/0279-i5cEhka.gif",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        11,
+        13,
+        17
+      ],
+      "muscles": [
+        4,
+        2,
+        5
+      ],
       "prerequisites": [
         3,
         9,
@@ -1312,8 +1295,15 @@
       ],
       "image_url": "assets/images/exercises/0283-soIB2rj.jpg",
       "video_url": "assets/videos/exercises/0283-soIB2rj.gif",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        11,
+        13,
+        17
+      ],
+      "muscles": [
+        4,
+        5
+      ],
       "prerequisites": [
         1
       ],
@@ -1374,7 +1364,8 @@
       ],
       "muscles_secondary": [
         11
-      ]
+      ],
+      "category": 9
     },
     {
       "id": 49,
@@ -1414,7 +1405,8 @@
       "muscles_secondary": [
         6,
         16
-      ]
+      ],
+      "category": 10
     },
     {
       "id": 43,
@@ -1427,8 +1419,16 @@
       ],
       "image_url": "",
       "video_url": "",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        12,
+        8,
+        18
+      ],
+      "muscles": [
+        19,
+        12,
+        1
+      ],
       "prerequisites": [
         14,
         21,
@@ -1488,7 +1488,8 @@
       "muscles_secondary": [
         8,
         20
-      ]
+      ],
+      "category": 9
     },
     {
       "id": 125,
@@ -1501,8 +1502,13 @@
       ],
       "image_url": "",
       "video_url": "",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        10,
+        19
+      ],
+      "muscles": [
+        6
+      ],
       "prerequisites": [],
       "progressions": [
         53
@@ -1559,7 +1565,8 @@
       ],
       "muscles_secondary": [
         6
-      ]
+      ],
+      "category": 9
     },
     {
       "id": 16,
@@ -1601,7 +1608,8 @@
         13,
         19,
         9
-      ]
+      ],
+      "category": 12
     },
     {
       "id": 114,
@@ -1642,7 +1650,8 @@
       "muscles_secondary": [
         1,
         17
-      ]
+      ],
+      "category": 16
     },
     {
       "id": 79,
@@ -1655,8 +1664,12 @@
       ],
       "image_url": "",
       "video_url": "",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        9
+      ],
+      "muscles": [
+        8
+      ],
       "prerequisites": [],
       "progressions": [
         82,
@@ -1714,7 +1727,8 @@
       ],
       "muscles_secondary": [
         16
-      ]
+      ],
+      "category": 9
     },
     {
       "id": 120,
@@ -1727,8 +1741,16 @@
       ],
       "image_url": "",
       "video_url": "",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        12,
+        8,
+        18
+      ],
+      "muscles": [
+        12,
+        1,
+        13
+      ],
       "prerequisites": [
         11
       ],
@@ -1788,7 +1810,8 @@
       ],
       "muscles_secondary": [
         8
-      ]
+      ],
+      "category": 9
     },
     {
       "id": 23,
@@ -1801,8 +1824,14 @@
       ],
       "image_url": "assets/images/exercises/3302-XooAdhl.jpg",
       "video_url": "assets/videos/exercises/3302-XooAdhl.gif",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        13,
+        19
+      ],
+      "muscles": [
+        2,
+        3
+      ],
       "prerequisites": [
         25,
         30
@@ -1834,8 +1863,15 @@
       ],
       "image_url": "assets/images/exercises/0471-rQxwMxO.jpg",
       "video_url": "assets/videos/exercises/0471-rQxwMxO.gif",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        13,
+        17
+      ],
+      "muscles": [
+        2,
+        3,
+        4
+      ],
       "prerequisites": [
         23
       ],
@@ -1893,7 +1929,8 @@
       ],
       "muscles_secondary": [
         6
-      ]
+      ],
+      "category": 10
     },
     {
       "id": 48,
@@ -1935,7 +1972,8 @@
       "muscles_secondary": [
         6,
         14
-      ]
+      ],
+      "category": 10
     },
     {
       "id": 81,
@@ -1976,7 +2014,8 @@
       "muscles_secondary": [
         6,
         11
-      ]
+      ],
+      "category": 9
     },
     {
       "id": 46,
@@ -2017,12 +2056,13 @@
       ],
       "muscles_secondary": [
         16
-      ]
+      ],
+      "category": 10
     },
     {
       "id": 109,
       "name": "Hollow Rock",
-      "description": "Rock back and forth in a hollow body position, enhancing core stability.",
+      "description": "Balancea hacia adelante y atrás en posición hollow body, mejorando la estabilidad del core.",
       "skill": "Hollow Body Hold",
       "equipment": [],
       "difficulty": [
@@ -2030,8 +2070,14 @@
       ],
       "image_url": "",
       "video_url": "",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        10,
+        19
+      ],
+      "muscles": [
+        6,
+        14
+      ],
       "prerequisites": [
         46
       ],
@@ -2094,7 +2140,8 @@
         9,
         12,
         18
-      ]
+      ],
+      "category": 10
     },
     {
       "id": 121,
@@ -2137,7 +2184,8 @@
       ],
       "muscles_secondary": [
         2
-      ]
+      ],
+      "category": 16
     },
     {
       "id": 6,
@@ -2150,8 +2198,16 @@
       ],
       "image_url": "assets/images/exercises/0493-B1EVP9F.jpg",
       "video_url": "assets/videos/exercises/0493-B1EVP9F.gif",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        11,
+        13,
+        17
+      ],
+      "muscles": [
+        4,
+        5,
+        2
+      ],
       "prerequisites": [],
       "progressions": [
         1
@@ -2172,7 +2228,7 @@
     {
       "id": 87,
       "name": "Jump Calf Raise",
-      "description": "Explosively jump while raising heels, building calf power and explosiveness.",
+      "description": "Salta explosivamente elevando los talones, construyendo potencia de pantorrilla y explosividad.",
       "skill": "Hollow Body Hold",
       "equipment": [
         15
@@ -2208,12 +2264,13 @@
       ],
       "muscles_secondary": [
         7
-      ]
+      ],
+      "category": 14
     },
     {
       "id": 70,
       "name": "Jump Squat",
-      "description": "Squat down and explode upward into a jump, building explosive quad power.",
+      "description": "Agáchate y explota hacia arriba en un salto, construyendo potencia explosiva de cuádriceps.",
       "skill": "Hollow Body Hold",
       "equipment": [
         15
@@ -2251,7 +2308,8 @@
       "muscles_secondary": [
         7,
         20
-      ]
+      ],
+      "category": 9
     },
     {
       "id": 102,
@@ -2264,8 +2322,16 @@
       ],
       "image_url": "",
       "video_url": "",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        15,
+        19
+      ],
+      "muscles": [
+        2,
+        8,
+        10,
+        6
+      ],
       "prerequisites": [],
       "progressions": [
         99
@@ -2286,7 +2352,7 @@
     {
       "id": 35,
       "name": "Korean Dip",
-      "description": "Dip on a straight bar with body behind, an advanced triceps and chest exercise.",
+      "description": "Fondo en barra recta con el cuerpo detrás, un ejercicio avanzado de tríceps y pecho.",
       "skill": "Dip Variations",
       "equipment": [
         6
@@ -2323,7 +2389,8 @@
       "muscles_secondary": [
         4,
         2
-      ]
+      ],
+      "category": 8
     },
     {
       "id": 47,
@@ -2363,7 +2430,8 @@
       "muscles_secondary": [
         2,
         18
-      ]
+      ],
+      "category": 10
     },
     {
       "id": 65,
@@ -2376,8 +2444,14 @@
       ],
       "image_url": "",
       "video_url": "",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        10,
+        19
+      ],
+      "muscles": [
+        6,
+        10
+      ],
       "prerequisites": [],
       "progressions": [
         66
@@ -2437,7 +2511,8 @@
         10,
         11,
         18
-      ]
+      ],
+      "category": 10
     },
     {
       "id": 101,
@@ -2450,8 +2525,17 @@
       ],
       "image_url": "assets/images/exercises/0631-yJUHKTn.jpg",
       "video_url": "assets/videos/exercises/0631-yJUHKTn.gif",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        19,
+        17,
+        18
+      ],
+      "muscles": [
+        4,
+        12,
+        1,
+        5
+      ],
       "prerequisites": [
         14,
         21,
@@ -2520,7 +2604,8 @@
         9,
         17,
         18
-      ]
+      ],
+      "category": 12
     },
     {
       "id": 78,
@@ -2561,7 +2646,8 @@
       ],
       "muscles_secondary": [
         16
-      ]
+      ],
+      "category": 9
     },
     {
       "id": 19,
@@ -2574,8 +2660,15 @@
       ],
       "image_url": "",
       "video_url": "",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        12,
+        8,
+        18
+      ],
+      "muscles": [
+        12,
+        1
+      ],
       "prerequisites": [
         119
       ],
@@ -2635,7 +2728,8 @@
       "muscles_secondary": [
         6,
         8
-      ]
+      ],
+      "category": 9
     },
     {
       "id": 40,
@@ -2677,7 +2771,8 @@
         9,
         17,
         18
-      ]
+      ],
+      "category": 12
     },
     {
       "id": 24,
@@ -2690,8 +2785,14 @@
       ],
       "image_url": "",
       "video_url": "",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        13,
+        19
+      ],
+      "muscles": [
+        2,
+        3
+      ],
       "prerequisites": [
         26
       ],
@@ -2720,8 +2821,16 @@
       ],
       "image_url": "",
       "video_url": "",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        12,
+        8,
+        18
+      ],
+      "muscles": [
+        12,
+        1,
+        19
+      ],
       "prerequisites": [
         11
       ],
@@ -2752,8 +2861,16 @@
       ],
       "image_url": "",
       "video_url": "",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        11,
+        13,
+        17
+      ],
+      "muscles": [
+        4,
+        2,
+        5
+      ],
       "prerequisites": [
         4,
         25
@@ -2812,7 +2929,8 @@
       "muscles_secondary": [
         1,
         13
-      ]
+      ],
+      "category": 12
     },
     {
       "id": 25,
@@ -2825,8 +2943,15 @@
       ],
       "image_url": "",
       "video_url": "",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        13,
+        17
+      ],
+      "muscles": [
+        2,
+        3,
+        4
+      ],
       "prerequisites": [
         5,
         7,
@@ -2890,7 +3015,8 @@
       "muscles_secondary": [
         7,
         20
-      ]
+      ],
+      "category": 9
     },
     {
       "id": 27,
@@ -2933,7 +3059,8 @@
         9,
         6,
         14
-      ]
+      ],
+      "category": 13
     },
     {
       "id": 115,
@@ -2979,7 +3106,8 @@
       "muscles_secondary": [
         4,
         3
-      ]
+      ],
+      "category": 16
     },
     {
       "id": 45,
@@ -2992,8 +3120,14 @@
       ],
       "image_url": "",
       "video_url": "",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        10,
+        19
+      ],
+      "muscles": [
+        6,
+        14
+      ],
       "prerequisites": [],
       "progressions": [
         53
@@ -3051,7 +3185,8 @@
       ],
       "muscles_secondary": [
         6
-      ]
+      ],
+      "category": 16
     },
     {
       "id": 126,
@@ -3093,7 +3228,8 @@
       ],
       "muscles_secondary": [
         3
-      ]
+      ],
+      "category": 16
     },
     {
       "id": 60,
@@ -3135,7 +3271,8 @@
       ],
       "muscles_secondary": [
         8
-      ]
+      ],
+      "category": 10
     },
     {
       "id": 8,
@@ -3148,8 +3285,16 @@
       ],
       "image_url": "assets/images/exercises/1306-Snj1wSv.jpg",
       "video_url": "assets/videos/exercises/1306-Snj1wSv.gif",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        11,
+        13,
+        17
+      ],
+      "muscles": [
+        4,
+        2,
+        5
+      ],
       "prerequisites": [
         3,
         9,
@@ -3183,8 +3328,16 @@
       ],
       "image_url": "assets/images/exercises/0652-lBDjFxJ.jpg",
       "video_url": "assets/videos/exercises/0652-lBDjFxJ.gif",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        12,
+        8,
+        18
+      ],
+      "muscles": [
+        12,
+        1,
+        19
+      ],
       "prerequisites": [
         20,
         19
@@ -3221,8 +3374,16 @@
       ],
       "image_url": "assets/images/exercises/0662-I4hDWkc.jpg",
       "video_url": "assets/videos/exercises/0662-I4hDWkc.gif",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        11,
+        13,
+        17
+      ],
+      "muscles": [
+        4,
+        2,
+        5
+      ],
       "prerequisites": [
         6
       ],
@@ -3278,7 +3439,8 @@
         "Evita usar impulso para alcanzar",
         "No apresures el movimiento"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [],
+      "category": 16
     },
     {
       "id": 64,
@@ -3317,7 +3479,8 @@
       ],
       "muscles_secondary": [
         11
-      ]
+      ],
+      "category": 12
     },
     {
       "id": 39,
@@ -3361,7 +3524,8 @@
         9,
         17,
         18
-      ]
+      ],
+      "category": 12
     },
     {
       "id": 33,
@@ -3402,7 +3566,8 @@
       "muscles_secondary": [
         4,
         2
-      ]
+      ],
+      "category": 8
     },
     {
       "id": 108,
@@ -3444,7 +3609,8 @@
       "muscles_secondary": [
         1,
         13
-      ]
+      ],
+      "category": 12
     },
     {
       "id": 118,
@@ -3486,7 +3652,8 @@
       ],
       "muscles_secondary": [
         19
-      ]
+      ],
+      "category": 16
     },
     {
       "id": 55,
@@ -3526,7 +3693,8 @@
       ],
       "muscles_secondary": [
         6
-      ]
+      ],
+      "category": 10
     },
     {
       "id": 31,
@@ -3567,7 +3735,8 @@
       ],
       "muscles_secondary": [
         6
-      ]
+      ],
+      "category": 10
     },
     {
       "id": 57,
@@ -3606,7 +3775,8 @@
       "muscles_secondary": [
         6,
         14
-      ]
+      ],
+      "category": 10
     },
     {
       "id": 89,
@@ -3649,7 +3819,8 @@
       "muscles_secondary": [
         7,
         20
-      ]
+      ],
+      "category": 9
     },
     {
       "id": 54,
@@ -3689,7 +3860,8 @@
       ],
       "muscles_secondary": [
         8
-      ]
+      ],
+      "category": 10
     },
     {
       "id": 94,
@@ -3730,7 +3902,8 @@
       ],
       "muscles_secondary": [
         8
-      ]
+      ],
+      "category": 9
     },
     {
       "id": 85,
@@ -3771,7 +3944,8 @@
       "muscles_secondary": [
         7,
         15
-      ]
+      ],
+      "category": 14
     },
     {
       "id": 80,
@@ -3812,7 +3986,8 @@
       "muscles_secondary": [
         6,
         11
-      ]
+      ],
+      "category": 9
     },
     {
       "id": 75,
@@ -3854,7 +4029,8 @@
       "muscles_secondary": [
         16,
         20
-      ]
+      ],
+      "category": 9
     },
     {
       "id": 107,
@@ -3897,7 +4073,8 @@
       "muscles_secondary": [
         12,
         1
-      ]
+      ],
+      "category": 16
     },
     {
       "id": 117,
@@ -3931,7 +4108,8 @@
         "Evita mover los hombros durante el ejercicio",
         "No uses demasiado peso"
       ],
-      "muscles_secondary": []
+      "muscles_secondary": [],
+      "category": 16
     },
     {
       "id": 9,
@@ -3944,8 +4122,16 @@
       ],
       "image_url": "",
       "video_url": "",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        11,
+        10,
+        17
+      ],
+      "muscles": [
+        4,
+        14,
+        5
+      ],
       "prerequisites": [
         1
       ],
@@ -4010,7 +4196,8 @@
       "muscles_secondary": [
         7,
         20
-      ]
+      ],
+      "category": 9
     },
     {
       "id": 96,
@@ -4050,7 +4237,8 @@
       ],
       "muscles_secondary": [
         8
-      ]
+      ],
+      "category": 9
     },
     {
       "id": 72,
@@ -4092,7 +4280,8 @@
       ],
       "muscles_secondary": [
         7
-      ]
+      ],
+      "category": 9
     },
     {
       "id": 113,
@@ -4134,7 +4323,8 @@
       "muscles_secondary": [
         2,
         18
-      ]
+      ],
+      "category": 10
     },
     {
       "id": 29,
@@ -4179,7 +4369,8 @@
         9,
         6,
         14
-      ]
+      ],
+      "category": 13
     },
     {
       "id": 92,
@@ -4222,7 +4413,8 @@
       "muscles_secondary": [
         7,
         20
-      ]
+      ],
+      "category": 9
     },
     {
       "id": 62,
@@ -4264,7 +4456,8 @@
       ],
       "muscles_secondary": [
         9
-      ]
+      ],
+      "category": 12
     },
     {
       "id": 110,
@@ -4304,7 +4497,8 @@
       ],
       "muscles_secondary": [
         6
-      ]
+      ],
+      "category": 10
     },
     {
       "id": 44,
@@ -4343,7 +4537,8 @@
       "muscles_secondary": [
         9,
         12
-      ]
+      ],
+      "category": 8
     },
     {
       "id": 22,
@@ -4356,8 +4551,16 @@
       ],
       "image_url": "",
       "video_url": "",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        12,
+        8,
+        18
+      ],
+      "muscles": [
+        12,
+        1,
+        19
+      ],
       "prerequisites": [
         21
       ],
@@ -4417,7 +4620,8 @@
       "muscles_secondary": [
         4,
         2
-      ]
+      ],
+      "category": 8
     },
     {
       "id": 38,
@@ -4457,7 +4661,8 @@
       ],
       "muscles_secondary": [
         5
-      ]
+      ],
+      "category": 8
     },
     {
       "id": 18,
@@ -4501,7 +4706,8 @@
         13,
         19,
         9
-      ]
+      ],
+      "category": 12
     },
     {
       "id": 103,
@@ -4542,7 +4748,8 @@
       "muscles_secondary": [
         6,
         7
-      ]
+      ],
+      "category": 9
     },
     {
       "id": 51,
@@ -4584,7 +4791,8 @@
       "muscles_secondary": [
         2,
         18
-      ]
+      ],
+      "category": 10
     },
     {
       "id": 28,
@@ -4629,7 +4837,8 @@
         9,
         6,
         14
-      ]
+      ],
+      "category": 13
     },
     {
       "id": 116,
@@ -4670,7 +4879,8 @@
       "muscles_secondary": [
         2,
         3
-      ]
+      ],
+      "category": 16
     },
     {
       "id": 122,
@@ -4709,7 +4919,8 @@
       ],
       "muscles_secondary": [
         6
-      ]
+      ],
+      "category": 16
     },
     {
       "id": 50,
@@ -4722,8 +4933,14 @@
       ],
       "image_url": "",
       "video_url": "",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        10,
+        19
+      ],
+      "muscles": [
+        6,
+        14
+      ],
       "prerequisites": [],
       "progressions": [
         58
@@ -4752,8 +4969,14 @@
       ],
       "image_url": "",
       "video_url": "",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        13,
+        19
+      ],
+      "muscles": [
+        2,
+        3
+      ],
       "prerequisites": [],
       "progressions": [
         23
@@ -4811,7 +5034,8 @@
       ],
       "muscles_secondary": [
         7
-      ]
+      ],
+      "category": 9
     },
     {
       "id": 88,
@@ -4849,7 +5073,8 @@
       ],
       "muscles_secondary": [
         7
-      ]
+      ],
+      "category": 14
     },
     {
       "id": 36,
@@ -4888,7 +5113,8 @@
       "muscles_secondary": [
         4,
         2
-      ]
+      ],
+      "category": 8
     },
     {
       "id": 83,
@@ -4927,7 +5153,8 @@
       "muscles_secondary": [
         6,
         11
-      ]
+      ],
+      "category": 9
     },
     {
       "id": 13,
@@ -4969,7 +5196,8 @@
         9,
         17,
         18
-      ]
+      ],
+      "category": 12
     },
     {
       "id": 2,
@@ -4982,8 +5210,16 @@
       ],
       "image_url": "",
       "video_url": "",
-      "categories": [],
-      "muscles": [],
+      "categories": [
+        11,
+        13,
+        17
+      ],
+      "muscles": [
+        4,
+        2,
+        5
+      ],
       "prerequisites": [
         1
       ],
@@ -5046,146 +5282,8 @@
       "muscles_secondary": [
         6,
         14
-      ]
-    }
-  ],
-  "muscles": [
-    {
-      "id": 1,
-      "name": "Bíceps braquial",
-      "is_front": true,
-      "name_en": "Biceps"
-    },
-    {
-      "id": 2,
-      "name": "Deltoides anterior",
-      "is_front": true,
-      "name_en": "Shoulders"
-    },
-    {
-      "id": 3,
-      "name": "Serrato anterior",
-      "is_front": true,
-      "name_en": "Serratus"
-    },
-    {
-      "id": 4,
-      "name": "Pectoral mayor",
-      "is_front": true,
-      "name_en": "Chest"
-    },
-    {
-      "id": 5,
-      "name": "Tríceps braquial",
-      "is_front": false,
-      "name_en": "Triceps"
-    },
-    {
-      "id": 6,
-      "name": "Recto abdominal",
-      "is_front": true,
-      "name_en": "Abs"
-    },
-    {
-      "id": 7,
-      "name": "Gastrocnemio",
-      "is_front": false,
-      "name_en": "Calves"
-    },
-    {
-      "id": 8,
-      "name": "Glúteo mayor",
-      "is_front": false,
-      "name_en": "Glutes"
-    },
-    {
-      "id": 9,
-      "name": "Trapecio",
-      "is_front": false,
-      "name_en": "Trapezius"
-    },
-    {
-      "id": 10,
-      "name": "Cuádriceps femoral",
-      "is_front": true,
-      "name_en": "Quads"
-    },
-    {
-      "id": 11,
-      "name": "Bíceps femoral",
-      "is_front": false,
-      "name_en": "Hamstrings"
-    },
-    {
-      "id": 12,
-      "name": "Dorsal ancho",
-      "is_front": false,
-      "name_en": "Lats"
-    },
-    {
-      "id": 13,
-      "name": "Braquial",
-      "is_front": true,
-      "name_en": "Brachialis"
-    },
-    {
-      "id": 14,
-      "name": "Oblicuo externo",
-      "is_front": true,
-      "name_en": "Obliques"
-    },
-    {
-      "id": 15,
-      "name": "Sóleo",
-      "is_front": true,
-      "name_en": "Soleus"
-    },
-    {
-      "id": 16,
-      "name": "Erectores de la espina",
-      "is_front": false,
-      "name_en": "Lower back"
-    },
-    {
-      "id": 17,
-      "name": "Redondo",
-      "is_front": false,
-      "name_en": "Teres"
-    },
-    {
-      "id": 18,
-      "name": "Deltoides posterior",
-      "is_front": false,
-      "name_en": "Posterior Deltoid"
-    },
-    {
-      "id": 19,
-      "name": "Antebrazo",
-      "is_front": true,
-      "name_en": "Forearm"
-    },
-    {
-      "id": 20,
-      "name": "Aductores",
-      "is_front": true,
-      "name_en": "Adductors"
-    }
-  ],
-  "difficulties": [
-    {
-      "id": 1,
-      "name": "beginner",
-      "label": "Principiante"
-    },
-    {
-      "id": 2,
-      "name": "intermediate",
-      "label": "Intermedio"
-    },
-    {
-      "id": 3,
-      "name": "advanced",
-      "label": "Avanzado"
+      ],
+      "category": 10
     }
   ],
   "routines": [
@@ -5489,5 +5587,265 @@
       "category": 19,
       "duration": 50
     }
-  ]
+  ],
+  "categories": [
+    {
+      "id": 8,
+      "name": "Brazos"
+    },
+    {
+      "id": 9,
+      "name": "Piernas"
+    },
+    {
+      "id": 10,
+      "name": "Abdominales"
+    },
+    {
+      "id": 11,
+      "name": "Pecho"
+    },
+    {
+      "id": 12,
+      "name": "Espalda"
+    },
+    {
+      "id": 13,
+      "name": "Hombros"
+    },
+    {
+      "id": 14,
+      "name": "Pantorrillas"
+    },
+    {
+      "id": 15,
+      "name": "Cardio"
+    },
+    {
+      "id": 16,
+      "name": "Sin definir"
+    },
+    {
+      "id": 17,
+      "name": "Empuje"
+    },
+    {
+      "id": 18,
+      "name": "Jalón"
+    },
+    {
+      "id": 19,
+      "name": "Cuerpo completo"
+    }
+  ],
+  "equipment": [
+    {
+      "id": 1,
+      "name": "Barras de fondos"
+    },
+    {
+      "id": 2,
+      "name": "Bandas elásticas"
+    },
+    {
+      "id": 3,
+      "name": "Mancuerna"
+    },
+    {
+      "id": 4,
+      "name": "Esterilla de gimnasio"
+    },
+    {
+      "id": 5,
+      "name": "Paralletes"
+    },
+    {
+      "id": 6,
+      "name": "Barra de dominadas"
+    },
+    {
+      "id": 7,
+      "name": "Ninguna (ejercicio con peso corporal)"
+    },
+    {
+      "id": 8,
+      "name": "Banco"
+    },
+    {
+      "id": 9,
+      "name": "Banco inclinado"
+    },
+    {
+      "id": 10,
+      "name": "Pesa rusa"
+    },
+    {
+      "id": 11,
+      "name": "Anillas gimnásticas"
+    },
+    {
+      "id": 12,
+      "name": "Banco/Step"
+    },
+    {
+      "id": 13,
+      "name": "Chaleco/cinturón con peso"
+    },
+    {
+      "id": 14,
+      "name": "Poste/barra vertical"
+    },
+    {
+      "id": 15,
+      "name": "Peso corporal"
+    },
+    {
+      "id": 16,
+      "name": "Suelo"
+    },
+    {
+      "id": 17,
+      "name": "Pared"
+    }
+  ],
+  "muscles": [
+    {
+      "id": 1,
+      "name": "Bíceps braquial",
+      "is_front": true,
+      "name_en": "Biceps"
+    },
+    {
+      "id": 2,
+      "name": "Deltoides anterior",
+      "is_front": true,
+      "name_en": "Shoulders"
+    },
+    {
+      "id": 3,
+      "name": "Serrato anterior",
+      "is_front": true,
+      "name_en": "Serratus"
+    },
+    {
+      "id": 4,
+      "name": "Pectoral mayor",
+      "is_front": true,
+      "name_en": "Chest"
+    },
+    {
+      "id": 5,
+      "name": "Tríceps braquial",
+      "is_front": false,
+      "name_en": "Triceps"
+    },
+    {
+      "id": 6,
+      "name": "Recto abdominal",
+      "is_front": true,
+      "name_en": "Abs"
+    },
+    {
+      "id": 7,
+      "name": "Gastrocnemio",
+      "is_front": false,
+      "name_en": "Calves"
+    },
+    {
+      "id": 8,
+      "name": "Glúteo mayor",
+      "is_front": false,
+      "name_en": "Glutes"
+    },
+    {
+      "id": 9,
+      "name": "Trapecio",
+      "is_front": false,
+      "name_en": "Trapezius"
+    },
+    {
+      "id": 10,
+      "name": "Cuádriceps femoral",
+      "is_front": true,
+      "name_en": "Quads"
+    },
+    {
+      "id": 11,
+      "name": "Bíceps femoral",
+      "is_front": false,
+      "name_en": "Hamstrings"
+    },
+    {
+      "id": 12,
+      "name": "Dorsal ancho",
+      "is_front": false,
+      "name_en": "Lats"
+    },
+    {
+      "id": 13,
+      "name": "Braquial",
+      "is_front": true,
+      "name_en": "Brachialis"
+    },
+    {
+      "id": 14,
+      "name": "Oblicuo externo",
+      "is_front": true,
+      "name_en": "Obliques"
+    },
+    {
+      "id": 15,
+      "name": "Sóleo",
+      "is_front": true,
+      "name_en": "Soleus"
+    },
+    {
+      "id": 16,
+      "name": "Erectores de la espina",
+      "is_front": false,
+      "name_en": "Lower back"
+    },
+    {
+      "id": 17,
+      "name": "Redondo",
+      "is_front": false,
+      "name_en": "Teres"
+    },
+    {
+      "id": 18,
+      "name": "Deltoides posterior",
+      "is_front": false,
+      "name_en": "Posterior Deltoid"
+    },
+    {
+      "id": 19,
+      "name": "Antebrazo",
+      "is_front": true,
+      "name_en": "Forearm"
+    },
+    {
+      "id": 20,
+      "name": "Aductores",
+      "is_front": true,
+      "name_en": "Adductors"
+    }
+  ],
+  "difficulties": [
+    {
+      "id": 1,
+      "name": "beginner",
+      "label": "Principiante"
+    },
+    {
+      "id": 2,
+      "name": "intermediate",
+      "label": "Intermedio"
+    },
+    {
+      "id": 3,
+      "name": "advanced",
+      "label": "Avanzado"
+    }
+  ],
+  "dataVersion": "2026-07-08T23:33:13.153Z"
 }

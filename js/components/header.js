@@ -1,5 +1,9 @@
 import { t, getLocale, setLocale, getAvailableLocales } from '../i18n.js';
 
+/**
+ * Render header component
+ * @returns {string} HTML string for header component
+ */
 export function renderHeader() {
   const isDarkMode = document.documentElement.classList.contains('dark');
   const locale = getLocale();
@@ -25,33 +29,13 @@ export function renderHeader() {
         <a href="#routines">${t('nav.routines')}</a>
         <a href="#exercises">${t('nav.exercises')}</a>
         <a href="#skill-modules">${t('nav.skills')}</a>
+        <a href="#progress">${t('nav.progress', 'Progress')}</a>
         <a href="#profile">${t('nav.profile')}</a>
+        <a href="#settings">${t('nav.settings', 'Settings')}</a>
       </nav>
     </header>
   `;
 }
 
-// Theme toggle: attach to document using delegation (works even when header is dynamically inserted)
-document.addEventListener('click', (e) => {
-  const themeToggle = e.target.closest('#theme-toggle');
-  if (themeToggle) {
-    e.preventDefault();
-    const isDark = document.documentElement.classList.toggle('dark');
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    themeToggle.querySelector('.icon').textContent = isDark ? t('theme.light') : t('theme.dark');
-    return;
-  }
-
-  const localeToggle = e.target.closest('#locale-toggle');
-  if (localeToggle) {
-    e.preventDefault();
-    const locales = getAvailableLocales();
-    const current = getLocale();
-    const idx = locales.findIndex(l => l.code === current);
-    const next = locales[(idx + 1) % locales.length].code;
-    setLocale(next);
-    // localeChange event will be dispatched by setLocale
-    // main.js listens for it and re-renders everything
-    return;
-  }
-});
+// Export for maximum flexibility
+export default { render: renderHeader };

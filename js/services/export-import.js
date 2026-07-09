@@ -13,7 +13,6 @@ import {
 import { saveModules } from './modules-service.js';
 
 const EXPORT_VERSION = '1.0';
-const EXPORT_TIMESTAMP = new Date().toISOString();
 
 /**
  * JSON Schema definition for data export/import validation
@@ -221,11 +220,11 @@ export async function exportUserData() {
 
     const exportData = {
       version: EXPORT_VERSION,
-      exportedAt: EXPORT_TIMESTAMP,
+      exportedAt: new Date().toISOString(),
       appVersion: 'Calisthenics Mastery v1.0',
       workouts: workouts,
       routines: routines,
-      skillModules: modules
+      skillModules: modules.modules || []
     };
 
     return JSON.stringify(exportData, null, 2);
@@ -267,7 +266,7 @@ export async function importUserData(jsonData) {
     };
 
     // Import workouts (avoid duplicate IDs)
-    const existingWorkouts = await loadWorkouts();
+    const existingWorkouts = (await loadWorkouts()) || [];
     const existingWorkoutIds = new Set(existingWorkouts.map(w => w.id));
 
     for (const workout of importData.workouts) {
@@ -287,7 +286,7 @@ export async function importUserData(jsonData) {
 
     // Import routines
     if (importData.routines && Array.isArray(importData.routines)) {
-      const existingRoutines = await routinesLoad();
+      const existingRoutines = (await routinesLoad()) || [];
       const existingRoutinesIds = new Set(existingRoutines.map(p => String(p.id)));
       
       const routinesToImport = [];
@@ -315,7 +314,7 @@ export async function importUserData(jsonData) {
     if (importData.skillModules && Array.isArray(importData.skillModules)) {
       const existingModulesData = await modulesLoad();
       const existingModuleIds = new Set(
-        (existingModulesData?.en?.modules || []).map(m => String(m.id))
+        (existingModulesData?.modules || []).map(m => String(m.id))
       );
       
       const modulesToImport = [];
@@ -329,7 +328,7 @@ export async function importUserData(jsonData) {
       
       if (modulesToImport.length > 0) {
         try {
-          const modules = existingModulesData?.en?.modules || [];
+          const modules = (existingModulesData?.modules || []);
           await saveModules([...modules, ...modulesToImport]);
           stats.skillModules.imported = modulesToImport.length;
         } catch (error) {
@@ -342,7 +341,7 @@ export async function importUserData(jsonData) {
 
     // Check for data size warning
     const dbSize = await getDatabaseSize();
-    if (dbSize.workoutCount > 1000) {
+    if (dbSize.stores?.workouts?.size > 1000) {
       stats.warning = 'Large database: Consider clearing old workouts';
     }
 
@@ -462,16 +461,16 @@ export async function getExportMetadata() {
  */
 export async function clearUserData() {
   try {
-    const workouts = await loadWorkouts();
-    const routines = await routinesLoad();
-    const modules = await modulesLoad();
-
     // Delete all workouts
+    const workouts = (await loadWorkouts()) || [];
     for (const workout of workouts) {
       await deleteWorkout(workout.id);
     }
 
     // Clear routines and modules (keep reference data in database.js)
+    const routines = (await routinesLoad()) || [];
+    const modules = (await modulesLoad()) || { modules: [] };
+
     await storeRoutines([]);
     await storeModules([]);
 

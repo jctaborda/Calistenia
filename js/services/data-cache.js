@@ -65,19 +65,58 @@ async function initializeDataCacheInternal() {
   if (cacheInitialized) return true;
   
   try {
-    // Fetch data.json ONCE and distribute to all stores
-    const data = await fetchLocaleData();
-    
-    // Preserve existing user-added exercises before replacing reference data
+    // Step 1: Try to load from IndexedDB first (already cached from previous visits)
     const db = await import('./database.js');
     const existingExercises = await db.exercisesLoad();
     const existingRoutines = await db.routinesLoad();
+    const existingCategories = await db.categoriesLoad();
+    const existingEquipment = await db.equipmentLoad();
+    const existingMuscles = await db.musclesLoad();
+    const existingDifficulties = await db.difficultiesLoad();
+    const existingDataVersion = await db.loadDataVersion();
     
-    // Build a map of existing user exercises by ID
-    const existingMap = new Map();
-    existingExercises.forEach(ex => existingMap.set(String(ex.id), ex));
+    // Check if we have valid cached data
+    const hasValidData = (
+      existingExercises.length > 0 &&
+      existingCategories.length > 0 &&
+      existingDataVersion !== null
+    );
     
-    // Merge: start with data.json exercises, overlay any user-added ones
+    if (hasValidData) {
+      // We have cached data, use it immediately for fast load
+      cachedDataFile = {
+        exercises: existingExercises,
+        routines: existingRoutines,
+        categories: existingCategories,
+        equipment: existingEquipment,
+        muscles: existingMuscles,
+        difficulties: existingDifficulties,
+        dataVersion: existingDataVersion
+      };
+      
+      // Preserve user-added exercises (they're in IndexedDB but not in data.json)
+      const data = await fetchLocaleData();
+      const existingMap = new Map();
+      existingExercises.forEach(ex => existingMap.set(String(ex.id), ex));
+      
+      const mergedExercises = [...(data.exercises || [])];
+      const existingIds = new Set(mergedExercises.map(e => String(e.id)));
+      existingExercises.forEach(ex => {
+        if (!existingIds.has(String(ex.id))) {
+          mergedExercises.push(ex);
+        }
+      });
+      
+      cachedDataFile.exercises = mergedExercises;
+      cacheInitialized = true;
+      console.log('[DataCache] Loaded from IndexedDB (offline mode)');
+      return true;
+    }
+    
+    // Step 2: If no cached data, fetch from network (first time or after clear)
+    const data = await fetchLocaleData();
+    
+    // Preserve existing user-added exercises before replacing reference data
     const mergedExercises = [...(data.exercises || [])];
     const existingIds = new Set(mergedExercises.map(e => String(e.id)));
     existingExercises.forEach(ex => {
@@ -115,6 +154,7 @@ async function initializeDataCacheInternal() {
     cachedDataFile = data;
     
     cacheInitialized = true;
+    console.log('[DataCache] Loaded from network and stored in IndexedDB');
     return true;
   } catch (error) {
     console.error('Error initializing data cache:', error);
@@ -163,6 +203,9 @@ export async function isCacheStale() {
     // Compare versions
     const stale = cachedVersion !== serverVersion;
     if (stale) {
+      const filename = getDataFilename();
+      const locale = filename.includes('-es.json') ? 'es' : 'en';
+      console.warn(`[DataCache] Cache for ${locale} is stale, re-fetching...`);
     }
     return stale;
   } catch (error) {
@@ -187,6 +230,9 @@ export async function syncDataCache() {
       storeDifficulties([]),
       storeRoutines([])
     ]);
+    
+    // Wait a tick to ensure IndexedDB operations are complete
+    await new Promise(resolve => setTimeout(resolve, 0));
     
     // Reset initialization flag
     cacheInitialized = false;
@@ -250,6 +296,11 @@ export async function clearDataCache() {
     console.error('Error clearing data cache:', error);
     show('Failed to clear data cache.', 'error');
   }
+}
+
+// Get the current cached data (for admin page and other consumers)
+export function getCachedData() {
+  return cachedDataFile;
 }
 
 // Clear all data cache AND force reload from locale-specific file

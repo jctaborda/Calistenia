@@ -8,21 +8,21 @@ export function renderOnboardingView() {
   const main = document.getElementById('app');
   main.innerHTML = renderHeader() + `
     <div class="card">
-      <h1>Welcome! Let's get started</h1>
+      <h1>${t('onboarding.welcome')}</h1>
       <form id="onboarding-form" class="onboarding-form">
         <div class="form-group">
-          <label>Name: <input type="text" name="name" required maxlength="50" title="Use only letters, numbers, spaces, hyphens, apostrophes, and commas"></label>
+          <label for="onboarding-name">${t('onboarding.name_label')} <input type="text" id="onboarding-name" name="name" required maxlength="50" title="Use only letters, numbers, spaces, hyphens, apostrophes, and commas"></label>
         </div><br><br>
         <div class="form-group">
-          <label>Fitness Level:
-            <select name="level" required>
-              <option value="Beginner">Beginner</option>
-              <option value="Intermediate">Intermediate</option>
-              <option value="Advanced">Advanced</option>
+          <label for="onboarding-level">${t('onboarding.fitness_level')}
+            <select id="onboarding-level" name="level" required>
+              <option value="Beginner">${t('difficulty.beginner')}</option>
+              <option value="Intermediate">${t('difficulty.intermediate')}</option>
+              <option value="Advanced">${t('difficulty.advanced')}</option>
             </select>
           </label>
         </div><br><br>
-        <button class="btn" type="submit">Save</button>
+        <button class="btn" type="submit">${t('onboarding.get_started')}</button>
       </form>
     </div>
   `;

@@ -9,6 +9,8 @@ import {
 } from './database.js';
 import { show } from './toast-service.js';
 import { getState } from './state.js';
+import { getLocale } from '../i18n.js';
+import { generateNextId } from '../utils/array.js';
 
 let modulesCache = null;
 
@@ -32,7 +34,7 @@ export async function loadModules() {
   
   // Fall back to the language-appropriate JSON file, store in IndexedDB
   try {
-    const locale = (getState().locale || 'en').toLowerCase();
+    const locale = getLocale().toLowerCase();
     const file = LANG_MAP[locale] || 'skill-modules.json';
     const response = await fetch(`data/${file}`);
     if (!response.ok) throw new Error('Failed to load skill modules');
@@ -40,8 +42,12 @@ export async function loadModules() {
     const data = await response.json();
     const modules = data.modules || [];
     
-    // Store in IndexedDB for offline access
-    await storeModules({ en: data, es: {} });
+    // Store in IndexedDB for offline access with correct locale key
+    // Preserve existing data for the other locale
+    const existingData = await modulesLoad();
+    const enData = locale === 'es' ? (existingData?.modules || {}) : modules;
+    const esData = locale === 'es' ? modules : (existingData?.es || {});
+    await storeModules({ en: enData, es: esData });
     modulesCache = modules;
     
     return modules;
@@ -66,7 +72,7 @@ export async function saveModules(modules) {
       }
     } catch (e) { /* ignore */ }
     
-    const data = { en: { modules }, es: esData };
+    const data = { modules, es: esData };
     await storeModules(data);
     modulesCache = modules;
     return { success: true, message: 'Saved to IndexedDB' };
@@ -91,19 +97,8 @@ export async function addModule(module) {
   try {
     const modules = await loadModules();
     
-    // Generate new ID (max numeric id + 1)
-    const numericIds = modules.filter(m => typeof m.id === 'number');
-    let newId;
-    
-    if (numericIds.length > 0) {
-      newId = Math.max(...numericIds.map(m => m.id)) + 1;
-    } else {
-      newId = modules.length > 0 
-        ? Math.max(...modules.map(m => parseInt(m.id) || 0)) + 1
-        : 1;
-    }
-    
-    module.id = newId;
+    // Generate new ID using utility function
+    module.id = generateNextId(modules);
     modules.push(module);
     await saveModules(modules);
     
@@ -178,8 +173,3 @@ export const ModuleStore = {
     return deleteModule(id);
   }
 };
-
-// Get database stats
-export async function getModulesStorageStats() {
-  return getDatabaseSize();
-}

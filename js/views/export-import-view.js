@@ -9,6 +9,8 @@ import { getState } from '../services/state.js';
 import { renderHeader } from '../components/header.js';
 import { t } from '../i18n.js';
 import { show } from '../services/toast-service.js';
+import { showConfirmation } from '../services/confirmation-modal.js';
+import { escapeHtml } from '../utils/html.js';
 
 export function renderExportImportView() {
   const state = getState();
@@ -17,7 +19,7 @@ export function renderExportImportView() {
 
   return `
     <div class="view-container">
-      ${renderHeader('${t("export_import.header")}')}
+      ${renderHeader(`${t('export_import.header')}`)}
       
       <div class="content-section">
         <section class="card export-section">
@@ -54,7 +56,7 @@ export function renderExportImportView() {
             <span class="btn btn-secondary btn-large">📁 Select Backup File</span>
           </label>
           
-          <div id="import-status" class="status-box hidden"></div>
+          <div id="import-status" class="status-box hidden" role="alert" aria-live="polite" aria-atomic="true"></div>
           
           <div class="warning-box">
             <strong>⚠️ Note:</strong> Imported data will be merged with existing data. 
@@ -71,7 +73,7 @@ export function renderExportImportView() {
             <span class="icon">🗑</span> Clear All My Data
           </button>
           
-          <div id="clear-status" class="status-box hidden"></div>
+          <div id="clear-status" class="status-box hidden" role="alert" aria-live="polite" aria-atomic="true"></div>
         </section>
         ` : ''}
       </div>
@@ -206,7 +208,7 @@ async function handleImportFile(event) {
   } catch (error) {
     importStatus.classList.remove('hidden');
     importStatus.className = 'status-box error';
-    importStatus.innerHTML = `<p><strong>❌ Import Failed:</strong> ${error.message}</p>`;
+    importStatus.innerHTML = `<p><strong>❌ Import Failed:</strong> ${escapeHtml(error.message)}</p>`;
   } finally {
     importBtn.disabled = false;
     importBtn.innerHTML = '📁 Select Backup File';
@@ -218,7 +220,8 @@ async function handleClearData() {
   const clearStatus = document.getElementById('clear-status');
   const clearBtn = document.getElementById('btn-clear-data');
   
-  if (!confirm('Are you sure you want to delete ALL your workout history, custom routines, and skill modules? This cannot be undone.')) {
+  const confirmed = await showConfirmation('Are you sure you want to delete ALL your workout history, custom routines, and skill modules? This cannot be undone.');
+  if (!confirmed) {
     return;
   }
 
@@ -246,7 +249,7 @@ async function handleClearData() {
   } catch (error) {
     clearStatus.classList.remove('hidden');
     clearStatus.className = 'status-box error';
-    clearStatus.innerHTML = `<p><strong>❌ Error:</strong> ${error.message}</p>`;
+    clearStatus.innerHTML = `<p><strong>❌ Error:</strong> ${escapeHtml(error.message)}</p>`;
   } finally {
     clearBtn.disabled = false;
     clearBtn.innerHTML = '<span class="icon">🗑</span> Clear All My Data';
