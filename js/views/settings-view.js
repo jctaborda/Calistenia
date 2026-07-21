@@ -105,10 +105,10 @@ export function renderSettingsView() {
       <div class="settings-section">
         <h3>${t('settings.about') || 'About'}</h3>
         <div class="setting-item">
-          <p style="color: var(--text-secondary); font-size: 0.9rem;">
+          <p class="detail-text">
             ${t('settings.app_version') || 'Version'}: 1.0.0
           </p>
-          <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 0.5rem;">
+          <p class="detail-text">
             ${t('settings.app_description') || 'Calisthenics Mastery - Your personal trainer for bodyweight exercises'}
           </p>
         </div>

@@ -373,7 +373,7 @@ export async function renderExercisesView() {
       <button class="btn btn-secondary" id="favorites-toggle" aria-label="Toggle favorites only view">★ ${t('exercises.favorites_only')}</button>
       
       <!-- Filter Bottom Sheet Toggle -->
-      <button class="btn btn-accent" id="open-filters-btn" aria-label="Open filters menu">🔍 ${t('exercises.filter')} <span id="filter-count" style="display:none">(0)</span></button>
+      <button class="btn btn-accent" id="open-filters-btn" aria-label="Open filters menu">🔍 ${t('exercises.filter')} <span id="filter-count" class="hidden">(0)</span></button>
     </div>
 
     <!-- Exercises Grid -->
@@ -500,10 +500,10 @@ export async function renderExercisesView() {
     const countEl = main.querySelector('#filter-count');
     if (countEl) {
       if (count > 0) {
-        countEl.style.display = 'inline';
+        countEl.classList.remove('hidden');
         countEl.textContent = `(${count})`;
       } else {
-        countEl.style.display = 'none';
+        countEl.classList.add('hidden');
       }
     }
   }

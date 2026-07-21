@@ -112,12 +112,7 @@ export async function renderSkillsTreeView() {
     return;
   }
 
-  // Fix #3: Module completion status (all exercises completed = module complete)
-  const moduleCompletionStatus = {};
-  modulesData.forEach(mod => {
-    const exIds = mod.exercises || [];
-    moduleCompletionStatus[mod.id] = exIds.length > 0 && exIds.every(eId => isExerciseCompleted(eId, history));
-  });
+
 
   function getNodeProgress(node) {
     if (node.prerequisites && node.prerequisites.length > 0) {
@@ -457,43 +452,7 @@ export async function renderSkillsTreeView() {
         });
       });
 
-      // Module-level prerequisite lines (dashed, purple, curved)
-      modulesData.forEach(mod => {
-        if (!mod.prerequisites || mod.prerequisites.length === 0) return;
 
-        mod.prerequisites.forEach(prereqModId => {
-          const prereqMod = modulesData.find(m => m.id === prereqModId);
-          if (!prereqMod) return;
-
-          const targetExId = mod.exercises && mod.exercises[0];
-          const sourceExId = prereqMod.exercises && prereqMod.exercises[0];
-          if (!targetExId || !sourceExId) return;
-
-          const targetPos = nodePositions[targetExId];
-          const sourcePos = nodePositions[sourceExId];
-          if (!targetPos || !sourcePos) return;
-          if (!nodeMap[targetExId] || !nodeMap[sourceExId]) return;
-
-          const isPrereqComplete = moduleCompletionStatus[prereqModId];
-
-          const dx = targetPos.x - sourcePos.x;
-          const cp1x = sourcePos.x + dx * 0.5;
-          const cp1y = sourcePos.y;
-          const cp2x = targetPos.x - dx * 0.5;
-          const cp2y = targetPos.y;
-
-          connectionLines.push(`
-            <path
-              d="M ${sourcePos.x} ${sourcePos.y} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${targetPos.x} ${targetPos.y}"
-              stroke="${isPrereqComplete ? '#9C27B0' : '#CE93D8'}"
-              stroke-width="3"
-              stroke-dasharray="8,4"
-              fill="none"
-              opacity="${isPrereqComplete ? '0.5' : '0.3'}"
-            />
-          `);
-        });
-      });
 
       return connectionLines.join('');
     }
@@ -584,13 +543,13 @@ export async function renderSkillsTreeView() {
       </div>
 
       <!-- Fix #5: Filter/Search toolbar -->
-      <div class="filter-toolbar" style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem; align-items: center;">
-        <input type="text" id="tree-search" placeholder="${t('exercises.search') || 'Search exercises...'}" style="flex: 1; min-width: 200px; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px;">
-        <select id="tree-category-filter" style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px;">
+      <div class="filter-toolbar">
+        <input type="text" id="tree-search" placeholder="${t('exercises.search') || 'Search exercises...'}" class="tree-filter-control">
+        <select id="tree-category-filter" class="tree-filter-select">
           <option value="">${t('skills_tree.all_categories') || 'All Categories'}</option>
           ${allCategories.map(cat => `<option value="${cat}">${cat}</option>`).join('')}
         </select>
-        <select id="tree-difficulty-filter" style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px;">
+        <select id="tree-difficulty-filter" class="tree-filter-select">
           <option value="">${t('skills_tree.all_difficulties') || 'All Difficulties'}</option>
           <option value="beginner">Beginner</option>
           <option value="intermediate">Intermediate</option>
@@ -599,14 +558,14 @@ export async function renderSkillsTreeView() {
         <button id="tree-reset-filters" class="btn btn-secondary btn-sm">${t('common.clear') || 'Clear'}</button>
       </div>
 
-      <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+      <p class="tree-description">
         Visual progression path organized by prerequisite chains (left to right).
         Green = Completed, Orange = Ready to unlock (→ = next exercise), Gray = Prerequisites required, Blue = Available.
         Purple dashed lines = Module dependencies (color intensity = prerequisite module completion).
       </p>
 
       <div class="overflow-scroll">
-        <svg width="${treeLayout.width}" height="${treeLayout.height}" id="skills-tree-svg" style="min-width: ${treeLayout.width}px;">
+        <svg width="${treeLayout.width}" height="${treeLayout.height}" id="skills-tree-svg" class="chart-svg" style="min-width: ${treeLayout.width}px;">
           ${treeLayout.connections}
           ${treeLayout.nodes}
         </svg>
@@ -636,19 +595,12 @@ export async function renderSkillsTreeView() {
             <span>Available</span>
           </div>
           <div class="flex-center-gap">
-            <div class="legend-item next-exercise" style="border: 2px solid #FF9800; border-radius: 50%; width: 16px; height: 16px; position: relative;">
-              <span style="position: absolute; top: -2px; left: 4px; font-size: 10px;">→</span>
+            <div class="legend-item next-exercise">
+              <span class="legend-next-arrow">→</span>
             </div>
             <span>Next Exercise</span>
           </div>
-          <div class="flex-center-gap">
-            <div style="width: 20px; height: 3px; background: #9C27B0; border-radius: 2px;"></div>
-            <span>Module Complete</span>
-          </div>
-          <div class="flex-center-gap">
-            <div style="width: 20px; height: 3px; background: #CE93D8; border-radius: 2px; opacity: 0.6;"></div>
-            <span>Module Incomplete</span>
-          </div>
+
         </div>
       </div>
 
@@ -667,16 +619,14 @@ export async function renderSkillsTreeView() {
     const nodeEl = document.querySelector(`.node[data-node-id="${nodeId}"]`);
     if (nodeEl) {
       nodeEl.setAttribute('tabindex', '0');
-      nodeEl.style.outline = '2px solid #FF9800';
-      nodeEl.style.outlineOffset = '2px';
+      nodeEl.classList.add('node-focused');
     }
   }
 
   function clearFocus() {
     document.querySelectorAll('.node[tabindex="0"]').forEach(el => {
       el.removeAttribute('tabindex');
-      el.style.outline = '';
-      el.style.outlineOffset = '';
+      el.classList.remove('node-focused');
     });
     focusedNodeIndex = -1;
   }

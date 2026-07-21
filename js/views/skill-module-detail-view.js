@@ -121,7 +121,7 @@ export async function renderSkillModuleDetailView(moduleId) {
               : (difficultyClass ? '' : '4px solid var(--gray-400)');
 
             return `
-              <div class="exercise-progression-card ${difficultyClass}" style="cursor: pointer; border-left: ${isCompleted ? '4px solid #4CAF50' : (difficultyClass ? '' : '4px solid var(--gray-400)')};" data-exercise-id="${exerciseId}">
+              <div class="exercise-progression-card ${difficultyClass}" style="border-left: ${isCompleted ? '4px solid #4CAF50' : (difficultyClass ? '' : '4px solid var(--gray-400)')};" data-exercise-id="${exerciseId}">
                 <div class="flex-container">
                   <div class="flex-1">
                     <div class="exercise-header">

@@ -210,7 +210,7 @@ export async function renderModuleAdminView(editId = null) {
                        return `
                          <div class="${itemClass}" \
                               data-ex-id="${exercise.id}">
-              <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+              <label class="flex-between" style="cursor: pointer;">
                 <div>
                   <strong>${escapeHtml(exercise.name)}</strong>
                   <div class="text-sm text-gray-600">

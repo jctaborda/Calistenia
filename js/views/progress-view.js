@@ -43,7 +43,7 @@ class SimpleChartRenderer {
     const allValues = datasets.flatMap(ds => ds.data);
     const maxValue = Math.max(...allValues, 1);
 
-    let svgContent = `<svg width="${width}" height="${height}" style="max-width: 100%; height: auto;">`;
+    let svgContent = `<svg width="${width}" height="${height}" class="chart-svg">`;
     
     // Title
     svgContent += `<text x="${width / 2}" y="25" text-anchor="middle" font-size="16" font-weight="bold">${title}</text>`;
@@ -108,7 +108,7 @@ class SimpleChartRenderer {
 
     const maxValue = Math.max(...datasets.flatMap(ds => ds.data), 1);
 
-    let svgContent = `<svg width="${width}" height="${height}" style="max-width: 100%; height: auto;">`;
+    let svgContent = `<svg width="${width}" height="${height}" class="chart-svg">`;
     
     svgContent += `<text x="${width / 2}" y="25" text-anchor="middle" font-size="16" font-weight="bold">${title}</text>`;
 
@@ -156,7 +156,7 @@ class SimpleChartRenderer {
     const center = size / 2;
     const radius = size / 2 - 40;
 
-    let svgContent = `<svg width="${size}" height="${size}" style="max-width: 100%; height: auto;">`;
+    let svgContent = `<svg width="${size}" height="${size}" class="chart-svg">`;
     
     svgContent += `<text x="${center}" y="25" text-anchor="middle" font-size="16" font-weight="bold">${title}</text>`;
 
@@ -231,42 +231,42 @@ export async function renderProgressView() {
 
       <!-- Statistics Overview -->
       <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
-        <div class="stat-card" style="background: var(--card-bg); padding: 1rem; border-radius: 8px; text-align: center;">
-          <div style="font-size: 2rem; font-weight: bold; color: var(--btn-start, #4CAF50);">${streakData.totalWorkouts}</div>
-          <div style="font-size: 0.9rem; color: var(--text-secondary);">${t('progress.total_workouts') || 'Total Workouts'}</div>
+        <div class="stat-card stat-card--overview">
+          <div class="stat-value" style="color: var(--btn-start, #4CAF50);">${streakData.totalWorkouts}</div>
+          <div class="stat-label">${t('progress.total_workouts') || 'Total Workouts'}</div>
         </div>
-        <div class="stat-card" style="background: var(--card-bg); padding: 1rem; border-radius: 8px; text-align: center;">
-          <div style="font-size: 2rem; font-weight: bold; color: var(--warning-dark, #FF9800);">${streakData.currentStreak}</div>
-          <div style="font-size: 0.9rem; color: var(--text-secondary);">${t('progress.current_streak') || 'Day Streak'}</div>
+        <div class="stat-card stat-card--overview">
+          <div class="stat-value" style="color: var(--warning-dark, #FF9800);">${streakData.currentStreak}</div>
+          <div class="stat-label">${t('progress.current_streak') || 'Day Streak'}</div>
         </div>
-        <div class="stat-card" style="background: var(--card-bg); padding: 1rem; border-radius: 8px; text-align: center;">
-          <div style="font-size: 2rem; font-weight: bold; color: var(--btn-view, #2196F3);">${scheduleStats.upcoming}</div>
-          <div style="font-size: 0.9rem; color: var(--text-secondary);">${t('progress.upcoming') || 'Scheduled'}</div>
+        <div class="stat-card stat-card--overview">
+          <div class="stat-value" style="color: var(--btn-view, #2196F3);">${scheduleStats.upcoming}</div>
+          <div class="stat-label">${t('progress.upcoming') || 'Scheduled'}</div>
         </div>
-        <div class="stat-card" style="background: var(--card-bg); padding: 1rem; border-radius: 8px; text-align: center;">
-          <div style="font-size: 2rem; font-weight: bold; color: var(--purple, #9C27B0);">${scheduleStats.completionRate}%</div>
-          <div style="font-size: 0.9rem; color: var(--text-secondary);">${t('progress.completion_rate') || 'Completion'}</div>
+        <div class="stat-card stat-card--overview">
+          <div class="stat-value" style="color: var(--purple, #9C27B0);">${scheduleStats.completionRate}%</div>
+          <div class="stat-label">${t('progress.completion_rate') || 'Completion'}</div>
         </div>
       </div>
 
       <!-- Tabs -->
-      <div class="progress-tabs" style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border-color);">
-        <button class="tab-btn active" data-tab="weekly-volume" style="flex: 1; padding: 0.75rem; border: none; background: var(--btn-view, #2196F3); color: white; border-radius: 4px 4px 0 0; cursor: pointer;">
+      <div class="progress-tabs">
+        <button class="tab-btn active" data-tab="weekly-volume">
           ${t('progress.weekly_volume') || 'Weekly Volume'}
         </button>
-        <button class="tab-btn" data-tab="exercise-prs" style="flex: 1; padding: 0.75rem; border: none; background: var(--card-bg); color: var(--text-primary); border-radius: 4px 4px 0 0; cursor: pointer;">
+        <button class="tab-btn" data-tab="exercise-prs">
           ${t('progress.exercise_prs') || 'Exercise PRs'}
         </button>
-        <button class="tab-btn" data-tab="weight-progress" style="flex: 1; padding: 0.75rem; border: none; background: var(--card-bg); color: var(--text-primary); border-radius: 4px 4px 0 0; cursor: pointer;">
+        <button class="tab-btn" data-tab="weight-progress">
           ${t('progress.weight_progress') || 'Weight Progress'}
         </button>
-        <button class="tab-btn" data-tab="muscle-balance" style="flex: 1; padding: 0.75rem; border: none; background: var(--card-bg); color: var(--text-primary); border-radius: 4px 4px 0 0; cursor: pointer;">
+        <button class="tab-btn" data-tab="muscle-balance">
           ${t('progress.muscle_balance') || 'Muscle Balance'}
         </button>
-        <button class="tab-btn" data-tab="duration-trends" style="flex: 1; padding: 0.75rem; border: none; background: var(--card-bg); color: var(--text-primary); border-radius: 4px 4px 0 0; cursor: pointer;">
+        <button class="tab-btn" data-tab="duration-trends">
           ${t('progress.duration_trends') || 'Duration Trends'}
         </button>
-        <button class="tab-btn" data-tab="schedules" style="flex: 1; padding: 0.75rem; border: none; background: var(--card-bg); color: var(--text-primary); border-radius: 4px 4px 0 0; cursor: pointer;">
+        <button class="tab-btn" data-tab="schedules">
           ${t('progress.schedules') || 'Schedules'}
         </button>
       </div>
@@ -274,18 +274,18 @@ export async function renderProgressView() {
       <!-- Tab Content -->
       <div id="tab-content">
         <!-- Weekly Volume Chart -->
-        <div id="weekly-volume" class="tab-content active" style="display: block;">
-          <div id="weekly-volume-chart" style="margin-bottom: 1rem;"></div>
-          <div class="schedule-section" style="background: var(--card-bg); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
-            <h3 style="margin-top: 0;">${t('progress.schedule_workout') || 'Schedule a Workout'}</h3>
-            <form id="schedule-form" style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
-              <select id="schedule-routine" style="flex: 1; min-width: 200px; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px;">
+        <div id="weekly-volume" class="tab-content active">
+          <div id="weekly-volume-chart" class="chart-container"></div>
+          <div class="schedule-section">
+            <h3>${t('progress.schedule_workout') || 'Schedule a Workout'}</h3>
+            <form id="schedule-form" class="schedule-form">
+              <select id="schedule-routine" class="form-input form-input--flex">
                 <option value="">${t('common.select_routine') || 'Select Routine'}</option>
                 ${(state.routines || []).map(r => `<option value="${r.id}">${escapeHtml(r.name)}</option>`).join('')}
               </select>
-              <input type="date" id="schedule-date" style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px;">
-              <label style="display: flex; align-items: center; gap: 0.25rem;">
-                <input type="checkbox" id="schedule-recurring" style="width: 18px; height: 18px;">
+              <input type="date" id="schedule-date" class="form-input">
+              <label class="form-check-label">
+                <input type="checkbox" id="schedule-recurring" class="form-check-input">
                 <span>${t('progress.recurring') || 'Recurring'}</span>
               </label>
               <button type="submit" class="btn">${t('common.schedule') || 'Schedule'}</button>
@@ -294,16 +294,16 @@ export async function renderProgressView() {
         </div>
 
         <!-- Exercise PRs -->
-        <div id="exercise-prs" class="tab-content" style="display: none;">
-          <div id="exercise-prs-chart" style="margin-bottom: 1rem;"></div>
-          <div style="margin-top: 1rem;">
+        <div id="exercise-prs" class="tab-content">
+          <div id="exercise-prs-chart" class="chart-container"></div>
+          <div class="card-section">
             <h3>${t('progress.top_prs') || 'Top Personal Records'}</h3>
-            <div style="display: grid; gap: 0.5rem;">
+            <div class="list-grid">
               ${(prs.slice(0, 10) || []).map(pr => `
-                <div style="background: var(--card-bg); padding: 0.75rem; border-radius: 4px; display: flex; justify-content: space-between; align-items: center;">
+                <div class="card-row">
                   <div>
                     <strong>${escapeHtml(pr.exerciseName)}</strong>
-                    <div style="font-size: 0.85rem; color: var(--text-secondary);">
+                    <div class="detail-text">
                       ${pr.maxWeight ? `${pr.maxWeight}kg x ${pr.maxReps} reps` : ''}
                       ${pr.estimated1RM ? ` | 1RM: ${pr.estimated1RM}kg` : ''}
                     </div>
@@ -316,32 +316,32 @@ export async function renderProgressView() {
         </div>
 
         <!-- Weight Progress -->
-        <div id="weight-progress" class="tab-content" style="display: none;">
-          <div id="weight-progress-chart" style="margin-bottom: 1rem;"></div>
-          <div style="margin-top: 1rem;">
+        <div id="weight-progress" class="tab-content">
+          <div id="weight-progress-chart" class="chart-container"></div>
+          <div class="card-section">
             <h3>${t('progress.weight_progress_exercises') || 'Weight Progression by Exercise'}</h3>
-            <p style="color: var(--text-secondary); font-size: 0.9rem;">Track your weight progression across exercises. Shows volume (reps × weight) over time for exercises where you've used weight.</p>
-            <div id="weight-exercise-list" style="margin-top: 1rem; display: grid; gap: 0.5rem;"></div>
+            <p class="text-secondary">Track your weight progression across exercises. Shows volume (reps × weight) over time for exercises where you've used weight.</p>
+            <div id="weight-exercise-list" class="list-grid card-section"></div>
           </div>
         </div>
 
         <!-- Muscle Balance -->
-        <div id="muscle-balance" class="tab-content" style="display: none;">
-          <div id="muscle-balance-chart" style="display: flex; justify-content: center; margin-bottom: 1rem;"></div>
-          <div style="margin-top: 1rem;">
+        <div id="muscle-balance" class="tab-content">
+          <div id="muscle-balance-chart" class="chart-container chart-container--centered"></div>
+          <div class="card-section">
             <h3>${t('progress.muscle_details') || 'Muscle Group Details'}</h3>
-            <div style="display: grid; gap: 0.5rem;">
+            <div class="list-grid">
               ${Object.values(muscleBalance)
                 .filter(m => m.volume > 0)
                 .sort((a, b) => b.volume - a.volume)
                 .map(m => `
-                  <div style="background: var(--card-bg); padding: 0.75rem; border-radius: 4px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <div class="card-row">
+                    <div class="flex-between">
                       <strong>${escapeHtml(m.name)}</strong>
-                      <span style="color: var(--text-secondary);">${m.percentage}%</span>
+                      <span class="text-secondary">${m.percentage}%</span>
                     </div>
-                    <div style="height: 8px; background: var(--border-color); border-radius: 4px; margin-top: 0.5rem; overflow: hidden;">
-                      <div style="height: 100%; background: var(--btn-view, #2196F3); width: ${m.percentage}%;"></div>
+                    <div class="progress-bar-track">
+                      <div class="progress-bar-fill" style="width: ${m.percentage}%;"></div>
                     </div>
                   </div>
                 `).join('')}
@@ -350,47 +350,47 @@ export async function renderProgressView() {
         </div>
 
         <!-- Duration Trends -->
-        <div id="duration-trends" class="tab-content" style="display: none;">
-          <div id="duration-trends-chart" style="margin-bottom: 1rem;"></div>
-          <div style="margin-top: 1rem; background: var(--card-bg); padding: 1rem; border-radius: 8px;">
+        <div id="duration-trends" class="tab-content">
+          <div id="duration-trends-chart" class="chart-container"></div>
+          <div class="card-section">
             <h3>${t('progress.duration_stats') || 'Duration Statistics'}</h3>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
-              <div style="text-align: center;">
-                <div style="font-size: 1.5rem; font-weight: bold; color: var(--btn-view, #2196F3);">${durationTrends.avgDuration ? formatDuration(durationTrends.avgDuration) : '0'}</div>
-                <div style="font-size: 0.85rem; color: var(--text-secondary);">${t('progress.avg_duration') || 'Average Duration'}</div>
+            <div class="stats-mini-grid">
+              <div class="text-center">
+                <div class="stat-value" style="color: var(--btn-view, #2196F3);">${durationTrends.avgDuration ? formatDuration(durationTrends.avgDuration) : '0'}</div>
+                <div class="stat-label">${t('progress.avg_duration') || 'Average Duration'}</div>
               </div>
-              <div style="text-align: center;">
-                <div style="font-size: 1.5rem; font-weight: bold; color: var(--btn-start, #4CAF50);">${durationTrends.maxDuration ? formatDuration(durationTrends.maxDuration) : '0'}</div>
-                <div style="font-size: 0.85rem; color: var(--text-secondary);">${t('progress.max_duration') || 'Longest Workout'}</div>
+              <div class="text-center">
+                <div class="stat-value" style="color: var(--btn-start, #4CAF50);">${durationTrends.maxDuration ? formatDuration(durationTrends.maxDuration) : '0'}</div>
+                <div class="stat-label">${t('progress.max_duration') || 'Longest Workout'}</div>
               </div>
-              <div style="text-align: center;">
-                <div style="font-size: 1.5rem; font-weight: bold; color: var(--warning-dark, #FF9800);">${durationTrends.minDuration ? formatDuration(durationTrends.minDuration) : '0'}</div>
-                <div style="font-size: 0.85rem; color: var(--text-secondary);">${t('progress.min_duration') || 'Shortest Workout'}</div>
+              <div class="text-center">
+                <div class="stat-value" style="color: var(--warning-dark, #FF9800);">${durationTrends.minDuration ? formatDuration(durationTrends.minDuration) : '0'}</div>
+                <div class="stat-label">${t('progress.min_duration') || 'Shortest Workout'}</div>
               </div>
-              <div style="text-align: center;">
-                <div style="font-size: 1.5rem; font-weight: bold; color: var(--purple, #9C27B0);">${durationTrends.workoutsCount || 0}</div>
-                <div style="font-size: 0.85rem; color: var(--text-secondary);">${t('progress.total_workouts') || 'Total Workouts'}</div>
+              <div class="text-center">
+                <div class="stat-value" style="color: var(--purple, #9C27B0);">${durationTrends.workoutsCount || 0}</div>
+                <div class="stat-label">${t('progress.total_workouts') || 'Total Workouts'}</div>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Schedules -->
-        <div id="schedules" class="tab-content" style="display: none;">
-          <div style="display: grid; gap: 1rem;">
+        <div id="schedules" class="tab-content">
+          <div class="list-grid">
             <div>
               <h3>${t('progress.upcoming_workouts') || 'Upcoming Workouts'}</h3>
-              <div style="display: grid; gap: 0.5rem;">
+              <div class="list-grid">
                 ${(routineSchedulingService.getUpcomingSchedules(10) || []).map(schedule => `
-                  <div style="background: var(--card-bg); padding: 0.75rem; border-radius: 4px; display: flex; justify-content: space-between; align-items: center;">
+                  <div class="card-row">
                     <div>
                       <strong>${escapeHtml(schedule.routineName)}</strong>
-                      <div style="font-size: 0.85rem; color: var(--text-secondary);">
+                      <div class="detail-text">
                         ${new Date(schedule.scheduledDate).toLocaleDateString()}
                         ${schedule.recurring ? ` • ${t('progress.recurring')} (Day ${schedule.dayOfWeek})` : ''}
                       </div>
                     </div>
-                    <div style="display: flex; gap: 0.5rem;">
+                    <div class="btn-group">
                       <button class="btn btn-secondary btn-sm" onclick="window.location.hash='#routine-details/routine/${schedule.routineId}'">${t('common.view') || 'View'}</button>
                       <button class="btn btn-secondary btn-sm" onclick="routineSchedulingService.cancelSchedule(${schedule.id})">${t('common.cancel') || 'Cancel'}</button>
                     </div>
@@ -400,12 +400,12 @@ export async function renderProgressView() {
             </div>
             <div>
               <h3>${t('progress.recurring_workouts') || 'Recurring Workouts'}</h3>
-              <div style="display: grid; gap: 0.5rem;">
+              <div class="list-grid">
                 ${(routineSchedulingService.getRecurringSchedules() || []).map(schedule => `
-                  <div style="background: var(--card-bg); padding: 0.75rem; border-radius: 4px; display: flex; justify-content: space-between; align-items: center;">
+                  <div class="card-row">
                     <div>
                       <strong>${escapeHtml(schedule.routineName)}</strong>
-                      <div style="font-size: 0.85rem; color: var(--text-secondary);">
+                      <div class="detail-text">
                         Every ${t('progress.day_of_week')[schedule.dayOfWeek] || 'Day ' + schedule.dayOfWeek}
                       </div>
                     </div>
@@ -454,17 +454,11 @@ export async function renderProgressView() {
     // Update tab buttons
     main.querySelectorAll('.tab-btn').forEach(btn => {
       btn.classList.toggle('active', btn.getAttribute('data-tab') === tabName);
-      btn.style.background = btn.getAttribute('data-tab') === tabName 
-        ? 'var(--btn-view, #2196F3)' 
-        : 'var(--card-bg)';
-      btn.style.color = btn.getAttribute('data-tab') === tabName 
-        ? 'white' 
-        : 'var(--text-primary)';
     });
 
     // Show tab content
     main.querySelectorAll('.tab-content').forEach(content => {
-      content.style.display = content.id === tabName ? 'block' : 'none';
+      content.classList.toggle('active', content.id === tabName);
     });
 
     // Re-render charts if needed
@@ -616,7 +610,7 @@ async function renderWeightProgressChart(container, history, exercises) {
   }
   
   if (exercisesWithWeight.length === 0) {
-    container.innerHTML = '<p style="text-align: center; color: var(--text-secondary); padding: 2rem;">No weight data yet. Start adding weight to your exercises to track progression!</p>';
+    container.innerHTML = '<p class="empty-state">No weight data yet. Start adding weight to your exercises to track progression!</p>';
     return;
   }
   

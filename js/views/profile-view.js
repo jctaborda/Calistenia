@@ -70,10 +70,10 @@ export async function renderProfileView() {
   ` : `<p class="metrics-empty">${t('profile.no_metrics')}</p>`}
   
   ${bodyMetrics.length > 0 && history.length > 0 ? `
-  <div class="weight-performance-chart" style="margin-top: 2rem;">
+  <div class="weight-performance-chart">
     <h3>${t('profile.weight_performance_correlation')}</h3>
     <div id="weight-performance-chart-container"></div>
-    <p style="font-size: 0.9em; color: var(--gray-600); margin-top: 1rem;">${t('profile.weight_performance_desc')}</p>
+    <p class="chart-description">${t('profile.weight_performance_desc')}</p>
   </div>
   ` : ''}
   </div>
@@ -84,7 +84,7 @@ export async function renderProfileView() {
   ${achievementStatus.some(a => a.unlocked) ? `
   <div class="achievements-section">
   ${achievementStatus.filter(a => a.unlocked).map(ach => `
-  <div class="achievement-item achievement-unlocked" style="opacity: 0.7;">
+  <div class="achievement-item achievement-unlocked">
   <span class="achievement-emoji">${ach.emoji}</span>
   <div class="achievement-details">
   <strong>${ach.name}</strong>
@@ -95,10 +95,10 @@ export async function renderProfileView() {
   </div>
   ` : `<p class="achievements-empty">${t('profile.no_achievements')}</p>`}
   
-  <div style="margin-top: 1rem;">
+  <div class="potential-achievements">
   <h3>${t('profile.potential_achievements')}</h3>
   ${achievementStatus.filter(a => !a.unlocked).map(ach => `
-  <div class="achievement-item achievement-pending" style="opacity: 0.5; border-left: 4px solid var(--gray-400);">
+  <div class="achievement-item achievement-pending">
   <span class="achievement-emoji">${ach.emoji}</span>
   <div class="achievement-details">
   <strong>${ach.name}</strong>
@@ -114,7 +114,7 @@ export async function renderProfileView() {
    ${history.length === 0 ? `<p>${t('profile.no_workouts')}</p>` : `
            <ul class="workout-history-list">
              ${history.map((w, index) => `
-               <li class="workout-item" data-workout-item data-index="${index}" style="cursor: pointer;">
+                <li class="workout-item" data-workout-item data-index="${index}">
                  <div class="workout-info">
                    <span class="workout-routine">${w.routine?.name || 'Custom Workout'}</span>
                    <span class="workout-date">${formatWorkoutDate(w.date, false)}</span>
@@ -142,10 +142,10 @@ export async function renderProfileView() {
   <div id="storage-stats">
     <p><em>Loading storage stats...</em></p>
   </div>
-  <button id="clear-data-btn" class="btn btn-danger" style="margin-top: 0.5rem;" aria-label="Clear all data">${t('profile.clear_data')}</button>
+  <button id="clear-data-btn" class="btn btn-danger clear-data-btn" aria-label="Clear all data">${t('profile.clear_data')}</button>
   </div>
   
-  <button class="btn back-to-home-btn" data-nav="#home" style="margin-top: 2rem;">${t('profile.back_to_home')}</button>
+  <button class="btn back-to-home-btn" data-nav="#home">${t('profile.back_to_home')}</button>
     </div>
   `;
 
@@ -214,21 +214,21 @@ async function loadStorageStats() {
       let quotaBar = '';
       // Use CSS variables instead of hardcoded colors
       if (usagePercent >= 90) {
-        quotaBar = `<div style="background: var(--btn-danger, #dc3545); height: 8px; border-radius: 4px; margin-top: 0.5rem;">`;
+        quotaBar = `<div class="quota-bar quota-bar-danger">`;
       } else if (usagePercent >= 70) {
-        quotaBar = `<div style="background: var(--warning, #ffc107); height: 8px; border-radius: 4px; margin-top: 0.5rem;">`;
+        quotaBar = `<div class="quota-bar quota-bar-warning">`;
       } else {
-        quotaBar = `<div style="background: var(--success, #28a745); height: 8px; border-radius: 4px; margin-top: 0.5rem;">`;
+        quotaBar = `<div class="quota-bar quota-bar-success">`;
       }
-      quotaBar += `<div style="width: ${Math.min(usagePercent, 100)}%; height: 100%; border-radius: 4px; background: white;"></div></div>`;
+      quotaBar += `<div class="quota-bar-fill" style="width: ${Math.min(usagePercent, 100)}%;"></div></div>`;
       
       statsContainer.innerHTML = `
         <p><strong>Storage Used:</strong> ${usageMB} MB / ${quotaMB} MB (${usagePercent}% full)</p>
         ${quotaBar}
         <p><strong>Data Items:</strong> ${totalItems} items across ${storeCount} stores</p>
-        <p style="font-size: 0.9em; color: var(--gray-600, #6c757d);">
-          ${usagePercent >= 90 ? `<strong style="color: var(--btn-danger, #dc3545);">⚠️ Storage nearly full! Consider clearing old data or exporting a backup.</strong>` : ''}
-          ${usagePercent >= 70 && usagePercent < 90 ? `<span style="color: var(--warning, #ffc107);">⚠️ Storage getting full. Consider periodic cleanup.</span>` : ''}
+        <p class="storage-status-text">
+          ${usagePercent >= 90 ? `<strong class="storage-critical">⚠️ Storage nearly full! Consider clearing old data or exporting a backup.</strong>` : ''}
+          ${usagePercent >= 70 && usagePercent < 90 ? `<span class="storage-warning">⚠️ Storage getting full. Consider periodic cleanup.</span>` : ''}
         </p>
       `;
     } else {

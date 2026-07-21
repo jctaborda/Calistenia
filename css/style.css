@@ -14,22 +14,22 @@
     --gray-700: #495057;
     --gray-800: #343A40;
     --gray-900: #212529;
-   
+
     /* Spacing */
     --spacing-xs: 0.25rem;
     --spacing-sm: 0.5rem;
     --spacing-md: 1rem;
     --spacing-lg: 1.5rem;
     --spacing-xl: 2rem;
-    
+
     /* Font sizes */
     --font-size-base: 1rem;
-    
+
     /* Border radius */
     --radius-sm: 4px;
     --radius-md: 8px;
     --radius-lg: 16px;
-    
+
     /* Shadows */
     --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
     --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
@@ -52,77 +52,12 @@
     /* Emoji font stack for Chrome and other browsers */
     --emoji-font: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", system-ui, sans-serif;
 
-/* ============================================
-   EMOJI FONT SUPPORT - Fix Chrome emoji display
-   ============================================ */
-*, *::before, *::after {
-    font-family: var(--emoji-font);
-}
-
-body {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-.stat-icon-wrapper,
-.action-icon,
-.badge,
-.stat-number,
-.stat-label,
-.routine-stats,
-.workout-details,
-.welcome-section h1 {
-    font-family: inherit;
-}
-
-.achievement-emoji {
-    font-family: var(--emoji-font);
-    font-size: 1.5rem;
-    flex-shrink: 0;
-}
-
-:root {
     text-rendering: optimizeLegibility;
-}
 
-/* ============================================
-   CRITICAL CSS - Must load before JS
-   Used for preventing FOUC and initial render
-   ============================================ */
-/* Base body styles */
-body {
-    margin: 0;
-    padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
+    /* Toast animation duration */
+    --toast-duration: 8000ms;
 
-/* Layout constraints */
-html, body {
-    height: 100%;
-    min-height: 100vh;
-}
-
-/* App container */
-#app {
-    background: #f5f5f5;
-}
-
-/* Card reset for immediate rendering */
-.card {
-    opacity: 1 !important;
-    transition: none !important;
-}
-
-/* Loading state - hide app until CSS is ready */
-body.loading #app {
-    visibility: hidden;
-}
-
-body:not(.loading) #app {
-    visibility: visible;
-}
+    /* App theme */
     --body-bg: #f5f7fa;
     --text-primary: #222;
     --text-light: #b0b0b0;
@@ -161,15 +96,50 @@ body:not(.loading) #app {
     --shadow-blue-1: rgba(25, 118, 210, 0.08);
     --shadow-blue-2: rgba(25, 118, 210, 0.12);
     --shadow-blue-3: rgba(25, 118, 210, 0.07);
-    
-    /* Dark mode specific */
+
+    /* Dark mode */
     --dark-border: #444;
     --dark-accent: #42a5f5;
     --dark-btn-hover: #3b8cdb;
     --dark-text-secondary: #909090;
-    
+
     /* Semantic backgrounds */
     --suggestion-bg: #fff3e0;
+}
+
+/* Emoji support for specific elements */
+.achievement-emoji {
+    font-family: var(--emoji-font);
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+/* ============================================
+   CRITICAL CSS - Must load before JS
+   ============================================ */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+html, body {
+    height: 100%;
+    min-height: 100vh;
+}
+
+#app {
+    background: #f5f5f5;
+}
+
+body.loading #app {
+    visibility: hidden;
+}
+
+body:not(.loading) #app {
+    visibility: visible;
 }
 
 /* ===== RESET ===== */
@@ -505,7 +475,7 @@ li {
 
 /* Drag handle - use BEM modifier for hover state */
 .drag-handle {
-  cursor: move;
+  cursor: grab;
   user-select: none;
   padding: 0.5rem;
   background: var(--drag-bg);
@@ -519,6 +489,10 @@ li {
 
 .drag-handle:hover {
   background: var(--tag-bg);
+}
+
+.drag-handle:active {
+  cursor: grabbing;
 }
 
 /* Lists */
@@ -1057,14 +1031,15 @@ html.dark .error-message {
 
 
 .tab-btn {
+  flex: 1;
   padding: 0.75rem 1.5rem;
-  background: transparent;
+  background: var(--card-bg, white);
   border: none;
-  color: var(--btn-secondary);
+  color: var(--text-primary);
   cursor: pointer;
   font-size: 1rem;
   transition: all 0.3s ease;
-  border-bottom: 2px solid transparent;
+  border-radius: 4px 4px 0 0;
   font-family: inherit;
   font-weight: 600;
 }
@@ -1074,7 +1049,8 @@ html.dark .error-message {
 }
 
 .tab-btn.active {
-  color: var(--btn-primary);
+  background: var(--btn-view, #2196F3);
+  color: white;
   border-bottom-color: var(--btn-primary);
 }
 
@@ -1622,10 +1598,12 @@ html.dark .loading {
 /* Skills Tree View */
 .tree-label {
   position: absolute;
-  transform-origin: center;
+  top: 0;
+  left: 0;
+  transform-origin: top left;
   pointer-events: none;
-  width: 180px;
-  margin-left: -90px;
+  width: 200px;
+  margin-left: -100px;
   z-index: 10;
 }
 
@@ -1711,16 +1689,7 @@ html.dark .loading {
   margin-bottom: 0;
 }
 
-/* Tree label positioning */
-.tree-label {
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform-origin: top left;
-  width: 200px;
-  margin-left: -100px;
-}
-
+/* Tree label child styles */
 .tree-label .label-content {
   background: white;
   padding: 4px 8px;
@@ -1781,22 +1750,6 @@ html.dark .loading {
 .exercises-heading small {
   font-size: 0.85em;
   color: var(--gray-600);
-}
-
-.drag-handle {
-  cursor: move;
-  user-select: none;
-  padding: 0.5rem;
-  background: var(--drag-bg);
-  border-radius: 4px;
-  margin-bottom: 0.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.drag-handle span:first-child {
-  font-size: 1.2em;
 }
 
 .exercise-name {
@@ -2201,7 +2154,7 @@ small {
   left: 0;
   height: 3px;
   background: var(--light);
-  animation: toast-progress TOAST_DURATION linear;
+  animation: toast-progress var(--toast-duration) linear;
 }
 
 @keyframes toast-progress {
@@ -2231,6 +2184,7 @@ small {
   margin-bottom: 0.75rem;
   box-shadow: var(--shadow-sm);
   transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
 }
 
 .workout-item:hover {
@@ -2249,11 +2203,6 @@ small {
   font-weight: 600;
   color: var(--primary);
   font-size: 1rem;
-}
-
-.workout-date {
-  color: var(--gray-600);
-  font-size: 0.875rem;
 }
 
 .workout-count {
@@ -3183,7 +3132,7 @@ html.dark .content-value {
   border-radius: 4px;
   text-align: left;
 }
-.error-message {
+.error-container .error-message {
   color: var(--error);
   font-weight: 600;
   margin-bottom: 0.5rem;
@@ -3320,7 +3269,7 @@ html.dark .content-value {
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
-.timer-progress-bar {
+.rest-timer-container .timer-progress-bar {
   height: 6px;
   background: var(--gray-300);
   border-radius: 3px;
@@ -3686,13 +3635,6 @@ html.dark .content-value {
   transform: translateY(-2px);
 }
 
-.drag-handle {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: grab;
-}
-
 .drag-handle span:first-child {
   color: var(--text-secondary, #666);
   font-size: 1.2rem;
@@ -3772,7 +3714,7 @@ input.error:focus, select.error:focus, textarea.error:focus {
   box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.25);
 }
 
-.error-message {
+.form-group .error-message {
   color: var(--btn-danger, #dc3545);
   font-size: 0.85rem;
   margin-top: 0.25rem;
@@ -3884,6 +3826,370 @@ html.dark .skill-tree-node.current {
 html.dark .skill-tree-node.locked {
   background: var(--gray-800, #343a40);
   color: var(--gray-300, #ced4da);
+}
+
+/* ============================================
+   TABLET BREAKPOINT (768px)
+   ============================================ */
+@media (max-width: 768px) {
+  main {
+    padding: 1.5rem 0.75rem;
+  }
+
+  header {
+    padding: 1rem 1.25rem 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .list-container {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .exercise-form-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .progress-tabs {
+    flex-wrap: wrap;
+  }
+
+  .tab-btn {
+    flex: 1 1 calc(50% - 0.25rem);
+    min-width: 0;
+  }
+
+  .filter-toolbar {
+    flex-direction: column;
+  }
+
+  .filter-toolbar input,
+  .filter-toolbar select {
+    width: 100%;
+  }
+
+  .confirm-modal-content {
+    max-width: 90vw;
+  }
+
+  .legend-card .flex-gap-xl {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+}
+
+/* ============================================
+   INLINE STYLE REPLACEMENT CLASSES (CSS-008)
+   ============================================ */
+
+/* Progress view - stat cards */
+.stat-card--overview {
+  background: var(--card-bg, white);
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.stat-value--sm {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+/* Progress tabs */
+.progress-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--border-color, #dee2e6);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* Chart containers */
+.chart-container {
+  margin-bottom: 1rem;
+}
+
+.chart-container--centered {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.chart-svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Schedule section */
+.schedule-section {
+  background: var(--card-bg, white);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+.schedule-section h3 {
+  margin-top: 0;
+}
+
+.schedule-form {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Form inputs */
+.form-input {
+  padding: 0.5rem;
+  border: 1px solid var(--border-color, #dee2e6);
+  border-radius: 4px;
+}
+
+.form-input--flex {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.5rem;
+  border: 1px solid var(--border-color, #dee2e6);
+  border-radius: 4px;
+}
+
+.form-check-label {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.form-check-input {
+  width: 18px;
+  height: 18px;
+}
+
+/* List layouts */
+.list-grid {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.card-row {
+  background: var(--card-bg, white);
+  padding: 0.75rem;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.detail-text {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Card section */
+.card-section {
+  margin-top: 1rem;
+  background: var(--card-bg, white);
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.stats-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+/* Progress bars */
+.progress-bar-track {
+  height: 8px;
+  background: var(--border-color, #dee2e6);
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--btn-view, #2196F3);
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  color: var(--text-secondary);
+  padding: 2rem;
+}
+
+/* Profile view */
+.weight-performance-chart {
+  margin-top: 2rem;
+}
+
+.chart-description {
+  font-size: 0.9em;
+  color: var(--gray-600);
+  margin-top: 1rem;
+}
+
+.achievement-unlocked {
+  opacity: 0.7;
+}
+
+.potential-achievements {
+  margin-top: 1rem;
+}
+
+.achievement-pending {
+  opacity: 0.5;
+  border-left: 4px solid var(--gray-400);
+}
+
+.clear-data-btn {
+  margin-top: 0.5rem;
+}
+
+.back-to-home-btn {
+  margin-top: 2rem;
+}
+
+.quota-bar {
+  height: 8px;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+}
+
+.quota-bar-danger {
+  background: var(--btn-danger, #dc3545);
+}
+
+.quota-bar-warning {
+  background: var(--warning, #ffc107);
+}
+
+.quota-bar-success {
+  background: var(--success, #28a745);
+}
+
+.quota-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: white;
+}
+
+.storage-status-text {
+  font-size: 0.9em;
+  color: var(--gray-600, #6c757d);
+}
+
+.storage-critical {
+  color: var(--btn-danger, #dc3545);
+}
+
+.storage-warning {
+  color: var(--warning, #ffc107);
+}
+
+/* Skills tree view */
+.tree-filter-control {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.5rem;
+  border: 1px solid var(--border-color, #dee2e6);
+  border-radius: 4px;
+}
+
+.tree-filter-select {
+  padding: 0.5rem;
+  border: 1px solid var(--border-color, #dee2e6);
+  border-radius: 4px;
+}
+
+.tree-description {
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+.legend-item.next-exercise {
+  border: 2px solid #FF9800;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  position: relative;
+}
+
+.legend-next-arrow {
+  position: absolute;
+  top: -2px;
+  left: 4px;
+  font-size: 10px;
+}
+
+.node-focused {
+  outline: 2px solid #FF9800;
+  outline-offset: 2px;
+}
+
+/* Builder view */
+.scrollable-exercise-list {
+  margin-top: 2rem;
+  max-height: 350px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+/* Utility classes */
+.hidden {
+  display: none;
+}
+
+.ai-error-detail {
+  font-size: 12px;
+  color: #aaa;
+  margin: 10px 0;
+}
+
+.set-duration-value {
+  font-size: var(--font-size-base);
+  font-weight: bold;
 }
 
 /* Screen reader only - visually hidden but accessible */

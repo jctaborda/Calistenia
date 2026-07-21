@@ -154,7 +154,7 @@ function renderActiveWorkoutTemplate({
       
       <div id="set-timer-display" class="card margin-bottom-1">
         <h3>⏱ ${t('active_workout.timer')}</h3>
-        <p><strong>${t('completion.duration')}:</strong> <span id="set-duration" class="set-duration-value" style="font-size: var(--font-size-base); font-weight: bold;">0</span>s</p>
+        <p><strong>${t('completion.duration')}:</strong> <span id="set-duration" class="set-duration-value">0</span>s</p>
       </div>
       
       <div class="card card-muted current-exercise-card">

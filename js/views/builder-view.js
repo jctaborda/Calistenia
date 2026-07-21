@@ -186,7 +186,7 @@ export async function renderBuilderView() {
         </div>
         ` : ''}
         
-        <div class="card margin-bottom-1" style="margin-top: 2rem; max-height: 350px; overflow-y: auto; padding-right: 0.5rem;">
+        <div class="card margin-bottom-1 scrollable-exercise-list">
           <h3>${t('builder.available_exercises')} (${exercises.length} exercises)</h3>
           <input 
             type="text" 
