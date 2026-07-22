@@ -11,8 +11,8 @@
       "difficulty": [
         2
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/Ab Rollout.jpg",
+      "video_url": "assets/videos/exercises/Ab Rollout.gif",
       "categories": [
         10
       ],
@@ -21,7 +21,8 @@
         14
       ],
       "prerequisites": [
-        45
+        45,
+        46
       ],
       "progressions": [],
       "formCues": [
@@ -102,7 +103,9 @@
       "prerequisites": [
         54
       ],
-      "progressions": [],
+      "progressions": [
+        93
+      ],
       "formCues": [
         "Posición de plancha lateral con la pierna superior cruzada por debajo",
         "Presiona la rodilla inferior contra el suelo",
@@ -179,7 +182,7 @@
         11
       ],
       "progressions": [
-        120
+        15
       ],
       "formCues": [
         "Agarre amplio por encima",
@@ -421,11 +424,9 @@
         "14"
       ],
       "prerequisites": [
-        1
+        107
       ],
-      "progressions": [
-        16
-      ],
+      "progressions": [],
       "formCues": [
         "Comienza con posición encogida en anilla o barra",
         "Activa dorsales y core intensamente",
@@ -541,8 +542,8 @@
       "difficulty": [
         1
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/Bench Dip.jpg",
+      "video_url": "assets/videos/exercises/Bench Dip.gif",
       "categories": [
         8
       ],
@@ -674,10 +675,10 @@
         14,
         16
       ],
-      "prerequisites": [],
-      "progressions": [
-        53
+      "prerequisites": [
+        60
       ],
+      "progressions": [],
       "formCues": [
         "Comienza sobre manos y rodillas",
         "Extiende el brazo y la pierna opuestos",
@@ -713,8 +714,7 @@
         11
       ],
       "prerequisites": [
-        72,
-        67
+        72
       ],
       "progressions": [
         73
@@ -758,9 +758,11 @@
         11
       ],
       "prerequisites": [
+        102,
         1
       ],
       "progressions": [
+        100,
         103,
         104
       ],
@@ -802,7 +804,6 @@
       ],
       "prerequisites": [],
       "progressions": [
-        87,
         85
       ],
       "formCues": [
@@ -840,10 +841,10 @@
         13
       ],
       "prerequisites": [
-        1
+        11
       ],
       "progressions": [
-        11
+        39
       ],
       "formCues": [
         "Agarre prono (palmas hacia ti), a la anchura de los hombros",
@@ -886,7 +887,7 @@
         94
       ],
       "progressions": [
-        94
+        98
       ],
       "formCues": [
         "Acuéstate de lado, rodillas dobladas a 90 grados",
@@ -926,7 +927,7 @@
         5
       ],
       "prerequisites": [
-        14,
+        5,
         7,
         8
       ],
@@ -970,10 +971,7 @@
         1
       ],
       "progressions": [
-        5,
-        4,
-        7,
-        8
+        35
       ],
       "formCues": [
         "Manos bajo el pecho, juntas",
@@ -1059,7 +1057,7 @@
         89
       ],
       "progressions": [
-        89
+        72
       ],
       "formCues": [
         "Párate ancho, desplaza el peso hacia un lado",
@@ -1101,7 +1099,9 @@
       "prerequisites": [
         105
       ],
-      "progressions": [],
+      "progressions": [
+        115
+      ],
       "formCues": [
         "Agáchate con las manos a la anchura de los hombros",
         "Coloca las rodillas en la parte posterior de los brazos superiores",
@@ -1142,16 +1142,11 @@
         14
       ],
       "prerequisites": [
-        61,
-        59,
-        125,
-        45
+        59
       ],
       "progressions": [
-        124,
-        46,
-        121,
-        62
+        55,
+        121
       ],
       "formCues": [
         "Acuéstate boca arriba, rodillas dobladas",
@@ -1220,10 +1215,10 @@
       "muscles": [
         19
       ],
-      "prerequisites": [
-        71
+      "prerequisites": [],
+      "progressions": [
+        44
       ],
-      "progressions": [],
       "formCues": [
         "Agarra la barra con ambas manos, brazos extendidos",
         "Cuelga libremente, deja que los hombros se relajen",
@@ -1309,8 +1304,7 @@
       ],
       "progressions": [
         5,
-        4,
-        3,
+        7,
         8
       ],
       "formCues": [
@@ -1348,9 +1342,7 @@
       "prerequisites": [
         79
       ],
-      "progressions": [
-        79
-      ],
+      "progressions": [],
       "formCues": [
         "Comienza sobre manos y rodillas",
         "Levanta una pierna con la rodilla doblada a 90 grados",
@@ -1388,7 +1380,8 @@
         14
       ],
       "prerequisites": [
-        48
+        56,
+        65
       ],
       "progressions": [],
       "formCues": [
@@ -1430,14 +1423,9 @@
         1
       ],
       "prerequisites": [
-        14,
-        21,
-        13
+        44
       ],
-      "progressions": [
-        101,
-        15
-      ],
+      "progressions": [],
       "formCues": [
         "Agarra la barra solo con las yemas de los dedos",
         "Realiza la dominada con fuerza de los dedos",
@@ -1509,9 +1497,11 @@
       "muscles": [
         6
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        124
+      ],
       "progressions": [
-        53
+        126
       ],
       "formCues": [
         "Acuéstate boca arriba, brazos a los lados",
@@ -1590,7 +1580,7 @@
         14
       ],
       "prerequisites": [
-        18
+        114
       ],
       "progressions": [],
       "formCues": [
@@ -1633,9 +1623,11 @@
         18
       ],
       "prerequisites": [
-        107
+        18
       ],
-      "progressions": [],
+      "progressions": [
+        16
+      ],
       "formCues": [
         "Comienza en posición de palanca frontal",
         "Tira del cuerpo hacia la barra con brazos rectos",
@@ -1712,7 +1704,7 @@
         74
       ],
       "progressions": [
-        75
+        77
       ],
       "formCues": [
         "Ancla los pies debajo de las almohadillas, rodillas en la almohadilla",
@@ -1755,9 +1747,7 @@
         11
       ],
       "progressions": [
-        43,
-        101,
-        22
+        14
       ],
       "formCues": [
         "Agarre neutro (palmas facing entre sí)",
@@ -1792,6 +1782,7 @@
         11
       ],
       "prerequisites": [
+        75,
         76
       ],
       "progressions": [
@@ -1833,10 +1824,10 @@
         3
       ],
       "prerequisites": [
-        25,
         30
       ],
       "progressions": [
+        24,
         26
       ],
       "formCues": [
@@ -1875,9 +1866,7 @@
       "prerequisites": [
         23
       ],
-      "progressions": [
-        24
-      ],
+      "progressions": [],
       "formCues": [
         "Salta a pino contra la pared",
         "Baja la cabeza hacia el suelo gradualmente",
@@ -1902,8 +1891,8 @@
       "difficulty": [
         2
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/Hanging Knee Raise.jpg",
+      "video_url": "assets/videos/exercises/Hanging Knee Raise.gif",
       "categories": [
         10
       ],
@@ -1911,7 +1900,8 @@
         6
       ],
       "prerequisites": [
-        65
+        65,
+        42
       ],
       "progressions": [
         48
@@ -1953,10 +1943,11 @@
         14
       ],
       "prerequisites": [
-        65
+        66
       ],
       "progressions": [
-        49
+        49,
+        57
       ],
       "formCues": [
         "Cuélgate de la barra, brazos rectos",
@@ -2038,10 +2029,11 @@
         14
       ],
       "prerequisites": [
-        1
+        45
       ],
       "progressions": [
-        52
+        51,
+        109
       ],
       "formCues": [
         "Acuéstate boca arriba, brazos extendidos sobre la cabeza",
@@ -2082,7 +2074,6 @@
         46
       ],
       "progressions": [
-        60,
         58
       ],
       "formCues": [
@@ -2119,11 +2110,10 @@
         14
       ],
       "prerequisites": [
-        53
-      ],
-      "progressions": [
+        53,
         65
       ],
+      "progressions": [],
       "formCues": [
         "Agarra el poste con una mano arriba",
         "Levanta el cuerpo lateralmente",
@@ -2165,7 +2155,7 @@
         2
       ],
       "prerequisites": [
-        60
+        53
       ],
       "progressions": [
         122,
@@ -2245,7 +2235,6 @@
         7
       ],
       "prerequisites": [
-        84,
         86
       ],
       "progressions": [
@@ -2291,9 +2280,7 @@
       "prerequisites": [
         67
       ],
-      "progressions": [
-        67
-      ],
+      "progressions": [],
       "formCues": [
         "Start in squat position",
         "Explode upward with maximum power",
@@ -2360,8 +2347,8 @@
       "difficulty": [
         3
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/Korean Dip.jpg",
+      "video_url": "assets/videos/exercises/Korean Dip.gif",
       "categories": [
         8
       ],
@@ -2369,12 +2356,10 @@
         5
       ],
       "prerequisites": [
-        1,
-        8
+        32,
+        37
       ],
-      "progressions": [
-        4
-      ],
+      "progressions": [],
       "formCues": [
         "Lean torso forward significantly",
         "Hands placed on parallel bars",
@@ -2413,9 +2398,12 @@
         14
       ],
       "prerequisites": [
-        46
+        51
       ],
-      "progressions": [],
+      "progressions": [
+        113,
+        50
+      ],
       "formCues": [
         "Siéntate en el suelo, manos a los lados",
         "Empuja el cuerpo hacia arriba con los brazos",
@@ -2442,8 +2430,8 @@
       "difficulty": [
         1
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/Leg Raise.jpg",
+      "video_url": "assets/videos/exercises/Leg Raise.gif",
       "categories": [
         10,
         19
@@ -2452,8 +2440,11 @@
         6,
         10
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        46
+      ],
       "progressions": [
+        110,
         66
       ],
       "formCues": [
@@ -2490,11 +2481,9 @@
         14
       ],
       "prerequisites": [
-        1
+        99
       ],
-      "progressions": [
-        5
-      ],
+      "progressions": [],
       "formCues": [
         "Comienza en posición de plancha",
         "Lleva una rodilla al pecho rápidamente",
@@ -2537,13 +2526,7 @@
         5
       ],
       "prerequisites": [
-        14,
-        21,
-        43,
-        112,
-        15,
-        22,
-        13
+        112
       ],
       "progressions": [],
       "formCues": [
@@ -2584,7 +2567,8 @@
         2
       ],
       "prerequisites": [
-        111
+        111,
+        11
       ],
       "progressions": [
         101
@@ -2628,11 +2612,9 @@
         8
       ],
       "prerequisites": [
-        74
+        77
       ],
-      "progressions": [
-        76
-      ],
+      "progressions": [],
       "formCues": [
         "Acuéstate boca abajo, ancla los pies debajo de muebles",
         "Tira del cuerpo hacia arriba usando isquiotibiales y glúteos",
@@ -2711,6 +2693,7 @@
         67
       ],
       "progressions": [
+        75,
         76,
         78
       ],
@@ -2794,7 +2777,7 @@
         3
       ],
       "prerequisites": [
-        26
+        23
       ],
       "progressions": [],
       "formCues": [
@@ -2832,11 +2815,9 @@
         19
       ],
       "prerequisites": [
-        11
+        14
       ],
-      "progressions": [
-        30
-      ],
+      "progressions": [],
       "formCues": [
         "Domina las variaciones asistidas primero",
         "Usa banda elástica para ayuda inicialmente",
@@ -2872,8 +2853,7 @@
         5
       ],
       "prerequisites": [
-        4,
-        25
+        4
       ],
       "progressions": [],
       "formCues": [
@@ -2958,8 +2938,7 @@
         8
       ],
       "progressions": [
-        23,
-        10
+        26
       ],
       "formCues": [
         "Comienza en posición de perro boca abajo",
@@ -2998,9 +2977,7 @@
       "prerequisites": [
         73
       ],
-      "progressions": [
-        73
-      ],
+      "progressions": [],
       "formCues": [
         "Párate sobre una pierna, la otra extendida hacia adelante",
         "Mantén el pecho erguido y core apretado",
@@ -3084,10 +3061,7 @@
         4
       ],
       "prerequisites": [
-        1,
-        2,
-        3,
-        8
+        106
       ],
       "progressions": [
         116
@@ -3118,8 +3092,8 @@
       "difficulty": [
         1
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/Plank.jpg",
+      "video_url": "assets/videos/exercises/Plank.gif",
       "categories": [
         10,
         19
@@ -3130,7 +3104,9 @@
       ],
       "prerequisites": [],
       "progressions": [
-        53
+        46,
+        54,
+        60
       ],
       "formCues": [
         "Antebrazos en el suelo, codos bajo los hombros",
@@ -3156,8 +3132,8 @@
       "difficulty": [
         3
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/Plank Knee to Elbow.jpg",
+      "video_url": "assets/videos/exercises/Plank Knee to Elbow.gif",
       "categories": [
         16
       ],
@@ -3252,11 +3228,11 @@
         14
       ],
       "prerequisites": [
-        59
+        45
       ],
       "progressions": [
         61,
-        58
+        62
       ],
       "formCues": [
         "Comienza en plancha sobre antebrazos",
@@ -3301,8 +3277,7 @@
         2
       ],
       "progressions": [
-        4,
-        25
+        4
       ],
       "formCues": [
         "Movimiento explosivo hacia arriba",
@@ -3339,16 +3314,15 @@
         19
       ],
       "prerequisites": [
-        20,
-        19
+        19,
+        2
       ],
       "progressions": [
+        12,
+        13,
         14,
-        120,
-        101,
-        15,
-        22,
-        13
+        21,
+        120
       ],
       "formCues": [
         "Agarra la barra con agarre prono, ligeramente más ancho que los hombros",
@@ -3426,7 +3400,9 @@
         6,
         2
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        126
+      ],
       "progressions": [],
       "formCues": [
         "Párate erguido, brazos sobre la cabeza",
@@ -3538,8 +3514,8 @@
       "difficulty": [
         2
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/Ring Dip.jpg",
+      "video_url": "assets/videos/exercises/Ring Dip.gif",
       "categories": [
         8
       ],
@@ -3550,7 +3526,7 @@
         32
       ],
       "progressions": [
-        1
+        36
       ],
       "formCues": [
         "Ajusta las anillas a la altura del pecho",
@@ -3580,8 +3556,8 @@
       "difficulty": [
         1
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/Ring Row.jpg",
+      "video_url": "assets/videos/exercises/Ring Row.gif",
       "categories": [
         12
       ],
@@ -3590,10 +3566,10 @@
         9
       ],
       "prerequisites": [
-        11
+        119
       ],
       "progressions": [
-        119
+        118
       ],
       "formCues": [
         "Cuélgate de las anillas con brazos extendidos",
@@ -3634,7 +3610,7 @@
         19
       ],
       "prerequisites": [
-        119
+        108
       ],
       "progressions": [
         41
@@ -3677,9 +3653,7 @@
       "prerequisites": [
         53
       ],
-      "progressions": [
-        65
-      ],
+      "progressions": [],
       "formCues": [
         "Siéntate con rodillas dobladas, pies levantados",
         "Inclínate ligeramente hacia atrás para activar el core",
@@ -3717,7 +3691,8 @@
         14
       ],
       "prerequisites": [
-        45
+        45,
+        46
       ],
       "progressions": [
         100
@@ -3758,9 +3733,11 @@
         14
       ],
       "prerequisites": [
-        65
+        48
       ],
-      "progressions": [],
+      "progressions": [
+        58
+      ],
       "formCues": [
         "Cuélgate de la barra, inclínate hacia un lado",
         "Eleva el cuerpo lateralmente usando el core",
@@ -3842,10 +3819,11 @@
         14
       ],
       "prerequisites": [
-        53
+        45
       ],
       "progressions": [
-        51
+        91,
+        93
       ],
       "formCues": [
         "Acuéstate de lado, apóyate en un antebrazo",
@@ -3882,11 +3860,9 @@
       "muscles": [
         20
       ],
-      "prerequisites": [
-        91
-      ],
+      "prerequisites": [],
       "progressions": [
-        98,
+        95,
         96
       ],
       "formCues": [
@@ -4057,7 +4033,7 @@
         18
       ],
       "progressions": [
-        114
+        17
       ],
       "formCues": [
         "Cuélgate de la barra con anillas o rig",
@@ -4095,7 +4071,9 @@
       "muscles": [
         5
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        38
+      ],
       "progressions": [],
       "formCues": [
         "Acuéstate en el banco, sujeta la barra sobre la cabeza",
@@ -4137,8 +4115,7 @@
       ],
       "progressions": [
         5,
-        4,
-        3,
+        7,
         8
       ],
       "formCues": [
@@ -4176,11 +4153,13 @@
         11
       ],
       "prerequisites": [
-        65
+        69
       ],
       "progressions": [
-        92,
-        72
+        70,
+        72,
+        89,
+        92
       ],
       "formCues": [
         "Pies a la anchura de los hombros",
@@ -4219,7 +4198,7 @@
         8
       ],
       "prerequisites": [
-        95
+        94
       ],
       "progressions": [
         97
@@ -4304,10 +4283,10 @@
         14
       ],
       "prerequisites": [
-        1
+        47
       ],
       "progressions": [
-        5
+        50
       ],
       "formCues": [
         "Siéntate entre barras, piernas abiertas ancho",
@@ -4481,9 +4460,7 @@
       "prerequisites": [
         65
       ],
-      "progressions": [
-        65
-      ],
+      "progressions": [],
       "formCues": [
         "Acuéstate boca arriba, brazos a los lados",
         "Eleva las piernas manteniéndolas rectas",
@@ -4520,9 +4497,12 @@
         19
       ],
       "prerequisites": [
-        42
+        42,
+        22
       ],
-      "progressions": [],
+      "progressions": [
+        43
+      ],
       "formCues": [
         "Cuelga una toalla sobre la barra",
         "Agarra cada extremo con una mano",
@@ -4565,8 +4545,7 @@
         21
       ],
       "progressions": [
-        101,
-        15
+        44
       ],
       "formCues": [
         "Cuélgate de la toalla drapada sobre la barra",
@@ -4592,8 +4571,8 @@
       "difficulty": [
         2
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/Tricep Dip.jpg",
+      "video_url": "assets/videos/exercises/Tricep Dip.gif",
       "categories": [
         8
       ],
@@ -4601,10 +4580,12 @@
         5
       ],
       "prerequisites": [
-        37
+        34
       ],
       "progressions": [
-        33
+        33,
+        35,
+        38
       ],
       "formCues": [
         "Manos en una superficie estable, piernas extendidas",
@@ -4646,7 +4627,7 @@
         32
       ],
       "progressions": [
-        37
+        117
       ],
       "formCues": [
         "Siéntate en el banco con mancuerna sobre la cabeza",
@@ -4689,7 +4670,7 @@
         11
       ],
       "progressions": [
-        107
+        114
       ],
       "formCues": [
         "Recoge las rodillas al pecho mientras cuelgas",
@@ -4731,9 +4712,11 @@
         11
       ],
       "prerequisites": [
-        102
+        99
       ],
-      "progressions": [],
+      "progressions": [
+        104
+      ],
       "formCues": [
         "Comienza de pie",
         "Salta explosivamente hacia arriba, llevando las rodillas al pecho",
@@ -4772,7 +4755,7 @@
         14
       ],
       "prerequisites": [
-        45
+        46
       ],
       "progressions": [
         47
@@ -4817,7 +4800,7 @@
         18
       ],
       "prerequisites": [
-        27
+        116
       ],
       "progressions": [
         29
@@ -4864,7 +4847,9 @@
       "prerequisites": [
         115
       ],
-      "progressions": [],
+      "progressions": [
+        28
+      ],
       "formCues": [
         "Manos cerca de las caderas, inclínate hacia adelante",
         "Levanta los pies con las rodillas al pecho",
@@ -4941,10 +4926,10 @@
         6,
         14
       ],
-      "prerequisites": [],
-      "progressions": [
-        58
+      "prerequisites": [
+        113
       ],
+      "progressions": [],
       "formCues": [
         "Siéntate con piernas y torso formando forma de V",
         "Levanta los pies del suelo, equilibra en los isquiones",
@@ -4977,7 +4962,9 @@
         2,
         3
       ],
-      "prerequisites": [],
+      "prerequisites": [
+        25
+      ],
       "progressions": [
         23
       ],
@@ -5015,9 +5002,7 @@
         8,
         11
       ],
-      "prerequisites": [
-        67
-      ],
+      "prerequisites": [],
       "progressions": [
         67
       ],
@@ -5087,8 +5072,8 @@
       "difficulty": [
         3
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/Weighted Dip.jpg",
+      "video_url": "assets/videos/exercises/Weighted Dip.gif",
       "categories": [
         8
       ],
@@ -5180,7 +5165,9 @@
       "prerequisites": [
         11
       ],
-      "progressions": [],
+      "progressions": [
+        14
+      ],
       "formCues": [
         "Agarra la barra a 1.5x la anchura de los hombros",
         "Mantén el core activado",
@@ -5208,8 +5195,8 @@
       "difficulty": [
         1
       ],
-      "image_url": "",
-      "video_url": "",
+      "image_url": "assets/images/exercises/Wide Push-Up.jpg",
+      "video_url": "assets/videos/exercises/Wide Push-Up.gif",
       "categories": [
         11,
         13,
@@ -5225,8 +5212,7 @@
       ],
       "progressions": [
         5,
-        4,
-        3,
+        7,
         8
       ],
       "formCues": [
@@ -5263,11 +5249,9 @@
         14
       ],
       "prerequisites": [
-        53
+        57
       ],
-      "progressions": [
-        65
-      ],
+      "progressions": [],
       "formCues": [
         "Acuéstate boca arriba, brazos extendidos a los lados",
         "Levanta las piernas y llévalas hacia un lado",
@@ -5847,5 +5831,5 @@
       "label": "Avanzado"
     }
   ],
-  "dataVersion": "2026-07-08T23:33:13.153Z"
+  "dataVersion": "2026-07-22T22:31:56.540Z"
 }
