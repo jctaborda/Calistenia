@@ -2,16 +2,28 @@
 
 /**
  * Get CSS class name for difficulty level
- * @param {string} difficulty - Difficulty level (beginner, intermediate, advanced)
+ * @param {string|number|Array} difficulty - Difficulty value (string, numeric ID, or array)
  * @returns {string} Difficulty class for CSS styling
  */
 export function getDifficultyColor(difficulty) {
   const difficultyMap = {
+    1: 'beginner',
+    2: 'intermediate',
+    3: 'advanced',
     beginner: 'beginner',
-    intermediate: 'intermediate', 
+    intermediate: 'intermediate',
     advanced: 'advanced'
   };
-  return difficultyMap[difficulty?.toLowerCase()] || 'intermediate';
+
+  let value = difficulty;
+  if (Array.isArray(value) && value.length > 0) {
+    value = value[0];
+  }
+  if (typeof value === 'string') {
+    value = value.toLowerCase();
+  }
+
+  return difficultyMap[value] || 'intermediate';
 }
 
 /**
@@ -24,31 +36,13 @@ export function getDifficultyClass(exerciseId, exercises) {
   if (!exerciseId || !exercises || !Array.isArray(exercises)) {
     return 'intermediate';
   }
-  
+
   const exercise = exercises.find(e => String(e.id) === String(exerciseId));
   if (!exercise || !exercise.difficulty) {
     return 'intermediate';
   }
-  
-  // Handle both array (e.g., [2]) and string (e.g., 'intermediate') formats
-  let difficultyValue = exercise.difficulty;
-  if (Array.isArray(difficultyValue) && difficultyValue.length > 0) {
-    difficultyValue = difficultyValue[0];
-  } else if (typeof difficultyValue === 'string') {
-    // Already a string like 'beginner', 'intermediate', 'advanced'
-    difficultyValue = difficultyValue.toLowerCase();
-  }
-  
-  const difficultyMap = {
-    1: 'beginner',
-    2: 'intermediate', 
-    3: 'advanced',
-    'beginner': 'beginner',
-    'intermediate': 'intermediate',
-    'advanced': 'advanced'
-  };
-  
-  return difficultyMap[difficultyValue] || 'intermediate';
+
+  return getDifficultyColor(exercise.difficulty);
 }
 
 /**

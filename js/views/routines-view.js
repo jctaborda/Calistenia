@@ -5,7 +5,7 @@ import { t } from '../i18n.js';
 import { getState, updateState } from '../services/state.js';
 import { show } from '../services/toast-service.js';
 import { showConfirmation } from '../services/confirmation-modal.js';
-import { escapeHtml } from '../utils/html.js';
+import { escapeHtml } from '../utils/html-helpers.js';
 import { getDeletedItemsByType, deleteDeletedItem, storeRoutines } from '../services/database.js';
 
 /**

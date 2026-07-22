@@ -4,12 +4,12 @@ import { t } from '../i18n.js';
 import { getState } from '../services/state.js';
 import { loadAllExercises, loadAllCategories, loadAllDifficulties } from '../services/data-cache.js';
 import { fetchSkillModules } from '../services/api.js';
-import { escapeHtml } from '../utils/html.js';
+import { escapeHtml } from '../utils/html-helpers.js';
 import { isExerciseCompleted } from '../utils/helpers.js';
 
 export async function renderSkillsTreeView() {
   const main = document.getElementById('app');
-  const state = await getState();
+  const state = getState();
 
   // Load data from cache layer (IndexedDB → in-memory)
   let exercisesData;

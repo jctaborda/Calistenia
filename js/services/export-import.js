@@ -3,7 +3,6 @@ import {
   loadWorkouts, 
   storeWorkout, 
   deleteWorkout,
-  clearDatabase,
   routinesLoad,
   storeRoutines,
   modulesLoad,

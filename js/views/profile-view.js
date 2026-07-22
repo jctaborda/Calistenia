@@ -6,7 +6,7 @@ import { formatDate, formatWorkoutDate } from '../utils/date-formatter.js';
 import { t } from '../i18n.js';
 import { ValidationService } from '../services/validation.js';
 import { show } from '../services/toast-service.js';
-import { escapeHtml } from '../utils/html.js';
+import { escapeHtml } from '../utils/html-helpers.js';
 import { getDatabaseSize, clearDatabase } from '../services/database.js';
 
 /**
@@ -164,12 +164,6 @@ export async function renderProfileView() {
 // Named + default export for maximum flexibility (Pattern 3)
 export default { render: renderProfileView };
 
-// Exposed render function for event delegation service
-if (typeof window !== 'undefined') {
-  window.calisthenics = window.calisthenics || {};
-  window.calisthenics.renderProfileView = renderProfileView;
-}
-
 // Initialize storage stats and clear data handler
 // This function is called from renderProfileView after the DOM is ready
 async function initProfileStorageStats() {
@@ -292,9 +286,7 @@ function initBodyMetricsForm() {
     show(t('profile.add_metric'), 'success');
     
     // Re-render profile view to show new metric
-    if (window.calisthenics && window.calisthenics.renderProfileView) {
-      await window.calisthenics.renderProfileView();
-    }
+    await renderProfileView();
   });
 }
 

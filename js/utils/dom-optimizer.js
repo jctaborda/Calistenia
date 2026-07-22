@@ -204,6 +204,11 @@ export function diffUpdateGrid(gridElement, exercises, categories, cache = {}, d
  * @param {HTMLElement} viewport - Optional viewport for scroll calculations
  */
 export function setupVirtualScroll(container, items, renderItem, itemHeight = 200) {
+  // Clean up previous virtual scroll setup if any
+  if (container._virtualScrollCleanup) {
+    container._virtualScrollCleanup();
+  }
+  
   const scrollTopCache = new Map();
   
   // Create a tall wrapper for scroll space
@@ -250,10 +255,20 @@ export function setupVirtualScroll(container, items, renderItem, itemHeight = 20
   
   // Scroll handler with debouncing
   let scrollTimeout;
-  container.addEventListener('scroll', () => {
+  const scrollHandler = () => {
     clearTimeout(scrollTimeout);
     scrollTimeout = setTimeout(renderVisibleItems, 16); // ~60fps
-  });
+  };
+  container.addEventListener('scroll', scrollHandler);
+  
+  // Cleanup function for when reinitializing
+  const cleanup = () => {
+    clearTimeout(scrollTimeout);
+    container.removeEventListener('scroll', scrollHandler);
+    if (wrapper.parentNode) wrapper.remove();
+    if (viewport.parentNode) viewport.remove();
+  };
+  container._virtualScrollCleanup = cleanup;
   
   return {
     getCache: () => visibleItems,

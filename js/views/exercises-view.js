@@ -5,7 +5,6 @@ import { getState } from '../services/state.js';
 import { ValidationService } from '../services/validation.js';
 import { 
   diffUpdateGrid, 
-  setupVirtualScroll,
   withScrollPreservation,
   batchDomUpdates,
   setupLazyLoadImages 

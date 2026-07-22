@@ -11,7 +11,7 @@ import { t } from '../i18n.js';
 import { workoutTimerService } from '../services/workout-timer-service.js';
 import { workoutModalsService } from '../services/workout-modals-service.js';
 import { workoutWorkflowService } from '../services/workout-workflow-service.js';
-import { escapeHtml } from '../utils/html.js';
+import { escapeHtml } from '../utils/html-helpers.js';
 import { voiceCuesService } from '../services/voice-cues-service.js';
 import { show } from '../services/toast-service.js';
 
@@ -493,9 +493,6 @@ function handleHIITTimer({ hiitInterval, currentExerciseIndex, currentExerciseDa
     }
   });
 }
-
-// Export for router usage
-window.renderActiveWorkoutView = renderActiveWorkoutView;
 
 // Named + default export for maximum flexibility (Pattern 3)
 export default { render: renderActiveWorkoutView };

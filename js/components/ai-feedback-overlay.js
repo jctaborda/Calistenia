@@ -67,28 +67,11 @@ export class AIFeedbackOverlay {
     this.ctx = this.canvas.getContext('2d');
     this.overlayCtx = this.overlayCanvas.getContext('2d');
     
-    // Debug: Log canvas immediately after creation
-    console.log('[AIFeedbackOverlay] Canvases created, calling resize()...');
-    
-    // Set initial size
     this.resize();
     window.addEventListener('resize', () => this.resize());
     
-    // Debug: Log canvas dimensions after init
     setTimeout(() => {
-      const containerRect = this.container.getBoundingClientRect();
-      console.log('[AIFeedbackOverlay] Canvas dimensions after init:');
-      console.log('  Container rect:', containerRect);
-      console.log('  Canvas width/height:', this.canvas.width, this.canvas.height);
-      console.log('  OverlayCanvas width/height:', this.overlayCanvas.width, this.overlayCanvas.height);
-      console.log('  Canvas style display:', this.canvas.style.display);
-      console.log('  OverlayCanvas style display:', this.overlayCanvas.style.display);
-      console.log('  Canvas offsetWidth/offsetHeight:', this.canvas.offsetWidth, this.canvas.offsetHeight);
-      console.log('  OverlayCanvas offsetWidth/offsetHeight:', this.overlayCanvas.offsetWidth, this.overlayCanvas.offsetHeight);
-      
-      // If dimensions are 0, force a resize
       if (this.canvas.width === 0 || this.canvas.height === 0) {
-        console.warn('[AIFeedbackOverlay] Canvas has 0 dimensions, forcing resize...');
         this.resize();
       }
     }, 100);
@@ -99,14 +82,10 @@ export class AIFeedbackOverlay {
    */
   resize() {
     if (!this.container || !this.canvas || !this.overlayCanvas) {
-      console.log('[AIFeedbackOverlay] resize() called but container or canvases not ready');
       return;
     }
     
     const rect = this.container.getBoundingClientRect();
-    
-    // Debug: Log dimensions being set
-    console.log('[AIFeedbackOverlay] resize() - Container rect:', rect);
     
     // Ensure we have valid dimensions
     const width = rect.width > 0 ? rect.width : 480; // Default to 480px if 0
@@ -117,9 +96,6 @@ export class AIFeedbackOverlay {
     this.overlayCanvas.width = width;
     this.overlayCanvas.height = height;
     
-    console.log('[AIFeedbackOverlay] resize() - Set canvas dimensions to:', width, 'x', height);
-    
-    // Redraw if we have data
     if (this.poseData) {
       this.draw();
     }
@@ -157,12 +133,10 @@ export class AIFeedbackOverlay {
    */
   setPoseData(data) {
     if (!data || !data.landmarks) {
-      console.log('[AIFeedbackOverlay] No pose data received');
       return;
     }
     
     this.poseData = data;
-    console.log('[AIFeedbackOverlay] Pose data received, landmarks count:', data.landmarks.length);
     this.draw();
   }
 
@@ -237,12 +211,7 @@ export class AIFeedbackOverlay {
     const ctx = this.overlayCtx;
     const color = this.skeletonColor;
     
-    console.log('[AIFeedbackOverlay] Drawing skeleton with', landmarks.length, 'landmarks');
-    console.log('[AIFeedbackOverlay] Overlay canvas size:', this.overlayCanvas.width, 'x', this.overlayCanvas.height);
-    
-    // Check if canvas has valid dimensions
     if (this.overlayCanvas.width === 0 || this.overlayCanvas.height === 0) {
-      console.error('[AIFeedbackOverlay] ERROR: Overlay canvas has 0 dimensions! Cannot draw skeleton.');
       return;
     }
     
@@ -273,21 +242,7 @@ export class AIFeedbackOverlay {
       const p2 = landmarks[end];
       
       if (!p1 || !p2) {
-        console.log(`[AIFeedbackOverlay] Missing landmark at indices ${start} or ${end}`);
         return;
-      }
-      
-      // Debug: Log first connection
-      if (drawnCount === 0) {
-        console.log('[AIFeedbackOverlay] First connection:', {
-          start: start,
-          end: end,
-          p1: p1,
-          p2: p2,
-          p1_pixel: [p1.x * this.overlayCanvas.width, p1.y * this.overlayCanvas.height],
-          p2_pixel: [p2.x * this.overlayCanvas.width, p2.y * this.overlayCanvas.height],
-          canvas_size: [this.overlayCanvas.width, this.overlayCanvas.height]
-        });
       }
       
       ctx.beginPath();
@@ -304,24 +259,11 @@ export class AIFeedbackOverlay {
       drawnCount++;
     });
     
-    console.log('[AIFeedbackOverlay] Drew', drawnCount, 'connections');
-    
-    // Draw keypoint circles
-    ctx.fillStyle = '#00FF00'; // Changed to BRIGHT GREEN for visibility
+    ctx.fillStyle = '#00FF00';
     let circleCount = 0;
     landmarks.forEach((point, index) => {
-      // Only draw key joints
       if ([11, 12, 13, 14, 15, 16, 23, 24, 25, 26, 27, 28].includes(index)) {
         if (point) {
-          // Debug: Log point coordinates
-          if (index === 11) { // Log first point
-            console.log('[AIFeedbackOverlay] Sample landmark[11]:', point);
-            console.log('[AIFeedbackOverlay] Canvas size:', this.overlayCanvas.width, 'x', this.overlayCanvas.height);
-            console.log('[AIFeedbackOverlay] point.x:', point.x, 'type:', typeof point.x);
-            console.log('[AIFeedbackOverlay] point.y:', point.y, 'type:', typeof point.y);
-            console.log('[AIFeedbackOverlay] Sample drawing position:', point.x * this.overlayCanvas.width, 'x', point.y * this.overlayCanvas.height);
-          }
-          
           ctx.beginPath();
           ctx.arc(
             point.x * this.overlayCanvas.width,
@@ -335,8 +277,6 @@ export class AIFeedbackOverlay {
         }
       }
     });
-    
-    console.log('[AIFeedbackOverlay] Drew', circleCount, 'keypoint circles');
   }
 
   /**

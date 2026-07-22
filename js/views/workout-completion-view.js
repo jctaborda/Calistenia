@@ -7,7 +7,7 @@ import { formatDuration } from '../utils/formatters.js';
 
 export async function renderWorkoutCompletionView() {
   const main = document.getElementById('app');
-  const state = await getState();
+  const state = getState();
   const { activeWorkout, exercises = [], history = [] } = state;
   
   if (!activeWorkout || !activeWorkout.routine) {

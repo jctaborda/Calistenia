@@ -1,7 +1,7 @@
 // Exercise Form Service - Handles all exercise form operations including prerequisites, progressions, formCues, and commonMistakes
 // Single form for both add and edit — populated differently depending on editId
 
-import { escapeHtml } from '../utils/html.js';
+import { escapeHtml } from '../utils/html-helpers.js';
 import { show } from './toast-service.js';
 import { showConfirmation } from './confirmation-modal.js';
 import { loadExercises as loadExercisesFromStorage, saveExercises as saveExercisesToStorage } from './storage.js';

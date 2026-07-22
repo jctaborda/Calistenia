@@ -1,6 +1,4 @@
-import { t } from '../i18n.js';
 import { TOAST_TIMEOUTS } from '../constants.js';
-import { ValidationService } from './validation.js';
 
 // Default timeouts by type (in ms)
 const DEFAULT_TIMEOUTS = TOAST_TIMEOUTS;

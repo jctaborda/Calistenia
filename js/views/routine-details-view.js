@@ -5,7 +5,7 @@ import { t } from '../i18n.js';
 import { updateState, getState } from '../services/state.js';
 import { show } from '../services/toast-service.js';
 import { showConfirmation } from '../services/confirmation-modal.js';
-import { escapeHtml } from '../utils/html.js';
+import { escapeHtml } from '../utils/html-helpers.js';
 import { getDifficultyClass } from '../utils/helpers.js';
 import { warmUpGeneratorService } from '../services/warmup-generator-service.js';
 

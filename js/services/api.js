@@ -11,27 +11,6 @@ import {
 } from './data-cache.js';
 import { updateRoutines as dbUpdateRoutines, deleteRoutine as dbDeleteRoutine } from './database.js';
 
-let cachedData = null;
-
-export async function fetchAllData() {
-  if (cachedData) {
-    return cachedData;
-  }
-  
-  try {
-    const { getDataFilename } = await import('./data-cache.js');
-    const filename = getDataFilename();
-    const response = await fetch(filename);
-    if (!response.ok) throw new Error('Failed to fetch data');
-    const data = await response.json();
-    cachedData = data;
-    return data;
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    throw error;
-  }
-}
-
 export async function fetchExercises() {
   try {
     // Use data-cache.js which loads from IndexedDB or data.json
@@ -145,16 +124,6 @@ export async function deleteSkillModule(id) {
 
 // Re-export ModuleStore for convenience
 export { ModuleStore } from './modules-service.js';
-
-// Clear cache to force reload from file
-export function clearDataCache() {
-  cachedData = null;
-}
-
-// Clear all JS-level caches for locale switching
-export function clearAllCaches() {
-  cachedData = null;
-}
 
 // Routine CRUD operations
 export async function updateRoutineInDatabase(routine) {

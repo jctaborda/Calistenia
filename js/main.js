@@ -29,16 +29,12 @@ import { renderExerciseForm } from './views/exercise-form-view.js';
 import { initExerciseForm } from './services/exercise-form-service.js';
 import { renderModuleAdminView } from './views/module-admin-view.js';
 import { initializeEventDelegation, exposeToggleFavorite } from './services/event-delegation.js';
-import { setLogLevel } from './services/logger.js';
 import { ValidationService } from './services/validation.js';
 import { VIEW_INIT_DELAY_MS } from './constants.js';
 import { installPromptService } from './services/install-prompt-service.js';
 import { t } from './i18n.js';
 import './components/install-banner.js';
 import { registerGlobalErrorHandlers } from './services/error-boundary-service.js';
-
-// Configure production logging
-setLogLevel('WARN');
 
 initializeState();
 
@@ -147,157 +143,69 @@ const loadingPromises = {
   difficulties: null
 };
 
-async function ensureExercisesLoaded() {
-  if (loadingPromises.exercises) return loadingPromises.exercises;
-  
-  if (!getState().exercises || getState().exercises.length === 0) {
-    loadingFlags.exercises = true;
-    loadingPromises.exercises = (async () => {
+// Generic data loading helper — deduplicates ensure*Loaded pattern
+function ensureDataLoaded(key, fetchFn, { showErrorView = false, errorMessage = '' } = {}) {
+  if (loadingPromises[key]) return loadingPromises[key];
+
+  const state = getState();
+  const alreadyLoaded = Array.isArray(state[key])
+    ? state[key].length > 0
+    : state[key] != null;
+
+  if (!alreadyLoaded) {
+    loadingFlags[key] = true;
+    loadingPromises[key] = (async () => {
       try {
-        const exercises = await fetchExercises();
-        updateState({ exercises });
+        const data = await fetchFn();
+        updateState({ [key]: data });
       } catch (error) {
-        console.error('Failed to load exercises:', error);
-        const main = document.getElementById('app');
-        if (main) main.innerHTML = renderErrorViewModule('Failed to load exercises. Please check your connection.');
+        console.error(`Failed to load ${key}:`, error);
+        if (showErrorView) {
+          const main = document.getElementById('app');
+          if (main) main.innerHTML = renderErrorViewModule(errorMessage || `Failed to load ${key}. Please check your connection.`);
+        }
       } finally {
-        loadingFlags.exercises = false;
-        loadingPromises.exercises = null;
+        loadingFlags[key] = false;
+        loadingPromises[key] = null;
       }
     })();
   }
-  
-  return loadingPromises.exercises || Promise.resolve();
+
+  return loadingPromises[key] || Promise.resolve();
 }
 
-async function ensureRoutinesLoaded() {
-  if (loadingPromises.routines) return loadingPromises.routines;
-  
-  if (!getState().routines || getState().routines.length === 0) {
-    loadingFlags.routines = true;
-    loadingPromises.routines = (async () => {
-      try {
-        const routines = await fetchRoutines();
-        updateState({ routines });
-      } catch (error) {
-        console.error('Failed to load routines:', error);
-        const main = document.getElementById('app');
-        if (main) main.innerHTML = renderErrorViewModule('Failed to load routines. Please check your connection.');
-      } finally {
-        loadingFlags.routines = false;
-        loadingPromises.routines = null;
-      }
-    })();
-  }
-  
-  return loadingPromises.routines || Promise.resolve();
+function ensureExercisesLoaded() {
+  return ensureDataLoaded('exercises', fetchExercises, {
+    showErrorView: true,
+    errorMessage: 'Failed to load exercises. Please check your connection.'
+  });
 }
 
-async function ensureModulesLoaded() {
-  if (loadingPromises.modules) return loadingPromises.modules;
-  
-  if (!getState().modules) {
-    loadingFlags.modules = true;
-    loadingPromises.modules = (async () => {
-      try {
-        const modules = await fetchSkillModules();
-        updateState({ modules });
-      } catch (error) {
-        console.error('Failed to load skill modules:', error);
-        // Don't render error view, just log - modules are less critical than routines
-        console.warn('Skill modules will be loaded on demand');
-      } finally {
-        loadingFlags.modules = false;
-        loadingPromises.modules = null;
-      }
-    })();
-  }
-  
-  return loadingPromises.modules || Promise.resolve();
+function ensureRoutinesLoaded() {
+  return ensureDataLoaded('routines', fetchRoutines, {
+    showErrorView: true,
+    errorMessage: 'Failed to load routines. Please check your connection.'
+  });
 }
 
-async function ensureCategoriesLoaded() {
-  if (loadingPromises.categories) return loadingPromises.categories;
-  
-  if (!getState().categories || getState().categories.length === 0) {
-    loadingFlags.categories = true;
-    loadingPromises.categories = (async () => {
-      try {
-        const categories = await fetchCategories();
-        updateState({ categories });
-      } catch (error) {
-        console.error('Failed to load categories:', error);
-      } finally {
-        loadingFlags.categories = false;
-        loadingPromises.categories = null;
-      }
-    })();
-  }
-  
-  return loadingPromises.categories || Promise.resolve();
+function ensureModulesLoaded() {
+  return ensureDataLoaded('modules', fetchSkillModules);
 }
 
-async function ensureEquipmentLoaded() {
-  if (loadingPromises.equipment) return loadingPromises.equipment;
-  
-  if (!getState().equipment || getState().equipment.length === 0) {
-    loadingFlags.equipment = true;
-    loadingPromises.equipment = (async () => {
-      try {
-        const equipment = await fetchEquipment();
-        updateState({ equipment });
-      } catch (error) {
-        console.error('Failed to load equipment:', error);
-      } finally {
-        loadingFlags.equipment = false;
-        loadingPromises.equipment = null;
-      }
-    })();
-  }
-  
-  return loadingPromises.equipment || Promise.resolve();
+function ensureCategoriesLoaded() {
+  return ensureDataLoaded('categories', fetchCategories);
 }
 
-async function ensureMusclesLoaded() {
-  if (loadingPromises.muscles) return loadingPromises.muscles;
-  
-  if (!getState().muscles || getState().muscles.length === 0) {
-    loadingFlags.muscles = true;
-    loadingPromises.muscles = (async () => {
-      try {
-        const muscles = await fetchMuscles();
-        updateState({ muscles });
-      } catch (error) {
-        console.error('Failed to load muscles:', error);
-      } finally {
-        loadingFlags.muscles = false;
-        loadingPromises.muscles = null;
-      }
-    })();
-  }
-  
-  return loadingPromises.muscles || Promise.resolve();
+function ensureEquipmentLoaded() {
+  return ensureDataLoaded('equipment', fetchEquipment);
 }
 
-async function ensureDifficultiesLoaded() {
-  if (loadingPromises.difficulties) return loadingPromises.difficulties;
-  
-  if (!getState().difficulties || getState().difficulties.length === 0) {
-    loadingFlags.difficulties = true;
-    loadingPromises.difficulties = (async () => {
-      try {
-        const difficulties = await fetchDifficulties();
-        updateState({ difficulties });
-      } catch (error) {
-        console.error('Failed to load difficulties:', error);
-      } finally {
-        loadingFlags.difficulties = false;
-        loadingPromises.difficulties = null;
-      }
-    })();
-  }
-  
-  return loadingPromises.difficulties || Promise.resolve();
+function ensureMusclesLoaded() {
+  return ensureDataLoaded('muscles', fetchMuscles);
+}
+
+function ensureDifficultiesLoaded() {
+  return ensureDataLoaded('difficulties', fetchDifficulties);
 }
 
 // ==================== Render Route Map ====================

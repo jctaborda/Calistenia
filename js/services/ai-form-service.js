@@ -91,7 +91,6 @@ export class AIFormService {
       // Initialize the pose detection
       await this.pose.initialize();
       
-      console.log('[AIFormService] MediaPipe Pose initialized');
     } catch (error) {
       console.error('[AIFormService] Failed to initialize MediaPipe:', error);
       throw error;
@@ -111,11 +110,6 @@ export class AIFormService {
       // First, enumerate devices to verify camera is available
       const devices = await navigator.mediaDevices.enumerateDevices();
       const videoDevices = devices.filter(device => device.kind === 'videoinput');
-      
-      console.log('[AIFormService] Available video devices:', videoDevices.length);
-      videoDevices.forEach((device, i) => {
-        console.log(`  Device ${i}: ${device.label || 'Camera ' + i}`);
-      });
       
       if (videoDevices.length === 0) {
         throw new Error('No video devices found');
@@ -162,14 +156,11 @@ export class AIFormService {
       
       // Register result callback
       this.pose.onResults((results) => {
-        console.log('[AIFormService] Pose results received:', results);
         this.handlePoseResults(results);
       });
       
       // Start processing loop
       this.predictLoop();
-      
-      console.log('[AIFormService] Camera started, pose detection active');
       
       // Expose video element for rendering
       return { video: this.video, canvas: this.canvas };
@@ -188,23 +179,15 @@ export class AIFormService {
   handlePoseResults(results) {
     if (!this.isRunning || !results) return;
     
-    console.log('[AIFormService] Pose results received:', results);
-    console.log('[AIFormService] Results keys:', Object.keys(results));
-    console.log('[AIFormService] Pose landmarks:', results.poseLandmarks);
-    console.log('[AIFormService] Pose worldLandmarks:', results.poseWorldLandmarks);
-    
     const landmarks = results.poseLandmarks || results.poseWorldLandmarks;
     
     if (!landmarks || landmarks.length === 0) {
-      console.log('[AIFormService] No landmarks found in results');
       return;
     }
     
     // Check if pose is valid (enough keypoints visible)
     const validLandmarks = landmarks.filter(l => l.visibility > 0.5);
     const isValid = validLandmarks.length >= 15; // At least 15 keypoints visible
-    
-    console.log('[AIFormService] Valid landmarks:', validLandmarks.length, 'isValid:', isValid);
     
     // Callback with pose data
     if (this.poseCallback) {
@@ -223,24 +206,13 @@ export class AIFormService {
   async predictLoop() {
     if (!this.isRunning || !this.video || !this.pose) return;
     
-    // Log video state for debugging
-    if (this.lastVideoTime === 0 && this.video.readyState >= 1) {
-      console.log('[AIFormService] Video readyState:', this.video.readyState, 'current time:', this.video.currentTime);
-    }
-    
     if (this.video.currentTime !== this.lastVideoTime) {
       this.lastVideoTime = this.video.currentTime;
       
       try {
-        // Send video frame to MediaPipe for processing
         await this.pose.send({
           image: this.video
         });
-        
-        // Debug log
-        if (this.lastVideoTime % 0.5 < 0.02) {
-          console.log('[AIFormService] Frame sent to MediaPipe at', this.lastVideoTime.toFixed(2) + 's');
-        }
       } catch (error) {
         console.error('[AIFormService] Error sending frame:', error);
       }
@@ -499,8 +471,6 @@ export class AIFormService {
     this.video = null;
     this.canvas = null;
     this.canvasCtx = null;
-    
-    console.log('[AIFormService] Stopped');
   }
 
   /**

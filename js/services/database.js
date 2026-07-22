@@ -217,23 +217,23 @@ export function openDatabase() {
   });
 }
 
-// Routines operations
-export async function storeRoutines(routinesArray) {
+// Generic store operation - clear and put all items into a named store
+async function storeAll(storeName, itemsArray) {
   const database = await openDatabase();
-  const transaction = database.transaction([STORES.ROUTINES], 'readwrite');
+  const transaction = database.transaction([storeName], 'readwrite');
   attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.ROUTINES);
+  const store = transaction.objectStore(storeName);
 
   const clearRequest = store.clear();
-  clearRequest.onerror = () => console.error('Error clearing routines store:', clearRequest.error);
+  clearRequest.onerror = () => console.error(`Error clearing ${storeName} store:`, clearRequest.error);
 
-  routinesArray.forEach(routine => {
-    const putRequest = store.put(routine);
+  itemsArray.forEach(item => {
+    const putRequest = store.put(item);
     putRequest.onerror = () => {
       if (isQuotaExceededError(putRequest.error)) {
         showQuotaExceededMessage();
       }
-      console.error('Error storing routine:', putRequest.error);
+      console.error(`Error storing item in ${storeName}:`, putRequest.error);
     };
   });
 
@@ -241,6 +241,29 @@ export async function storeRoutines(routinesArray) {
     transaction.oncomplete = () => resolve({ success: true });
     transaction.onerror = () => reject(transaction.error);
   });
+}
+
+// Generic load operation - get all items from a named store
+async function loadAll(storeName) {
+  const database = await openDatabase();
+  const transaction = database.transaction([storeName], 'readonly');
+  attachTransactionError(transaction);
+  const store = transaction.objectStore(storeName);
+
+  return new Promise((resolve, reject) => {
+    const request = store.getAll();
+
+    request.onsuccess = () => resolve(request.result || []);
+    request.onerror = () => {
+      console.error(`Error loading ${storeName} from IndexedDB:`, request.error);
+      reject(request.error);
+    };
+  });
+}
+
+// Routines operations
+export async function storeRoutines(routinesArray) {
+  return storeAll(STORES.ROUTINES, routinesArray);
 }
 
 export async function updateRoutines(updatedRoutine) {
@@ -273,235 +296,52 @@ export async function deleteRoutine(routineId) {
 }
 
 export async function routinesLoad() {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.ROUTINES], 'readonly');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.ROUTINES);
-
-  return new Promise((resolve, reject) => {
-    const request = store.getAll();
-
-    request.onsuccess = () => resolve(request.result || []);
-    request.onerror = () => {
-      console.error('Error loading routines from IndexedDB:', request.error);
-      reject(request.error);
-    };
-  });
+  return loadAll(STORES.ROUTINES);
 }
 
 // Exercises operations
 export async function storeExercises(exercisesArray) {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.EXERCISES], 'readwrite');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.EXERCISES);
-
-  const clearRequest = store.clear();
-  clearRequest.onerror = () => console.error('Error clearing exercises store:', clearRequest.error);
-
-  exercisesArray.forEach(exercise => {
-    const putRequest = store.put(exercise);
-    putRequest.onerror = () => {
-      if (isQuotaExceededError(putRequest.error)) {
-        showQuotaExceededMessage();
-      }
-      console.error('Error storing exercise:', putRequest.error);
-    };
-  });
-
-  return new Promise((resolve, reject) => {
-    transaction.oncomplete = () => resolve({ success: true });
-    transaction.onerror = () => reject(transaction.error);
-  });
+  return storeAll(STORES.EXERCISES, exercisesArray);
 }
 
 export async function exercisesLoad() {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.EXERCISES], 'readonly');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.EXERCISES);
-
-  return new Promise((resolve, reject) => {
-    const request = store.getAll();
-
-    request.onsuccess = () => resolve(request.result || []);
-    request.onerror = () => {
-      console.error('Error loading exercises from IndexedDB:', request.error);
-      reject(request.error);
-    };
-  });
+  return loadAll(STORES.EXERCISES);
 }
 
 // Categories operations
 export async function storeCategories(categoriesArray) {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.CATEGORIES], 'readwrite');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.CATEGORIES);
-
-  const clearRequest = store.clear();
-  clearRequest.onerror = () => console.error('Error clearing categories store:', clearRequest.error);
-
-  categoriesArray.forEach(category => {
-    const putRequest = store.put(category);
-    putRequest.onerror = () => {
-      if (isQuotaExceededError(putRequest.error)) {
-        showQuotaExceededMessage();
-      }
-      console.error('Error storing category:', putRequest.error);
-    };
-  });
-
-  return new Promise((resolve, reject) => {
-    transaction.oncomplete = () => resolve({ success: true });
-    transaction.onerror = () => reject(transaction.error);
-  });
+  return storeAll(STORES.CATEGORIES, categoriesArray);
 }
 
 export async function categoriesLoad() {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.CATEGORIES], 'readonly');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.CATEGORIES);
-
-  return new Promise((resolve, reject) => {
-    const request = store.getAll();
-
-    request.onsuccess = () => resolve(request.result || []);
-    request.onerror = () => {
-      console.error('Error loading categories from IndexedDB:', request.error);
-      reject(request.error);
-    };
-  });
+  return loadAll(STORES.CATEGORIES);
 }
 
 // Equipment operations
 export async function storeEquipment(equipmentArray) {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.EQUIPMENT], 'readwrite');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.EQUIPMENT);
-
-  const clearRequest = store.clear();
-  clearRequest.onerror = () => console.error('Error clearing equipment store:', clearRequest.error);
-
-  equipmentArray.forEach(item => {
-    const putRequest = store.put(item);
-    putRequest.onerror = () => {
-      if (isQuotaExceededError(putRequest.error)) {
-        showQuotaExceededMessage();
-      }
-      console.error('Error storing equipment:', putRequest.error);
-    };
-  });
-
-  return new Promise((resolve, reject) => {
-    transaction.oncomplete = () => resolve({ success: true });
-    transaction.onerror = () => reject(transaction.error);
-  });
+  return storeAll(STORES.EQUIPMENT, equipmentArray);
 }
 
 export async function equipmentLoad() {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.EQUIPMENT], 'readonly');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.EQUIPMENT);
-
-  return new Promise((resolve, reject) => {
-    const request = store.getAll();
-
-    request.onsuccess = () => resolve(request.result || []);
-    request.onerror = () => {
-      console.error('Error loading equipment from IndexedDB:', request.error);
-      reject(request.error);
-    };
-  });
+  return loadAll(STORES.EQUIPMENT);
 }
 
 // Muscles operations
 export async function storeMuscles(musclesArray) {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.MUSCLES], 'readwrite');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.MUSCLES);
-
-  const clearRequest = store.clear();
-  clearRequest.onerror = () => console.error('Error clearing muscles store:', clearRequest.error);
-
-  musclesArray.forEach(muscle => {
-    const putRequest = store.put(muscle);
-    putRequest.onerror = () => {
-      if (isQuotaExceededError(putRequest.error)) {
-        showQuotaExceededMessage();
-      }
-      console.error('Error storing muscle:', putRequest.error);
-    };
-  });
-
-  return new Promise((resolve, reject) => {
-    transaction.oncomplete = () => resolve({ success: true });
-    transaction.onerror = () => reject(transaction.error);
-  });
+  return storeAll(STORES.MUSCLES, musclesArray);
 }
 
 export async function musclesLoad() {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.MUSCLES], 'readonly');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.MUSCLES);
-
-  return new Promise((resolve, reject) => {
-    const request = store.getAll();
-
-    request.onsuccess = () => resolve(request.result || []);
-    request.onerror = () => {
-      console.error('Error loading muscles from IndexedDB:', request.error);
-      reject(request.error);
-    };
-  });
+  return loadAll(STORES.MUSCLES);
 }
 
 // Difficulties operations
 export async function storeDifficulties(difficultiesArray) {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.DIFFICULTIES], 'readwrite');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.DIFFICULTIES);
-
-  const clearRequest = store.clear();
-  clearRequest.onerror = () => console.error('Error clearing difficulties store:', clearRequest.error);
-
-  difficultiesArray.forEach(difficulty => {
-    const putRequest = store.put(difficulty);
-    putRequest.onerror = () => {
-      if (isQuotaExceededError(putRequest.error)) {
-        showQuotaExceededMessage();
-      }
-      console.error('Error storing difficulty:', putRequest.error);
-    };
-  });
-
-  return new Promise((resolve, reject) => {
-    transaction.oncomplete = () => resolve({ success: true });
-    transaction.onerror = () => reject(transaction.error);
-  });
+  return storeAll(STORES.DIFFICULTIES, difficultiesArray);
 }
 
 export async function difficultiesLoad() {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.DIFFICULTIES], 'readonly');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.DIFFICULTIES);
-
-  return new Promise((resolve, reject) => {
-    const request = store.getAll();
-
-    request.onsuccess = () => resolve(request.result || []);
-    request.onerror = () => {
-      console.error('Error loading difficulties from IndexedDB:', request.error);
-      reject(request.error);
-    };
-  });
+  return loadAll(STORES.DIFFICULTIES);
 }
 
 // Data version operations

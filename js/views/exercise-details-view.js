@@ -4,13 +4,12 @@ import { t } from '../i18n.js';
 import { getExerciseProgressData } from '../utils/workout-summary.js';
 import { ImageService } from '../services/image-service.js';
 import { formatDate } from '../utils/date-formatter.js';
-import { updateState } from '../services/state.js';
 import { ValidationService } from '../services/validation.js';
 import { normalizeArray } from '../utils/array.js';
 
 export async function renderExerciseDetailsView(exerciseId) {
   const main = document.getElementById('app');
-  const state = await getState();
+  const state = getState();
   const exercises = state.exercises || [];
   const history = state.history || [];
   const muscles = state.muscles || [];

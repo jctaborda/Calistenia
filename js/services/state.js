@@ -34,8 +34,6 @@ export function getState() {
  * @param {boolean} enforceImmutable - Whether to enforce immutable pattern (default: true)
  */
 export function updateState(updates, enforceImmutable = true) {
-  const previousState = JSON.parse(JSON.stringify(state));
-  
   // Deep merge function with defensive copying
   function deepMerge(target, source) {
     // Always create a new object/array to avoid reference issues
@@ -66,118 +64,25 @@ export function updateState(updates, enforceImmutable = true) {
   const newState = deepMerge(state, updates);
   
   if (enforceImmutable) {
-    // Verify that updates don't contain references to existing state objects
-    function detectReferences(obj, path = '', seen = new Set()) {
-      if (obj === null || typeof obj !== 'object') {
-        return false;
-      }
-      
-      if (seen.has(obj)) {
-        return true; // Circular reference detected
-      }
-      
-      seen.add(obj);
-      
-      for (const key in obj) {
-        if (obj.hasOwnProperty(key)) {
-          const value = obj[key];
-          const currentPath = path ? `${path}.${key}` : key;
-          
-          // Check if this value is the same reference as in current state
-          // Only warn for non-null objects/arrays
-          if (value !== null && typeof value === 'object' && key in state) {
-            if (value === state[key]) {
-              console.warn(
-                `WARNING  Potential state mutation at '${currentPath}'. ` +
-                `The update contains a reference to an existing state object. ` +
-                `Please ensure you're creating a new object: { ${key}: { ...${key}, ...updates.${key} } }`
-              );
-              return true;
-            }
-          }
-          
-          if (typeof value === 'object' && value !== null) {
-            if (detectReferences(value, currentPath, seen)) {
-              return true;
-            }
-          }
+    // Quick check: verify updates don't contain direct references to existing state
+    for (const key in updates) {
+      if (updates.hasOwnProperty(key)) {
+        const value = updates[key];
+        if (value !== null && typeof value === 'object' && key in state && value === state[key]) {
+          console.warn(
+            `WARNING  Potential state mutation at '${key}'. ` +
+            `The update contains a reference to an existing state object. ` +
+            `Please ensure you're creating a new object: { ${key}: { ...${key}, ...updates.${key} } }`
+          );
+          break;
         }
       }
-      
-      return false;
     }
-    
-    detectReferences(updates);
   }
   
   state = newState;
   localStorage.setItem('state', JSON.stringify(state));
   document.dispatchEvent(new CustomEvent('stateChange'));
-}
-
-/**
- * Helper to update nested state immutably
- * Example: updateNestedState('activeWorkout', 'progress', newProgress)
- * @param {string} path - Dot-separated path (e.g., 'activeWorkout.progress')
- * @param {*} value - New value
- */
-export function updateNestedState(path, value) {
-  const keys = path.split('.');
-  const newState = JSON.parse(JSON.stringify(state));
-  
-  let current = newState;
-  for (let i = 0; i < keys.length - 1; i++) {
-    if (!current[keys[i]]) {
-      current[keys[i]] = {};
-    }
-    current = current[keys[i]];
-  }
-  
-  current[keys[keys.length - 1]] = value;
-  
-  updateState(newState);
-}
-
-/**
- * Helper to update array items immutably
- * Example: updateArrayItem('history', index, newItem)
- * @param {string} path - Path to array (e.g., 'history')
- * @param {number} index - Index to update
- * @param {*} updater - Function or new value
- */
-export function updateArrayItem(path, index, updater) {
-  const arr = JSON.parse(JSON.stringify(state[path]) || []);
-  
-  if (typeof updater === 'function') {
-    arr[index] = updater(arr[index]);
-  } else {
-    arr[index] = updater;
-  }
-  
-  updateState({ [path]: arr });
-}
-
-/**
- * Helper to add item to array immutably
- * @param {string} path - Path to array
- * @param {*} item - Item to add
- */
-export function addItemToArray(path, item) {
-  const currentValue = state[path];
-  const arr = currentValue ? JSON.parse(JSON.stringify(currentValue)) : [];
-  arr.push(item);
-  updateState({ [path]: arr });
-}
-
-/**
- * Helper to remove item from array immutably
- * @param {string} path - Path to array
- * @param {number} index - Index to remove
- */
-export function removeItemFromArray(path, index) {
-  const arr = JSON.parse(JSON.stringify(state[path]) || []);
-  arr.splice(index, 1);
-  updateState({ [path]: arr });
 }
 
 export function initializeState() {

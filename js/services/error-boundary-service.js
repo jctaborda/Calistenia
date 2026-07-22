@@ -241,34 +241,6 @@ export class ErrorBoundaryService {
   }
 
   /**
-   * Wrap async operations with try/catch and error reporting
-   * @param {Function} asyncFn - Async function to wrap
-   * @param {string} context - Context for error reporting
-   * @returns {Function} - Wrapped async function
-   */
-  static wrapAsync(asyncFn, context = 'Async Operation') {
-    return async (...args) => {
-      try {
-        return await asyncFn(...args);
-      } catch (error) {
-        const errorInfo = {
-          type: 'async-operation',
-          message: error.message || 'Unknown error',
-          context: context,
-          stack: error.stack,
-          timestamp: new Date().toISOString()
-        };
-        
-        console.error(`[Async Error] ${context}:`, error);
-        this.logAndReport(errorInfo);
-        
-        // Re-throw to allow caller to handle
-        throw error;
-      }
-    };
-  }
-
-  /**
    * Wrap a view rendering function with error boundaries
    * @param {string} viewName - Name of the view for error context
    * @returns {Object} - Object with wrapped render and init functions

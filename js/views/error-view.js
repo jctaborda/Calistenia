@@ -1,6 +1,6 @@
 import { renderHeader } from '../components/header.js';
 import { t } from '../i18n.js';
-import { escapeHtml } from '../utils/html.js';
+import { escapeHtml } from '../utils/html-helpers.js';
 
 /**
  * Render error view

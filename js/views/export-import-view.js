@@ -10,7 +10,7 @@ import { renderHeader } from '../components/header.js';
 import { t } from '../i18n.js';
 import { show } from '../services/toast-service.js';
 import { showConfirmation } from '../services/confirmation-modal.js';
-import { escapeHtml } from '../utils/html.js';
+import { escapeHtml } from '../utils/html-helpers.js';
 
 export function renderExportImportView() {
   const state = getState();

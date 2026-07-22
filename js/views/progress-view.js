@@ -9,7 +9,7 @@ import { notificationService } from '../services/notification-service.js';
 import { progressTrackingService } from '../services/progress-tracking-service.js';
 import { routineSchedulingService } from '../services/routine-scheduling-service.js';
 import { show } from '../services/toast-service.js';
-import { escapeHtml } from '../utils/html.js';
+import { escapeHtml } from '../utils/html-helpers.js';
 import { formatDuration } from '../utils/formatters.js';
 
 // Simple SVG chart renderer (no external dependencies)
@@ -203,7 +203,7 @@ class SimpleChartRenderer {
 
 export async function renderProgressView() {
   const main = document.getElementById('app');
-  const state = await getState();
+  const state = getState();
   const { user } = state;
 
   // Clean up previous event listeners

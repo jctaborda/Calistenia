@@ -1,7 +1,6 @@
 // Exercise Form View - Single form for add/edit exercise
 // No tabs, no search list — just a clean form like the routine builder
 
-import { ErrorBoundaryService } from '../services/error-boundary-service.js';
 import { renderHeader } from '../components/header.js';
 import { t } from '../i18n.js';
 import { updateState } from '../services/state.js';

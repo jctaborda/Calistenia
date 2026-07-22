@@ -5,7 +5,7 @@ import { t } from '../i18n.js';
 import { getState, updateState } from '../services/state.js';
 import { ModuleStore } from '../services/modules-service.js';
 import { show } from '../services/toast-service.js';
-import { escapeHtml } from '../utils/html.js';
+import { escapeHtml } from '../utils/html-helpers.js';
 import { openDatabase, STORES } from '../services/database.js';
 
 export async function renderBuilderView() {

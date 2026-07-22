@@ -3,7 +3,7 @@ export function formatDate(isoString, options = {}) {
   if (!isoString) return '-';
   
   const date = new Date(isoString);
-  if (isNaN(date.getTime())) return invalidDateDisplay();
+  if (isNaN(date.getTime())) return '-';
   
   const now = new Date();
   now.setHours(0, 0, 0, 0); // Normalize to start of day for accurate comparison
@@ -162,11 +162,6 @@ export function formatDateRange(startDate, endDate, locale = 'en-US') {
   }
   
   return `${startDateStr} - ${endDateStr}`;
-}
-
-// Helper for invalid dates
-function invalidDateDisplay() {
-  return 'Invalid date';
 }
 
 // Export as object for compatibility with default imports

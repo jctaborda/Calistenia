@@ -121,43 +121,6 @@ export const ExerciseStore = {
   }
 };
 
-// Generic CRUD store for any data type from locale-specific data.json
-export function createStore(name) {
-  // For now, just load from locale-specific data.json (read-only for reference data)
-  return {
-    async getAll() {
-      try {
-        const locFilename = getDataFilename();
-        const response = await fetch(locFilename);
-        if (!response.ok) throw new Error('Failed to load data');
-        const data = await response.json();
-        return data[name] || [];
-      } catch (error) {
-        console.error(`Error loading ${name}:`, error);
-        return [];
-      }
-    },
-
-    async getById(id) {
-  const items = await this.getAll();
-  return items.find(item => item.id === id);
-    },
-
-    // Note: Reference data (categories, equipment, etc.) is read-only from data.json
-    async add(item) {
-  throw new Error('Cannot modify reference data. Edit data/data.json instead.');
-    },
-
-    async update(item) {
-  throw new Error('Cannot modify reference data. Edit data/data.json instead.');
-    },
-
-    async delete(id) {
-  throw new Error('Cannot modify reference data. Edit data/data.json instead.');
-    }
-  };
-}
-
 // Workout operations using IndexedDB
 export const WorkoutStore = {
   async getAll(userId = null) {

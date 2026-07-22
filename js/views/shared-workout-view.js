@@ -4,7 +4,7 @@ import { getState } from '../services/state.js';
 import { formatWorkoutDate, formatDate } from '../utils/date-formatter.js';
 import { show } from '../services/toast-service.js';
 import { loadSharedComments } from '../services/database.js';
-import { escapeHtml } from '../utils/html.js';
+import { escapeHtml } from '../utils/html-helpers.js';
 
 export async function renderSharedWorkoutView(workoutId) {
   const main = document.getElementById('app');
@@ -24,7 +24,7 @@ export async function renderSharedWorkoutView(workoutId) {
     return;
   }
 
-  const state = await getState();
+  const state = getState();
   const exercises = state.exercises || [];
   const sharedComments = await loadSharedComments(workoutId);
 
@@ -82,10 +82,6 @@ export async function renderSharedWorkoutView(workoutId) {
   // Handle comment form submission - delegation handles this, remove local handler
   // Comment form is handled by event-delegation.js
 }
-
-// Export for router usage
-window.renderSharedWorkoutView = renderSharedWorkoutView;
-
 
 // Named + default export for maximum flexibility (Pattern 3)
 export default { render: renderSharedWorkoutView };

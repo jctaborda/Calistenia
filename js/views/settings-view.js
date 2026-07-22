@@ -6,7 +6,7 @@ import { getState, updateState } from '../services/state.js';
 import { renderHeader } from '../components/header.js';
 import { t } from '../i18n.js';
 import { show } from '../services/toast-service.js';
-import { escapeHtml } from '../utils/html.js';
+import { escapeHtml } from '../utils/html-helpers.js';
 
 export function renderSettingsView() {
   const main = document.getElementById('app');

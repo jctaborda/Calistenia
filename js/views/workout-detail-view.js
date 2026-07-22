@@ -1,7 +1,7 @@
 import { getState, updateState } from '../services/state.js';
 import { renderHeader } from '../components/header.js';
 import { t } from '../i18n.js';
-import { formatDate, formatWorkoutDate } from '../utils/date-formatter.js';
+import { formatDate } from '../utils/date-formatter.js';
 import { show } from '../services/toast-service.js';
 import { formatDuration } from '../utils/formatters.js';
 

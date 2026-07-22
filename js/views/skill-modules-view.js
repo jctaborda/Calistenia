@@ -7,7 +7,7 @@ import { ModuleStore } from '../services/modules-service.js';
 import { saveForUndo } from '../services/undo-service.js';
 import { show } from '../services/toast-service.js';
 import { showConfirmation } from '../services/confirmation-modal.js';
-import { escapeHtml } from '../utils/html.js';
+import { escapeHtml } from '../utils/html-helpers.js';
 import { isModuleCompleted } from '../utils/helpers.js';
 
 export async function renderSkillModulesView() {

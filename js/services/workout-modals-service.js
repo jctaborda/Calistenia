@@ -1,18 +1,7 @@
 import { t } from '../i18n.js';
 import { show as showToastShared } from './toast-service.js';
-import { ValidationService } from './validation.js';
 import { exerciseSuggestionService } from './exercise-suggestion-service.js';
-
-/**
- * Escape HTML entities for safe text display
- * @param {string} text - Text to escape
- * @returns {string} Escaped text
- */
-function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
-}
+import { escapeHtml } from '../utils/html-helpers.js';
 
 /**
  * WorkoutModalsService - Handles all modal rendering and interactions for active workouts

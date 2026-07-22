@@ -10,7 +10,7 @@ import { ModuleStore } from './modules-service.js';
 import { show } from './toast-service.js';
 import { showConfirmation as showConfirmationModal } from './confirmation-modal.js';
 import { formatWorkoutSummary } from '../utils/workout-summary.js';
-import { escapeHtml } from '../utils/html.js';
+import { escapeHtml } from '../utils/html-helpers.js';
 import { deleteRoutine as dbDeleteRoutine } from './database.js';
 import { routinesLoad } from './database.js';
 import { storeSharedComments, loadSharedComments } from './database.js';
@@ -475,9 +475,9 @@ function handleDeleteMetric(index) {
   
     updateState({ user });
     // Re-render profile view
-    if (window.calisthenics && window.calisthenics.renderProfileView) {
-      window.calisthenics.renderProfileView();
-    }
+    import('../views/profile-view.js').then(({ renderProfileView }) => {
+      renderProfileView();
+    });
   });
 }
 
@@ -491,9 +491,9 @@ function handleDeleteWorkoutHistory(index) {
     const newHistory = state.history.filter((_, i) => i !== index);
     updateState({ history: newHistory });
     // Re-render profile view
-    if (window.calisthenics && window.calisthenics.renderProfileView) {
-      window.calisthenics.renderProfileView();
-    }
+    import('../views/profile-view.js').then(({ renderProfileView }) => {
+      renderProfileView();
+    });
   });
 }
 
@@ -625,9 +625,9 @@ function handleBodyMetricsSubmit(form) {
   bodyFatInput.value = '';
   
   // Re-render profile view
-  if (window.calisthenics && window.calisthenics.renderProfileView) {
-    window.calisthenics.renderProfileView();
-  }
+  import('../views/profile-view.js').then(({ renderProfileView }) => {
+    renderProfileView();
+  });
 }
 
 async function handleCommentSubmit(form) {
