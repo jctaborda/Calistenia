@@ -7,7 +7,8 @@ import { t } from '../i18n.js';
 import { ValidationService } from '../services/validation.js';
 import { show } from '../services/toast-service.js';
 import { escapeHtml } from '../utils/html-helpers.js';
-import { getDatabaseSize, clearDatabase } from '../services/database.js';
+import { getDatabaseSize } from '../services/database.js';
+import { clearUserData } from '../services/export-import.js';
 
 /**
  * Render profile view
@@ -182,8 +183,9 @@ async function initProfileStorageStats() {
     if (!confirmed) return;
     
     try {
-      await clearDatabase();
-      show('All data cleared successfully. Please reload the page.', 'success');
+      const result = await clearUserData();
+      const total = result.deleted.workouts + result.deleted.routines + result.deleted.modules;
+      show(`All data cleared (${total} items). Please reload the page.`, 'success');
       setTimeout(() => window.location.reload(), 1500);
     } catch (error) {
       console.error('Failed to clear database:', error);

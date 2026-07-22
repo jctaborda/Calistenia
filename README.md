@@ -77,7 +77,7 @@ Una Progressive Web App (PWA) para entrenar calistenia de forma estructurada, co
 │   ├── components/         # Componentes UI reutilizables (header, timer, spinner)
 │   ├── services/           # Lógica de negocio (state, API, achievements, workout services)
 │   ├── utils/              # Utilidades (helpers para gráficos)
-│   ├── views/              # 16 vistas SPA (home, programs, exercises, workouts, skills, etc.)
+│   ├── views/              # 23 vistas SPA (home, programs, exercises, workouts, skills, etc.)
 │   └── main.js             # Entry point y enrutado basado en hash (#programs, #exercises, etc.)
 ├── data/                   # Archivos JSON con datos estáticos:
 ├── assets/

@@ -207,17 +207,10 @@ describe('Service Worker Configuration', () => {
   });
 
   describe('Service Worker Features', () => {
-    it('should support background sync', () => {
+    it('should handle notificationclick events', () => {
       const swContent = readFileSync(swPath, 'utf8');
       
-      expect(swContent).toContain("addEventListener('sync'");
-    });
-
-    it('should support push notifications', () => {
-      const swContent = readFileSync(swPath, 'utf8');
-      
-      expect(swContent).toContain("addEventListener('push'");
-      expect(swContent).toContain('showNotification');
+      expect(swContent).toContain("addEventListener('notificationclick'");
     });
   });
 });

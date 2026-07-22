@@ -6,7 +6,6 @@ import { getState, updateState } from '../services/state.js';
 import { renderHeader } from '../components/header.js';
 import { t } from '../i18n.js';
 import { show } from '../services/toast-service.js';
-import { escapeHtml } from '../utils/html-helpers.js';
 
 export function renderSettingsView() {
   const main = document.getElementById('app');
@@ -90,14 +89,9 @@ export function renderSettingsView() {
       <!-- Data Management Section -->
       <div class="settings-section">
         <h3>${t('settings.data_management') || 'Data Management'}</h3>
+        <p class="detail-text">${t('profile.data_management_desc') || 'Backup & Restore: Export your workout history and routines, or restore from a backup file.'}</p>
         <div class="setting-item">
-          <button id="export-data-btn" class="btn btn-secondary full-width">${t('settings.export_data') || 'Export Data'}</button>
-        </div>
-        <div class="setting-item">
-          <button id="import-data-btn" class="btn btn-secondary full-width">${t('settings.import_data') || 'Import Data'}</button>
-        </div>
-        <div class="setting-item">
-          <button id="clear-data-btn" class="btn btn-danger full-width">${t('settings.clear_data') || 'Clear All Data'}</button>
+          <a href="#export-import" class="btn btn-secondary full-width">${t('profile.export_import') || 'Export / Import Data'}</a>
         </div>
       </div>
 
@@ -157,21 +151,6 @@ export function renderSettingsView() {
     toggle.addEventListener('change', (e) => handleSettingToggle(e, state));
   });
 
-  // Export/Import/Clear data buttons
-  const exportBtn = main.querySelector('#export-data-btn');
-  if (exportBtn) {
-    exportBtn.addEventListener('click', () => exportData());
-  }
-
-  const importBtn = main.querySelector('#import-data-btn');
-  if (importBtn) {
-    importBtn.addEventListener('click', () => importData());
-  }
-
-  const clearBtn = main.querySelector('#clear-data-btn');
-  if (clearBtn) {
-    clearBtn.addEventListener('click', () => clearAllData());
-  }
 }
 
 /**
@@ -249,95 +228,6 @@ function applyTheme(theme) {
   
   // Save to localStorage for immediate access
   localStorage.setItem('theme', theme);
-}
-
-/**
- * Export data to JSON file
- */
-function exportData() {
-  const state = getState();
-  const dataStr = JSON.stringify(state, null, 2);
-  const dataBlob = new Blob([dataStr], { type: 'application/json' });
-  const dataUrl = URL.createObjectURL(dataBlob);
-  
-  const link = document.createElement('a');
-  link.href = dataUrl;
-  link.download = `calisthenics-mastery-backup-${new Date().toISOString().split('T')[0]}.json`;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(dataUrl);
-  
-  show(t('settings.data_exported') || 'Data exported successfully!', 'success');
-}
-
-/**
- * Import data from JSON file
- */
-function importData() {
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = '.json';
-  
-  input.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      try {
-        const importedData = JSON.parse(event.target.result);
-        
-        // Validate imported data
-        if (!importedData || typeof importedData !== 'object') {
-          throw new Error('Invalid data format');
-        }
-        
-        // Confirm import
-        if (confirm(t('settings.confirm_import') || 'This will replace your current data. Continue?')) {
-          localStorage.setItem('state', JSON.stringify(importedData));
-          show(t('settings.data_imported') || 'Data imported successfully! Please refresh the page.', 'success');
-          
-          // Prompt user to refresh
-          setTimeout(() => {
-            if (confirm(t('settings.refresh_prompt') || 'Please refresh the page to apply changes. Refresh now?')) {
-              window.location.reload();
-            }
-          }, 500);
-        }
-      } catch (error) {
-        show(t('settings.import_error') || 'Failed to import data: ' + error.message, 'error');
-      }
-    };
-    
-    reader.readAsText(file);
-  });
-  
-  input.click();
-}
-
-/**
- * Clear all user data
- */
-function clearAllData() {
-  if (confirm(t('settings.confirm_clear') || 'Are you sure you want to clear all your data? This cannot be undone!')) {
-    // Save settings and theme
-    const currentTheme = localStorage.getItem('theme');
-    
-    localStorage.clear();
-    
-    // Restore theme
-    if (currentTheme) {
-      localStorage.setItem('theme', currentTheme);
-    }
-    
-    // Reload app
-    show(t('settings.data_cleared') || 'All data cleared. Please refresh the page.', 'info');
-    
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
-  }
 }
 
 // Export for router usage

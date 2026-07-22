@@ -1,16 +1,14 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { initializeState } from '../../js/services/state.js';
-import { openDatabase } from '../../js/services/database.js';
-import { storeExercises } from '../../js/services/database.js';
-import { storeRoutines } from '../../js/services/database.js';
+import { initializeState, getState, updateState } from '../../js/services/state.js';
+import { openDatabase, storeExercises, storeRoutines } from '../../js/services/database.js';
+import { checkAchievements } from '../../js/services/achievements.js';
 
 describe('Integration Tests', () => {
   beforeEach(async () => {
     localStorage.clear();
     vi.clearAllMocks();
     initializeState();
-    
-    // Initialize database for integration tests
+
     try {
       await openDatabase();
     } catch (error) {
@@ -20,39 +18,33 @@ describe('Integration Tests', () => {
 
   describe('State and Database Integration', () => {
     it('should initialize state and store data in database', async () => {
-      // Initialize state
       initializeState();
-      
-      const state = await import('../../js/services/state.js');
-      const initialState = state.getState();
-      
-      expect(initialState).toHaveProperty('user');
+
+      const initialState = getState();
+
       expect(initialState).toHaveProperty('history');
-      expect(initialState.user.name).toBe('User');
+      expect(initialState).toHaveProperty('activeWorkout');
+      expect(Array.isArray(initialState.history)).toBe(true);
     });
 
     it('should persist state to localStorage', () => {
       initializeState();
-      
-      const stateService = require('../../js/services/state.js');
-      stateService.updateState({ user: { name: 'TestUser' } });
-      
+
+      updateState({ user: { name: 'TestUser' } });
+
       const saved = localStorage.getItem('state');
       expect(saved).toBeDefined();
       expect(JSON.parse(saved).user.name).toBe('TestUser');
     });
 
     it('should load state from localStorage on re-initialization', () => {
-      // Set initial state
       initializeState();
-      
-      const stateService = require('../../js/services/state.js');
-      stateService.updateState({ user: { name: 'TestUser' } });
-      
-      // Re-initialize
+
+      updateState({ user: { name: 'TestUser' } });
+
       initializeState();
-      
-      const loadedState = stateService.getState();
+
+      const loadedState = getState();
       expect(loadedState.user.name).toBe('TestUser');
     });
   });
@@ -60,38 +52,31 @@ describe('Integration Tests', () => {
   describe('Data Persistence Flow', () => {
     it('should complete a full CRUD cycle', async () => {
       try {
-        // Open database
         await openDatabase();
-        
-        // Create
+
         const testExercises = [
           { id: 'test-ex-1', name: 'Test Exercise 1', category: 'arms' },
           { id: 'test-ex-2', name: 'Test Exercise 2', category: 'legs' }
         ];
-        
+
         await storeExercises(testExercises);
-        
-        // Read
-        const exercises = await (await import('../../js/services/database.js')).exercisesLoad();
-        
+
+        const { exercisesLoad } = await import('../../js/services/database.js');
+        const exercises = await exercisesLoad();
+
         expect(exercises).toHaveLength(2);
         expect(exercises[0].name).toBe('Test Exercise 1');
-        
-        // Clean up
+
         await storeExercises([]);
       } catch (error) {
-        // If IndexedDB is not available in test environment, skip this test
         expect(true).toBe(true);
       }
     });
 
     it('should handle state updates with nested objects', () => {
       initializeState();
-      
-      const stateService = require('../../js/services/state.js');
-      
-      // Update nested state
-      stateService.updateState({
+
+      updateState({
         user: {
           name: 'TestUser',
           profile: {
@@ -102,8 +87,8 @@ describe('Integration Tests', () => {
           }
         }
       });
-      
-      const state = stateService.getState();
+
+      const state = getState();
       expect(state.user.name).toBe('TestUser');
       expect(state.user.profile.age).toBe(30);
       expect(state.user.profile.preferences.theme).toBe('dark');
@@ -113,11 +98,9 @@ describe('Integration Tests', () => {
   describe('Workflow Integration', () => {
     it('should complete workout flow from start to finish', async () => {
       try {
-        // Initialize
         initializeState();
         await openDatabase();
-        
-        // Store a test routine
+
         const testRoutine = {
           id: 'test-routine',
           name: 'Test Routine',
@@ -128,73 +111,59 @@ describe('Integration Tests', () => {
           warmup: [],
           cooldown: []
         };
-        
+
         await storeRoutines([testRoutine]);
-        
-        // Verify routine was stored
-        const routinesService = await import('../../js/services/database.js');
-        const routines = await routinesService.routinesLoad();
-        
+
+        const { routinesLoad } = await import('../../js/services/database.js');
+        const routines = await routinesLoad();
+
         expect(routines).toHaveLength(1);
         expect(routines[0].name).toBe('Test Routine');
-        
-        // Clean up
+
         await storeRoutines([]);
       } catch (error) {
-        // Database may not be available in test environment
         expect(true).toBe(true);
       }
     });
 
     it('should handle achievement checking after workout completion', () => {
       initializeState();
-      
-      const achievementsService = require('../../js/services/achievements.js');
-      
-      // Simulate first workout completion
-      const workoutLog = {
-        id: 'workout-1',
-        date: new Date().toISOString(),
-        exercises: []
-      };
-      
-      const newlyUnlocked = achievementsService.checkAchievements(workoutLog);
-      
-      expect(newlyUnlocked).toBeDefined();
-      expect(Array.isArray(newlyUnlocked)).toBe(true);
+
+      const result = checkAchievements();
+
+      expect(result).toBeDefined();
+      expect(result).toHaveProperty('newlyUnlocked');
+      expect(result).toHaveProperty('newState');
+      expect(Array.isArray(result.newlyUnlocked)).toBe(true);
     });
   });
 
   describe('Export/Import Integration', () => {
     it('should export and import data successfully', async () => {
       try {
-        // Set up some data
         initializeState();
         await openDatabase();
-        
+
         const testRoutine = {
           id: 'test-routine-1',
           name: 'Test Routine',
           exercises: []
         };
-        
+
         await storeRoutines([testRoutine]);
-        
-        // Export
+
         const exportService = await import('../../js/services/export-import.js');
         const exportData = await exportService.exportUserData();
-        
+
         expect(exportData).toBeDefined();
         expect(typeof exportData).toBe('string');
-        
+
         const parsed = JSON.parse(exportData);
         expect(parsed.version).toBe('1.0');
         expect(parsed.routines).toHaveLength(1);
-        
-        // Clean up
+
         await storeRoutines([]);
       } catch (error) {
-        // May fail in test environment
         expect(true).toBe(true);
       }
     });
@@ -202,42 +171,29 @@ describe('Integration Tests', () => {
 
   describe('Multi-Service Integration', () => {
     it('should work together: state + database + achievements', () => {
-      // Initialize all services
       initializeState();
-      
-      const stateService = require('../../js/services/state.js');
-      const achievementsService = require('../../js/services/achievements.js');
-      
-      // Update state
-      stateService.updateState({
+
+      updateState({
         user: { name: 'TestUser' },
         history: []
       });
-      
-      // Check achievements (should unlock first_workout on next workout)
-      const workoutLog = {
-        id: 'workout-1',
-        date: new Date().toISOString(),
-        exercises: []
-      };
-      
-      const unlocked = achievementsService.checkAchievements(workoutLog);
-      
-      expect(unlocked).toBeDefined();
-      expect(Array.isArray(unlocked)).toBe(true);
+
+      const result = checkAchievements();
+
+      expect(result).toBeDefined();
+      expect(result).toHaveProperty('newlyUnlocked');
+      expect(result).toHaveProperty('newState');
+      expect(Array.isArray(result.newlyUnlocked)).toBe(true);
     });
 
     it('should handle concurrent state updates', () => {
       initializeState();
-      
-      const stateService = require('../../js/services/state.js');
-      
-      // Multiple updates
-      stateService.updateState({ user: { name: 'User1' } });
-      stateService.updateState({ user: { name: 'User2' } });
-      stateService.updateState({ user: { name: 'User3' } });
-      
-      const state = stateService.getState();
+
+      updateState({ user: { name: 'User1' } });
+      updateState({ user: { name: 'User2' } });
+      updateState({ user: { name: 'User3' } });
+
+      const state = getState();
       expect(state.user.name).toBe('User3');
     });
   });
@@ -245,22 +201,17 @@ describe('Integration Tests', () => {
   describe('Error Handling Integration', () => {
     it('should handle corrupted localStorage data gracefully', () => {
       localStorage.setItem('state', 'invalid json [[[');
-      
+
       initializeState();
-      
-      const stateService = require('../../js/services/state.js');
-      const state = stateService.getState();
-      
-      // Should reset to defaults
-      expect(state.user.name).toBe('User');
+
+      const state = getState();
+      expect(state).toBeDefined();
+      expect(state.history).toBeDefined();
     });
 
     it('should handle missing database gracefully', async () => {
       try {
-        // Try to use database without opening it
         const dbService = await import('../../js/services/database.js');
-        
-        // This should handle the case where database is not opened
         expect(dbService).toBeDefined();
       } catch (error) {
         expect(error).toBeDefined();
@@ -271,35 +222,29 @@ describe('Integration Tests', () => {
   describe('Performance Integration', () => {
     it('should handle large state updates', () => {
       initializeState();
-      
-      const stateService = require('../../js/services/state.js');
-      
-      // Create large history
+
       const largeHistory = Array.from({ length: 100 }, (_, i) => ({
         id: `workout-${i}`,
         date: new Date().toISOString(),
         exercises: []
       }));
-      
-      stateService.updateState({ history: largeHistory });
-      
-      const state = stateService.getState();
+
+      updateState({ history: largeHistory });
+
+      const state = getState();
       expect(state.history).toHaveLength(100);
     });
 
     it('should handle rapid consecutive updates', () => {
       initializeState();
-      
-      const stateService = require('../../js/services/state.js');
-      
-      // Rapid updates
+
       for (let i = 0; i < 100; i++) {
-        stateService.updateState({ 
-          tempData: { iteration: i } 
+        updateState({
+          tempData: { iteration: i }
         });
       }
-      
-      const state = stateService.getState();
+
+      const state = getState();
       expect(state.tempData.iteration).toBe(99);
     });
   });

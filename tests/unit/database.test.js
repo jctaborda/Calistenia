@@ -11,7 +11,6 @@ import {
   DB_VERSION,
   STORES
 } from '../../js/services/database.js';
-import { getModuleById } from '../../js/services/modules-service.js';
 
 describe('Database Service', () => {
   beforeEach(() => {
@@ -48,28 +47,21 @@ describe('Database Service', () => {
       expect(result).toBeInstanceOf(Promise);
     });
 
-    it.skip('should resolve with database object', async () => {
-      // Skip - IndexedDB mock doesn't fully work in jsdom
+    it('should resolve with database object', async () => {
       const db = await openDatabase();
       expect(db).toBeDefined();
+      expect(db.objectStoreNames).toBeDefined();
     });
 
-    it.skip('should reuse existing database connection', async () => {
-      // Skip - IndexedDB mock doesn't fully work in jsdom
+    it('should reuse existing database connection', async () => {
       const db1 = await openDatabase();
       const db2 = await openDatabase();
-      
       expect(db1).toBe(db2);
-    });
-
-    it.skip('should handle database open errors', async () => {
-      // Skip - Cannot reassign read-only indexedDB property in jsdom
     });
   });
 
   describe('storeExercises and exercisesLoad', () => {
-    it.skip('should store and retrieve exercises', async () => {
-      // Skip - IndexedDB mock doesn't fully work in jsdom
+    it('should store and retrieve exercises', async () => {
       const exercises = [
         { id: 'exercise-1', name: 'Push-Up', category: 'chest' },
         { id: 'exercise-2', name: 'Squat', category: 'legs' }
@@ -83,194 +75,87 @@ describe('Database Service', () => {
       expect(loaded[1].name).toBe('Squat');
     });
 
-    it.skip('should clear previous exercises before storing', async () => {
-      // Skip - IndexedDB mock doesn't fully work in jsdom
-      const exercises1 = [
-        { id: 'ex-1', name: 'Exercise 1' }
-      ];
-      
-      await storeExercises(exercises1);
+    it('should clear previous exercises before storing', async () => {
+      await storeExercises([{ id: 'ex-1', name: 'Exercise 1' }]);
       let loaded = await exercisesLoad();
       expect(loaded).toHaveLength(1);
       
-      const exercises2 = [
-        { id: 'ex-2', name: 'Exercise 2' }
-      ];
-      
-      await storeExercises(exercises2);
+      await storeExercises([{ id: 'ex-2', name: 'Exercise 2' }]);
       loaded = await exercisesLoad();
       
       expect(loaded).toHaveLength(1);
       expect(loaded[0].id).toBe('ex-2');
     });
 
-    it.skip('should handle empty exercises array', async () => {
-      // Skip - IndexedDB mock doesn't fully work in jsdom
+    it('should handle empty exercises array', async () => {
       await storeExercises([]);
       const loaded = await exercisesLoad();
-      
       expect(loaded).toEqual([]);
     });
-
-    it.skip('should handle exercise storage errors', async () => {
-      // Skip - IndexedDB mock doesn't fully work in jsdom
-      // This test times out because it tries to use IndexedDB
-   });
   });
 
   describe('storeRoutines and routinesLoad', () => {
-     it.skip('should store and retrieve routines', async () => {
-       // Skip - IndexedDB mock doesn't fully work in jsdom
-       const routines = [
-         { id: 'push-routine', name: 'Push Routine' },
-         { id: 'pull-routine', name: 'Pull Routine' }
-       ];
-      
-       await storeRoutines(routines);
-       const loaded = await routinesLoad();
-      
-       expect(loaded).toHaveLength(2);
-       expect(loaded[0].name).toBe('Push Routine');
-     });
-    
-     it.skip('should replace existing routines', async () => {
-       // Skip - IndexedDB mock doesn't fully work in jsdom
-       const routines1 = [
-         { id: 'routine-1', name: 'Routine 1' }
-       ];
-      
-       await storeRoutines(routines1);
-       let loaded = await routinesLoad();
-       expect(loaded).toHaveLength(1);
-      
-       const routines2 = [
-         { id: 'routine-2', name: 'Routine 2' }
-       ];
-      
-       await storeRoutines(routines2);
-       loaded = await routinesLoad();
-      
-       expect(loaded).toHaveLength(1);
-       expect(loaded[0].id).toBe('routine-2');
-     });
-   });
-
-  describe('storeModules and modulesLoad', () => {
-    it.skip('should store and retrieve modules', async () => {
-      // Skip - IndexedDB mock doesn't fully work in jsdom
-      const modules = [
-        { id: 'pushup', name: 'Push-Up', category: 'push' },
-        { id: 'pullup', name: 'Pull-Up', category: 'pull' }
+    it('should store and retrieve routines', async () => {
+      const routines = [
+        { id: 'push-routine', name: 'Push Routine' },
+        { id: 'pull-routine', name: 'Pull Routine' }
       ];
       
-      await storeModules(modules);
-      const loaded = await modulesLoad();
+      await storeRoutines(routines);
+      const loaded = await routinesLoad();
       
       expect(loaded).toHaveLength(2);
-      expect(loaded[0].name).toBe('Push-Up');
+      expect(loaded[0].name).toBe('Push Routine');
     });
 
-    it.skip('should clear previous modules before storing', async () => {
-      // Skip - IndexedDB mock doesn't fully work in jsdom
-      const modules1 = [
-        { id: 'mod-1', name: 'Module 1' }
-      ];
-      
-      await storeModules(modules1);
-      let loaded = await modulesLoad();
+    it('should replace existing routines', async () => {
+      await storeRoutines([{ id: 'routine-1', name: 'Routine 1' }]);
+      let loaded = await routinesLoad();
       expect(loaded).toHaveLength(1);
       
-      const modules2 = [
-        { id: 'mod-2', name: 'Module 2' }
-      ];
-      
-      await storeModules(modules2);
-      loaded = await modulesLoad();
+      await storeRoutines([{ id: 'routine-2', name: 'Routine 2' }]);
+      loaded = await routinesLoad();
       
       expect(loaded).toHaveLength(1);
-      expect(loaded[0].id).toBe('mod-2');
+      expect(loaded[0].id).toBe('routine-2');
     });
   });
 
-  describe('getModuleById', () => {
-    it.skip('should retrieve module by ID', async () => {
-      // Skip - IndexedDB mock doesn't fully work in jsdom
-      const module = await getModuleById('pushup');
+  describe('storeModules and modulesLoad', () => {
+    it('should store and retrieve modules', async () => {
+      const modulesData = {
+        en: { modules: [{ id: 'pushup', name: 'Push-Up', category: 'push' }] },
+        es: { modules: [{ id: 'pushup', name: 'Flexión', category: 'push' }] }
+      };
       
-      expect(module).toBeDefined();
-      expect(module.name).toBe('Push-Up');
-      expect(module.category).toBe('push');
-    });
-
-    it.skip('should return null for non-existent ID', async () => {
-      // Skip - IndexedDB mock doesn't fully work in jsdom
-      // This test times out because it tries to use IndexedDB
-    });
-
-    it.skip('should return undefined for undefined ID', async () => {
-      // Skip - IndexedDB mock doesn't fully work in jsdom
-      // This test times out because it tries to use IndexedDB
-    });
-  });
-
-  describe('deleteModule', () => {
-    it.skip('should delete module by ID', async () => {
-      // Skip - IndexedDB mock doesn't fully work in jsdom
-      await deleteModule('pushup');
+      await storeModules(modulesData);
+      const loaded = await modulesLoad();
       
-      const module = await getModuleById('pushup');
-      expect(module).toBeNull();
-      
-      // Verify other modules are not affected
-      const pullup = await getModuleById('pullup');
-      expect(pullup).toBeDefined();
-      expect(pullup.name).toBe('Pull-Up');
+      expect(loaded).toBeDefined();
+      expect(loaded.modules).toBeDefined();
     });
 
-    it.skip('should return success object on deletion', async () => {
-      // Skip - IndexedDB mock doesn't fully work in jsdom
-      // This test times out because it tries to use IndexedDB
-    });
-
-    it.skip('should handle deletion of non-existent module', async () => {
-      // Skip - IndexedDB mock doesn't fully work in jsdom
-      // This test times out because it tries to use IndexedDB
+    it('should return empty modules when nothing stored', async () => {
+      const loaded = await modulesLoad();
+      expect(loaded).toEqual({ modules: [], es: {} });
     });
   });
 
   describe('Database Transactions', () => {
-    it.skip('should handle read transactions', async () => {
-      // Skip - IndexedDB mock doesn't fully work in jsdom
-      const exercises = [
-        { id: 'test', name: 'Test Exercise' }
-      ];
-      
-      await storeExercises(exercises);
+    it('should handle read transactions', async () => {
+      await storeExercises([{ id: 'test', name: 'Test Exercise' }]);
       const result = await exercisesLoad();
-      
       expect(result).toHaveLength(1);
     });
 
-    it.skip('should handle write transactions', async () => {
-      // Skip - IndexedDB mock doesn't fully work in jsdom
-      const exercises = [
-        { id: 'test', name: 'Test Exercise' }
-      ];
-      
-      const result = await storeExercises(exercises);
-      
+    it('should handle write transactions', async () => {
+      const result = await storeExercises([{ id: 'test', name: 'Test Exercise' }]);
       expect(result).toEqual({ success: true });
     });
-
-    it.skip('should reject on transaction errors', async () => {
-      // Skip - IndexedDB mock doesn't fully work in jsdom
-      // This test times out because it tries to use IndexedDB
-   });
   });
 
   describe('Data Integrity', () => {
-    it.skip('should preserve exercise properties', async () => {
-      // Skip - IndexedDB mock doesn't fully work in jsdom
+    it('should preserve exercise properties', async () => {
       const exercise = {
         id: 'complex-ex',
         name: 'Complex Exercise',
@@ -287,26 +172,7 @@ describe('Database Service', () => {
       expect(loaded[0]).toEqual(exercise);
     });
 
-    it.skip('should preserve module properties', async () => {
-      // Skip - IndexedDB mock doesn't fully work in jsdom
-      const module = {
-        id: 'complex-mod',
-        name: 'Complex Module',
-        category: 'push',
-        requirements: {
-          pushup: 10,
-          plank: 30
-        }
-      };
-      
-      await storeModules([module]);
-      const loaded = await modulesLoad();
-      
-      expect(loaded[0]).toEqual(module);
-    });
-
-    it.skip('should handle special characters in data', async () => {
-      // Skip - IndexedDB mock doesn't fully work in jsdom
+    it('should handle special characters in data', async () => {
       const exercises = [
         { id: 'ex-ñ', name: 'Ejercicio Ñ' },
         { id: 'ex-é', name: 'Exercise with accents' },
@@ -323,8 +189,7 @@ describe('Database Service', () => {
   });
 
   describe('Edge Cases', () => {
-    it.skip('should handle very large exercise arrays', async () => {
-      // Skip - IndexedDB mock doesn't fully work in jsdom
+    it('should handle very large exercise arrays', async () => {
       const exercises = Array.from({ length: 100 }, (_, i) => ({
         id: `ex-${i}`,
         name: `Exercise ${i}`,
@@ -337,28 +202,12 @@ describe('Database Service', () => {
       expect(loaded).toHaveLength(100);
     });
 
-    it('should handle null/undefined values in data', async () => {
-      // Skip - IndexedDB mock doesn't fully work in jsdom
-      // This test times out because it tries to use IndexedDB
-      expect(true).toBe(true);
-    });
-
-    it.skip('should handle duplicate IDs (update behavior)', async () => {
-      // Skip - IndexedDB mock doesn't fully work in jsdom
-      const exercises = [
-        { id: 'dup', name: 'First' }
-      ];
-      
-      await storeExercises(exercises);
+    it('should handle duplicate IDs (update behavior)', async () => {
+      await storeExercises([{ id: 'dup', name: 'First' }]);
       let loaded = await exercisesLoad();
       expect(loaded[0].name).toBe('First');
       
-      // Update with same ID
-      const updated = [
-        { id: 'dup', name: 'Updated' }
-      ];
-      
-      await storeExercises(updated);
+      await storeExercises([{ id: 'dup', name: 'Updated' }]);
       loaded = await exercisesLoad();
       
       expect(loaded[0].name).toBe('Updated');
@@ -366,40 +215,15 @@ describe('Database Service', () => {
   });
 
   describe('Store Operations', () => {
-    it.skip('should properly clear stores before bulk insert', async () => {
-      // Skip - IndexedDB mock doesn't fully work in jsdom
-      // Store initial data
-      await storeExercises([
-        { id: 'ex-1', name: 'Exercise 1' }
-      ]);
-      
+    it('should properly clear stores before bulk insert', async () => {
+      await storeExercises([{ id: 'ex-1', name: 'Exercise 1' }]);
       let loaded = await exercisesLoad();
       expect(loaded).toHaveLength(1);
       
-      // Store different data (should clear first)
-      await storeExercises([
-        { id: 'ex-2', name: 'Exercise 2' }
-      ]);
-      
+      await storeExercises([{ id: 'ex-2', name: 'Exercise 2' }]);
       loaded = await exercisesLoad();
       expect(loaded).toHaveLength(1);
       expect(loaded[0].id).toBe('ex-2');
-    });
-
-    it.skip('should handle concurrent store operations', async () => {
-      // Skip - IndexedDB mock doesn't fully work in jsdom
-      const promises = [
-        storeExercises([{ id: 'ex-1', name: 'Ex 1' }]),
-        storeRoutines([{ id: 'routine-1', name: 'Routine 1' }]),
-        storeModules([{ id: 'mod-1', name: 'Mod 1' }])
-      ];
-      
-      const results = await Promise.all(promises);
-      
-      expect(results).toHaveLength(3);
-      expect(results[0]).toEqual({ success: true });
-      expect(results[1]).toEqual({ success: true });
-      expect(results[2]).toEqual({ success: true });
     });
   });
 });
