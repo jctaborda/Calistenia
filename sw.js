@@ -18,7 +18,6 @@ const APP_SHELL = [
   'js/services/data-cache.js',
   'js/services/cache-utils.js',
   'js/i18n.js',
-  'js/services/logger.js',
   'js/services/validation.js',
   'js/services/toast-service.js',
   'js/services/event-delegation.js',

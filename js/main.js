@@ -444,6 +444,9 @@ initUndoService();
 
 // ==================== Background Data Sync Check ====================
 // Periodically check for data updates when online
+let lastCheckTime = 0;
+const CHECK_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes
+
 async function checkForDataUpdates() {
   // Only check if we're online
   if (!navigator.onLine) {
@@ -451,18 +454,20 @@ async function checkForDataUpdates() {
   }
   
   try {
-    const db = await import('./services/database.js');
-    const { getDataFilename } = await import('./services/data-cache.js');
-    
-    const filename = getDataFilename();
-    
-    // Fetch data version from network
+    const filename = '/data/data-es.json';
     const response = await fetch(filename + '?t=' + Date.now());
     if (!response.ok) {
       return;
     }
     
     const newData = await response.json();
+    
+    // Only check version if the new data has a version field
+    if (!newData.dataVersion) {
+      return;
+    }
+    
+    const db = await import('./services/database.js');
     const currentVersion = await db.loadDataVersion();
     
     // Compare versions
@@ -484,10 +489,6 @@ async function checkForDataUpdates() {
   }
 }
 
-// Check for updates periodically (every 5 minutes when online)
-let lastCheckTime = 0;
-const CHECK_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes
-
 function scheduleDataSyncCheck() {
   // Check on page load if we've been away
   const timeSinceLastCheck = Date.now() - lastCheckTime;
@@ -506,94 +507,3 @@ function scheduleDataSyncCheck() {
 window.addEventListener('online', () => {
   checkForDataUpdates();
 });
-
-// Start background sync check after a delay
-setTimeout(scheduleDataSyncCheck, 30000); // First check after 30 seconds
-
-// ==================== Public API: window.calisthenics ====================
-// All public APIs are exposed through this namespace instead of polluting window directly
-window.calisthenics = {
-  // State management
-  getState,
-  updateState,
-
-  // Exercise form service (backward compatibility)
-  initExerciseForm: initExerciseForm,
-
-  // Undo service
-  dismissAllUndoToasts,
-
-  // Router
-  router,
-
-  // Data loading
-  loadAllExercises,
-  saveAllExercises,
-
-  // Constants (read-only reference)
-  constants: {
-    TOAST_TIMEOUTS: Object.freeze({
-      info: 5000,
-      success: 3000,
-      warning: 5000,
-      error: 8000
-    }),
-    UNDO_RETENTION_MS: 30 * 24 * 60 * 60 * 1000,
-    MAX_RETRIES: 2
-  },
-
-  // Validation service (for event-delegation.js backward compat)
-  ValidationService: ValidationService
-};
-
-// Backward compatibility: attach key functions to window
-// These are kept for views and services that reference them directly
-window.getState = getState;
-window.updateState = updateState;
-window.ValidationService = ValidationService;
-
-// Register Service Worker
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').then((registration) => {
-
-      // Handle service worker updates
-      registration.addEventListener('updatefound', () => {
-        const newWorker = registration.installing;
-        if (newWorker) {
-          newWorker.addEventListener('statechange', () => {
-            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-              // New service worker is available
-              showConfirmation(t('sw_update.message')).then(confirmed => {
-                if (confirmed) {
-                  newWorker.postMessage({ type: 'SKIP_WAITING' });
-                  window.location.reload();
-                }
-              });
-            }
-          });
-        }
-      });
-
-      // Handle service worker controller change
-      let reloading = false;
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
-        if (!reloading) {
-          reloading = true;
-          window.location.reload();
-        }
-      });
-
-    }).catch(err => {
-      console.error('Service Worker registration failed:', err);
-    });
-  });
-
-  // Handle messages from Service Worker (push notifications, background sync)
-  navigator.serviceWorker.addEventListener('message', (event) => {
-    if (event.data?.type === 'NAVIGATE') {
-      window.location.hash = event.data.hash;
-    }
-    // Add handlers for other SW message types as needed
-  });
-}

@@ -360,21 +360,31 @@ export async function storeDataVersion(version) {
 }
 
 export async function loadDataVersion() {
-  const database = await openDatabase();
-  const transaction = database.transaction([STORES.DATA_VERSION], 'readonly');
-  attachTransactionError(transaction);
-  const store = transaction.objectStore(STORES.DATA_VERSION);
+  try {
+    const database = await openDatabase();
+    const transaction = database.transaction([STORES.DATA_VERSION], 'readonly');
+    attachTransactionError(transaction);
+    const store = transaction.objectStore(STORES.DATA_VERSION);
 
-  return new Promise((resolve, reject) => {
-    const request = store.get('dataVersion');
+    return new Promise((resolve) => {
+      const request = store.get('dataVersion');
 
-    request.onsuccess = () => resolve(request.result?.version || null);
-    request.onerror = () => {
-      // Treat transaction errors as "no version stored" — not a fatal error
-      console.warn('Could not load data version from IndexedDB:', request.error);
-      resolve(null);
-    };
-  });
+      request.onsuccess = () => resolve(request.result?.version || null);
+      request.onerror = () => {
+        // Treat transaction errors as "no version stored" — not a fatal error
+        console.warn('Could not load data version from IndexedDB:', request.error);
+        resolve(null);
+      };
+      request.onabort = () => {
+        // Database was aborted (e.g., closing) — treat as no version
+        resolve(null);
+      };
+    });
+  } catch (error) {
+    // Database not available yet or other error — not a fatal error
+    console.warn('Could not open database to load data version:', error);
+    return null;
+  }
 }
 
 // Load workouts
