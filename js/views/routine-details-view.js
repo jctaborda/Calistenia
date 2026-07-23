@@ -49,7 +49,7 @@ export async function renderRoutineDetailsView(type, id) {
           <div class="exercise-info">
             <strong>${escapeHtml(exercise ? exercise.name : t('routine_details.unknown_exercise') + ex.exerciseId + ')')}</strong>
             <div class="exercise-details">
-              Sets: ${ex.sets} | Reps: ${ex.reps} | Rest: ${ex.restTime}s
+              Sets: ${ex.sets} | Reps: ${ex.reps} | Rest: ${ex.restTime}s${ex.weight ? ` | Weight: ${ex.weight}kg` : ''}
             </div>
           </div>
         </li>
@@ -133,7 +133,7 @@ export async function renderRoutineDetailsView(type, id) {
                 <div class="exercise-info">
                   <strong>${escapeHtml(exercise ? exercise.name : t('routine_details.unknown_exercise') + ex.exerciseId + ')')}</strong>
                   <div class="exercise-details">
-                    Sets: ${ex.sets} | Reps: ${ex.reps} | Rest: ${ex.restTime}s
+                    Sets: ${ex.sets} | Reps: ${ex.reps} | Rest: ${ex.restTime}s${ex.weight ? ` | Weight: ${ex.weight}kg` : ''}
                   </div>
                 </div>
               </li>
@@ -205,7 +205,7 @@ export async function renderRoutineDetailsView(type, id) {
              routineText += `*${t('routine_details.warmup')}*\n`;
              routine.warmup.forEach(ex => {
                const exercise = findExerciseById(ex.exerciseId);
-               routineText += `- ${exercise ? exercise.name : t('completion.unknown')}: ${ex.sets} sets ✕ ${ex.reps} reps (Rest: ${ex.restTime}s)\n`;
+               routineText += `- ${exercise ? exercise.name : t('completion.unknown')}: ${ex.sets} sets ✕ ${ex.reps} reps (Rest: ${ex.restTime}s${ex.weight ? `, Weight: ${ex.weight}kg` : ''})\n`;
              });
              routineText += '\n';
            }
@@ -213,14 +213,14 @@ export async function renderRoutineDetailsView(type, id) {
            routineText += `*${t('routine_details.exercises_section')}*\n`;
            routine.exercises.forEach(ex => {
              const exercise = findExerciseById(ex.exerciseId);
-             routineText += `- ${exercise ? exercise.name : t('completion.unknown')}: ${ex.sets} sets ✕ ${ex.reps} reps (Rest: ${ex.restTime}s)\n`;
+             routineText += `- ${exercise ? exercise.name : t('completion.unknown')}: ${ex.sets} sets ✕ ${ex.reps} reps (Rest: ${ex.restTime}s${ex.weight ? `, Weight: ${ex.weight}kg` : ''})\n`;
            });
       
            if (routine.cooldown && routine.cooldown.length > 0) {
              routineText += `\n*${t('routine_details.cooldown')}*\n`;
              routine.cooldown.forEach(ex => {
                const exercise = findExerciseById(ex.exerciseId);
-               routineText += `- ${exercise ? exercise.name : t('completion.unknown')}: ${ex.sets} sets ✕ ${ex.reps} reps (Rest: ${ex.restTime}s)\n`;
+               routineText += `- ${exercise ? exercise.name : t('completion.unknown')}: ${ex.sets} sets ✕ ${ex.reps} reps (Rest: ${ex.restTime}s${ex.weight ? `, Weight: ${ex.weight}kg` : ''})\n`;
              });
            }
       

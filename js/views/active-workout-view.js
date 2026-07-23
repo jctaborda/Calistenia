@@ -348,6 +348,7 @@ function handleNextSetClick() {
  * When moving to a new exercise, we still need to show rest before starting the new set
  */
 function advanceWorkout(currentExerciseIndex, currentSetIndex, routine) {
+  const { exercises } = getState();
   const result = workoutWorkflowService.completeSet(
     getState().activeWorkout,
     currentExerciseIndex,

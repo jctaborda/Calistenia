@@ -23,25 +23,24 @@ export async function renderBuilderView() {
   let editingId = '';
   let editingModuleName = '';
   let selectedExercises = [];
+  let selectedWarmup = [];
+  let selectedCooldown = [];
+  let activeSection = 'exercises';
   let createNewRoutine = false;
 
-  // Check if we should create a new routine (not editing)
   if (state.createNewRoutine) {
     createNewRoutine = true;
     isEditingRoutine = false;
-    editingRoutine = null; // Clear editingRoutine to prevent loading old data
-    updateState({ createNewRoutine: false }); // Clear the flag after reading
+    editingRoutine = null;
+    updateState({ createNewRoutine: false });
   }
 
-  // Check if we're editing a routine
   if (editingRoutine && editingRoutine.routine && editingRoutine.routine.exercises) {
     isEditingRoutine = true;
     editingType = editingRoutine.type || 'routine';
     editingId = editingRoutine.id;
     
-    
     let loadedExercises = editingRoutine.routine.exercises || [];
-    
     selectedExercises = loadedExercises.map(ex => {
       const exercise = exercises.find(e => String(e.id) === String(ex.exerciseId));
       return {
@@ -49,12 +48,70 @@ export async function renderBuilderView() {
         name: exercise ? exercise.name : 'Unknown Exercise'
       };
     });
+
+    const loadedWarmup = editingRoutine.routine.warmup || [];
+    selectedWarmup = loadedWarmup.map(ex => {
+      const exercise = exercises.find(e => String(e.id) === String(ex.exerciseId));
+      return {
+        ...ex,
+        name: exercise ? exercise.name : 'Unknown Exercise'
+      };
+    });
+
+    const loadedCooldown = editingRoutine.routine.cooldown || [];
+    selectedCooldown = loadedCooldown.map(ex => {
+      const exercise = exercises.find(e => String(e.id) === String(ex.exerciseId));
+      return {
+        ...ex,
+        name: exercise ? exercise.name : 'Unknown Exercise'
+      };
+    });
   } else if (editingModule && editingModule.module && Array.isArray(editingModule.module.exercises)) {
-    // DEPRECATED: Module editing via builder is no longer supported
-    // Redirect to new module admin view
     console.warn('[BuilderView] Module editing is deprecated. Redirecting to module admin view.');
     window.location.hash = `#module-admin/${editingModule.id}`;
-    return; // Exit early to prevent rendering
+    return;
+  }
+
+  function getActiveList() {
+    if (activeSection === 'warmup') return selectedWarmup;
+    if (activeSection === 'cooldown') return selectedCooldown;
+    return selectedExercises;
+  }
+
+  function isExerciseInActiveList(exerciseId) {
+    return getActiveList().some(ex => ex.exerciseId === exerciseId);
+  }
+
+  function renderSectionExerciseList(exerciseList, sectionKey) {
+    if (exerciseList.length === 0) {
+      return `<p class="section-empty-msg">${t('builder.no_exercises_selected_yet')}</p>`;
+    }
+
+    return exerciseList.map((ex, index) => {
+      let exerciseName = ex.name;
+      if (!exerciseName) {
+        const exercise = exercises.find(e => String(e.id) === String(ex.exerciseId));
+        exerciseName = exercise ? exercise.name : 'Unknown Exercise';
+      }
+
+      const weightValue = ex.weight || 0;
+
+      return `
+        <div class="card margin-bottom-1 draggable-item" draggable="true" data-section="${sectionKey}" data-index="${index}">
+          <div class="drag-handle">
+            <span>⋮⋮</span>
+            <span class="exercise-name">${exerciseName}</span>
+          </div>
+          <div class="exercise-form-grid">
+            <label>Sets: <input type="number" min="1" max="10" value="${ex.sets}" data-section="${sectionKey}" data-index="${index}" data-field="sets"></label>
+            <label>Reps: <input type="number" min="1" max="50" value="${ex.reps}" data-section="${sectionKey}" data-index="${index}" data-field="reps"></label>
+            <label>Rest (s): <input type="number" min="15" max="300" step="15" value="${ex.restTime}" data-section="${sectionKey}" data-index="${index}" data-field="restTime"></label>
+            <label>Wt: <input type="number" min="0" max="500" step="0.5" value="${weightValue}" data-section="${sectionKey}" data-index="${index}" data-field="weight" class="weight-input"></label>
+            <button type="button" class="btn btn-danger remove-btn" data-section="${sectionKey}" data-remove="${index}">${t('builder.remove')}</button>
+          </div>
+        </div>
+      `;
+    }).join('');
   }
 
   main.innerHTML = renderHeader() + `
@@ -173,19 +230,51 @@ export async function renderBuilderView() {
           </div>
         </div>
         `}
-        
-        <div id="selected-exercises" class="${selectedExercises.length === 0 ? 'hidden' : ''}">
-          <h3 class="exercises-heading">${t('builder.selected_exercises')}</h3>
-          <div id="exercise-list" class="draggable-list"></div>
-        </div>
-        
-        ${selectedExercises.length === 0 ? `
-        <div class="empty-state hidden">
-          <h2>${t('builder.no_exercises_selected')}</h2>
-          <p>${t('builder.select_exercises_desc')}</p>
-        </div>
+
+        ${createNewRoutine || isEditingRoutine ? `
+        <div class="builder-sections">
+          <div class="builder-section-nav">
+            <button type="button" class="btn section-tab ${activeSection === 'warmup' ? 'active' : ''}" data-section="warmup">
+              🔥 ${t('active_workout.warmup')} (${selectedWarmup.length})
+            </button>
+            <button type="button" class="btn section-tab ${activeSection === 'exercises' ? 'active' : ''}" data-section="exercises">
+              💪 ${t('builder.selected_exercises')} (${selectedExercises.length})
+            </button>
+            <button type="button" class="btn section-tab ${activeSection === 'cooldown' ? 'active' : ''}" data-section="cooldown">
+              ❄️ ${t('active_workout.cooldown')} (${selectedCooldown.length})
+            </button>
+          </div>
         ` : ''}
-        
+
+        <div id="section-warmup" class="builder-section ${activeSection !== 'warmup' ? 'hidden' : ''}">
+          <div class="section-header">
+            <h3>🔥 ${t('active_workout.warmup')}</h3>
+          </div>
+          <div id="warmup-list" class="draggable-list">
+            ${renderSectionExerciseList(selectedWarmup, 'warmup')}
+          </div>
+        </div>
+
+        <div id="section-exercises" class="builder-section ${activeSection !== 'exercises' ? 'hidden' : ''}">
+          <div class="section-header">
+            <h3>${t('builder.selected_exercises')}</h3>
+          </div>
+          <div id="exercise-list" class="draggable-list">
+            ${selectedExercises.length === 0 ? '<p class="section-empty-msg">' + t('builder.no_exercises_selected_yet') + '</p>' : ''}
+          </div>
+        </div>
+
+        <div id="section-cooldown" class="builder-section ${activeSection !== 'cooldown' ? 'hidden' : ''}">
+          <div class="section-header">
+            <h3>❄️ ${t('active_workout.cooldown')}</h3>
+          </div>
+          <div id="cooldown-list" class="draggable-list">
+            ${renderSectionExerciseList(selectedCooldown, 'cooldown')}
+          </div>
+        </div>
+
+        ${createNewRoutine || isEditingRoutine ? '</div>' : ''}
+
         <div class="card margin-bottom-1 scrollable-exercise-list">
           <h3>${t('builder.available_exercises')} (${exercises.length} exercises)</h3>
           <input 
@@ -197,7 +286,7 @@ export async function renderBuilderView() {
           >
           <ul id="available-exercises-list" class="checkbox-list">
             ${exercises.length > 0 ? exercises.map(e => {
-              const isSelected = selectedExercises.some(ex => ex.exerciseId === e.id);
+              const isSelected = isExerciseInActiveList(e.id);
               return `
                 <li data-exercise-name="${e.name.toLowerCase()}">
                   <label>
@@ -214,144 +303,165 @@ export async function renderBuilderView() {
     </div>
   `;
 
-  function updateExerciseList() {
+  function updateAllExerciseLists() {
     const exerciseList = main.querySelector('#exercise-list');
-    const selectedExercisesDiv = main.querySelector('#selected-exercises');
-    const emptyState = main.querySelector('.empty-state');
-    
-    if (selectedExercises.length === 0) {
-      exerciseList.innerHTML = '<p>' + t('builder.no_exercises_selected_yet') + '</p>';
-      if (selectedExercisesDiv) {
-        selectedExercisesDiv.classList.add('hidden');
-      }
-      if (emptyState) {
-        emptyState.classList.remove('hidden');
-      }
-      return;
-    } else {
-      if (selectedExercisesDiv) {
-        selectedExercisesDiv.classList.remove('hidden');
-      }
-      if (emptyState) {
-        emptyState.classList.add('hidden');
-      }
+    const warmupList = main.querySelector('#warmup-list');
+    const cooldownList = main.querySelector('#cooldown-list');
+
+    if (exerciseList) {
+      exerciseList.innerHTML = renderSectionExerciseList(selectedExercises, 'exercises');
+    }
+    if (warmupList) {
+      warmupList.innerHTML = renderSectionExerciseList(selectedWarmup, 'warmup');
+    }
+    if (cooldownList) {
+      cooldownList.innerHTML = renderSectionExerciseList(selectedCooldown, 'cooldown');
     }
 
-    exerciseList.innerHTML = selectedExercises.map((ex, index) => {
-      let exerciseName = ex.name;
-      if (!exerciseName) {
-        const exercise = exercises.find(e => String(e.id) === String(ex.exerciseId));
-        exerciseName = exercise ? exercise.name : 'Unknown Exercise';
-      }
+    attachListEventListeners();
+    updateCheckboxStates();
+  }
 
-      return `
-        <div class="card margin-bottom-1 draggable-item" draggable="true" data-index="${index}">
-          <div class="drag-handle">
-            <span>⋮⋮</span>
-            <span class="exercise-name">${exerciseName}</span>
-          </div>
-          <div class="exercise-form-grid">
-            <label>Sets: <input type="number" min="1" max="10" value="${ex.sets}" data-index="${index}" data-field="sets"></label>
-            <label>Reps: <input type="number" min="1" max="50" value="${ex.reps}" data-index="${index}" data-field="reps"></label>
-            <label>Rest (s): <input type="number" min="15" max="300" step="15" value="${ex.restTime}" data-index="${index}" data-field="restTime"></label>
-            <button type="button" class="btn btn-danger remove-btn" data-remove="${index}">${t('builder.remove')}</button>
-          </div>
-        </div>
-      `;
-    }).join('');
-
-    exerciseList.querySelectorAll('input[data-index]').forEach(input => {
-      input.addEventListener('input', e => {
-        const index = parseInt(e.target.dataset.index);
-        const field = e.target.dataset.field;
-        selectedExercises[index][field] = parseInt(e.target.value) || 1;
-      });
+  function updateCheckboxStates() {
+    const checkboxes = main.querySelectorAll('input[type="checkbox"][data-exercise-id]');
+    checkboxes.forEach(checkbox => {
+      const exerciseId = parseInt(checkbox.dataset.exerciseId);
+      checkbox.checked = isExerciseInActiveList(exerciseId);
     });
+  }
 
-    exerciseList.querySelectorAll('button[data-remove]').forEach(btn => {
-      btn.addEventListener('click', async e => {
-        e.stopPropagation();
-        const index = parseInt(e.target.dataset.remove);
-        const exerciseId = selectedExercises[index].exerciseId;
-        
-        const exerciseName = selectedExercises[index].name || `Exercise ${index + 1}`;
-        
-        const modal = document.createElement('div');
-        modal.className = 'modal';
-        modal.innerHTML = `
-          <div class="modal-content" class="max-w-400">
-            <h2>Remove Exercise</h2>
-            <div class="modal-body">
-              <p>Are you sure you want to remove "${escapeHtml(exerciseName)}" from this routine? This will not delete the exercise itself.</p>
-            </div>
-            <div class="flex-end mt-1rem">
-              <button class="btn btn-secondary remove-cancel flex-btn">Cancel</button>
-              <button class="btn btn-danger remove-ok flex-btn">Remove</button>
-            </div>
-          </div>
-        `;
-
-        const removeCancel = modal.querySelector('.remove-cancel');
-        const removeOk = modal.querySelector('.remove-ok');
-
-        const doRemove = () => {
-          const checkbox = main.querySelector(`input[type="checkbox"][data-exercise-id="${exerciseId}"]`);
-          if (checkbox) {
-            checkbox.checked = false;
-          }
-          selectedExercises.splice(index, 1);
-          if (selectedExercises.length === 0) {
-            show('No exercises selected. Add exercises to build your routine.', 'warning');
-          }
-          updateExerciseList();
-        };
-
-        removeCancel.addEventListener('click', () => { modal.remove(); });
-        removeOk.addEventListener('click', () => {
-          modal.remove();
-          doRemove();
-        });
-        modal.addEventListener('click', (ev) => {
-          if (ev.target === modal) modal.remove();
-        });
-
-        document.body.appendChild(modal);
-      });
+  function updateSectionTabCounts() {
+    const tabs = main.querySelectorAll('.section-tab');
+    tabs.forEach(tab => {
+      const section = tab.dataset.section;
+      let count = 0;
+      if (section === 'warmup') count = selectedWarmup.length;
+      else if (section === 'cooldown') count = selectedCooldown.length;
+      else count = selectedExercises.length;
+      const sectionLabel = section === 'exercises' ? t('builder.selected_exercises').split('(')[0].trim() :
+        section === 'warmup' ? t('active_workout.warmup') : t('active_workout.cooldown');
+      const icon = section === 'warmup' ? '🔥 ' : section === 'cooldown' ? '❄️ ' : '💪 ';
+      tab.textContent = `${icon}${sectionLabel} (${count})`;
     });
+  }
 
-    let draggedIndex = null;
-
-    exerciseList.querySelectorAll('.draggable-item').forEach((item, index) => {
-      item.addEventListener('dragstart', (e) => {
-        draggedIndex = parseInt(item.dataset.index);
-        item.style.opacity = '0.5';
-        e.dataTransfer.effectAllowed = 'move';
+  function attachListEventListeners() {
+    const allLists = main.querySelectorAll('.draggable-list');
+    allLists.forEach(list => {
+      list.querySelectorAll('input[data-index]').forEach(input => {
+        input.addEventListener('input', e => {
+          const section = e.target.dataset.section;
+          const index = parseInt(e.target.dataset.index);
+          const field = e.target.dataset.field;
+          const targetList = section === 'warmup' ? selectedWarmup :
+            section === 'cooldown' ? selectedCooldown : selectedExercises;
+          if (field === 'weight') {
+            targetList[index][field] = parseFloat(e.target.value) || 0;
+          } else {
+            targetList[index][field] = parseInt(e.target.value) || 1;
+          }
+        });
       });
 
-      item.addEventListener('dragend', (e) => {
-        item.style.opacity = '';
-        draggedIndex = null;
+      list.querySelectorAll('button[data-remove]').forEach(btn => {
+        btn.addEventListener('click', async e => {
+          e.stopPropagation();
+          const section = e.target.dataset.section;
+          const index = parseInt(e.target.dataset.remove);
+          const targetList = section === 'warmup' ? selectedWarmup :
+            section === 'cooldown' ? selectedCooldown : selectedExercises;
+          const exerciseId = targetList[index].exerciseId;
+          const exerciseName = targetList[index].name || `Exercise ${index + 1}`;
+
+          const modal = document.createElement('div');
+          modal.className = 'modal';
+          modal.innerHTML = `
+            <div class="modal-content" class="max-w-400">
+              <h2>Remove Exercise</h2>
+              <div class="modal-body">
+                <p>Are you sure you want to remove "${escapeHtml(exerciseName)}" from this routine? This will not delete the exercise itself.</p>
+              </div>
+              <div class="flex-end mt-1rem">
+                <button class="btn btn-secondary remove-cancel flex-btn">Cancel</button>
+                <button class="btn btn-danger remove-ok flex-btn">Remove</button>
+              </div>
+            </div>
+          `;
+
+          const removeCancel = modal.querySelector('.remove-cancel');
+          const removeOk = modal.querySelector('.remove-ok');
+
+          const doRemove = () => {
+            targetList.splice(index, 1);
+            updateAllExerciseLists();
+          };
+
+          removeCancel.addEventListener('click', () => { modal.remove(); });
+          removeOk.addEventListener('click', () => {
+            modal.remove();
+            doRemove();
+          });
+          modal.addEventListener('click', (ev) => {
+            if (ev.target === modal) modal.remove();
+          });
+
+          document.body.appendChild(modal);
+        });
       });
 
-      item.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = 'move';
-      });
+      let draggedIndex = null;
+      let draggedSection = null;
 
-      item.addEventListener('drop', (e) => {
-        e.preventDefault();
-        const dropIndex = parseInt(item.dataset.index);
+      list.querySelectorAll('.draggable-item').forEach(item => {
+        item.addEventListener('dragstart', (e) => {
+          draggedIndex = parseInt(item.dataset.index);
+          draggedSection = item.dataset.section;
+          item.style.opacity = '0.5';
+          e.dataTransfer.effectAllowed = 'move';
+        });
 
-        if (draggedIndex !== null && draggedIndex !== dropIndex) {
-          const draggedItem = selectedExercises[draggedIndex];
-          selectedExercises.splice(draggedIndex, 1);
-          selectedExercises.splice(dropIndex, 0, draggedItem);
+        item.addEventListener('dragend', () => {
+          item.style.opacity = '';
+          draggedIndex = null;
+          draggedSection = null;
+        });
 
-          updateExerciseList();
-        }
+        item.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = 'move';
+        });
+
+        item.addEventListener('drop', (e) => {
+          e.preventDefault();
+          const dropIndex = parseInt(item.dataset.index);
+          const dropSection = item.dataset.section;
+
+          if (draggedIndex !== null && draggedSection === dropSection && draggedIndex !== dropIndex) {
+            const targetList = dropSection === 'warmup' ? selectedWarmup :
+              dropSection === 'cooldown' ? selectedCooldown : selectedExercises;
+            const draggedItem = targetList[draggedIndex];
+            targetList.splice(draggedIndex, 1);
+            targetList.splice(dropIndex, 0, draggedItem);
+            updateAllExerciseLists();
+          }
+        });
       });
     });
   }
+
+  const sectionTabs = main.querySelectorAll('.section-tab');
+  sectionTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      activeSection = tab.dataset.section;
+      sectionTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+
+      main.querySelectorAll('.builder-section').forEach(s => s.classList.add('hidden'));
+      main.querySelector(`#section-${activeSection}`).classList.remove('hidden');
+
+      updateCheckboxStates();
+    });
+  });
 
   const filterInput = main.querySelector('#available-exercise-filter');
   if (filterInput) {
@@ -375,32 +485,37 @@ export async function renderBuilderView() {
     checkbox.addEventListener('change', e => {
       const exerciseId = parseInt(e.target.dataset.exerciseId);
       const exerciseName = e.target.dataset.exerciseName;
+      const targetList = getActiveList();
 
       if (e.target.checked) {
-        if (!selectedExercises.some(ex => ex.exerciseId === exerciseId)) {
-          selectedExercises.push({
+        if (!targetList.some(ex => ex.exerciseId === exerciseId)) {
+          targetList.push({
             exerciseId,
             name: exerciseName,
-            sets: 3,
-            reps: 8,
-            restTime: 60
+            sets: activeSection === 'warmup' || activeSection === 'cooldown' ? 2 : 3,
+            reps: activeSection === 'warmup' || activeSection === 'cooldown' ? 12 : 8,
+            restTime: activeSection === 'warmup' || activeSection === 'cooldown' ? 30 : 60,
+            weight: 0
           });
-          updateExerciseList();
+          updateAllExerciseLists();
+          updateSectionTabCounts();
         } else {
-          // Exercise already selected — warn the user
-          show(`"${exerciseName}" is already in this routine.`, 'warning');
+          show(`"${exerciseName}" is already in this section.`, 'warning');
+          e.target.checked = false;
         }
       } else {
-        const index = selectedExercises.findIndex(ex => ex.exerciseId === exerciseId);
+        const index = targetList.findIndex(ex => ex.exerciseId === exerciseId);
         if (index !== -1) {
-          selectedExercises.splice(index, 1);
-          updateExerciseList();
+          targetList.splice(index, 1);
+          updateAllExerciseLists();
+          updateSectionTabCounts();
         }
       }
     });
   });
 
-  updateExerciseList();
+  updateAllExerciseLists();
+  updateSectionTabCounts();
 
   const form = main.querySelector('#builder-form');
   if (form) {
@@ -421,12 +536,10 @@ export async function renderBuilderView() {
         return;
       }
       
-      // Warn if routine has very few or very many exercises
       if (selectedExercises.length === 1) {
         show('Tip: Routines with at least 3 exercises are more effective.', 'warning');
       }
       
-      // Get routine details (only for routines, not modules)
       let routineDetails = {};
       if (createNewRoutine || isEditingRoutine) {
         const description = main.querySelector('#routine-description')?.value.trim() || '';
@@ -447,7 +560,6 @@ export async function renderBuilderView() {
         };
       }
 
-      // Show loading state on submit button
       const submitBtn = main.querySelector('.form-submit-btn');
       if (submitBtn) {
         submitBtn.disabled = true;
@@ -457,7 +569,6 @@ export async function renderBuilderView() {
       }
 
       try {
-        // For modules - save to IndexedDB via ModuleStore
         if (!isEditingRoutine && !createNewRoutine) {
           const moduleDescription = main.querySelector('#routine-description')?.value.trim() || '';
           const moduleCategory = main.querySelector('#routine-category')?.value;
@@ -502,19 +613,36 @@ export async function renderBuilderView() {
             window.location.hash = '#skill-modules';
           }
         } else if (createNewRoutine || isEditingRoutine) {
-          // Save routine to IndexedDB
           const routineId = isEditingRoutine ? parseInt(editingId, 10) : Date.now();
+
+          function mapExerciseList(list) {
+            return list.map(ex => {
+              const entry = {
+                exerciseId: ex.exerciseId,
+                sets: ex.sets,
+                reps: ex.reps,
+                restTime: ex.restTime
+              };
+              if (ex.weight && ex.weight > 0) {
+                entry.weight = ex.weight;
+              }
+              return entry;
+            });
+          }
+
           const routineData = {
             id: routineId,
             name,
             ...routineDetails,
-            exercises: selectedExercises.map(ex => ({
-              exerciseId: ex.exerciseId,
-              sets: ex.sets,
-              reps: ex.reps,
-              restTime: ex.restTime
-            }))
+            exercises: mapExerciseList(selectedExercises)
           };
+
+          if (selectedWarmup.length > 0) {
+            routineData.warmup = mapExerciseList(selectedWarmup);
+          }
+          if (selectedCooldown.length > 0) {
+            routineData.cooldown = mapExerciseList(selectedCooldown);
+          }
 
           const database = await openDatabase();
           const transaction = database.transaction([STORES.ROUTINES], 'readwrite');
@@ -527,7 +655,6 @@ export async function renderBuilderView() {
             putRequest.onerror = () => reject(putRequest.error);
           });
           
-          // Refresh routines from IndexedDB and update state
           const { fetchRoutines } = await import('../services/api.js');
           const refreshedRoutines = await fetchRoutines();
           updateState({ 
@@ -556,5 +683,4 @@ export async function renderBuilderView() {
   }
 }
 
-// Named + default export for maximum flexibility (Pattern 3)
 export default { render: renderBuilderView };

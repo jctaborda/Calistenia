@@ -384,9 +384,71 @@ li {
 /* Exercise form grid */
 .exercise-form-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr auto;
+  grid-template-columns: 1fr 1fr 1fr 1fr auto;
   gap: 0.5rem;
   align-items: center;
+}
+
+/* Builder sections */
+.builder-section-nav {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.section-tab {
+  flex: 1;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.85rem;
+  border: 2px solid var(--border-color, #ddd);
+  border-radius: var(--border-radius, 8px);
+  background: var(--bg-secondary, #f5f5f5);
+  color: var(--text-primary, #333);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 600;
+  text-align: center;
+}
+
+.section-tab.active {
+  background: var(--accent);
+  color: var(--white);
+  border-color: var(--accent);
+}
+
+.section-tab:hover:not(.active) {
+  background: var(--bg-hover, #e8e8e8);
+}
+
+.builder-section {
+  margin-bottom: 1rem;
+}
+
+.builder-section.hidden {
+  display: none;
+}
+
+.section-header {
+  margin-bottom: 0.5rem;
+}
+
+.section-header h3 {
+  margin: 0;
+}
+
+.section-empty-msg {
+  color: var(--text-secondary, #888);
+  font-style: italic;
+  padding: 0.5rem 0;
+}
+
+.weight-input {
+  width: 70px;
+  display: inline-block;
+}
+
+.weight-input-label {
+  font-size: 0.85rem;
 }
 
 /* Button variants */
@@ -640,6 +702,10 @@ li {
   .exercise-form-grid {
     grid-template-columns: 1fr;
     gap: 0.3rem;
+  }
+
+  .builder-section-nav {
+    flex-direction: column;
   }
   
   /* Stack buttons vertically on small screens */
@@ -1845,7 +1911,7 @@ html.dark .loading {
   background: var(--btn-share);
 }
 
-.back-to-home-btn, .view-profile-btn {
+.back-to-home-btn, .view-profile-btn, .view-progress-btn {
   flex: 1;
   min-width: 150px;
 }
@@ -1863,6 +1929,16 @@ html.dark .loading {
   margin-left: 0.5rem;
   width: 80px;
   display: inline-block;
+}
+
+.weight-input-label {
+  margin-left: 1rem;
+  font-size: 0.85rem;
+}
+
+.weight-input-label .weight-input {
+  margin-left: 0.5rem;
+  width: 70px;
 }
 
 .form-actions {
@@ -3851,6 +3927,11 @@ html.dark .skill-tree-node.locked {
 
   .exercise-form-grid {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .section-tab {
+    font-size: 0.75rem;
+    padding: 0.5rem;
   }
 
   .progress-tabs {

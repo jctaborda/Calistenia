@@ -57,6 +57,7 @@ export function renderWorkoutSummaryView() {
   
   <div class="summary-actions">
   <button class="btn share-workout-btn" data-share-workout>📋 Copy to Clipboard</button>
+  <button class="btn btn-secondary view-progress-btn" data-nav="#progress">📈 View Progress</button>
   <button class="btn btn-secondary back-to-home-btn" data-nav="#home">${t('summary.back')}</button>
   <button class="btn btn-secondary view-profile-btn" data-nav="#profile">View Profile</button>
   </div>

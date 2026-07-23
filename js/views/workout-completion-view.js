@@ -85,17 +85,18 @@ export async function renderWorkoutCompletionView() {
   value="${exerciseData.reps}"
   class="reps-input">
   </label>
-  ${exerciseData.weightSupported ? `\n  <label class="weight-input-label">\n  Weight (kg):
+  <label class="weight-input-label">
+  Weight (kg):
   <input type="number" 
   name="exercise-${exerciseIndex}-set-${setIndex}-weight" 
   min="0" 
   max="500" 
   step="0.5"
-  value="0"
+  value="${exerciseData.weight || 0}"
   class="weight-input"
   placeholder="0">
   kg
-  </label>` : ''}
+  </label>
   </div>
   `).join('')}
   </div>
@@ -125,12 +126,9 @@ export async function renderWorkoutCompletionView() {
   const input = form.querySelector(`input[name="exercise-${exerciseIndex}-set-${setIndex}"]`);
   const reps = parseInt(input.value) || 0;
   
-  // Collect weight data if available
-  let weight = 0;
-  if (exerciseData.weightSupported) {
-    const weightInput = form.querySelector(`input[name="exercise-${exerciseIndex}-set-${setIndex}-weight"]`);
-    weight = parseFloat(weightInput.value) || 0;
-  }
+  // Collect weight data
+   const weightInput = form.querySelector(`input[name="exercise-${exerciseIndex}-set-${setIndex}-weight"]`);
+   const weight = weightInput ? (parseFloat(weightInput.value) || 0) : (exerciseData.weight || 0);
   
   return { reps, weight };
   });
