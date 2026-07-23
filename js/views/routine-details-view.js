@@ -247,11 +247,13 @@ export async function renderRoutineDetailsView(type, id) {
         // Generate warm-up based on muscles targeted
         const generatedWarmUp = warmUpGeneratorService.generateWarmUp(routine, exercises, muscles);
         
+        // Hide spinner before showing confirmation dialog
+        hideSpinner();
+        
         if (generatedWarmUp.length === 0) {
           show('Could not generate a warm-up. Try adding exercises that target specific muscle groups.', 'warning');
           generateWarmUpBtn.disabled = false;
           generateWarmUpBtn.textContent = t('routine_details.generate_warmup');
-          hideSpinner();
           return;
         }
         

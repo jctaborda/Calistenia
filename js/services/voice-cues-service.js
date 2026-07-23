@@ -2,6 +2,8 @@
  * VoiceCuesService - Provides voice announcements during workouts using Web Speech API
  */
 
+import { getLocale, t } from '../i18n.js';
+
 export class VoiceCuesService {
   constructor() {
     this.synth = window.speechSynthesis;
@@ -93,10 +95,13 @@ export class VoiceCuesService {
     utterance.pitch = this.voicePitch;
     utterance.volume = this.voiceVolume;
 
-    // Try to select an English voice
-    const englishVoice = this.voices.find(v => v.lang.includes('en'));
-    if (englishVoice) {
-      utterance.voice = englishVoice;
+    // Select voice based on current locale
+    const locale = getLocale();
+    const langPrefix = locale === 'es' ? 'es' : 'en';
+    utterance.lang = locale === 'es' ? 'es-ES' : 'en-US';
+    const localeVoice = this.voices.find(v => v.lang.startsWith(langPrefix));
+    if (localeVoice) {
+      utterance.voice = localeVoice;
     }
 
     // Event handlers
@@ -142,7 +147,7 @@ export class VoiceCuesService {
    */
   announceRestComplete() {
     if (this.isEnabled()) {
-      this.speak('Rest complete. Ready for next set?');
+      this.speak(t('voice_cue.rest_complete'));
     }
   }
 
@@ -152,7 +157,7 @@ export class VoiceCuesService {
    */
   announceNextExercise(exerciseName) {
     if (this.isEnabled()) {
-      this.speak(`Next exercise: ${exerciseName}`);
+      this.speak(t('voice_cue.next_exercise', { name: exerciseName }));
     }
   }
 
@@ -162,7 +167,7 @@ export class VoiceCuesService {
    */
   announceWorkoutStart(routineName) {
     if (this.isEnabled()) {
-      this.speak(`Starting workout: ${routineName}. Good luck!`);
+      this.speak(t('voice_cue.workout_start', { name: routineName }));
     }
   }
 
@@ -172,7 +177,7 @@ export class VoiceCuesService {
    */
   announceWorkoutComplete(routineName) {
     if (this.isEnabled()) {
-      this.speak(`Workout complete: ${routineName}. Great job!`);
+      this.speak(t('voice_cue.workout_complete', { name: routineName }));
     }
   }
 
@@ -183,7 +188,7 @@ export class VoiceCuesService {
    */
   announceSetReminder(setNumber, totalSets) {
     if (this.isEnabled()) {
-      this.speak(`Set ${setNumber} of ${totalSets}`);
+      this.speak(t('voice_cue.set_reminder', { current: setNumber, total: totalSets }));
     }
   }
 
@@ -193,7 +198,7 @@ export class VoiceCuesService {
    */
   announceHIITWork(seconds) {
     if (this.isEnabled()) {
-      this.speak(`Work phase: ${seconds} seconds`);
+      this.speak(t('voice_cue.hiit_work', { seconds }));
     }
   }
 
@@ -203,7 +208,7 @@ export class VoiceCuesService {
    */
   announceHIITRest(seconds) {
     if (this.isEnabled()) {
-      this.speak(`Rest phase: ${seconds} seconds`);
+      this.speak(t('voice_cue.hiit_rest', { seconds }));
     }
   }
 
@@ -213,7 +218,7 @@ export class VoiceCuesService {
    */
   announceRestStart(seconds) {
     if (this.isEnabled()) {
-      this.speak(`Rest timer started: ${seconds} seconds`);
+      this.speak(t('voice_cue.rest_start', { seconds }));
     }
   }
 
@@ -222,7 +227,7 @@ export class VoiceCuesService {
    */
   announceCooldownStart() {
     if (this.isEnabled()) {
-      this.speak('Starting cooldown. Keep moving!');
+      this.speak(t('voice_cue.cooldown_start'));
     }
   }
 }

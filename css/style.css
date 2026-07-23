@@ -3810,6 +3810,19 @@ input.error:focus, select.error:focus, textarea.error:focus {
 
 /* ===== CONFIRMATION MODAL ===== */
 
+.confirm-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+
 .confirm-modal-content {
   background: var(--white, #FFFFFF);
   border-radius: 8px;

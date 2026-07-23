@@ -34,8 +34,8 @@ describe('WarmUpGeneratorService', () => {
       };
       
       const exercises = [
-        { id: 1, name: 'Push-up', muscles: [1, 3], muscles_secondary: [5], difficulty: 'beginner' },
-        { id: 2, name: 'Pull-up', muscles: [2, 4], muscles_secondary: [12], difficulty: 'beginner' }
+        { id: 1, name: 'Push-up', muscles: [1, 3], muscles_secondary: [5], difficulty: [1] },
+        { id: 2, name: 'Pull-up', muscles: [2, 4], muscles_secondary: [12], difficulty: [1] }
       ];
       
       const muscles = [
@@ -61,9 +61,9 @@ describe('WarmUpGeneratorService', () => {
       };
       
       const exercises = [
-        { id: 1, name: 'Exercise 1', muscles: [1], muscles_secondary: [], difficulty: 'beginner' },
-        { id: 2, name: 'Exercise 2', muscles: [1], muscles_secondary: [], difficulty: 'beginner' },
-        { id: 3, name: 'Exercise 3', muscles: [2], muscles_secondary: [], difficulty: 'beginner' }
+        { id: 1, name: 'Exercise 1', muscles: [1], muscles_secondary: [], difficulty: [1] },
+        { id: 2, name: 'Exercise 2', muscles: [1], muscles_secondary: [], difficulty: [1] },
+        { id: 3, name: 'Exercise 3', muscles: [2], muscles_secondary: [], difficulty: [1] }
       ];
       
       const muscles = [
@@ -84,7 +84,7 @@ describe('WarmUpGeneratorService', () => {
       
       // Exercise with non-beginner difficulty
       const exercises = [
-        { id: 1, name: 'Advanced Exercise', muscles: [1], muscles_secondary: [], difficulty: 'advanced' }
+        { id: 1, name: 'Advanced Exercise', muscles: [1], muscles_secondary: [], difficulty: [3] }
       ];
       
       const muscles = [{ id: 1, name: 'Chest' }];
@@ -108,7 +108,7 @@ describe('WarmUpGeneratorService', () => {
           name: 'Compound Exercise', 
           muscles: [1], 
           muscles_secondary: [2, 3], 
-          difficulty: 'beginner' 
+          difficulty: [1] 
         }
       ];
       
@@ -135,11 +135,11 @@ describe('WarmUpGeneratorService', () => {
       };
       
       const exercises = [
-        { id: 1, muscles: [1], muscles_secondary: [], difficulty: 'beginner' },
-        { id: 2, muscles: [2], muscles_secondary: [], difficulty: 'beginner' },
-        { id: 3, muscles: [3], muscles_secondary: [], difficulty: 'beginner' },
-        { id: 4, muscles: [4], muscles_secondary: [], difficulty: 'beginner' },
-        { id: 5, muscles: [5], muscles_secondary: [], difficulty: 'beginner' }
+        { id: 1, muscles: [1], muscles_secondary: [], difficulty: [1] },
+        { id: 2, muscles: [2], muscles_secondary: [], difficulty: [1] },
+        { id: 3, muscles: [3], muscles_secondary: [], difficulty: [1] },
+        { id: 4, muscles: [4], muscles_secondary: [], difficulty: [1] },
+        { id: 5, muscles: [5], muscles_secondary: [], difficulty: [1] }
       ];
       
       const muscles = [
@@ -169,7 +169,7 @@ describe('WarmUpGeneratorService', () => {
           name: 'Push-up', 
           muscles: [1], 
           muscles_secondary: [], 
-          difficulty: 'beginner' 
+          difficulty: [1] 
         }
       ];
       
@@ -189,7 +189,7 @@ describe('WarmUpGeneratorService', () => {
           name: 'Advanced Push-up', 
           muscles: [1], 
           muscles_secondary: [], 
-          difficulty: 'advanced' 
+          difficulty: [3] 
         }
       ];
       
@@ -205,7 +205,7 @@ describe('WarmUpGeneratorService', () => {
           name: 'Compound', 
           muscles: [1], 
           muscles_secondary: [2], 
-          difficulty: 'beginner' 
+          difficulty: [1] 
         }
       ];
       
@@ -221,7 +221,7 @@ describe('WarmUpGeneratorService', () => {
   describe('getGeneralWarmUp', () => {
     it('should return empty array when no suitable exercises', () => {
       const exercises = [
-        { id: 1, muscles: [5], muscles_secondary: [], difficulty: 'advanced' }
+        { id: 1, muscles: [5], muscles_secondary: [], difficulty: [3] }
       ];
       
       const result = service.getGeneralWarmUp(exercises);
@@ -231,8 +231,8 @@ describe('WarmUpGeneratorService', () => {
 
     it('should return general warm-up exercises when available', () => {
       const exercises = [
-        { id: 1, muscles: [1], muscles_secondary: [], difficulty: 'beginner' },
-        { id: 2, muscles: [2], muscles_secondary: [], difficulty: 'beginner' }
+        { id: 1, muscles: [1], muscles_secondary: [], difficulty: [1] },
+        { id: 2, muscles: [2], muscles_secondary: [], difficulty: [1] }
       ];
       
       const result = service.getGeneralWarmUp(exercises);
@@ -329,10 +329,10 @@ describe('WarmUpGeneratorService', () => {
       };
       
       const exercises = [
-        { id: 1, name: 'Push-up', muscles: [1, 3], muscles_secondary: [5], difficulty: 'beginner' },
-        { id: 2, name: 'Pull-up', muscles: [2, 4], muscles_secondary: [12], difficulty: 'beginner' },
-        { id: 3, name: 'Squat', muscles: [6, 8], muscles_secondary: [7], difficulty: 'beginner' },
-        { id: 4, name: 'Plank', muscles: [10], muscles_secondary: [11], difficulty: 'beginner' }
+        { id: 1, name: 'Push-up', muscles: [1, 3], muscles_secondary: [5], difficulty: [1] },
+        { id: 2, name: 'Pull-up', muscles: [2, 4], muscles_secondary: [12], difficulty: [1] },
+        { id: 3, name: 'Squat', muscles: [6, 8], muscles_secondary: [7], difficulty: [1] },
+        { id: 4, name: 'Plank', muscles: [10], muscles_secondary: [11], difficulty: [1] }
       ];
       
       const muscles = [
@@ -377,7 +377,7 @@ describe('WarmUpGeneratorService', () => {
       };
       
       const exercises = [
-        { id: 1, name: 'Advanced Exercise', muscles: [1], muscles_secondary: [], difficulty: 'advanced' }
+        { id: 1, name: 'Advanced Exercise', muscles: [1], muscles_secondary: [], difficulty: [3] }
       ];
       
       const muscles = [{ id: 1, name: 'Chest' }];

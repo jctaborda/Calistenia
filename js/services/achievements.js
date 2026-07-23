@@ -1,5 +1,6 @@
 import { ACHIEVEMENT_SEVEN_DAYS_MS } from '../constants.js';
 
+import { t } from '../i18n.js';
 import { getState } from './state.js';
 import { show } from './toast-service.js';
 import { voiceCuesService } from './voice-cues-service.js';
@@ -147,7 +148,7 @@ export function checkAchievements() {
       
       // Voice cue
       if (voiceCuesService.isEnabled()) {
-        voiceCuesService.speak(`Achievement unlocked: ${ach.name}. ${ach.description}`);
+        voiceCuesService.speak(t('voice_cue.achievement_unlocked', { name: ach.name, description: ach.description }));
       }
     });
   }

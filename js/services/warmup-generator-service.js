@@ -49,7 +49,7 @@ export class WarmUpGeneratorService {
       const muscle = muscles.find(m => m.id === muscleId);
       
       if (muscle) {
-        const muscleWarmUp = this.getMuscleSpecificWarmUp(muscleId, exercises);
+        const muscleWarmUp = this.getMuscleSpecificWarmUp(muscleId, exercises, muscles);
         if (muscleWarmUp) {
           warmUpExercises.push(muscleWarmUp);
         }
@@ -70,8 +70,8 @@ export class WarmUpGeneratorService {
    * @param {Array} exercises - All available exercises
    * @returns {object|null} Warm-up exercise object or null
    */
-  getMuscleSpecificWarmUp(muscleId, exercises) {
-    const muscle = this.getMuscleById(muscleId);
+  getMuscleSpecificWarmUp(muscleId, exercises, muscles) {
+    const muscle = muscles ? muscles.find(m => m.id === muscleId) : this.getMuscleById(muscleId);
     if (!muscle) return null;
 
     // Find beginner-level exercises that target this muscle
@@ -79,7 +79,7 @@ export class WarmUpGeneratorService {
       const targetsMuscle = 
         (ex.muscles || []).includes(muscleId) || 
         (ex.muscles_secondary || []).includes(muscleId);
-      const isBeginner = ex.difficulty === 'beginner';
+      const isBeginner = (ex.difficulty || []).includes(1);
       return targetsMuscle && isBeginner;
     });
 
@@ -110,7 +110,7 @@ export class WarmUpGeneratorService {
     const generalWarmUpIds = [
       // Find exercises that are good general warm-ups
       ...exercises.filter(ex => 
-        ex.difficulty === 'beginner' && 
+        (ex.difficulty || []).includes(1) && 
         (ex.muscles?.[0] === 1 || ex.muscles?.[0] === 2) // Chest or back
       ).slice(0, 2).map(ex => ex.id)
     ];

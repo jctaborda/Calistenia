@@ -575,6 +575,18 @@ const translations = {
     'install_banner.description': 'Get offline access and a better experience!',
     'install_banner.install': 'Install',
     'install_banner.later': 'Later',
+
+    // Voice Cues
+    'voice_cue.rest_complete': 'Rest complete. Ready for next set?',
+    'voice_cue.next_exercise': 'Next exercise: {{name}}',
+    'voice_cue.workout_start': 'Starting workout: {{name}}. Good luck!',
+    'voice_cue.workout_complete': 'Workout complete: {{name}}. Great job!',
+    'voice_cue.set_reminder': 'Set {{current}} of {{total}}',
+    'voice_cue.hiit_work': 'Work phase: {{seconds}} seconds',
+    'voice_cue.hiit_rest': 'Rest phase: {{seconds}} seconds',
+    'voice_cue.rest_start': 'Rest timer started: {{seconds}} seconds',
+    'voice_cue.cooldown_start': 'Starting cooldown. Keep moving!',
+    'voice_cue.achievement_unlocked': 'Achievement unlocked: {{name}}. {{description}}',
   },
   es: {
     // Header & Navigation
@@ -1158,6 +1170,18 @@ const translations = {
     // Progress - Weight Progression
     'progress.weight_progress': 'Progreso de Peso',
     'progress.weight_progress_exercises': 'Progreso de Peso por Ejercicio',
+
+    // Voice Cues
+    'voice_cue.rest_complete': 'Descanso completo. ¿Listo para la siguiente serie?',
+    'voice_cue.next_exercise': 'Siguiente ejercicio: {{name}}',
+    'voice_cue.workout_start': 'Iniciando entrenamiento: {{name}}. ¡Buena suerte!',
+    'voice_cue.workout_complete': 'Entrenamiento completado: {{name}}. ¡Excelente trabajo!',
+    'voice_cue.set_reminder': 'Serie {{current}} de {{total}}',
+    'voice_cue.hiit_work': 'Fase de trabajo: {{seconds}} segundos',
+    'voice_cue.hiit_rest': 'Fase de descanso: {{seconds}} segundos',
+    'voice_cue.rest_start': 'Temporizador de descanso iniciado: {{seconds}} segundos',
+    'voice_cue.cooldown_start': 'Iniciando vuelta a la calma. ¡Sigue moviéndote!',
+    'voice_cue.achievement_unlocked': 'Logro desbloqueado: {{name}}. {{description}}',
   },
 };
 
