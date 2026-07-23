@@ -32,6 +32,51 @@ export class ProgressTrackingService {
   }
 
   /**
+   * Extract max weight and total reps from actualRepsWithWeight array
+   * @param {Array} actualRepsWithWeight - Array of {reps, weight} per set
+   * @returns {Object} { maxWeight, totalReps, totalSets }
+   */
+  _extractSetData(actualRepsWithWeight) {
+    if (!Array.isArray(actualRepsWithWeight) || actualRepsWithWeight.length === 0) {
+      return { maxWeight: 0, totalReps: 0, totalSets: 0 };
+    }
+    let maxWeight = 0;
+    let totalReps = 0;
+    actualRepsWithWeight.forEach((set) => {
+      const weight = typeof set === 'object' ? set.weight || 0 : 0;
+      const reps = typeof set === 'object' ? set.reps || 0 : set || 0;
+      if (weight > maxWeight) maxWeight = weight;
+      totalReps += reps;
+    });
+    return { maxWeight, totalReps, totalSets: actualRepsWithWeight.length };
+  }
+
+  /**
+   * Calculate volume for an exercise entry, supporting bodyweight (weight=0)
+   * @param {Object} exerciseEntry - Workout exercise entry
+   * @returns {number} Volume (weight*reps*sets for weighted, totalReps for bodyweight)
+   */
+  _calculateExerciseVolume(exerciseEntry) {
+    const sets = exerciseEntry.actualRepsWithWeight || [];
+    if (sets.length === 0) return 0;
+
+    const hasWeight = sets.some((s) => typeof s === 'object' && s.weight > 0);
+
+    if (hasWeight) {
+      return sets.reduce((sum, s) => {
+        const weight = typeof s === 'object' ? s.weight || 0 : 0;
+        const reps = typeof s === 'object' ? s.reps || 0 : 0;
+        return sum + weight * reps;
+      }, 0);
+    }
+
+    // Bodyweight: use total reps as volume
+    return sets.reduce((sum, s) => {
+      return sum + (typeof s === 'object' ? s.reps || 0 : s || 0);
+    }, 0);
+  }
+
+  /**
    * Get exercise history from workout history
    * @param {number} exerciseId - Exercise ID
    * @returns {Array} Array of workout entries for this exercise
@@ -40,22 +85,19 @@ export class ProgressTrackingService {
     const history = await this.getHistory();
     const exerciseHistory = [];
 
-    history.forEach(workout => {
-      if (workout.sections) {
-        workout.sections.forEach(section => {
-          section.exercises.forEach(ex => {
-            if (ex.exerciseId === exerciseId) {
-              exerciseHistory.push({
-                date: workout.date,
-                sets: ex.sets,
-                reps: ex.reps,
-                weight: ex.weight,
-                workoutId: workout.id
-              });
-            }
+    history.forEach((workout) => {
+      (workout.exercises || []).forEach((ex) => {
+        if (ex.exerciseId === exerciseId) {
+          const { maxWeight, totalReps, totalSets } = this._extractSetData(ex.actualRepsWithWeight);
+          exerciseHistory.push({
+            date: workout.date,
+            sets: totalSets,
+            reps: totalReps,
+            weight: maxWeight,
+            workoutId: workout.id,
           });
-        });
-      }
+        }
+      });
     });
 
     // Sort by date descending
@@ -69,14 +111,14 @@ export class ProgressTrackingService {
    */
   async getExercise1RM(exerciseId) {
     const history = await this.getExerciseHistory(exerciseId);
-    
+
     if (history.length === 0) {
       return {
         estimated1RM: null,
         maxWeight: null,
         maxReps: null,
         best1RM: null,
-        attempts: 0
+        attempts: 0,
       };
     }
 
@@ -85,7 +127,7 @@ export class ProgressTrackingService {
     let best1RM = 0;
     let best1RMData = null;
 
-    history.forEach(entry => {
+    history.forEach((entry) => {
       const weight = parseFloat(entry.weight) || 0;
       const reps = parseInt(entry.reps) || 0;
 
@@ -105,7 +147,7 @@ export class ProgressTrackingService {
       maxReps: maxReps > 0 ? maxReps : null,
       best1RM: best1RM > 0 ? best1RM : null,
       best1RMData: best1RMData,
-      attempts: history.length
+      attempts: history.length,
     };
   }
 
@@ -116,15 +158,15 @@ export class ProgressTrackingService {
    */
   async getExerciseProgression(exerciseId) {
     const history = await this.getExerciseHistory(exerciseId);
-    
+
     // Get last 10 entries sorted by date ascending
     const last10 = history.slice(0, 10).sort((a, b) => new Date(a.date) - new Date(b.date));
-    
-    return last10.map(entry => ({
+
+    return last10.map((entry) => ({
       date: entry.date,
       weight: parseFloat(entry.weight) || 0,
       reps: parseInt(entry.reps) || 0,
-      volume: (parseFloat(entry.weight) || 0) * parseInt(entry.reps) * parseInt(entry.sets) || 0
+      volume: (parseFloat(entry.weight) || 0) * parseInt(entry.reps) * parseInt(entry.sets) || 0,
     }));
   }
 
@@ -137,7 +179,7 @@ export class ProgressTrackingService {
    */
   async shouldProgressExercise(exerciseId, targetReps = 10) {
     const history = await this.getExerciseHistory(exerciseId);
-    
+
     if (history.length < 2) {
       return { shouldProgress: false, reason: 'Not enough data' };
     }
@@ -150,7 +192,7 @@ export class ProgressTrackingService {
       return {
         shouldProgress: true,
         reason: `You're averaging ${Math.round(avgReps)} reps. Consider increasing weight!`,
-        avgReps: Math.round(avgReps)
+        avgReps: Math.round(avgReps),
       };
     }
 
@@ -169,7 +211,7 @@ export class ProgressTrackingService {
 
     for (let i = 0; i < weeks; i++) {
       const weekStart = new Date(now);
-      weekStart.setDate(weekStart.getDate() - (i * 7));
+      weekStart.setDate(weekStart.getDate() - i * 7);
       weekStart.setHours(0, 0, 0, 0);
 
       const weekEnd = new Date(weekStart);
@@ -178,19 +220,12 @@ export class ProgressTrackingService {
       let totalVolume = 0;
       let totalWorkouts = 0;
 
-      history.forEach(workout => {
+      history.forEach((workout) => {
         const workoutDate = new Date(workout.date);
         if (workoutDate >= weekStart && workoutDate < weekEnd) {
-          if (workout.sections) {
-            workout.sections.forEach(section => {
-              section.exercises.forEach(ex => {
-                const weight = parseFloat(ex.weight) || 0;
-                const reps = parseInt(ex.reps) || 0;
-                const sets = parseInt(ex.sets) || 0;
-                totalVolume += weight * reps * sets;
-              });
-            });
-          }
+          (workout.exercises || []).forEach((ex) => {
+            totalVolume += this._calculateExerciseVolume(ex);
+          });
           totalWorkouts++;
         }
       });
@@ -199,7 +234,7 @@ export class ProgressTrackingService {
         weekStart: weekStart.toISOString().split('T')[0],
         weekEnd: weekEnd.toISOString().split('T')[0],
         volume: totalVolume,
-        workouts: totalWorkouts
+        workouts: totalWorkouts,
       });
     }
 
@@ -213,20 +248,20 @@ export class ProgressTrackingService {
    */
   async getWorkoutDurationTrends(limit = 8) {
     const history = await this.getHistory();
-    
+
     if (history.length === 0) {
       return {
         avgDuration: 0,
         maxDuration: 0,
         minDuration: 0,
         workoutsCount: 0,
-        trendData: []
+        trendData: [],
       };
     }
 
     // Get last N workouts sorted by date
     const sortedHistory = history
-      .filter(w => w.setHistory && w.setHistory.length > 0)
+      .filter((w) => w.setHistory && w.setHistory.length > 0)
       .sort((a, b) => new Date(b.date) - new Date(a.date))
       .slice(0, limit);
 
@@ -236,14 +271,20 @@ export class ProgressTrackingService {
         maxDuration: 0,
         minDuration: 0,
         workoutsCount: 0,
-        trendData: []
+        trendData: [],
       };
     }
 
     // Calculate duration stats
-    const durations = sortedHistory.map(workout => {
-      const totalWorkTime = (workout.setHistory || []).reduce((sum, set) => sum + (set.duration || 0), 0);
-      const totalRestTime = (workout.setHistory || []).reduce((sum, set) => sum + (set.actualRestTime || 0), 0);
+    const durations = sortedHistory.map((workout) => {
+      const totalWorkTime = (workout.setHistory || []).reduce(
+        (sum, set) => sum + (set.duration || 0),
+        0
+      );
+      const totalRestTime = (workout.setHistory || []).reduce(
+        (sum, set) => sum + (set.actualRestTime || 0),
+        0
+      );
       return totalWorkTime + totalRestTime;
     });
 
@@ -254,12 +295,18 @@ export class ProgressTrackingService {
     // Create trend data (sorted ascending by date for chart)
     const trendData = sortedHistory
       .sort((a, b) => new Date(a.date) - new Date(b.date))
-      .map(workout => {
-        const totalWorkTime = (workout.setHistory || []).reduce((sum, set) => sum + (set.duration || 0), 0);
-        const totalRestTime = (workout.setHistory || []).reduce((sum, set) => sum + (set.actualRestTime || 0), 0);
+      .map((workout) => {
+        const totalWorkTime = (workout.setHistory || []).reduce(
+          (sum, set) => sum + (set.duration || 0),
+          0
+        );
+        const totalRestTime = (workout.setHistory || []).reduce(
+          (sum, set) => sum + (set.actualRestTime || 0),
+          0
+        );
         return {
           date: workout.date,
-          duration: totalWorkTime + totalRestTime
+          duration: totalWorkTime + totalRestTime,
         };
       });
 
@@ -268,7 +315,7 @@ export class ProgressTrackingService {
       maxDuration,
       minDuration,
       workoutsCount: durations.length,
-      trendData
+      trendData,
     };
   }
 
@@ -284,49 +331,57 @@ export class ProgressTrackingService {
 
     const prs = [];
 
-    exercises.forEach(exercise => {
-      let maxWeight = 0;
-      let maxReps = 0;
-      let maxVolume = 0;
+    exercises.forEach((exercise) => {
+      let bestWeight = 0;
+      let bestReps = 0;
+      let bestVolume = 0;
       let bestWorkout = null;
 
-      history.forEach(workout => {
-        if (workout.sections) {
-          workout.sections.forEach(section => {
-            section.exercises.forEach(exEntry => {
-              if (exEntry.exerciseId === exercise.id) {
-                const weight = parseFloat(exEntry.weight) || 0;
-                const reps = parseInt(exEntry.reps) || 0;
-                const sets = parseInt(exEntry.sets) || 0;
-                const volume = weight * reps * sets;
+      history.forEach((workout) => {
+        (workout.exercises || []).forEach((exEntry) => {
+          if (exEntry.exerciseId === exercise.id) {
+            const setData = this._extractSetData(exEntry.actualRepsWithWeight);
+            const volume = this._calculateExerciseVolume(exEntry);
 
-                if (weight > maxWeight) {
-                  maxWeight = weight;
-                  maxReps = reps;
-                  maxVolume = volume;
-                  bestWorkout = { date: workout.date, sets, reps, weight };
-                }
-              }
-            });
-          });
-        }
+            if (setData.maxWeight > 0 && setData.maxWeight > bestWeight) {
+              bestWeight = setData.maxWeight;
+              bestReps = setData.totalReps;
+              bestVolume = volume;
+              bestWorkout = {
+                date: workout.date,
+                sets: setData.totalSets,
+                reps: setData.totalReps,
+                weight: setData.maxWeight,
+              };
+            } else if (setData.maxWeight === 0 && setData.totalReps > bestReps) {
+              bestReps = setData.totalReps;
+              bestVolume = volume;
+              bestWorkout = {
+                date: workout.date,
+                sets: setData.totalSets,
+                reps: setData.totalReps,
+                weight: 0,
+              };
+            }
+          }
+        });
       });
 
-      if (maxWeight > 0) {
-        const estimated1RM = this.calculate1RM(maxWeight, maxReps);
+      if (bestWorkout) {
+        const estimated1RM = bestWeight > 0 ? this.calculate1RM(bestWeight, bestReps) : null;
         prs.push({
           exerciseId: exercise.id,
           exerciseName: exercise.name,
-          maxWeight: maxWeight,
-          maxReps: maxReps,
-          maxVolume: maxVolume,
+          maxWeight: bestWeight,
+          maxReps: bestReps,
+          maxVolume: bestVolume,
           estimated1RM: estimated1RM,
-          date: bestWorkout.date
+          date: bestWorkout.date,
         });
       }
     });
 
-    // Sort by estimated 1RM descending
+    // Sort by estimated 1RM descending (bodyweight exercises without 1RM go last)
     return prs.sort((a, b) => (b.estimated1RM || 0) - (a.estimated1RM || 0));
   }
 
@@ -341,47 +396,40 @@ export class ProgressTrackingService {
     const history = await this.getHistory();
 
     const muscleStats = {};
-    muscles.forEach(m => {
+    muscles.forEach((m) => {
       muscleStats[m.id] = {
         name: m.name,
         volume: 0,
-        workouts: 0
+        workouts: 0,
       };
     });
 
-    history.forEach(workout => {
-      if (workout.sections) {
-        workout.sections.forEach(section => {
-          section.exercises.forEach(exEntry => {
-            // Get exercise details
-            const exercise = state.exercises?.find(e => e.id === exEntry.exerciseId);
-            if (exercise && exercise.muscles) {
-              const weight = parseFloat(exEntry.weight) || 0;
-              const reps = parseInt(exEntry.reps) || 0;
-              const sets = parseInt(exEntry.sets) || 0;
-              const volume = weight * reps * sets;
+    history.forEach((workout) => {
+      (workout.exercises || []).forEach((exEntry) => {
+        // Get exercise details
+        const exercise = state.exercises?.find((e) => e.id === exEntry.exerciseId);
+        if (exercise && exercise.muscles) {
+          const volume = this._calculateExerciseVolume(exEntry);
 
-              exercise.muscles.forEach(muscleId => {
-                if (muscleStats[muscleId]) {
-                  muscleStats[muscleId].volume += volume;
-                  muscleStats[muscleId].workouts += 1;
-                }
-              });
+          exercise.muscles.forEach((muscleId) => {
+            if (muscleStats[muscleId]) {
+              muscleStats[muscleId].volume += volume;
+              muscleStats[muscleId].workouts += 1;
             }
           });
-        });
-      }
+        }
+      });
     });
 
     // Calculate percentages
     const totalVolume = Object.values(muscleStats).reduce((sum, m) => sum + m.volume, 0);
     const muscleBalance = {};
 
-    Object.keys(muscleStats).forEach(id => {
+    Object.keys(muscleStats).forEach((id) => {
       const muscle = muscleStats[id];
       muscleBalance[id] = {
         ...muscle,
-        percentage: totalVolume > 0 ? Math.round((muscle.volume / totalVolume) * 100) : 0
+        percentage: totalVolume > 0 ? Math.round((muscle.volume / totalVolume) * 100) : 0,
       };
     });
 
@@ -400,7 +448,7 @@ export class ProgressTrackingService {
         currentStreak: 0,
         longestStreak: 0,
         lastWorkoutDate: null,
-        totalWorkouts: 0
+        totalWorkouts: 0,
       };
     }
 
@@ -412,15 +460,30 @@ export class ProgressTrackingService {
     let longestStreak = 0;
     let lastWorkoutDate = null;
 
-    const dates = sortedHistory.map(w => new Date(w.date).getTime());
-    let streakDays = new Set();
-
-    dates.forEach(timestamp => {
+    // Collect unique workout day timestamps, sorted ascending
+    const dates = sortedHistory.map((w) => new Date(w.date).getTime());
+    const streakDays = new Set();
+    dates.forEach((timestamp) => {
       const dayKey = new Date(timestamp).toDateString();
       streakDays.add(dayKey);
     });
 
-    longestStreak = streakDays.size;
+    // Calculate longest consecutive streak
+    const sortedDays = [...streakDays].map((d) => new Date(d).getTime()).sort((a, b) => a - b);
+
+    let currentRun = 1;
+    longestStreak = sortedDays.length > 0 ? 1 : 0;
+    for (let i = 1; i < sortedDays.length; i++) {
+      const diffDays = (sortedDays[i] - sortedDays[i - 1]) / (1000 * 60 * 60 * 24);
+      if (diffDays === 1) {
+        currentRun++;
+      } else {
+        currentRun = 1;
+      }
+      if (currentRun > longestStreak) {
+        longestStreak = currentRun;
+      }
+    }
 
     // Current streak
     const now = new Date();
@@ -446,7 +509,7 @@ export class ProgressTrackingService {
       currentStreak,
       longestStreak,
       lastWorkoutDate,
-      totalWorkouts: history.length
+      totalWorkouts: history.length,
     };
   }
 
@@ -463,14 +526,16 @@ export class ProgressTrackingService {
         return {
           type: 'line',
           title: 'Weekly Volume',
-          labels: weeklyVolume.map(w => `Week of ${w.weekStart.slice(5)}`),
-          datasets: [{
-            label: 'Total Volume (kg)',
-            data: weeklyVolume.map(w => w.volume),
-            borderColor: 'rgba(76, 175, 80, 1)',
-            backgroundColor: 'rgba(76, 175, 80, 0.1)',
-            tension: 0.4
-          }]
+          labels: weeklyVolume.map((w) => `Week of ${w.weekStart.slice(5)}`),
+          datasets: [
+            {
+              label: 'Total Volume (kg)',
+              data: weeklyVolume.map((w) => w.volume),
+              borderColor: 'rgba(76, 175, 80, 1)',
+              backgroundColor: 'rgba(76, 175, 80, 0.1)',
+              tension: 0.4,
+            },
+          ],
         };
 
       case 'exercise-pr':
@@ -479,41 +544,45 @@ export class ProgressTrackingService {
         return {
           type: 'bar',
           title: 'Top Exercise PRs (1RM)',
-          labels: topPRs.map(pr => pr.exerciseName),
-          datasets: [{
-            label: 'Estimated 1RM (kg)',
-            data: topPRs.map(pr => pr.estimated1RM || 0),
-            backgroundColor: 'rgba(33, 150, 243, 0.6)'
-          }]
+          labels: topPRs.map((pr) => pr.exerciseName),
+          datasets: [
+            {
+              label: 'Estimated 1RM (kg)',
+              data: topPRs.map((pr) => pr.estimated1RM || 0),
+              backgroundColor: 'rgba(33, 150, 243, 0.6)',
+            },
+          ],
         };
 
       case 'muscle-balance':
         const muscleBalance = await this.getMuscleGroupBalance();
         const muscleData = Object.values(muscleBalance)
-          .filter(m => m.volume > 0)
+          .filter((m) => m.volume > 0)
           .sort((a, b) => b.volume - a.volume);
         return {
           type: 'doughnut',
           title: 'Muscle Group Balance',
-          labels: muscleData.map(m => m.name),
-          datasets: [{
-            data: muscleData.map(m => m.percentage),
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.8)',
-              'rgba(54, 162, 235, 0.8)',
-              'rgba(255, 206, 86, 0.8)',
-              'rgba(75, 192, 192, 0.8)',
-              'rgba(153, 102, 255, 0.8)',
-              'rgba(255, 159, 64, 0.8)',
-              'rgba(199, 199, 199, 0.8)',
-              'rgba(83, 102, 255, 0.8)'
-            ]
-          }]
+          labels: muscleData.map((m) => m.name),
+          datasets: [
+            {
+              data: muscleData.map((m) => m.percentage),
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.8)',
+                'rgba(54, 162, 235, 0.8)',
+                'rgba(255, 206, 86, 0.8)',
+                'rgba(75, 192, 192, 0.8)',
+                'rgba(153, 102, 255, 0.8)',
+                'rgba(255, 159, 64, 0.8)',
+                'rgba(199, 199, 199, 0.8)',
+                'rgba(83, 102, 255, 0.8)',
+              ],
+            },
+          ],
         };
 
       case 'duration-trends':
         const durationTrends = await this.getWorkoutDurationTrends(8);
-        const durationLabels = durationTrends.trendData.map(d => {
+        const durationLabels = durationTrends.trendData.map((d) => {
           const date = new Date(d.date);
           return `${date.getMonth() + 1}/${date.getDate()}`;
         });
@@ -521,13 +590,15 @@ export class ProgressTrackingService {
           type: 'line',
           title: 'Workout Duration Trends',
           labels: durationLabels,
-          datasets: [{
-            label: 'Duration (minutes)',
-            data: durationTrends.trendData.map(d => Math.round(d.duration / 60)),
-            borderColor: 'rgba(156, 39, 176, 1)',
-            backgroundColor: 'rgba(156, 39, 176, 0.1)',
-            tension: 0.1
-          }]
+          datasets: [
+            {
+              label: 'Duration (minutes)',
+              data: durationTrends.trendData.map((d) => Math.round(d.duration / 60)),
+              borderColor: 'rgba(156, 39, 176, 1)',
+              backgroundColor: 'rgba(156, 39, 176, 0.1)',
+              tension: 0.1,
+            },
+          ],
         };
 
       case 'exercise-progression':
@@ -538,21 +609,21 @@ export class ProgressTrackingService {
         return {
           type: 'line',
           title: `Progression: ${this.getExerciseName(exerciseId)}`,
-          labels: progression.map(p => new Date(p.date).toLocaleDateString()),
+          labels: progression.map((p) => new Date(p.date).toLocaleDateString()),
           datasets: [
             {
               label: 'Weight (kg)',
-              data: progression.map(p => p.weight),
+              data: progression.map((p) => p.weight),
               borderColor: 'rgba(76, 175, 80, 1)',
-              tension: 0.1
+              tension: 0.1,
             },
             {
               label: 'Volume (kg)',
-              data: progression.map(p => p.volume),
+              data: progression.map((p) => p.volume),
               borderColor: 'rgba(33, 150, 243, 1)',
-              tension: 0.1
-            }
-          ]
+              tension: 0.1,
+            },
+          ],
         };
 
       default:
@@ -566,7 +637,7 @@ export class ProgressTrackingService {
   async getExerciseName(exerciseId) {
     const { getState } = await import('./state.js');
     const state = await getState();
-    const exercise = state.exercises?.find(e => e.id === exerciseId);
+    const exercise = state.exercises?.find((e) => e.id === exerciseId);
     return exercise?.name || 'Unknown Exercise';
   }
 }

@@ -3,7 +3,7 @@
 
 // Use build-time version if available, otherwise generate dynamically
 // This is injected by scripts/update-sw-version.js during build
-const VERSION = 'commit-29b522f';
+const VERSION = 'commit-12e56e0';
 const CACHE_NAME = `calisthenics-app-${VERSION}`;
 const MAX_CACHES_TO_KEEP = 5; // Keep last 5 cache versions for rollback safety
 

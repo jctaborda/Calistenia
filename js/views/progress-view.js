@@ -27,7 +27,7 @@ class SimpleChartRenderer {
     } else if (type === 'bar') {
       this.renderBarChart(container, title, labels, datasets);
     } else if (type === 'doughnut') {
-      this.renderDoughnutChart(container, title, datasets);
+      this.renderDoughnutChart(container, title, labels, datasets);
     }
   }
 
@@ -40,13 +40,13 @@ class SimpleChartRenderer {
     const chartHeight = height - padding.top - padding.bottom;
 
     // Calculate scales
-    const allValues = datasets.flatMap(ds => ds.data);
+    const allValues = datasets.flatMap((ds) => ds.data);
     const maxValue = Math.max(...allValues, 1);
 
     let svgContent = `<svg width="${width}" height="${height}" class="chart-svg">`;
-    
+
     // Title
-    svgContent += `<text x="${width / 2}" y="25" text-anchor="middle" font-size="16" font-weight="bold">${title}</text>`;
+    svgContent += `<text x="${width / 2}" y="25" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #333)">${title}</text>`;
 
     // Y-axis
     svgContent += `<line x1="${padding.left}" y1="${padding.top}" x2="${padding.left}" y2="${height - padding.bottom}" stroke="var(--border-color)" stroke-width="1"/>`;
@@ -57,19 +57,21 @@ class SimpleChartRenderer {
     // Y-axis labels
     for (let i = 0; i <= 5; i++) {
       const value = Math.round((maxValue / 5) * i);
-      const y = height - padding.bottom - (i * (chartHeight / 5));
-      svgContent += `<text x="${padding.left - 10}" y="${y + 5}" text-anchor="end" font-size="11">${value}</text>`;
-      svgContent += `<line x1="${padding.left}" y1="${y}" x2="${width - padding.right}" y2="${y}" stroke="#eee" stroke-dasharray="2,2"/>`;
+      const y = height - padding.bottom - i * (chartHeight / 5);
+      svgContent += `<text x="${padding.left - 10}" y="${y + 5}" text-anchor="end" font-size="11" fill="var(--text-secondary, #666)">${value}</text>`;
+      svgContent += `<line x1="${padding.left}" y1="${y}" x2="${width - padding.right}" y2="${y}" stroke="var(--border-color, #eee)" stroke-dasharray="2,2"/>`;
     }
 
     // Draw datasets
     datasets.forEach((dataset, dsIndex) => {
-      const color = dataset.borderColor || (dsIndex === 0 ? 'var(--btn-start, #4CAF50)' : 'var(--btn-view, #2196F3)');
-      
+      const color =
+        dataset.borderColor ||
+        (dsIndex === 0 ? 'var(--btn-start, #4CAF50)' : 'var(--btn-view, #2196F3)');
+
       // Draw line
       svgContent += `<path d="`;
       dataset.data.forEach((value, i) => {
-        const x = padding.left + (i * (chartWidth / (dataset.data.length - 1 || 1)));
+        const x = padding.left + i * (chartWidth / (dataset.data.length - 1 || 1));
         const y = height - padding.bottom - (value / maxValue) * chartHeight;
         if (i === 0) svgContent += `M ${x} ${y}`;
         else svgContent += ` L ${x} ${y}`;
@@ -78,7 +80,7 @@ class SimpleChartRenderer {
 
       // Draw points
       dataset.data.forEach((value, i) => {
-        const x = padding.left + (i * (chartWidth / (dataset.data.length - 1 || 1)));
+        const x = padding.left + i * (chartWidth / (dataset.data.length - 1 || 1));
         const y = height - padding.bottom - (value / maxValue) * chartHeight;
         svgContent += `<circle cx="${x}" cy="${y}" r="4" fill="${color}"/>`;
       });
@@ -88,8 +90,8 @@ class SimpleChartRenderer {
     const labelStep = Math.ceil(labels.length / 10);
     labels.forEach((label, i) => {
       if (i % labelStep === 0 || i === labels.length - 1) {
-        const x = padding.left + (i * (chartWidth / (labels.length - 1 || 1)));
-        svgContent += `<text x="${x}" y="${height - padding.bottom + 20}" text-anchor="middle" font-size="10" transform="rotate(-45 ${x} ${height - padding.bottom + 20})">${label}</text>`;
+        const x = padding.left + i * (chartWidth / (labels.length - 1 || 1));
+        svgContent += `<text x="${x}" y="${height - padding.bottom + 20}" text-anchor="middle" font-size="10" fill="var(--text-secondary, #666)" transform="rotate(-45 ${x} ${height - padding.bottom + 20})">${label}</text>`;
       }
     });
 
@@ -106,11 +108,11 @@ class SimpleChartRenderer {
     const chartWidth = width - padding.left - padding.right;
     const chartHeight = height - padding.top - padding.bottom;
 
-    const maxValue = Math.max(...datasets.flatMap(ds => ds.data), 1);
+    const maxValue = Math.max(...datasets.flatMap((ds) => ds.data), 1);
 
     let svgContent = `<svg width="${width}" height="${height}" class="chart-svg">`;
-    
-    svgContent += `<text x="${width / 2}" y="25" text-anchor="middle" font-size="16" font-weight="bold">${title}</text>`;
+
+    svgContent += `<text x="${width / 2}" y="25" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #333)">${title}</text>`;
 
     // Y-axis
     svgContent += `<line x1="${padding.left}" y1="${padding.top}" x2="${padding.left}" y2="${height - padding.bottom}" stroke="var(--border-color)" stroke-width="1"/>`;
@@ -119,9 +121,9 @@ class SimpleChartRenderer {
     // Y-axis labels
     for (let i = 0; i <= 5; i++) {
       const value = Math.round((maxValue / 5) * i);
-      const y = height - padding.bottom - (i * (chartHeight / 5));
-      svgContent += `<text x="${padding.left - 10}" y="${y + 5}" text-anchor="end" font-size="11">${value}</text>`;
-      svgContent += `<line x1="${padding.left}" y1="${y}" x2="${width - padding.right}" y2="${y}" stroke="#eee" stroke-dasharray="2,2"/>`;
+      const y = height - padding.bottom - i * (chartHeight / 5);
+      svgContent += `<text x="${padding.left - 10}" y="${y + 5}" text-anchor="end" font-size="11" fill="var(--text-secondary, #666)">${value}</text>`;
+      svgContent += `<line x1="${padding.left}" y1="${y}" x2="${width - padding.right}" y2="${y}" stroke="var(--border-color, #eee)" stroke-dasharray="2,2"/>`;
     }
 
     // Draw bars
@@ -129,21 +131,23 @@ class SimpleChartRenderer {
     const groupWidth = chartWidth / labels.length;
 
     datasets.forEach((dataset, dsIndex) => {
-      const color = dataset.backgroundColor || (dsIndex === 0 ? 'var(--btn-view, #2196F3)' : 'var(--btn-start, #4CAF50)');
-      
+      const color =
+        dataset.backgroundColor ||
+        (dsIndex === 0 ? 'var(--btn-view, #2196F3)' : 'var(--btn-start, #4CAF50)');
+
       dataset.data.forEach((value, i) => {
-        const x = padding.left + (i * groupWidth) + ((groupWidth - barWidth) / 2) + (dsIndex * barWidth);
+        const x = padding.left + i * groupWidth + (groupWidth - barWidth) / 2 + dsIndex * barWidth;
         const barHeight = (value / maxValue) * chartHeight;
         const y = height - padding.bottom - barHeight;
-        
+
         svgContent += `<rect x="${x}" y="${y}" width="${barWidth - 4}" height="${barHeight}" fill="${color}" rx="3"/>`;
       });
     });
 
     // X-axis labels
     labels.forEach((label, i) => {
-      const x = padding.left + (i * groupWidth) + (groupWidth / 2);
-      svgContent += `<text x="${x}" y="${height - padding.bottom + 20}" text-anchor="middle" font-size="10" transform="rotate(-45 ${x} ${height - padding.bottom + 20})">${label}</text>`;
+      const x = padding.left + i * groupWidth + groupWidth / 2;
+      svgContent += `<text x="${x}" y="${height - padding.bottom + 20}" text-anchor="middle" font-size="10" fill="var(--text-secondary, #666)" transform="rotate(-45 ${x} ${height - padding.bottom + 20})">${label}</text>`;
     });
 
     svgContent += `</svg>`;
@@ -151,20 +155,22 @@ class SimpleChartRenderer {
     container.innerHTML = svgContent;
   }
 
-  static renderDoughnutChart(container, title, datasets) {
+  static renderDoughnutChart(container, title, labels, datasets) {
     const size = 300;
     const center = size / 2;
     const radius = size / 2 - 40;
+    const legendItems = datasets[0].data.length;
+    const legendHeight = legendItems * 20 + 20;
+    const totalHeight = size + legendHeight;
 
-    let svgContent = `<svg width="${size}" height="${size}" class="chart-svg">`;
-    
-    svgContent += `<text x="${center}" y="25" text-anchor="middle" font-size="16" font-weight="bold">${title}</text>`;
+    let svgContent = `<svg width="${size}" height="${totalHeight}" class="chart-svg">`;
+
+    svgContent += `<text x="${center}" y="25" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #333)">${title}</text>`;
 
     const total = datasets[0].data.reduce((sum, val) => sum + val, 0);
     let startAngle = -90;
 
     datasets[0].data.forEach((value, i) => {
-      const percentage = (value / total) * 100;
       const angle = (value / total) * 360;
       const color = datasets[0].backgroundColor?.[i] || `hsl(${i * 45}, 70%, 60%)`;
 
@@ -175,23 +181,23 @@ class SimpleChartRenderer {
 
       const largeArc = angle > 180 ? 1 : 0;
 
-      svgContent += `<path d="M ${center} ${center} L ${x1} ${y1} A ${radius} ${radius} 0 ${largeArc} 1 ${x2} ${y2} Z" fill="${color}" stroke="white" stroke-width="2"/>`;
+      svgContent += `<path d="M ${center} ${center} L ${x1} ${y1} A ${radius} ${radius} 0 ${largeArc} 1 ${x2} ${y2} Z" fill="${color}" stroke="var(--card-bg, white)" stroke-width="2"/>`;
 
       startAngle += angle;
     });
 
     // Inner circle for doughnut effect
-    svgContent += `<circle cx="${center}" cy="${center}" r="${radius * 0.6}" fill="white"/>`;
+    svgContent += `<circle cx="${center}" cy="${center}" r="${radius * 0.6}" fill="var(--card-bg, white)"/>`;
 
     // Legend
     let legendY = size + 10;
     datasets[0].data.forEach((value, i) => {
       const percentage = ((value / total) * 100).toFixed(1);
       const color = datasets[0].backgroundColor?.[i] || `hsl(${i * 45}, 70%, 60%)`;
-      const label = datasets[0].labels?.[i] || `Item ${i + 1}`;
+      const label = labels?.[i] || `Item ${i + 1}`;
 
       svgContent += `<circle cx="20" cy="${legendY}" r="8" fill="${color}"/>`;
-      svgContent += `<text x="35" y="${legendY + 3}" font-size="12">${label}: ${percentage}%</text>`;
+      svgContent += `<text x="35" y="${legendY + 3}" font-size="12" fill="var(--text-secondary)">${label}: ${percentage}%</text>`;
       legendY += 20;
     });
 
@@ -209,7 +215,7 @@ export async function renderProgressView() {
   // Clean up previous event listeners
   if (main.dataset.progressViewListener === 'true') {
     const tabs = main.querySelectorAll('[data-tab]');
-    tabs.forEach(tab => tab.removeEventListener('click', main._handleTabClick));
+    tabs.forEach((tab) => tab.removeEventListener('click', main._handleTabClick));
     delete main.dataset.progressViewListener;
     delete main._handleTabClick;
   }
@@ -222,7 +228,9 @@ export async function renderProgressView() {
   const scheduleStats = await routineSchedulingService.getStatistics();
   const durationTrends = await progressTrackingService.getWorkoutDurationTrends(8);
 
-  main.innerHTML = renderHeader() + `
+  main.innerHTML =
+    renderHeader() +
+    `
     <div class="card">
       <div class="flex-between mb-1rem">
         <h1>${t('progress.title') || 'Progress & Analytics'}</h1>
@@ -281,7 +289,7 @@ export async function renderProgressView() {
             <form id="schedule-form" class="schedule-form">
               <select id="schedule-routine" class="form-input form-input--flex">
                 <option value="">${t('common.select_routine') || 'Select Routine'}</option>
-                ${(state.routines || []).map(r => `<option value="${r.id}">${escapeHtml(r.name)}</option>`).join('')}
+                ${(state.routines || []).map((r) => `<option value="${r.id}">${escapeHtml(r.name)}</option>`).join('')}
               </select>
               <input type="date" id="schedule-date" class="form-input">
               <label class="form-check-label">
@@ -299,7 +307,9 @@ export async function renderProgressView() {
           <div class="card-section">
             <h3>${t('progress.top_prs') || 'Top Personal Records'}</h3>
             <div class="list-grid">
-              ${(prs.slice(0, 10) || []).map(pr => `
+              ${(prs.slice(0, 10) || [])
+                .map(
+                  (pr) => `
                 <div class="card-row">
                   <div>
                     <strong>${escapeHtml(pr.exerciseName)}</strong>
@@ -310,7 +320,9 @@ export async function renderProgressView() {
                   </div>
                   <button class="btn btn-secondary btn-sm" data-nav="#exercise/${pr.exerciseId}">${t('common.view') || 'View'}</button>
                 </div>
-              `).join('')}
+              `
+                )
+                .join('')}
             </div>
           </div>
         </div>
@@ -332,9 +344,10 @@ export async function renderProgressView() {
             <h3>${t('progress.muscle_details') || 'Muscle Group Details'}</h3>
             <div class="list-grid">
               ${Object.values(muscleBalance)
-                .filter(m => m.volume > 0)
+                .filter((m) => m.volume > 0)
                 .sort((a, b) => b.volume - a.volume)
-                .map(m => `
+                .map(
+                  (m) => `
                   <div class="card-row">
                     <div class="flex-between">
                       <strong>${escapeHtml(m.name)}</strong>
@@ -344,7 +357,9 @@ export async function renderProgressView() {
                       <div class="progress-bar-fill" style="width: ${m.percentage}%;"></div>
                     </div>
                   </div>
-                `).join('')}
+                `
+                )
+                .join('')}
             </div>
           </div>
         </div>
@@ -381,7 +396,9 @@ export async function renderProgressView() {
             <div>
               <h3>${t('progress.upcoming_workouts') || 'Upcoming Workouts'}</h3>
               <div class="list-grid">
-                ${(routineSchedulingService.getUpcomingSchedules(10) || []).map(schedule => `
+                ${(routineSchedulingService.getUpcomingSchedules(10) || [])
+                  .map(
+                    (schedule) => `
                   <div class="card-row">
                     <div>
                       <strong>${escapeHtml(schedule.routineName)}</strong>
@@ -395,13 +412,17 @@ export async function renderProgressView() {
                       <button class="btn btn-secondary btn-sm" onclick="routineSchedulingService.cancelSchedule(${schedule.id})">${t('common.cancel') || 'Cancel'}</button>
                     </div>
                   </div>
-                `).join('')}
+                `
+                  )
+                  .join('')}
               </div>
             </div>
             <div>
               <h3>${t('progress.recurring_workouts') || 'Recurring Workouts'}</h3>
               <div class="list-grid">
-                ${(routineSchedulingService.getRecurringSchedules() || []).map(schedule => `
+                ${(routineSchedulingService.getRecurringSchedules() || [])
+                  .map(
+                    (schedule) => `
                   <div class="card-row">
                     <div>
                       <strong>${escapeHtml(schedule.routineName)}</strong>
@@ -411,7 +432,9 @@ export async function renderProgressView() {
                     </div>
                     <button class="btn btn-secondary btn-sm" onclick="routineSchedulingService.cancelSchedule(${schedule.id})">${t('common.cancel') || 'Cancel'}</button>
                   </div>
-                `).join('')}
+                `
+                  )
+                  .join('')}
               </div>
             </div>
           </div>
@@ -445,19 +468,19 @@ export async function renderProgressView() {
   }
 
   // Tab switching
-  const handleTabClick = (e) => {
+  const handleTabClick = async (e) => {
     const tab = e.target.closest('[data-tab]');
     if (!tab) return;
 
     const tabName = tab.getAttribute('data-tab');
-    
+
     // Update tab buttons
-    main.querySelectorAll('.tab-btn').forEach(btn => {
+    main.querySelectorAll('.tab-btn').forEach((btn) => {
       btn.classList.toggle('active', btn.getAttribute('data-tab') === tabName);
     });
 
     // Show tab content
-    main.querySelectorAll('.tab-content').forEach(content => {
+    main.querySelectorAll('.tab-content').forEach((content) => {
       content.classList.toggle('active', content.id === tabName);
     });
 
@@ -465,32 +488,31 @@ export async function renderProgressView() {
     if (tabName === 'weekly-volume') {
       const chart = document.getElementById('weekly-volume-chart');
       if (chart) {
-        const chartData = progressTrackingService.getChartData('weekly-volume');
+        const chartData = await progressTrackingService.getChartData('weekly-volume');
         SimpleChartRenderer.render(chart, chartData);
       }
     } else if (tabName === 'exercise-prs') {
       const chart = document.getElementById('exercise-prs-chart');
       if (chart) {
-        const chartData = progressTrackingService.getChartData('exercise-pr');
+        const chartData = await progressTrackingService.getChartData('exercise-pr');
         SimpleChartRenderer.render(chart, chartData);
       }
     } else if (tabName === 'weight-progress') {
-      // Render weight progression chart when tab is clicked
       const chart = document.getElementById('weight-progress-chart');
       if (chart) {
-        const state = getState();
-        renderWeightProgressChart(chart, state.history, state.exercises);
+        const st = getState();
+        await renderWeightProgressChart(chart, st.history, st.exercises);
       }
     } else if (tabName === 'muscle-balance') {
       const chart = document.getElementById('muscle-balance-chart');
       if (chart) {
-        const chartData = progressTrackingService.getChartData('muscle-balance');
+        const chartData = await progressTrackingService.getChartData('muscle-balance');
         SimpleChartRenderer.render(chart, chartData);
       }
     } else if (tabName === 'duration-trends') {
       const chart = document.getElementById('duration-trends-chart');
       if (chart) {
-        const chartData = progressTrackingService.getChartData('duration-trends');
+        const chartData = await progressTrackingService.getChartData('duration-trends');
         SimpleChartRenderer.render(chart, chartData);
       }
     }
@@ -505,7 +527,7 @@ export async function renderProgressView() {
   if (scheduleForm) {
     scheduleForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
+
       const routineId = document.getElementById('schedule-routine').value;
       const scheduleDate = document.getElementById('schedule-date').value;
       const recurring = document.getElementById('schedule-recurring').checked;
@@ -520,14 +542,14 @@ export async function renderProgressView() {
         return;
       }
 
-      const routine = state.routines?.find(r => r.id === parseInt(routineId));
+      const routine = state.routines?.find((r) => r.id === parseInt(routineId));
       if (!routine) {
         show(t('common.error') || 'Error: Routine not found', 'error');
         return;
       }
 
       const scheduledDate = new Date(scheduleDate);
-      
+
       await routineSchedulingService.scheduleWorkout(
         { id: routine.id, name: routine.name },
         scheduledDate,
@@ -553,76 +575,82 @@ export default { render: renderProgressView };
 async function renderWeightProgressChart(container, history, exercises) {
   // Collect weight progression data by exercise
   const exerciseWeights = {};
-  
-  (history || []).forEach(workout => {
-    (workout.exercises || []).forEach(exercise => {
+
+  (history || []).forEach((workout) => {
+    (workout.exercises || []).forEach((exercise) => {
       const exId = exercise.exerciseId;
       if (!exerciseWeights[exId]) {
-        const ex = exercises.find(e => e.id === exId);
+        const ex = exercises.find((e) => e.id === exId);
         exerciseWeights[exId] = {
           name: ex?.name || 'Unknown Exercise',
-          data: []
+          data: [],
         };
       }
-      
+
       // Get weight data if available
       const sets = exercise.actualRepsWithWeight || [];
-      const maxWeightInWorkout = Math.max(...sets.map(s => (typeof s === 'object' ? s.weight || 0 : 0)));
+      const maxWeightInWorkout = Math.max(
+        ...sets.map((s) => (typeof s === 'object' ? s.weight || 0 : 0))
+      );
       const totalVolume = sets.reduce((sum, s) => {
         const reps = typeof s === 'object' ? s.reps : s;
-        const weight = typeof s === 'object' ? (s.weight || 0) : 0;
-        return sum + (reps * weight);
+        const weight = typeof s === 'object' ? s.weight || 0 : 0;
+        return sum + reps * weight;
       }, 0);
-      
+
       if (maxWeightInWorkout > 0) {
         exerciseWeights[exId].data.push({
           date: new Date(workout.date).toLocaleDateString(),
           maxWeight: maxWeightInWorkout,
-          totalVolume: totalVolume
+          totalVolume: totalVolume,
         });
       }
     });
   });
-  
+
   // Find exercises with weight data
   const exercisesWithWeight = Object.entries(exerciseWeights)
     .filter(([_, data]) => data.data.length > 0)
     .map(([id, data]) => ({ id, ...data }))
     .sort((a, b) => b.data.length - a.data.length);
-  
+
   // Display exercise list
   const exerciseListEl = document.getElementById('weight-exercise-list');
   if (exerciseListEl) {
     exerciseListEl.innerHTML = exercisesWithWeight
       .slice(0, 5)
-      .map(ex => `
+      .map(
+        (ex) => `
         <div style="background: var(--card-bg); padding: 0.75rem; border-radius: 4px;">
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <strong>${escapeHtml(ex.name)}</strong>
             <span style="color: var(--text-secondary);">${ex.data.length} workouts with weight</span>
           </div>
           <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
-            Max weight: ${Math.max(...ex.data.map(d => d.maxWeight))}kg | 
+            Max weight: ${Math.max(...ex.data.map((d) => d.maxWeight))}kg | 
             Total volume: ${ex.data.reduce((sum, d) => sum + d.totalVolume, 0)}kg
           </div>
         </div>
-      `).join('');
+      `
+      )
+      .join('');
   }
-  
+
   if (exercisesWithWeight.length === 0) {
-    container.innerHTML = '<p class="empty-state">No weight data yet. Start adding weight to your exercises to track progression!</p>';
+    container.innerHTML =
+      '<p class="empty-state">No weight data yet. Start adding weight to your exercises to track progression!</p>';
     return;
   }
-  
-  // Render chart for top exercise
+
+  // Render two separate charts for top exercise (weight and volume have different scales)
   const topExercise = exercisesWithWeight[0];
-  const labels = topExercise.data.map(d => d.date);
-  const maxWeightData = topExercise.data.map(d => d.maxWeight);
-  const volumeData = topExercise.data.map(d => d.totalVolume);
-  
-  const chartData = {
+  const labels = topExercise.data.map((d) => d.date);
+  const maxWeightData = topExercise.data.map((d) => d.maxWeight);
+  const volumeData = topExercise.data.map((d) => d.totalVolume);
+
+  const weightChart = {
     type: 'line',
-    title: `${topExercise.name} - Weight & Volume Progression`,
+    title: `${topExercise.name} - Max Weight`,
     labels,
     datasets: [
       {
@@ -630,20 +658,37 @@ async function renderWeightProgressChart(container, history, exercises) {
         data: maxWeightData,
         borderColor: 'var(--btn-start, #4CAF50)',
         backgroundColor: 'rgba(76, 175, 80, 0.1)',
-        fill: true,
-        tension: 0.3
+        tension: 0.3,
       },
+    ],
+  };
+
+  SimpleChartRenderer.render(container, weightChart);
+
+  // Remove previous volume chart if re-rendering
+  const prevVolume = container.parentNode.querySelector('[data-volume-chart]');
+  if (prevVolume) prevVolume.remove();
+
+  // Append volume chart below
+  const volumeContainer = document.createElement('div');
+  volumeContainer.className = 'chart-container';
+  volumeContainer.setAttribute('data-volume-chart', '');
+  container.parentNode.insertBefore(volumeContainer, container.nextSibling);
+
+  const volumeChart = {
+    type: 'line',
+    title: `${topExercise.name} - Total Volume`,
+    labels,
+    datasets: [
       {
         label: 'Total Volume (kg)',
         data: volumeData,
         borderColor: 'var(--btn-view, #2196F3)',
         backgroundColor: 'rgba(33, 150, 243, 0.1)',
-        fill: true,
         tension: 0.3,
-        yAxisID: 'y1'
-      }
-    ]
+      },
+    ],
   };
-  
-  SimpleChartRenderer.render(container, chartData);
+
+  SimpleChartRenderer.render(volumeContainer, volumeChart);
 }
