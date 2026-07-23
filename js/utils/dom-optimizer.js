@@ -3,6 +3,8 @@
  * Prevents unnecessary reflows and preserves scroll position
  */
 
+import { getState } from '../services/state.js';
+
 /**
  * Compare two arrays of IDs to determine what changed
  * @param {Array} oldIds - Previous item IDs
@@ -12,32 +14,32 @@
 export function identifyChanges(oldIds, newIds) {
   const oldSet = new Set(oldIds);
   const newSet = new Set(newIds);
-  
+
   const added = [];
   const removed = [];
   const unchanged = [];
-  
+
   // Find removed items
   for (const id of oldSet) {
     if (!newSet.has(id)) {
       removed.push(id);
     }
   }
-  
+
   // Find added items
   for (const id of newSet) {
     if (!oldSet.has(id)) {
       added.push(id);
     }
   }
-  
+
   // Items in both
   for (const id of newSet) {
     if (oldSet.has(id)) {
       unchanged.push(id);
     }
   }
-  
+
   return { added, removed, unchanged };
 }
 
@@ -50,11 +52,13 @@ export function identifyChanges(oldIds, newIds) {
  */
 export function createExerciseCard(exercise, categories, difficulties = []) {
   const card = document.createElement('div');
-  
+
   // Add difficulty class based on exercise difficulty ID (1=beginner, 2=intermediate, 3=advanced)
   let difficultyClass = '';
   if (exercise.difficulty) {
-    const difficultiesIds = Array.isArray(exercise.difficulty) ? exercise.difficulty : [exercise.difficulty];
+    const difficultiesIds = Array.isArray(exercise.difficulty)
+      ? exercise.difficulty
+      : [exercise.difficulty];
     // Check for IDs: 3=advanced, 2=intermediate, 1=beginner
     if (difficultiesIds.includes(3)) {
       difficultyClass = 'difficulty-advanced';
@@ -64,32 +68,32 @@ export function createExerciseCard(exercise, categories, difficulties = []) {
       difficultyClass = 'difficulty-beginner';
     }
   }
-  
+
   // Get favorite state from global state
-  const user = window.getState ? window.getState().user : window.state?.user;
+  const user = getState().user;
   const favoriteExerciseIds = user?.favoriteExerciseIds || [];
-  const isFavorite = favoriteExerciseIds.some(id => String(id) === String(exercise.id));
-  
+  const isFavorite = favoriteExerciseIds.some((id) => String(id) === String(exercise.id));
+
   card.className = `exercise-card ${difficultyClass}`;
   card.setAttribute('data-id', exercise.id);
   card.setAttribute('data-exercise-name', exercise.name.toLowerCase());
-  
+
   const nameEl = document.createElement('h3');
   nameEl.className = 'exercise-card-name';
   nameEl.textContent = exercise.name;
-  
+
   const descEl = document.createElement('p');
   descEl.className = 'exercise-card-description';
   descEl.textContent = exercise.description;
-  
+
   // Tags container
   const tagsContainer = document.createElement('div');
   tagsContainer.className = 'exercise-card-tags';
-  
+
   // Category tags
   if (exercise.categories && exercise.categories.length > 0) {
     for (const catId of exercise.categories) {
-      const category = categories.find(c => c.id === catId);
+      const category = categories.find((c) => c.id === catId);
       if (category) {
         const tag = document.createElement('span');
         tag.className = 'tag';
@@ -98,50 +102,50 @@ export function createExerciseCard(exercise, categories, difficulties = []) {
       }
     }
   }
-  
+
   // Difficulty tag
-  const difficultyIds = Array.isArray(exercise.difficulty) 
-    ? exercise.difficulty 
+  const difficultyIds = Array.isArray(exercise.difficulty)
+    ? exercise.difficulty
     : [exercise.difficulty];
-  
+
   for (const diffId of difficultyIds) {
-    const difficulty = difficulties.find(d => d.id === diffId);
+    const difficulty = difficulties.find((d) => d.id === diffId);
     const diffLabel = difficulty ? difficulty.label : `Difficulty ${diffId}`;
     const diffTag = document.createElement('span');
     diffTag.className = 'tag difficulty-tag';
     diffTag.textContent = diffLabel;
     tagsContainer.appendChild(diffTag);
   }
-  
+
   // Favorite toggle button - moved to appear next to name
   const favoriteBtn = document.createElement('button');
   favoriteBtn.className = `btn exercise-card-favorite ${isFavorite ? 'favorited' : ''}`;
   favoriteBtn.textContent = isFavorite ? '★' : '☆';
   favoriteBtn.setAttribute('data-exercise-id', exercise.id);
   favoriteBtn.setAttribute('aria-label', 'Toggle favorite');
-  
+
   // Controls
   // Controls
   const controls = document.createElement('div');
   controls.className = 'exercise-card-controls';
-  
+
   const viewBtn = document.createElement('button');
   viewBtn.className = 'btn view-btn';
   viewBtn.textContent = 'View';
-  
+
   const editBtn = document.createElement('button');
   editBtn.className = 'btn edit-btn';
   editBtn.textContent = 'Edit';
-  
+
   controls.appendChild(viewBtn);
   controls.appendChild(editBtn);
-  
+
   card.appendChild(nameEl);
   card.appendChild(favoriteBtn);
   card.appendChild(descEl);
   card.appendChild(tagsContainer);
   card.appendChild(controls);
-  
+
   return card;
 }
 
@@ -156,15 +160,15 @@ export function createExerciseCard(exercise, categories, difficulties = []) {
  * @returns {Object} - Updated cache
  */
 export function diffUpdateGrid(gridElement, exercises, categories, cache = {}, difficulties = []) {
-  const currentIds = exercises.map(e => e.id);
-  
+  const currentIds = exercises.map((e) => e.id);
+
   // Get previous IDs from cache or existing children
   const previousIds = Object.keys(cache).map(Number);
   const existingCards = Array.from(gridElement.children);
-  
+
   // Identify what changed
   const changes = identifyChanges(previousIds, currentIds);
-  
+
   // Remove deleted items
   for (const id of changes.removed) {
     const card = cache[id];
@@ -173,7 +177,7 @@ export function diffUpdateGrid(gridElement, exercises, categories, cache = {}, d
     }
     delete cache[id];
   }
-  
+
   // Create new items
   for (const exercise of exercises) {
     if (!cache[exercise.id]) {
@@ -182,15 +186,15 @@ export function diffUpdateGrid(gridElement, exercises, categories, cache = {}, d
       cache[exercise.id] = card;
     }
   }
-  
+
   // Reorder existing items to match current order
   // This uses a simple approach - for large lists, consider more efficient reordering
-  const orderedCards = exercises.map(e => cache[e.id]);
+  const orderedCards = exercises.map((e) => cache[e.id]);
   while (gridElement.firstChild) {
     gridElement.removeChild(gridElement.firstChild);
   }
-  orderedCards.forEach(card => gridElement.appendChild(card));
-  
+  orderedCards.forEach((card) => gridElement.appendChild(card));
+
   return cache;
 }
 
@@ -208,23 +212,23 @@ export function setupVirtualScroll(container, items, renderItem, itemHeight = 20
   if (container._virtualScrollCleanup) {
     container._virtualScrollCleanup();
   }
-  
+
   const scrollTopCache = new Map();
-  
+
   // Create a tall wrapper for scroll space
   const wrapper = document.createElement('div');
   wrapper.style.height = `${items.length * itemHeight}px`;
   container.appendChild(wrapper);
-  
+
   // Viewport for visible items
   const viewport = document.createElement('div');
   viewport.style.position = 'relative';
   viewport.style.height = `${itemHeight}px`;
   container.insertBefore(viewport, container.firstChild);
-  
+
   let visibleItems = [];
   let scrollTop = 0;
-  
+
   function renderVisibleItems() {
     const scrollPos = container.scrollTop;
     const startIndex = Math.floor(scrollPos / itemHeight);
@@ -232,11 +236,11 @@ export function setupVirtualScroll(container, items, renderItem, itemHeight = 20
       startIndex + Math.ceil(container.clientHeight / itemHeight) + 1,
       items.length
     );
-    
+
     // Clear and re-render visible range
     viewport.innerHTML = '';
     visibleItems = [];
-    
+
     for (let i = startIndex; i < endIndex; i++) {
       const itemEl = renderItem(items[i], i);
       itemEl.style.position = 'absolute';
@@ -244,15 +248,15 @@ export function setupVirtualScroll(container, items, renderItem, itemHeight = 20
       itemEl.style.left = '0';
       itemEl.style.right = '0';
       itemEl.style.height = `${itemHeight}px`;
-      
+
       viewport.appendChild(itemEl);
       visibleItems.push(itemEl);
     }
   }
-  
+
   // Initial render
   renderVisibleItems();
-  
+
   // Scroll handler with debouncing
   let scrollTimeout;
   const scrollHandler = () => {
@@ -260,7 +264,7 @@ export function setupVirtualScroll(container, items, renderItem, itemHeight = 20
     scrollTimeout = setTimeout(renderVisibleItems, 16); // ~60fps
   };
   container.addEventListener('scroll', scrollHandler);
-  
+
   // Cleanup function for when reinitializing
   const cleanup = () => {
     clearTimeout(scrollTimeout);
@@ -269,10 +273,10 @@ export function setupVirtualScroll(container, items, renderItem, itemHeight = 20
     if (viewport.parentNode) viewport.remove();
   };
   container._virtualScrollCleanup = cleanup;
-  
+
   return {
     getCache: () => visibleItems,
-    updateItems: (newItems) => setupVirtualScroll(container, newItems, renderItem, itemHeight)
+    updateItems: (newItems) => setupVirtualScroll(container, newItems, renderItem, itemHeight),
   };
 }
 
@@ -284,13 +288,13 @@ export function setupVirtualScroll(container, items, renderItem, itemHeight = 20
  */
 export function withScrollPreservation(element, updateFn) {
   const savedScroll = element.scrollTop;
-  
+
   updateFn();
-  
+
   // Restore scroll position if possible
   const restored = Math.min(savedScroll, element.scrollHeight - element.clientHeight);
   element.scrollTop = restored;
-  
+
   return restored === savedScroll;
 }
 
@@ -301,9 +305,9 @@ export function withScrollPreservation(element, updateFn) {
 export function batchDomUpdates(fn) {
   // Force browser to batch all mutations
   const rect = document.body.getBoundingClientRect();
-  
+
   fn();
-  
+
   // Trigger forced layout (will be optimized by browser)
   void rect.width;
 }
@@ -314,17 +318,20 @@ export function batchDomUpdates(fn) {
  */
 export function setupLazyLoadImages(selector = 'img[data-src]') {
   if (!('IntersectionObserver' in window)) return;
-  
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const img = entry.target;
-        img.src = img.dataset.src;
-        img.removeAttribute('data-src');
-        observer.unobserve(img);
-      }
-    });
-  }, { rootMargin: '100px' });
-  
-  document.querySelectorAll(selector).forEach(img => observer.observe(img));
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          img.src = img.dataset.src;
+          img.removeAttribute('data-src');
+          observer.unobserve(img);
+        }
+      });
+    },
+    { rootMargin: '100px' }
+  );
+
+  document.querySelectorAll(selector).forEach((img) => observer.observe(img));
 }

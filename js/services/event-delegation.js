@@ -4,7 +4,7 @@
  * Follows project conventions for event delegation
  */
 
-import { updateState } from './state.js';
+import { getState, updateState } from './state.js';
 import { saveForUndo } from './undo-service.js';
 import { ModuleStore } from './modules-service.js';
 import { show } from './toast-service.js';
@@ -25,7 +25,7 @@ let handlers = [];
  */
 export function initializeEventDelegation(mainElement) {
   mainElementRef = mainElement;
-  
+
   const navHandler = handleNavigationClick;
   const routineHandler = handleRoutinesClick;
   const exerciseHandler = handleExerciseClick;
@@ -35,7 +35,7 @@ export function initializeEventDelegation(mainElement) {
   const errorBoundaryHandler = handleErrorCodeClick;
   const formHandler = handleFormSubmit;
   const headerHandler = handleHeaderClicks;
-  
+
   mainElement.addEventListener('click', navHandler);
   mainElement.addEventListener('click', routineHandler);
   mainElement.addEventListener('click', exerciseHandler);
@@ -45,7 +45,7 @@ export function initializeEventDelegation(mainElement) {
   mainElement.addEventListener('click', errorBoundaryHandler);
   mainElement.addEventListener('submit', formHandler);
   mainElement.addEventListener('click', headerHandler);
-  
+
   handlers = [
     { el: mainElement, type: 'click', fn: navHandler },
     { el: mainElement, type: 'click', fn: routineHandler },
@@ -65,10 +65,10 @@ export function initializeEventDelegation(mainElement) {
 function handleNavigationClick(e) {
   const button = e.target.closest('[data-nav]');
   if (!button) return;
-  
+
   e.preventDefault();
   const navTarget = button.dataset.nav;
-  
+
   // Special case: "back" means go back in history
   if (navTarget === 'back') {
     window.history.back();
@@ -94,14 +94,14 @@ async function handleHeaderClicks(e) {
     }
     return;
   }
-  
+
   const localeToggle = e.target.closest('#locale-toggle');
   if (localeToggle) {
     e.preventDefault();
     const i18n = await import('../i18n.js');
     const locales = i18n.getAvailableLocales();
     const current = i18n.getLocale();
-    const idx = locales.findIndex(l => l.code === current);
+    const idx = locales.findIndex((l) => l.code === current);
     const next = locales[(idx + 1) % locales.length].code;
     i18n.setLocale(next);
     // localeChange event will be dispatched by setLocale
@@ -123,7 +123,7 @@ function handleRoutinesClick(e) {
     handleStartRoutinesFromHome(programIndex);
     return;
   }
-  
+
   // Start routine button (from routine-details-view)
   const startDetailsBtn = e.target.closest('[data-start-routine]');
   if (startDetailsBtn) {
@@ -139,18 +139,18 @@ function handleRoutinesClick(e) {
  * Start routine from home view featured routines
  */
 function handleStartRoutinesFromHome(programIndex) {
-  const state = window.getState();
+  const state = getState();
   const routine = state?.routines?.[programIndex];
-  
+
   if (routine) {
-    window.updateState({
+    updateState({
       activeWorkout: {
         routine: routine,
         progress: {},
         currentExerciseIndex: 0,
         currentSetIndex: 0,
-        workoutMode: 'manual'
-      }
+        workoutMode: 'manual',
+      },
     });
     window.location.hash = '#active-workout';
   }
@@ -160,8 +160,8 @@ function handleStartRoutinesFromHome(programIndex) {
  * Handle edit routine action
  */
 function handleEditRoutines(type, id) {
-  window.updateState({
-    editingRoutines: { type, id }
+  updateState({
+    editingRoutines: { type, id },
   });
   window.location.hash = '#builder';
 }
@@ -170,52 +170,55 @@ function handleEditRoutines(type, id) {
  * Handle copy routine action
  */
 function handleCopyRoutines(type, id) {
-  const state = window.getState();
+  const state = getState();
   const exercises = state.exercises || [];
-  
+
   let routine;
   if (type === 'routine') {
-    routine = state.routines?.find(p => String(p.id) === String(id));
+    routine = state.routines?.find((p) => String(p.id) === String(id));
   }
-  
+
   if (!routine) {
     show('Routine not found.', 'error');
     return;
   }
-  
+
   // Build routine text
   let programText = `*${routine.name}*\n\n`;
-  
+
   if (routine.warmup && routine.warmup.length > 0) {
     programText += '*Warmup*\n';
-    routine.warmup.forEach(ex => {
-      const exercise = exercises.find(e => e.id === ex.exerciseId);
+    routine.warmup.forEach((ex) => {
+      const exercise = exercises.find((e) => e.id === ex.exerciseId);
       programText += `- ${exercise ? exercise.name : 'Unknown'}: ${ex.sets} sets ✕ ${ex.reps} reps (Rest: ${ex.restTime}s)\n`;
     });
     programText += '\n';
   }
-  
+
   programText += '*Exercises*\n';
-  routine.exercises.forEach(ex => {
-    const exercise = exercises.find(e => e.id === ex.exerciseId);
+  routine.exercises.forEach((ex) => {
+    const exercise = exercises.find((e) => e.id === ex.exerciseId);
     programText += `- ${exercise ? exercise.name : 'Unknown'}: ${ex.sets} sets ✕ ${ex.reps} reps (Rest: ${ex.restTime}s)\n`;
   });
-  
+
   if (routine.cooldown && routine.cooldown.length > 0) {
     programText += '\n*Cooldown*\n';
-    routine.cooldown.forEach(ex => {
-      const exercise = exercises.find(e => e.id === ex.exerciseId);
+    routine.cooldown.forEach((ex) => {
+      const exercise = exercises.find((e) => e.id === ex.exerciseId);
       programText += `- ${exercise ? exercise.name : 'Unknown'}: ${ex.sets} sets ✕ ${ex.reps} reps (Rest: ${ex.restTime}s)\n`;
     });
   }
-  
+
   // Copy to clipboard
-  navigator.clipboard.writeText(programText).then(() => {
-    show('Routine copied to clipboard!', 'success');
-  }).catch(err => {
-    console.error('Failed to copy:', err);
-    show('Failed to copy routine to clipboard.', 'error');
-  });
+  navigator.clipboard
+    .writeText(programText)
+    .then(() => {
+      show('Routine copied to clipboard!', 'success');
+    })
+    .catch((err) => {
+      console.error('Failed to copy:', err);
+      show('Failed to copy routine to clipboard.', 'error');
+    });
 }
 
 /**
@@ -233,7 +236,7 @@ function handleExerciseClick(e) {
     }
     return;
   }
-  
+
   // Favorite toggle (data-favorite attribute - for backward compatibility)
   const favBtnAttr = e.target.closest('[data-favorite]');
   if (favBtnAttr) {
@@ -242,27 +245,27 @@ function handleExerciseClick(e) {
     handleToggleFavorite(exerciseId);
     return;
   }
-  
+
   // Create Routine action (from home view)
   const createRoutinesBtn = e.target.closest('[data-action="create-routine"]');
   if (createRoutinesBtn) {
     e.preventDefault();
     e.stopPropagation();
-    window.updateState({ 
-      createNewRoutine: true, 
-      editingRoutines: null, 
-      editingModule: null 
+    updateState({
+      createNewRoutine: true,
+      editingRoutines: null,
+      editingModule: null,
     });
     window.location.hash = '#builder';
     return;
   }
-  
+
   // IGNORE: Don't handle clicks on checkboxes in builder view
   // Checkboxes have data-exercise-id but shouldn't navigate to details
   if (e.target.closest('input[type="checkbox"][data-exercise-id]')) {
     return;
   }
-  
+
   // Exercise card click (navigate to details)
   const exerciseCard = e.target.closest('[data-exercise-id]');
   if (exerciseCard) {
@@ -277,21 +280,21 @@ function handleExerciseClick(e) {
  * Toggle favorite for exercise
  */
 function handleToggleFavorite(exerciseId) {
-  const state = window.getState();
+  const state = getState();
   const user = state.user || {};
   let favoriteExerciseIds = user.favoriteExerciseIds || [];
-  
+
   // Normalize exerciseId to string for consistent comparison
   const normalizedId = String(exerciseId);
-  
+
   // Toggle the exercise in favorites using String comparison
-  if (favoriteExerciseIds.some(id => String(id) === normalizedId)) {
-    favoriteExerciseIds = favoriteExerciseIds.filter(id => String(id) !== normalizedId);
+  if (favoriteExerciseIds.some((id) => String(id) === normalizedId)) {
+    favoriteExerciseIds = favoriteExerciseIds.filter((id) => String(id) !== normalizedId);
   } else {
     favoriteExerciseIds.push(normalizedId);
   }
-  
-  window.updateState({ user: { ...user, favoriteExerciseIds } });
+
+  updateState({ user: { ...user, favoriteExerciseIds } });
 }
 
 /**
@@ -306,7 +309,7 @@ function handleProfileClick(e) {
     handleDeleteMetric(index);
     return;
   }
-  
+
   // Delete workout history button
   const deleteHistoryBtn = e.target.closest('[data-delete-workout]');
   if (deleteHistoryBtn) {
@@ -315,7 +318,7 @@ function handleProfileClick(e) {
     handleDeleteWorkoutHistory(index);
     return;
   }
-  
+
   // Navigate to workout detail
   const workoutItem = e.target.closest('[data-workout-item]');
   if (workoutItem) {
@@ -338,7 +341,7 @@ function handleModuleClick(e) {
     handleRemoveExercise(exId);
     return;
   }
-  
+
   // Reset exercise selection
   const resetBtn = e.target.closest('[data-reset-exercises]');
   if (resetBtn) {
@@ -346,7 +349,7 @@ function handleModuleClick(e) {
     handleResetExerciseSelection();
     return;
   }
-  
+
   // Confirm delete module
   const confirmDeleteBtn = e.target.closest('[data-confirm-delete]');
   if (confirmDeleteBtn) {
@@ -381,7 +384,7 @@ function handleFormSubmit(e) {
     handleBodyMetricsSubmit(e.target);
     return;
   }
-  
+
   // Comment form
   const commentForm = e.target.closest('#comment-form');
   if (commentForm) {
@@ -389,7 +392,7 @@ function handleFormSubmit(e) {
     handleCommentSubmit(e.target);
     return;
   }
-  
+
   // Onboarding form - handled inline in onboarding-view.js, don't intercept
   const onboardingForm = e.target.closest('#onboarding-form');
   if (onboardingForm) {
@@ -410,7 +413,7 @@ function handleErrorCodeClick(e) {
     window.location.hash = '#';
     return;
   }
-  
+
   // Reload page button (from error-boundary-service)
   const reloadBtn = e.target.closest('[data-error-reload]');
   if (reloadBtn) {
@@ -430,19 +433,21 @@ function handleStartRoutines(type, id) {
 }
 
 async function handleDeleteRoutines(type, id) {
-  const state = window.getState();
-  
+  const state = getState();
+
   if (type === 'routine') {
-    const routine = state.routines?.find(p => String(p.id) === String(id));
+    const routine = state.routines?.find((p) => String(p.id) === String(id));
     if (routine) {
-      const confirmed = await showConfirmationModal(`Are you sure you want to delete "${routine.name}"? This action cannot be undone.`);
+      const confirmed = await showConfirmationModal(
+        `Are you sure you want to delete "${routine.name}"? This action cannot be undone.`
+      );
       if (confirmed) {
         try {
           await saveForUndo('routine', routine, routine.id);
           await dbDeleteRoutine(routine.id);
           // Reload routines from IndexedDB and update state
           const refreshedRoutines = await routinesLoad();
-          window.updateState({ routines: refreshedRoutines });
+          updateState({ routines: refreshedRoutines });
           show('Routine deleted successfully!', 'success');
           window.location.hash = '#routines';
         } catch (error) {
@@ -455,24 +460,24 @@ async function handleDeleteRoutines(type, id) {
 }
 
 function handleDeleteMetric(index) {
-  showConfirmationModal('Delete this metric?').then(confirmed => {
+  showConfirmationModal('Delete this metric?').then((confirmed) => {
     if (!confirmed) return;
-  
-    const state = window.getState();
+
+    const state = getState();
     const user = { ...(state.user || {}) };
     user.bodyMetrics = user.bodyMetrics || [];
-  
+
     const metricToDelete = user.bodyMetrics[index];
     if (metricToDelete) {
       saveForUndo('body-metric', metricToDelete, index);
     }
-  
+
     user.bodyMetrics.splice(index, 1);
     user.bodyMetrics = user.bodyMetrics.map((metric, i) => ({
       ...metric,
-      index: i
+      index: i,
     }));
-  
+
     updateState({ user });
     // Re-render profile view
     import('../views/profile-view.js').then(({ renderProfileView }) => {
@@ -482,9 +487,9 @@ function handleDeleteMetric(index) {
 }
 
 function handleDeleteWorkoutHistory(index) {
-  showConfirmationModal('Delete this workout from history?').then(confirmed => {
+  showConfirmationModal('Delete this workout from history?').then((confirmed) => {
     if (!confirmed) return;
-    const state = window.getState();
+    const state = getState();
     const historyItem = state.history[index];
     if (!historyItem) return;
     saveForUndo('workout-history', historyItem, index);
@@ -511,7 +516,7 @@ function handleResetExerciseSelection() {
 }
 
 function handleConfirmDeleteModule(editId) {
-  showConfirmationModal('Are you sure you want to delete this module?').then(confirmed => {
+  showConfirmationModal('Are you sure you want to delete this module?').then((confirmed) => {
     if (!confirmed) return;
     ModuleStore.delete(editId)
       .then(() => {
@@ -522,7 +527,7 @@ function handleConfirmDeleteModule(editId) {
         show('Module deleted successfully!', 'success');
         window.location.hash = '#skill-modules';
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error deleting module:', error);
         show('Error deleting module: ' + error.message, 'error');
       });
@@ -530,30 +535,33 @@ function handleConfirmDeleteModule(editId) {
 }
 
 function handleShareWorkout() {
-  const state = window.getState();
+  const state = getState();
   const history = state.history || [];
   const lastWorkout = history.length > 0 ? history[history.length - 1] : null;
-  
+
   if (!lastWorkout) {
     show('No workout to share.', 'info');
     return;
   }
-  
+
   const workoutText = formatWorkoutSummary(lastWorkout);
-  
+
   // Try Web Share API first (native sharing on mobile)
   if (navigator.share) {
-    navigator.share({
-      title: 'My Workout Summary',
-      text: workoutText
-    }).then(() => {
-      show('Workout shared successfully!', 'success');
-    }).catch(err => {
-      // User cancelled share or share failed — fall back to clipboard
-      if (err.name !== 'AbortError') {
-        fallbackCopy(workoutText);
-      }
-    });
+    navigator
+      .share({
+        title: 'My Workout Summary',
+        text: workoutText,
+      })
+      .then(() => {
+        show('Workout shared successfully!', 'success');
+      })
+      .catch((err) => {
+        // User cancelled share or share failed — fall back to clipboard
+        if (err.name !== 'AbortError') {
+          fallbackCopy(workoutText);
+        }
+      });
   } else {
     fallbackCopy(workoutText);
   }
@@ -561,11 +569,14 @@ function handleShareWorkout() {
 
 function fallbackCopy(text) {
   if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(() => {
-      show('Workout summary copied to clipboard!', 'success');
-    }).catch(() => {
-      prompt('Copy the workout summary below:', text);
-    });
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        show('Workout summary copied to clipboard!', 'success');
+      })
+      .catch(() => {
+        prompt('Copy the workout summary below:', text);
+      });
   } else {
     const textArea = document.createElement('textarea');
     textArea.value = text;
@@ -586,14 +597,14 @@ function handleBodyMetricsSubmit(form) {
   const bodyFatInput = form.querySelector('#bodyFat');
   const weight = parseFloat(weightInput.value);
   const bodyFat = bodyFatInput.value ? parseFloat(bodyFatInput.value) : null;
-  
+
   // Validate weight
   const weightValidation = window.ValidationService.validateNumber(weight.toString());
   if (!weightValidation.valid) {
     show(weightValidation.error, 'error');
     return;
   }
-  
+
   // Validate body fat if provided using constants
   if (bodyFatInput.value && bodyFatInput.value.trim() !== '') {
     const bodyFatValidation = window.ValidationService.validateNumber(bodyFatInput.value);
@@ -601,29 +612,35 @@ function handleBodyMetricsSubmit(form) {
       show(bodyFatValidation.error, 'error');
       return;
     }
-    if (bodyFat < window.calisthenics.constants.BODY_FAT_MIN || bodyFat > window.calisthenics.constants.BODY_FAT_MAX) {
-      show(`Body fat percentage must be between ${window.calisthenics.constants.BODY_FAT_MIN} and ${window.calisthenics.constants.BODY_FAT_MAX}`, 'error');
+    if (
+      bodyFat < window.calisthenics.constants.BODY_FAT_MIN ||
+      bodyFat > window.calisthenics.constants.BODY_FAT_MAX
+    ) {
+      show(
+        `Body fat percentage must be between ${window.calisthenics.constants.BODY_FAT_MIN} and ${window.calisthenics.constants.BODY_FAT_MAX}`,
+        'error'
+      );
       return;
     }
   }
-  
-  const state = window.getState();
+
+  const state = getState();
   const user = { ...(state.user || {}) };
   user.bodyMetrics = user.bodyMetrics || [];
-  
+
   user.bodyMetrics.push({
     date: new Date().toISOString(),
     weight,
     bodyFat,
-    index: user.bodyMetrics.length
+    index: user.bodyMetrics.length,
   });
-  
+
   updateState({ user });
-  
+
   // Clear form and re-render
   weightInput.value = '';
   bodyFatInput.value = '';
-  
+
   // Re-render profile view
   import('../views/profile-view.js').then(({ renderProfileView }) => {
     renderProfileView();
@@ -635,18 +652,18 @@ async function handleCommentSubmit(form) {
   const textInput = form.querySelector('#comment-text');
   const name = nameInput.value.trim();
   const text = textInput.value.trim();
-  
+
   if (!name || !text) {
     show(t('shared_workout.enter_name_comment'), 'error');
     return;
   }
-  
+
   const workoutId = form.dataset.workoutId;
   if (!workoutId) {
     console.error('Workout ID not found on comment form');
     return;
   }
-  
+
   // Load existing comments from IndexedDB
   let comments;
   try {
@@ -655,13 +672,13 @@ async function handleCommentSubmit(form) {
     console.error('Error loading comments from IndexedDB:', error);
     comments = [];
   }
-  
+
   comments.push({
     name: escapeHtml(name),
     text: escapeHtml(text),
-    date: new Date().toISOString()
+    date: new Date().toISOString(),
   });
-  
+
   // Save back to IndexedDB
   try {
     await storeSharedComments(workoutId, comments);
@@ -670,11 +687,11 @@ async function handleCommentSubmit(form) {
     show(t('shared_workout.comment_save_error') || 'Failed to save comment.', 'error');
     return;
   }
-  
+
   // Clear form and re-render
   nameInput.value = '';
   textInput.value = '';
-  
+
   // Trigger re-render by dispatching state change
   if (window.calisthenics && window.calisthenics.renderSharedWorkoutView) {
     window.calisthenics.renderSharedWorkoutView(workoutId);

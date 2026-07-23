@@ -207,7 +207,15 @@ const translations = {
     'progress.muscle_details': 'Muscle Group Details',
     'progress.upcoming_workouts': 'Upcoming Workouts',
     'progress.recurring_workouts': 'Recurring Workouts',
-    'progress.day_of_week': ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    'progress.day_of_week': [
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+    ],
     'progress.scheduled_success': 'Workout scheduled successfully!',
     'progress.duration_stats': 'Duration Statistics',
     'progress.avg_duration': 'Average Duration',
@@ -227,13 +235,17 @@ const translations = {
     'settings.font_size': 'Font Size',
     'settings.voice_cues': 'Voice Cues',
     'settings.enable_voice_cues': 'Enable Voice Cues',
+    'settings.timer_feedback': 'Timer Feedback',
+    'settings.timer_sound': 'Rest Timer Sound',
+    'settings.timer_vibration': 'Rest Timer Vibration',
     'settings.data_management': 'Data Management',
     'settings.export_data': 'Export Data',
     'settings.import_data': 'Import Data',
     'settings.clear_data': 'Clear All Data',
     'settings.about': 'About',
     'settings.app_version': 'Version',
-    'settings.app_description': 'Calisthenics Mastery - Your personal trainer for bodyweight exercises',
+    'settings.app_description':
+      'Calisthenics Mastery - Your personal trainer for bodyweight exercises',
     'settings.units_updated': 'Units updated',
     'settings.theme_updated': 'Theme updated',
     'settings.data_exported': 'Data exported successfully!',
@@ -241,16 +253,19 @@ const translations = {
     'settings.data_imported': 'Data imported successfully! Please refresh the page.',
     'settings.refresh_prompt': 'Please refresh the page to apply changes. Refresh now?',
     'settings.import_error': 'Failed to import data: ',
-    'settings.confirm_clear': 'Are you sure you want to clear all your data? This cannot be undone!',
+    'settings.confirm_clear':
+      'Are you sure you want to clear all your data? This cannot be undone!',
     'settings.data_cleared': 'All data cleared. Please refresh the page.',
 
     // Profile
     'profile.title': 'Profile',
     'profile.data_management': 'Data Management',
-    'profile.data_management_desc': 'Backup & Restore: Export your workout history and routines, or restore from a backup file.',
+    'profile.data_management_desc':
+      'Backup & Restore: Export your workout history and routines, or restore from a backup file.',
     'profile.export_import': '📤 Export / Import Data',
     'profile.notifications': 'Notifications',
-    'profile.notifications_desc': 'Receive reminders for rest timers, workout streaks, and scheduled workouts.',
+    'profile.notifications_desc':
+      'Receive reminders for rest timers, workout streaks, and scheduled workouts.',
     'profile.enable_notifications': 'Enable Notifications',
     'profile.name': 'Name',
     'profile.level': 'Level',
@@ -279,7 +294,8 @@ const translations = {
     'profile.body_fat_validation': 'Please enter a valid body fat percentage.',
     'profile.body_fat_range': 'Body fat percentage must be between 0 and 100',
     'profile.weight_performance_correlation': 'Weight vs Performance',
-    'profile.weight_performance_desc': 'Green line shows your weight over time. Blue bars show total reps completed in workouts on the same day.',
+    'profile.weight_performance_desc':
+      'Green line shows your weight over time. Blue bars show total reps completed in workouts on the same day.',
 
     // Builder
     'builder.title': 'Create Routine',
@@ -311,7 +327,8 @@ const translations = {
     'export_import.export_btn': '📤 Export Data',
     'export_import.import_desc': 'Upload a backup file to restore or merge your data.',
     'export_import.import_btn': '📥 Import Data',
-    'export_import.clear_desc': 'Permanently delete all stored data including workout history, routines, and settings.',
+    'export_import.clear_desc':
+      'Permanently delete all stored data including workout history, routines, and settings.',
     'export_import.clear_btn': '🗑️ Clear All Data',
     'export_import.clear_confirm': 'Are you sure? This cannot be undone.',
     'export_import.back': 'Back to Profile',
@@ -381,7 +398,8 @@ const translations = {
     'module_admin.no_exercises': 'No exercises added.',
     'module_admin.not_found': 'Module not found. Redirecting to module list.',
     'module_admin.load_error': 'Error loading module: ',
-    'module_admin.no_exercises_desc': 'No exercises selected. Use the filter below to find and select exercises.',
+    'module_admin.no_exercises_desc':
+      'No exercises selected. Use the filter below to find and select exercises.',
     'module_admin.enter_name': 'Please enter a module name.',
     'module_admin.select_exercise': 'Please select at least one exercise for this module.',
     'module_admin.updated': 'Module updated successfully!',
@@ -401,7 +419,8 @@ const translations = {
     // Shared Workout
     'shared_workout.title': 'Shared Workout',
     'shared_workout.not_found': 'Workout Not Found',
-    'shared_workout.not_found_desc': "The shared workout you're looking for doesn't exist or has been removed.",
+    'shared_workout.not_found_desc':
+      "The shared workout you're looking for doesn't exist or has been removed.",
     'shared_workout.back': 'Back to Home',
     'shared_workout.shared_on': 'Shared on',
     'shared_workout.comments': 'Comments',
@@ -447,7 +466,8 @@ const translations = {
     'builder.duration_minutes': 'Duration (minutes)',
     'builder.selected_exercises': 'Selected Exercises (drag to reorder)',
     'builder.no_exercises_selected': 'No Exercises Selected Yet',
-    'builder.select_exercises_desc': 'Select exercises from the list below to build your routine or module.',
+    'builder.select_exercises_desc':
+      'Select exercises from the list below to build your routine or module.',
     'builder.available_exercises': 'Available Exercises',
     'builder.no_exercises_available': 'No exercises available',
     'builder.search_available': 'Search available exercises...',
@@ -592,7 +612,8 @@ const translations = {
     'home.featured.start': 'Iniciar Ahora',
     'home.featured.desc': 'Una rutina de entrenamiento completa diseñada para todos los niveles.',
     'home.recent.title': 'Actividad Reciente',
-    'home.no_workouts': 'Aún no has completado entrenamientos. ¡Inicia tu primer entrenamiento para ver la actividad aquí!',
+    'home.no_workouts':
+      'Aún no has completado entrenamientos. ¡Inicia tu primer entrenamiento para ver la actividad aquí!',
     'home.no_workouts.cta': 'Iniciar Entrenamiento',
     'home.quote': '"El único mal entrenamiento es el que no ocurrió."',
     'home.quote_author': '- Desconocido',
@@ -621,7 +642,8 @@ const translations = {
     'exercises.favorites_only': 'Solo Favoritos',
     'exercises.filter': 'Filtros',
     'exercises.no_found': 'No se encontraron ejercicios',
-    'exercises.try_adjusting': 'Intenta ajustar tus filtros o limpiarlos para ver todos los ejercicios.',
+    'exercises.try_adjusting':
+      'Intenta ajustar tus filtros o limpiarlos para ver todos los ejercicios.',
     'exercises.no_match': 'No hay ejercicios que coincidan con tus criterios actuales.',
     'exercises.clear_filters': 'Limpiar Filtros',
     'exercises.delete': 'Eliminar',
@@ -758,7 +780,15 @@ const translations = {
     'progress.muscle_details': 'Detalles de Grupos Musculares',
     'progress.upcoming_workouts': 'Entrenamientos Programados',
     'progress.recurring_workouts': 'Entrenamientos Recurrentes',
-    'progress.day_of_week': ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+    'progress.day_of_week': [
+      'Domingo',
+      'Lunes',
+      'Martes',
+      'Miércoles',
+      'Jueves',
+      'Viernes',
+      'Sábado',
+    ],
     'progress.scheduled_success': '¡Entrenamiento programado exitosamente!',
     'progress.duration_stats': 'Estadísticas de Duración',
     'progress.avg_duration': 'Duración Promedio',
@@ -768,10 +798,12 @@ const translations = {
     // Profile
     'profile.title': 'Perfil',
     'profile.data_management': 'Gestión de Datos',
-    'profile.data_management_desc': 'Copia de Seguridad y Restauración: Exporta tu historial de entrenamientos y rutinas, o restaura desde un archivo de respaldo.',
+    'profile.data_management_desc':
+      'Copia de Seguridad y Restauración: Exporta tu historial de entrenamientos y rutinas, o restaura desde un archivo de respaldo.',
     'profile.export_import': '📤 Exportar / Importar Datos',
     'profile.notifications': 'Notificaciones',
-    'profile.notifications_desc': 'Recibe recordatorios para tiempos de descanso, rachas de entrenamientos y entrenamientos programados.',
+    'profile.notifications_desc':
+      'Recibe recordatorios para tiempos de descanso, rachas de entrenamientos y entrenamientos programados.',
     'profile.enable_notifications': 'Habilitar Notificaciones',
     'profile.name': 'Nombre',
     'profile.level': 'Nivel',
@@ -791,7 +823,8 @@ const translations = {
     'profile.no_metrics': 'Aún no hay métricas registradas.',
     'profile.achievements': 'Logros',
     'profile.potential_achievements': 'Logros Potenciales',
-    'profile.no_achievements': 'Aún no has desbloqueado logros. ¡Completa entrenamientos para ganarlos!',
+    'profile.no_achievements':
+      'Aún no has desbloqueado logros. ¡Completa entrenamientos para ganarlos!',
     'profile.no_potential': 'Aún no hay logros desbloqueados.',
     'profile.workout_history': 'Historial de Entrenamientos',
     'profile.no_workouts': 'Aún no has completado entrenamientos.',
@@ -800,7 +833,8 @@ const translations = {
     'profile.body_fat_validation': 'Por favor ingresa un porcentaje válido de grasa corporal.',
     'profile.body_fat_range': 'El porcentaje de grasa corporal debe estar entre 0 y 100',
     'profile.weight_performance_correlation': 'Peso vs Rendimiento',
-    'profile.weight_performance_desc': 'La línea verde muestra tu peso con el tiempo. Las barras azules muestran el total de repeticiones completadas en entrenamientos del mismo día.',
+    'profile.weight_performance_desc':
+      'La línea verde muestra tu peso con el tiempo. Las barras azules muestran el total de repeticiones completadas en entrenamientos del mismo día.',
 
     // Builder
     'builder.title': 'Crear Rutina',
@@ -828,11 +862,13 @@ const translations = {
 
     // Export/Import
     'export_import.title': 'Exportar / Importar Datos',
-    'export_import.export_desc': 'Descarga todos tus datos de entrenamiento como un archivo de respaldo JSON.',
+    'export_import.export_desc':
+      'Descarga todos tus datos de entrenamiento como un archivo de respaldo JSON.',
     'export_import.export_btn': '📤 Exportar Datos',
     'export_import.import_desc': 'Sube un archivo de respaldo para restaurar o fusionar tus datos.',
     'export_import.import_btn': '📥 Importar Datos',
-    'export_import.clear_desc': 'Elimina permanentemente todos los datos almacenados incluyendo historial de entrenamientos, rutinas y configuraciones.',
+    'export_import.clear_desc':
+      'Elimina permanentemente todos los datos almacenados incluyendo historial de entrenamientos, rutinas y configuraciones.',
     'export_import.clear_btn': '🗑️ Borrar Todos los Datos',
     'export_import.clear_confirm': '¿Estás seguro? Esto no se puede deshacer.',
     'export_import.back': 'Volver al Perfil',
@@ -902,7 +938,8 @@ const translations = {
     'module_admin.no_exercises': 'No se agregaron ejercicios.',
     'module_admin.not_found': 'Módulo no encontrado. Redirigiendo a la lista.',
     'module_admin.load_error': 'Error al cargar el módulo: ',
-    'module_admin.no_exercises_desc': 'No se seleccionaron ejercicios. Usa el filtro para encontrar y seleccionar ejercicios.',
+    'module_admin.no_exercises_desc':
+      'No se seleccionaron ejercicios. Usa el filtro para encontrar y seleccionar ejercicios.',
     'module_admin.enter_name': 'Por favor ingresa un nombre para el módulo.',
     'module_admin.select_exercise': 'Por favor selecciona al menos un ejercicio para este módulo.',
     'module_admin.updated': '¡Módulo actualizado exitosamente!',
@@ -922,7 +959,8 @@ const translations = {
     // Shared Workout
     'shared_workout.title': 'Entrenamiento Compartido',
     'shared_workout.not_found': 'Entrenamiento No Encontrado',
-    'shared_workout.not_found_desc': 'El entrenamiento compartido que buscas no existe o ha sido eliminado.',
+    'shared_workout.not_found_desc':
+      'El entrenamiento compartido que buscas no existe o ha sido eliminado.',
     'shared_workout.back': 'Volver al Inicio',
     'shared_workout.back': 'Volver al Inicio',
     'shared_workout.shared_on': 'Compartido el',
@@ -969,7 +1007,8 @@ const translations = {
     'builder.duration_minutes': 'Duración (minutos)',
     'builder.selected_exercises': 'Ejercicios Seleccionados (arrastrar para reordenar)',
     'builder.no_exercises_selected': 'No se han seleccionado ejercicios aún',
-    'builder.select_exercises_desc': 'Selecciona ejercicios de la lista de abajo para construir tu rutina o módulo.',
+    'builder.select_exercises_desc':
+      'Selecciona ejercicios de la lista de abajo para construir tu rutina o módulo.',
     'builder.available_exercises': 'Ejercicios Disponibles',
     'builder.no_exercises_available': 'No hay ejercicios disponibles',
     'builder.search_available': 'Buscar ejercicios disponibles...',
@@ -1093,21 +1132,27 @@ const translations = {
     'settings.font_size': 'Tamaño de Fuente',
     'settings.voice_cues': 'Indicadores de Voz',
     'settings.enable_voice_cues': 'Habilitar Indicadores de Voz',
+    'settings.timer_feedback': 'Retroalimentación del Temporizador',
+    'settings.timer_sound': 'Sonido del Temporizador de Descanso',
+    'settings.timer_vibration': 'Vibración del Temporizador de Descanso',
     'settings.data_management': 'Gestión de Datos',
     'settings.export_data': 'Exportar Datos',
     'settings.import_data': 'Importar Datos',
     'settings.clear_data': 'Borrar Todos los Datos',
     'settings.about': 'Acerca de',
     'settings.app_version': 'Versión',
-    'settings.app_description': 'Calisthenics Mastery - Tu entrenador personal para ejercicios de calistenia',
+    'settings.app_description':
+      'Calisthenics Mastery - Tu entrenador personal para ejercicios de calistenia',
     'settings.units_updated': 'Unidades actualizadas',
     'settings.theme_updated': 'Tema actualizado',
     'settings.data_exported': '¡Datos exportados con éxito!',
     'settings.confirm_import': 'Esto reemplazará tus datos actuales. ¿Continuar?',
     'settings.data_imported': '¡Datos importados con éxito! Por favor actualiza la página.',
-    'settings.refresh_prompt': 'Por favor actualiza la página para aplicar los cambios. ¿Actualizar ahora?',
+    'settings.refresh_prompt':
+      'Por favor actualiza la página para aplicar los cambios. ¿Actualizar ahora?',
     'settings.import_error': 'Error al importar datos: ',
-    'settings.confirm_clear': '¿Estás seguro de que quieres borrar todos tus datos? ¡Esto no se puede deshacer!',
+    'settings.confirm_clear':
+      '¿Estás seguro de que quieres borrar todos tus datos? ¡Esto no se puede deshacer!',
     'settings.data_cleared': 'Todos los datos borrados. Por favor actualiza la página.',
 
     // Progress - Weight Progression
@@ -1137,7 +1182,7 @@ export function setLocale(locale) {
   document.documentElement.lang = locale;
   // Dispatch event so other components can react
   document.dispatchEvent(new CustomEvent('localeChange', { detail: { locale } }));
-  
+
   // The actual data reload is handled by the localeChange event listener in main.js
   // This just removes the old dynamic import that caused 404s
 }
@@ -1146,9 +1191,9 @@ export function setLocale(locale) {
  * Get all available locales
  */
 export function getAvailableLocales() {
-  return Object.keys(translations).map(code => ({
+  return Object.keys(translations).map((code) => ({
     code,
-    name: code === 'en' ? 'English' : 'Español'
+    name: code === 'en' ? 'English' : 'Español',
   }));
 }
 
@@ -1161,7 +1206,7 @@ export function getAvailableLocales() {
 export function t(key, params = {}) {
   const locale = getLocale();
   let text = translations[locale]?.[key];
-  
+
   // Fallback to English if translation missing
   if (!text) {
     text = translations.en?.[key];
@@ -1172,7 +1217,7 @@ export function t(key, params = {}) {
   }
 
   // Interpolate parameters: {{paramName}}
-  Object.keys(params).forEach(param => {
+  Object.keys(params).forEach((param) => {
     text = text.replace(new RegExp(`\\{\\{${param}\\}\\}`, 'g'), params[param]);
   });
 

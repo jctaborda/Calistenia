@@ -1,6 +1,6 @@
 /**
  * ActiveWorkoutView - Renders the current exercise during an active workout
- * 
+ *
  * Manual-only mode: User controls progression by clicking "Next Set" button
  * Flow: Set duration counting → User clicks "Next Set" → Rest timer counting → User clicks "Next Set" → Next set/exercise
  */
@@ -13,6 +13,7 @@ import { workoutModalsService } from '../services/workout-modals-service.js';
 import { workoutWorkflowService } from '../services/workout-workflow-service.js';
 import { escapeHtml } from '../utils/html-helpers.js';
 import { voiceCuesService } from '../services/voice-cues-service.js';
+import { soundService } from '../services/sound-service.js';
 import { show } from '../services/toast-service.js';
 
 // Track when set started for duration calculation
@@ -26,48 +27,61 @@ let isShowingRestTimer = false;
 
 export function renderActiveWorkoutView() {
   const main = document.getElementById('app');
-  
+
   // Clean up any stale timers from previous render before starting new ones
   workoutTimerService.cleanup();
-  
+
   // Remove stale stateChange listener from previous render (memory leak fix)
   if (main._handleActiveWorkoutStateChange) {
     document.removeEventListener('stateChange', main._handleActiveWorkoutStateChange);
     delete main._handleActiveWorkoutStateChange;
   }
-  
+
   const { activeWorkout, exercises } = getState();
   // Validate workout exists
   if (!activeWorkout || !activeWorkout.routine) {
-    main.innerHTML = renderHeader() + '<div class="card"><p>' + t('active_workout.no_active_workout') + '</p></div>';
+    main.innerHTML =
+      renderHeader() +
+      '<div class="card"><p>' +
+      t('active_workout.no_active_workout') +
+      '</p></div>';
     return;
   }
-  
+
   const routine = activeWorkout.routine;
   const currentExerciseIndex = activeWorkout.currentExerciseIndex || 0;
   const currentSetIndex = activeWorkout.currentSetIndex || 0;
-  
+
   // Get phase information and exercise data
   const { phase, localIndex } = workoutWorkflowService.getPhaseInfo(currentExerciseIndex, routine);
   const currentExerciseData = workoutWorkflowService.getExerciseData(currentExerciseIndex, routine);
-  
+
   if (!currentExerciseData) {
-    main.innerHTML = renderHeader() + '<div class="card"><p>' + t('active_workout.exercise_data_not_found') + '</p></div>';
+    main.innerHTML =
+      renderHeader() +
+      '<div class="card"><p>' +
+      t('active_workout.exercise_data_not_found') +
+      '</p></div>';
     return;
   }
-  
-  const exercise = exercises.find(e => String(e.id) === String(currentExerciseData.exerciseId));
-  
+
+  const exercise = exercises.find((e) => String(e.id) === String(currentExerciseData.exerciseId));
+
   if (!exercise) {
-    main.innerHTML = renderHeader() + '<div class="card"><p>' + t('active_workout.exercise_not_found') + '</p></div>';
+    main.innerHTML =
+      renderHeader() +
+      '<div class="card"><p>' +
+      t('active_workout.exercise_not_found') +
+      '</p></div>';
     return;
   }
-  
+
   // Get workout configuration
   const isHiitWorkout = workoutWorkflowService.isHIITWorkout(activeWorkout);
   const hiitInterval = activeWorkout.intervalTime || 30;
-  const totalExercises = (routine.warmup?.length || 0) + routine.exercises.length + (routine.cooldown?.length || 0);
-  
+  const totalExercises =
+    (routine.warmup?.length || 0) + routine.exercises.length + (routine.cooldown?.length || 0);
+
   // Render the view
   main.innerHTML = renderActiveWorkoutTemplate({
     routine,
@@ -79,9 +93,9 @@ export function renderActiveWorkoutView() {
     exercise,
     currentSetIndex,
     currentExerciseData,
-    localIndex
+    localIndex,
   });
-  
+
   // Start live set duration timer using service (AFTER DOM is rendered)
   const setDurationController = workoutTimerService.startTimerCountingUp(0, {
     container: document.getElementById('set-timer-display'),
@@ -90,9 +104,9 @@ export function renderActiveWorkoutView() {
       if (durationEl) {
         durationEl.textContent = elapsed;
       }
-    }
+    },
   });
-  
+
   // Wire up all event handlers for the view
   wireUpEventHandlers({
     activeWorkout,
@@ -105,9 +119,9 @@ export function renderActiveWorkoutView() {
     totalExercises,
     exercise,
     localIndex,
-    exercises
+    exercises,
   });
-  
+
   // Bind state change event listener (with cleanup)
   const handleActiveWorkoutStateChange = () => {
     // Don't re-render if we're currently showing rest timer
@@ -115,7 +129,7 @@ export function renderActiveWorkoutView() {
     if (isShowingRestTimer) {
       return;
     }
-    
+
     if (window.location.hash === '#active-workout') {
       renderActiveWorkoutView();
     } else {
@@ -123,7 +137,7 @@ export function renderActiveWorkoutView() {
       workoutTimerService.cleanup();
     }
   };
-  
+
   document.addEventListener('stateChange', handleActiveWorkoutStateChange);
   main._handleActiveWorkoutStateChange = handleActiveWorkoutStateChange;
 }
@@ -141,11 +155,13 @@ function renderActiveWorkoutTemplate({
   exercise,
   currentSetIndex,
   currentExerciseData,
-  localIndex
+  localIndex,
 }) {
   const phaseColor = phase === 'warmup' ? '#4CAF50' : phase === 'cooldown' ? '#FF9800' : '#2196F3';
-  
-  return renderHeader() + `
+
+  return (
+    renderHeader() +
+    `
     <div class="card">
       <h1>${escapeHtml(routine.name)}</h1>
       <p><span class="phase-badge" style="background: ${phaseColor}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.9em;">${t(`active_workout.${phase}`)}</span> ${t('active_workout.exercise')} ${currentExerciseIndex + 1} ${t('active_workout.of')} ${totalExercises}</p>
@@ -159,10 +175,14 @@ function renderActiveWorkoutTemplate({
       
       <div class="card card-muted current-exercise-card">
         <h2>${escapeHtml(exercise.name)}</h2>
-        ${!isHiitWorkout ? `
+        ${
+          !isHiitWorkout
+            ? `
           <p><strong>${t('routine_details.sets')} ${currentSetIndex + 1} ${t('active_workout.of')} ${currentExerciseData.sets}</strong></p>
           <p><strong>${t('routine_details.reps')}:</strong> ${currentExerciseData.reps}</p>
-        ` : ''}
+        `
+            : ''
+        }
       </div>
       
       <div id="rest-timer"></div>
@@ -173,7 +193,8 @@ function renderActiveWorkoutTemplate({
         <button id="swap-btn" class="btn flex-1">🔄 ${t('active_workout.swap_exercise')}</button>
       </div>
     </div>
-  `;
+  `
+  );
 }
 
 /**
@@ -189,42 +210,46 @@ function wireUpEventHandlers({
   hiitInterval,
   totalExercises,
   exercises,
-  localIndex
+  localIndex,
 }) {
   const main = document.getElementById('app');
-  
+
   // Track set start time when view renders
   currentSetStartTime = Date.now();
-  
+
   // Adjust button - open modal to add/remove sets
   const adjustBtn = main.querySelector('#adjust-btn');
   if (adjustBtn) {
-    adjustBtn.addEventListener('click', () => handleAdjustSets({
-      exerciseIndex: currentExerciseIndex,
-      exerciseData: currentExerciseData,
-      activeWorkout,
-      routine
-    }));
+    adjustBtn.addEventListener('click', () =>
+      handleAdjustSets({
+        exerciseIndex: currentExerciseIndex,
+        exerciseData: currentExerciseData,
+        activeWorkout,
+        routine,
+      })
+    );
   }
-  
+
   // Swap button - open exercise to swap exercise
   const swapBtn = main.querySelector('#swap-btn');
   if (swapBtn) {
-    swapBtn.addEventListener('click', () => handleSwapExercise({
-      currentExerciseIndex,
-      exerciseId: currentExerciseData.exerciseId,
-      activeWorkout,
-      routine,
-      exercises,
-      currentDifficulty: exercise.difficulty
-    }));
+    swapBtn.addEventListener('click', () =>
+      handleSwapExercise({
+        currentExerciseIndex,
+        exerciseId: currentExerciseData.exerciseId,
+        activeWorkout,
+        routine,
+        exercises,
+        currentDifficulty: exercise.difficulty,
+      })
+    );
   }
-  
+
   // Handle HIIT timer if applicable
   if (isHiitWorkout) {
     handleHIITTimer({ hiitInterval, currentExerciseIndex, currentExerciseData, routine });
   }
-  
+
   // Wire up "Next Set" button
   const nextSetBtn = main.querySelector('#next-set-btn');
   if (nextSetBtn) {
@@ -241,103 +266,119 @@ function handleNextSetClick() {
   const currentExerciseIndex = activeWorkout.currentExerciseIndex || 0;
   const currentSetIndex = activeWorkout.currentSetIndex || 0;
   const routine = activeWorkout.routine;
-  
+
   // Get current exercise data
   const { phase, localIndex } = workoutWorkflowService.getPhaseInfo(currentExerciseIndex, routine);
   const currentExerciseData = workoutWorkflowService.getExerciseData(currentExerciseIndex, routine);
-  
+
   if (!currentExerciseData) return;
-  
+
   const main = document.getElementById('app');
   const restEl = main.querySelector('#rest-timer');
   const restTimerContent = restEl ? restEl.innerHTML : '';
-  
+
   // Check if we're currently showing rest timer
   if (restTimerContent && restTimerContent.includes('Rest Time')) {
     // User clicked during rest timer - save actual rest time and advance
-    const actualRestTime = currentRestStartTime ? Math.floor((Date.now() - currentRestStartTime) / 1000) : 0;
-    
+    const actualRestTime = currentRestStartTime
+      ? Math.floor((Date.now() - currentRestStartTime) / 1000)
+      : 0;
+
     // Add current set to history
     if (!activeWorkout.setHistory) {
       activeWorkout.setHistory = [];
     }
-    
-    const setDuration = currentSetStartTime ? Math.floor((Date.now() - currentSetStartTime) / 1000) : 0;
-    
+
+    const setDuration = currentSetStartTime
+      ? Math.floor((Date.now() - currentSetStartTime) / 1000)
+      : 0;
+
     activeWorkout.setHistory.push({
       exerciseIndex: currentExerciseIndex,
       setIndex: currentSetIndex,
       completedAt: Date.now(),
       duration: setDuration,
       restTime: currentExerciseData.restTime || 60,
-      actualRestTime: actualRestTime
+      actualRestTime: actualRestTime,
     });
-    
+
     updateState({ activeWorkout }, { silent: true });
     currentRestStartTime = null;
     isShowingRestTimer = false; // Clear the flag before advancing
-    
+
     // Advance to next set/exercise
     advanceWorkout(currentExerciseIndex, currentSetIndex, routine);
   } else {
     // User clicked after set duration - check if this is the last set of the last exercise
-    const totalExercises = (routine.warmup?.length || 0) + routine.exercises.length + (routine.cooldown?.length || 0);
+    const totalExercises =
+      (routine.warmup?.length || 0) + routine.exercises.length + (routine.cooldown?.length || 0);
     const isLastExercise = currentExerciseIndex >= totalExercises - 1;
     const isLastSet = currentSetIndex >= currentExerciseData.sets - 1;
-    
+
     if (isLastExercise && isLastSet) {
       // This is the last set of the last exercise - complete workout directly, no rest
-      const setDuration = currentSetStartTime ? Math.floor((Date.now() - currentSetStartTime) / 1000) : 0;
-      
+      const setDuration = currentSetStartTime
+        ? Math.floor((Date.now() - currentSetStartTime) / 1000)
+        : 0;
+
       if (!activeWorkout.setHistory) {
         activeWorkout.setHistory = [];
       }
-      
+
       activeWorkout.setHistory.push({
         exerciseIndex: currentExerciseIndex,
         setIndex: currentSetIndex,
         completedAt: Date.now(),
         duration: setDuration,
         restTime: 0,
-        actualRestTime: 0
+        actualRestTime: 0,
       });
-      
+
       updateState({ activeWorkout }, { silent: true });
-      
+
       // Navigate directly to completion view
       window.location.hash = '#workout-completion';
     } else {
       // Not the last set - show rest timer
       const restTime = currentExerciseData.restTime || 60;
-      
+
       // Hide set duration display
       const setDurationDisplay = main.querySelector('#set-timer-display');
       if (setDurationDisplay) {
         setDurationDisplay.style.display = 'none';
       }
-      
+
       // Hide current exercise card
       const currExEl = main.querySelector('.current-exercise-card');
       if (currExEl) {
         currExEl.style.display = 'none';
       }
-      
+
       // Show rest timer BEFORE updating state (to prevent re-render clearing it)
       const restEl = main.querySelector('#rest-timer');
       if (restEl) {
         currentRestStartTime = Date.now();
         isShowingRestTimer = true; // Mark that we're showing rest timer
         workoutTimerService.displayRestTimer(restTime, restEl, () => {
-          // Timer completed - announce rest complete
+          // Rest timer target reached — provide feedback
+          const settings = getState().settings || {};
+          const timerFeedback = settings.timerFeedback || {};
+
+          if (timerFeedback.sound !== false) {
+            soundService.playRestComplete();
+          }
+          if (timerFeedback.vibration !== false) {
+            soundService.vibrate([100, 50, 100]);
+          }
           if (voiceCuesService.isEnabled()) {
-            voiceCuesService.announceRestStart(restTime);
+            voiceCuesService.announceRestComplete();
           }
         });
       }
-      
+
       // Note: Don't push to setHistory here - wait until user clicks "Next" during rest
       // The set will be saved when they complete the rest period
-      
+
       updateState({ activeWorkout }, { silent: true });
     }
   }
@@ -356,72 +397,83 @@ function advanceWorkout(currentExerciseIndex, currentSetIndex, routine) {
     workoutWorkflowService.getExerciseData(currentExerciseIndex, routine),
     routine
   );
-  
+
   // Check if we're completing the workout (after final rest)
   if (result.action === 'complete_workout') {
     // Save the final rest time before completing
     const { activeWorkout } = getState();
-    const actualRestTime = currentRestStartTime ? Math.floor((Date.now() - currentRestStartTime) / 1000) : 0;
-    
+    const actualRestTime = currentRestStartTime
+      ? Math.floor((Date.now() - currentRestStartTime) / 1000)
+      : 0;
+
     // Update the last entry in setHistory with actual rest time
     if (activeWorkout.setHistory && activeWorkout.setHistory.length > 0) {
       const lastEntry = activeWorkout.setHistory[activeWorkout.setHistory.length - 1];
       lastEntry.actualRestTime = actualRestTime;
     }
-    
+
     updateState({ activeWorkout }, { silent: true });
     currentRestStartTime = null;
     isShowingRestTimer = false;
-    
+
     // Navigate to completion view
     window.location.hash = '#workout-completion';
   } else if (result.action === 'next_exercise') {
     // Moving to next exercise - save actual rest time from previous exercise's rest
     const { activeWorkout } = getState();
-    const actualRestTime = currentRestStartTime ? Math.floor((Date.now() - currentRestStartTime) / 1000) : 0;
-    
+    const actualRestTime = currentRestStartTime
+      ? Math.floor((Date.now() - currentRestStartTime) / 1000)
+      : 0;
+
     // Update the last entry in setHistory with actual rest time
     if (activeWorkout.setHistory && activeWorkout.setHistory.length > 0) {
       const lastEntry = activeWorkout.setHistory[activeWorkout.setHistory.length - 1];
       lastEntry.actualRestTime = actualRestTime;
     }
-    
+
     updateState({ activeWorkout }, { silent: true });
     currentRestStartTime = null;
     isShowingRestTimer = false;
-    
+
     // Now advance the state to next exercise
     updateState({ activeWorkout: result.newState }, { silent: true });
-    
+
     // Trigger voice cue for next exercise
-    const nextExerciseData = workoutWorkflowService.getExerciseData(result.newState.currentExerciseIndex, routine);
+    const nextExerciseData = workoutWorkflowService.getExerciseData(
+      result.newState.currentExerciseIndex,
+      routine
+    );
     if (nextExerciseData) {
-      const nextExercise = exercises.find(e => String(e.id) === String(nextExerciseData.exerciseId));
+      const nextExercise = exercises.find(
+        (e) => String(e.id) === String(nextExerciseData.exerciseId)
+      );
       if (nextExercise && voiceCuesService.isEnabled()) {
         voiceCuesService.announceNextExercise(nextExercise.name);
       }
     }
-    
+
     // Trigger re-render to show the new exercise's set duration
     updateState({ stateChange: true }, { silent: false });
   } else {
     // Just moving to next set of same exercise
     const { activeWorkout } = getState();
-    const actualRestTime = currentRestStartTime ? Math.floor((Date.now() - currentRestStartTime) / 1000) : 0;
-    
+    const actualRestTime = currentRestStartTime
+      ? Math.floor((Date.now() - currentRestStartTime) / 1000)
+      : 0;
+
     // Update the last entry in setHistory with actual rest time
     if (activeWorkout.setHistory && activeWorkout.setHistory.length > 0) {
       const lastEntry = activeWorkout.setHistory[activeWorkout.setHistory.length - 1];
       lastEntry.actualRestTime = actualRestTime;
     }
-    
+
     updateState({ activeWorkout }, { silent: true });
     currentRestStartTime = null;
     isShowingRestTimer = false;
-    
+
     // Now advance to next set
     updateState({ activeWorkout: result.newState }, { silent: true });
-    
+
     // Trigger re-render to show the new set's duration
     updateState({ stateChange: true }, { silent: false });
   }
@@ -432,24 +484,31 @@ function advanceWorkout(currentExerciseIndex, currentSetIndex, routine) {
  */
 function handleAdjustSets({ exerciseIndex, exerciseData, activeWorkout, routine }) {
   workoutModalsService.showAdjustSetsModal(exerciseIndex, exerciseData, activeWorkout, routine);
-  
+
   const handler = (e) => {
     const { exerciseIndex: idx, newSetCount, routine: updatedRoutine } = e.detail;
-    
+
     if (idx === exerciseIndex) {
       updateState({
         activeWorkout: { ...activeWorkout, routine: updatedRoutine },
-        stateChange: true
+        stateChange: true,
       });
     }
-    
+
     document.removeEventListener('workoutSetsAdjusted', handler);
   };
-  
+
   document.addEventListener('workoutSetsAdjusted', handler);
 }
 
-function handleSwapExercise({ currentExerciseIndex, exerciseId, activeWorkout, routine, exercises, currentDifficulty }) {
+function handleSwapExercise({
+  currentExerciseIndex,
+  exerciseId,
+  activeWorkout,
+  routine,
+  exercises,
+  currentDifficulty,
+}) {
   workoutModalsService.showSwapExerciseModal(
     currentExerciseIndex,
     exerciseId,
@@ -458,20 +517,20 @@ function handleSwapExercise({ currentExerciseIndex, exerciseId, activeWorkout, r
     exercises,
     currentDifficulty
   );
-  
+
   const handler = (e) => {
     const { exerciseIndex: idx, newExerciseId, routine: updatedRoutine } = e.detail;
-    
+
     if (idx === currentExerciseIndex) {
       updateState({
         activeWorkout: { ...activeWorkout, routine: updatedRoutine },
-        stateChange: true
+        stateChange: true,
       });
     }
-    
+
     document.removeEventListener('workoutExerciseSwapped', handler);
   };
-  
+
   document.addEventListener('workoutExerciseSwapped', handler);
 }
 
@@ -491,7 +550,7 @@ function handleHIITTimer({ hiitInterval, currentExerciseIndex, currentExerciseDa
     },
     onRestEnd: () => {
       document.dispatchEvent(new CustomEvent('stateChange'));
-    }
+    },
   });
 }
 

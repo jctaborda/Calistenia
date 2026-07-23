@@ -12,7 +12,9 @@ export function renderSettingsView() {
   const state = getState();
   const { settings } = state;
 
-  main.innerHTML = renderHeader() + `
+  main.innerHTML =
+    renderHeader() +
+    `
     <div class="card">
       <div class="flex-between mb-1rem">
         <h1>${t('settings.title') || 'Settings'}</h1>
@@ -86,6 +88,23 @@ export function renderSettingsView() {
         </div>
       </div>
 
+      <!-- Timer Feedback Section -->
+      <div class="settings-section">
+        <h3>${t('settings.timer_feedback') || 'Timer Feedback'}</h3>
+        <div class="setting-item">
+          <label for="timer-sound-toggle">
+            <span>${t('settings.timer_sound') || 'Rest Timer Sound'}</span>
+            <input type="checkbox" id="timer-sound-toggle" class="setting-toggle" ${settings.timerFeedback?.sound !== false ? 'checked' : ''}>
+          </label>
+        </div>
+        <div class="setting-item">
+          <label for="timer-vibration-toggle">
+            <span>${t('settings.timer_vibration') || 'Rest Timer Vibration'}</span>
+            <input type="checkbox" id="timer-vibration-toggle" class="setting-toggle" ${settings.timerFeedback?.vibration !== false ? 'checked' : ''}>
+          </label>
+        </div>
+      </div>
+
       <!-- Data Management Section -->
       <div class="settings-section">
         <h3>${t('settings.data_management') || 'Data Management'}</h3>
@@ -118,8 +137,8 @@ export function renderSettingsView() {
       updateState({
         settings: {
           ...state.settings,
-          units: e.target.value
-        }
+          units: e.target.value,
+        },
       });
       show(t('settings.units_updated') || 'Units updated', 'success');
     });
@@ -134,11 +153,11 @@ export function renderSettingsView() {
           ...state.settings,
           appearance: {
             ...state.settings.appearance,
-            theme: e.target.value
-          }
-        }
+            theme: e.target.value,
+          },
+        },
       });
-      
+
       // Apply theme immediately
       applyTheme(e.target.value);
       show(t('settings.theme_updated') || 'Theme updated', 'success');
@@ -147,10 +166,9 @@ export function renderSettingsView() {
 
   // Toggle switches
   const toggles = main.querySelectorAll('.setting-toggle');
-  toggles.forEach(toggle => {
+  toggles.forEach((toggle) => {
     toggle.addEventListener('change', (e) => handleSettingToggle(e, state));
   });
-
 }
 
 /**
@@ -159,18 +177,18 @@ export function renderSettingsView() {
 function handleSettingToggle(e, state) {
   const toggle = e.target;
   const settingPath = toggle.id.replace('-toggle', '');
-  
+
   let updates = {};
-  
+
   if (settingPath === 'notifications') {
     updates = {
       settings: {
         ...state.settings,
         notifications: {
           ...state.settings.notifications,
-          enabled: toggle.checked
-        }
-      }
+          enabled: toggle.checked,
+        },
+      },
     };
   } else if (settingPath === 'workout-reminders') {
     updates = {
@@ -178,9 +196,9 @@ function handleSettingToggle(e, state) {
         ...state.settings,
         notifications: {
           ...state.settings.notifications,
-          workoutReminders: toggle.checked
-        }
-      }
+          workoutReminders: toggle.checked,
+        },
+      },
     };
   } else if (settingPath === 'achievements') {
     updates = {
@@ -188,9 +206,9 @@ function handleSettingToggle(e, state) {
         ...state.settings,
         notifications: {
           ...state.settings.notifications,
-          achievements: toggle.checked
-        }
-      }
+          achievements: toggle.checked,
+        },
+      },
     };
   } else if (settingPath === 'voice-cues') {
     updates = {
@@ -198,12 +216,32 @@ function handleSettingToggle(e, state) {
         ...state.settings,
         voiceCues: {
           ...state.settings.voiceCues,
-          enabled: toggle.checked
-        }
-      }
+          enabled: toggle.checked,
+        },
+      },
+    };
+  } else if (settingPath === 'timer-sound') {
+    updates = {
+      settings: {
+        ...state.settings,
+        timerFeedback: {
+          ...state.settings.timerFeedback,
+          sound: toggle.checked,
+        },
+      },
+    };
+  } else if (settingPath === 'timer-vibration') {
+    updates = {
+      settings: {
+        ...state.settings,
+        timerFeedback: {
+          ...state.settings.timerFeedback,
+          vibration: toggle.checked,
+        },
+      },
     };
   }
-  
+
   if (Object.keys(updates).length > 0) {
     updateState(updates);
     const settingName = toggle.parentElement.querySelector('span')?.textContent || settingPath;
@@ -225,7 +263,7 @@ function applyTheme(theme) {
   } else {
     document.documentElement.setAttribute('data-theme', theme);
   }
-  
+
   // Save to localStorage for immediate access
   localStorage.setItem('theme', theme);
 }

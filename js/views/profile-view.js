@@ -270,7 +270,7 @@ function initBodyMetricsForm() {
     }
     
     // All validations passed - save the metric
-    const user = window.getState()?.user || {};
+    const user = getState()?.user || {};
     const bodyMetrics = user.bodyMetrics || [];
     const newMetric = {
       index: bodyMetrics.length,

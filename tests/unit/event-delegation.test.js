@@ -6,54 +6,54 @@ vi.mock('../../js/services/state.js', () => ({
   getState: vi.fn(() => ({
     user: { favoriteExerciseIds: [], unlockedAchievements: [] },
     history: [],
-    routines: []
-  }))
+    routines: [],
+  })),
 }));
 
 vi.mock('../../js/services/undo-service.js', () => ({
-  saveForUndo: vi.fn()
+  saveForUndo: vi.fn(),
 }));
 
 vi.mock('../../js/services/modules-service.js', () => ({
-  ModuleStore: { delete: vi.fn() }
+  ModuleStore: { delete: vi.fn() },
 }));
 
 vi.mock('../../js/services/toast-service.js', () => ({
-  show: vi.fn()
+  show: vi.fn(),
 }));
 
 vi.mock('../../js/services/confirmation-modal.js', () => ({
-  showConfirmation: vi.fn()
+  showConfirmation: vi.fn(),
 }));
 
 vi.mock('../../js/utils/workout-summary.js', () => ({
-  formatWorkoutSummary: vi.fn(() => 'Workout Summary')
+  formatWorkoutSummary: vi.fn(() => 'Workout Summary'),
 }));
 
 vi.mock('../../js/utils/html-helpers.js', () => ({
-  escapeHtml: vi.fn(str => str)
+  escapeHtml: vi.fn((str) => str),
 }));
 
 vi.mock('../../js/services/database.js', () => ({
   deleteRoutine: vi.fn(),
   routinesLoad: vi.fn(() => Promise.resolve([])),
   storeSharedComments: vi.fn(),
-  loadSharedComments: vi.fn(() => Promise.resolve([]))
+  loadSharedComments: vi.fn(() => Promise.resolve([])),
 }));
 
 vi.mock('../../js/i18n.js', () => ({
-  t: vi.fn(key => key),
+  t: vi.fn((key) => key),
   getAvailableLocales: vi.fn(() => [{ code: 'en' }, { code: 'es' }]),
   getLocale: vi.fn(() => 'en'),
-  setLocale: vi.fn()
+  setLocale: vi.fn(),
 }));
 
 import {
   initializeEventDelegation,
   cleanupEventDelegation,
-  setCurrentEditingModule
+  setCurrentEditingModule,
 } from '../../js/services/event-delegation.js';
-import { updateState } from '../../js/services/state.js';
+import { getState, updateState } from '../../js/services/state.js';
 import { show } from '../../js/services/toast-service.js';
 import { showConfirmation } from '../../js/services/confirmation-modal.js';
 
@@ -67,12 +67,6 @@ describe('Event Delegation Service', () => {
 
     // Reset window globals
     window.location.hash = '';
-    window.getState = vi.fn(() => ({
-      user: { favoriteExerciseIds: [], unlockedAchievements: [] },
-      history: [],
-      routines: []
-    }));
-    window.updateState = vi.fn();
     window.history.back = vi.fn();
   });
 
@@ -85,7 +79,7 @@ describe('Event Delegation Service', () => {
       const spy = vi.spyOn(mainEl, 'addEventListener');
       initializeEventDelegation(mainEl);
 
-      const callTypes = spy.mock.calls.map(c => c[0]);
+      const callTypes = spy.mock.calls.map((c) => c[0]);
       expect(callTypes).toContain('click');
       expect(callTypes).toContain('submit');
       spy.mockRestore();
@@ -152,48 +146,48 @@ describe('Event Delegation Service', () => {
     });
 
     it('should toggle exercise into favorites', () => {
-      window.getState = vi.fn(() => ({
-        user: { favoriteExerciseIds: [] }
-      }));
+      getState.mockReturnValue({
+        user: { favoriteExerciseIds: [] },
+      });
 
       mainEl.innerHTML = '<button class="exercise-card-favorite" data-exercise-id="42">★</button>';
       mainEl.querySelector('.exercise-card-favorite').click();
 
-      expect(window.updateState).toHaveBeenCalledWith(
+      expect(updateState).toHaveBeenCalledWith(
         expect.objectContaining({
           user: expect.objectContaining({
-            favoriteExerciseIds: expect.arrayContaining(['42'])
-          })
+            favoriteExerciseIds: expect.arrayContaining(['42']),
+          }),
         })
       );
     });
 
     it('should toggle exercise out of favorites', () => {
-      window.getState = vi.fn(() => ({
-        user: { favoriteExerciseIds: ['42'] }
-      }));
+      getState.mockReturnValue({
+        user: { favoriteExerciseIds: ['42'] },
+      });
 
       mainEl.innerHTML = '<button class="exercise-card-favorite" data-exercise-id="42">★</button>';
       mainEl.querySelector('.exercise-card-favorite').click();
 
-      expect(window.updateState).toHaveBeenCalledWith(
+      expect(updateState).toHaveBeenCalledWith(
         expect.objectContaining({
           user: expect.objectContaining({
-            favoriteExerciseIds: expect.not.arrayContaining(['42'])
-          })
+            favoriteExerciseIds: expect.not.arrayContaining(['42']),
+          }),
         })
       );
     });
 
     it('should handle data-favorite attribute for backward compatibility', () => {
-      window.getState = vi.fn(() => ({
-        user: { favoriteExerciseIds: [] }
-      }));
+      getState.mockReturnValue({
+        user: { favoriteExerciseIds: [] },
+      });
 
       mainEl.innerHTML = '<button data-favorite="7">★</button>';
       mainEl.querySelector('[data-favorite]').click();
 
-      expect(window.updateState).toHaveBeenCalled();
+      expect(updateState).toHaveBeenCalled();
     });
   });
 
@@ -226,11 +220,11 @@ describe('Event Delegation Service', () => {
       mainEl.innerHTML = '<button data-action="create-routine">Create</button>';
       mainEl.querySelector('[data-action="create-routine"]').click();
 
-      expect(window.updateState).toHaveBeenCalledWith(
+      expect(updateState).toHaveBeenCalledWith(
         expect.objectContaining({
           createNewRoutine: true,
           editingRoutines: null,
-          editingModule: null
+          editingModule: null,
         })
       );
       expect(window.location.hash).toBe('#builder');
@@ -244,33 +238,33 @@ describe('Event Delegation Service', () => {
     });
 
     it('should handle delete metric button click', async () => {
-      window.getState = vi.fn(() => ({
+      getState.mockReturnValue({
         user: {
           bodyMetrics: [
             { date: '2024-01-01', weight: 70, index: 0 },
-            { date: '2024-02-01', weight: 72, index: 1 }
-          ]
-        }
-      }));
+            { date: '2024-02-01', weight: 72, index: 1 },
+          ],
+        },
+      });
 
       mainEl.innerHTML = '<button data-delete-metric data-index="0">Delete</button>';
       mainEl.querySelector('[data-delete-metric]').click();
 
       // Allow async confirmation to resolve
-      await new Promise(r => setTimeout(r, 0));
+      await new Promise((r) => setTimeout(r, 0));
 
       expect(showConfirmation).toHaveBeenCalled();
     });
 
     it('should handle delete workout history button click', async () => {
-      window.getState = vi.fn(() => ({
-        history: [{ id: 'w1', date: '2024-01-01' }]
-      }));
+      getState.mockReturnValue({
+        history: [{ id: 'w1', date: '2024-01-01' }],
+      });
 
       mainEl.innerHTML = '<button data-delete-workout data-index="0">✕</button>';
       mainEl.querySelector('[data-delete-workout]').click();
 
-      await new Promise(r => setTimeout(r, 0));
+      await new Promise((r) => setTimeout(r, 0));
 
       expect(showConfirmation).toHaveBeenCalled();
     });
@@ -294,7 +288,7 @@ describe('Event Delegation Service', () => {
       Object.defineProperty(window, 'location', {
         value: locationObj,
         writable: true,
-        configurable: true
+        configurable: true,
       });
 
       mainEl.innerHTML = '<button data-error-go-home>Go Home</button>';
@@ -307,7 +301,7 @@ describe('Event Delegation Service', () => {
       const reloadSpy = vi.fn();
       Object.defineProperty(window, 'location', {
         value: { ...window.location, reload: reloadSpy },
-        writable: true
+        writable: true,
       });
 
       mainEl.innerHTML = '<button data-error-reload>Reload</button>';
@@ -325,7 +319,7 @@ describe('Event Delegation Service', () => {
     it('should intercept body metrics form submission', () => {
       // Mock ValidationService to prevent unhandled errors
       window.ValidationService = {
-        validateNumber: vi.fn(() => ({ valid: false, error: 'Invalid' }))
+        validateNumber: vi.fn(() => ({ valid: false, error: 'Invalid' })),
       };
 
       mainEl.innerHTML = `
