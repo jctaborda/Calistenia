@@ -1,6 +1,6 @@
 // views/profile-view.js - Updated with IndexedDB storage pattern
 import { renderHeader } from '../components/header.js';
-import { getState } from '../services/state.js';
+import { getState, updateState } from '../services/state.js';
 import { getAllAchievementStatus } from '../services/achievements.js';
 import { formatDate, formatWorkoutDate } from '../utils/date-formatter.js';
 import { t } from '../i18n.js';
@@ -280,7 +280,7 @@ function initBodyMetricsForm() {
     };
     
     bodyMetrics.push(newMetric);
-    window.updateState({ user: { ...user, bodyMetrics } });
+    updateState({ user: { ...user, bodyMetrics } });
     
     // Clear form and show success message
     weightInput.value = '';

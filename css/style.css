@@ -2291,15 +2291,6 @@ small {
 
 
 
-.delete-history-btn:hover {
-  background: var(--btn-danger-hover);
-  transform: scale(1.1);
-}
-
-.delete-history-btn:active {
-  transform: scale(0.95);
-}
-
 /* Body Metrics Delete Button */
 .btn-danger.btn-sm {
   background: var(--btn-danger);

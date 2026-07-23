@@ -14,6 +14,9 @@ import { escapeHtml } from '../utils/html-helpers.js';
 import { deleteRoutine as dbDeleteRoutine } from './database.js';
 import { routinesLoad } from './database.js';
 import { storeSharedComments, loadSharedComments } from './database.js';
+import { ValidationService } from './validation.js';
+import { BODY_FAT_MIN, BODY_FAT_MAX } from '../constants.js';
+import { renderSharedWorkoutView } from '../views/shared-workout-view.js';
 
 let mainElementRef = null;
 let handlers = [];
@@ -503,16 +506,11 @@ function handleDeleteWorkoutHistory(index) {
 }
 
 function handleRemoveExercise(exId) {
-  // This will be handled by the specific view's state
-  if (window.removeExerciseFromModule) {
-    window.removeExerciseFromModule(exId);
-  }
+  // No-op: exercise removal is handled by individual view state
 }
 
 function handleResetExerciseSelection() {
-  if (window.resetExerciseSelection) {
-    window.resetExerciseSelection();
-  }
+  // No-op: exercise selection reset is handled by individual view state
 }
 
 function handleConfirmDeleteModule(editId) {
@@ -599,7 +597,7 @@ function handleBodyMetricsSubmit(form) {
   const bodyFat = bodyFatInput.value ? parseFloat(bodyFatInput.value) : null;
 
   // Validate weight
-  const weightValidation = window.ValidationService.validateNumber(weight.toString());
+  const weightValidation = ValidationService.validateNumber(weight.toString());
   if (!weightValidation.valid) {
     show(weightValidation.error, 'error');
     return;
@@ -607,17 +605,17 @@ function handleBodyMetricsSubmit(form) {
 
   // Validate body fat if provided using constants
   if (bodyFatInput.value && bodyFatInput.value.trim() !== '') {
-    const bodyFatValidation = window.ValidationService.validateNumber(bodyFatInput.value);
+    const bodyFatValidation = ValidationService.validateNumber(bodyFatInput.value);
     if (!bodyFatValidation.valid) {
       show(bodyFatValidation.error, 'error');
       return;
     }
     if (
-      bodyFat < window.calisthenics.constants.BODY_FAT_MIN ||
-      bodyFat > window.calisthenics.constants.BODY_FAT_MAX
+      bodyFat < BODY_FAT_MIN ||
+      bodyFat > BODY_FAT_MAX
     ) {
       show(
-        `Body fat percentage must be between ${window.calisthenics.constants.BODY_FAT_MIN} and ${window.calisthenics.constants.BODY_FAT_MAX}`,
+        `Body fat percentage must be between ${BODY_FAT_MIN} and ${BODY_FAT_MAX}`,
         'error'
       );
       return;
@@ -693,9 +691,7 @@ async function handleCommentSubmit(form) {
   textInput.value = '';
 
   // Trigger re-render by dispatching state change
-  if (window.calisthenics && window.calisthenics.renderSharedWorkoutView) {
-    window.calisthenics.renderSharedWorkoutView(workoutId);
-  }
+  renderSharedWorkoutView(workoutId);
 }
 
 /**

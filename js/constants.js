@@ -20,6 +20,8 @@ export const ERROR_BOUNDARY_MAX_RETRIES = 2;
 export const EXERCISE_NAME_MAX_LENGTH = 100;
 export const DESCRIPTION_MAX_LENGTH = 2000;
 export const NUMERIC_INPUT_MAX = 10000;
+export const BODY_FAT_MIN = 3;
+export const BODY_FAT_MAX = 60;
 
 // UI constants
 export const VIEW_INIT_DELAY_MS = 100;
