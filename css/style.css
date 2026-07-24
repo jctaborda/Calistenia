@@ -1491,8 +1491,10 @@ html.dark .loading {
   }
   
   .muscle-diagram-front, .muscle-diagram-back {
+    flex: none;
     width: 100%;
     max-width: 300px;
+    height: 350px;
   }
 }
 
@@ -2794,11 +2796,6 @@ html.dark h2 {
     grid-template-columns: 1fr;
   }
   
-  .muscle-diagram-front,
-  .muscle-diagram-back {
-    height: 350px;
-  }
-  
   .stat-icon-wrapper {
     width: 40px;
     height: 40px;
@@ -2951,6 +2948,11 @@ html.dark .content-value {
 @media (max-width: 768px) {
   .muscle-container {
     flex-direction: column;
+  }
+
+  .muscle-diagram-front,
+  .muscle-diagram-back {
+    flex: none;
   }
 }
 
