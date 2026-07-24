@@ -560,7 +560,7 @@ li {
 /* Lists */
 .list-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: 1fr;
     gap: var(--spacing-lg);
 }
 
@@ -620,7 +620,7 @@ li {
 /* Exercise grid */
 .exercises-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: 1fr;
   gap: var(--spacing-lg);
   padding: 16px;
   box-shadow: 0 2px 4px var(--shadow-md);
@@ -743,7 +743,6 @@ li {
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain;
 }
 
 .base-image {
@@ -766,6 +765,16 @@ li {
 }
 
 
+
+#pagination-numbers-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pagination-btn {
+  display: inline-block;
+}
 
 .pagination-btn:hover {
   background: var(--btn-primary);
@@ -1098,6 +1107,7 @@ html.dark .error-message {
 
 .tab-btn {
   flex: 1;
+  min-width: 0;
   padding: 0.75rem 1.5rem;
   background: var(--card-bg, white);
   border: none;
@@ -1108,6 +1118,7 @@ html.dark .error-message {
   border-radius: 4px 4px 0 0;
   font-family: inherit;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .tab-btn:hover {
@@ -1438,6 +1449,7 @@ html.dark .loading {
 
 .routine-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
   align-items: center;
 }
@@ -1636,6 +1648,7 @@ html.dark .loading {
 
 .exercise-meta {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   margin-top: 0.75rem;
   font-size: 0.875rem;
@@ -1943,6 +1956,7 @@ html.dark .loading {
 
 .form-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   margin-top: 1rem;
 }
@@ -2495,7 +2509,7 @@ small {
 /* Featured Routines? */
 .programs-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: 1fr;
   gap: 1.5rem;
   margin-bottom: 3rem;
 }
@@ -2776,8 +2790,13 @@ html.dark h2 {
     grid-template-columns: 1fr;
   }
   
-  .programs-grid {
+  .grid-2 {
     grid-template-columns: 1fr;
+  }
+  
+  .muscle-diagram-front,
+  .muscle-diagram-back {
+    height: 350px;
   }
   
   .stat-icon-wrapper {
@@ -2792,6 +2811,20 @@ html.dark h2 {
   
   .stat-number {
     font-size: 1.5rem;
+  }
+  
+  .form-input--flex {
+    min-width: 0;
+    flex: 1 1 100%;
+  }
+  
+  .btn-difficulty {
+    min-width: 0;
+    flex: 1 1 100%;
+  }
+  
+  .progress-tabs .tab-btn {
+    flex: 1 1 100%;
   }
 }
 
@@ -2882,38 +2915,6 @@ html.dark h2 {
 
 
 
-.muscle-diagram-front,
-.muscle-diagram-back {
-  position: relative;
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
-  overflow: hidden;
-  height: 500px;
-}
-
-.muscle-diagram-front .base-image, .muscle-diagram-back .base-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  z-index: 1;
-}
-
-.muscle-diagram-front .muscle-layer, .muscle-diagram-back .muscle-layer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  z-index: 2;
-}
-
-
-
 .form-cues-list,
 .mistakes-list {
   margin: 0.5rem 0 0 1.5rem;
@@ -2950,14 +2951,6 @@ html.dark .content-value {
 @media (max-width: 768px) {
   .muscle-container {
     flex-direction: column;
-  }
-  
-  .muscle-diagram-front,
-  .muscle-diagram-back {
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-    position: relative;
   }
 }
 
@@ -3721,7 +3714,7 @@ html.dark .content-value {
   border-radius: var(--radius-lg, 16px) var(--radius-lg, 16px) 0 0;
   box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
   z-index: 9999;
-  min-width: 320px;
+  min-width: 0;
   max-width: 90vw;
   transition: bottom 0.3s ease-in-out;
 }
@@ -4214,10 +4207,6 @@ html.dark .skill-tree-node.locked {
     margin-bottom: 1.5rem;
   }
 
-  .list-container {
-    grid-template-columns: 1fr;
-  }
-
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -4292,6 +4281,8 @@ html.dark .skill-tree-node.locked {
   gap: 0.5rem;
   margin-bottom: 1.5rem;
   border-bottom: 2px solid var(--border-color, #dee2e6);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .tab-content {
@@ -4399,6 +4390,7 @@ html.dark .skill-tree-node.locked {
 
 .btn-group {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
 }
 

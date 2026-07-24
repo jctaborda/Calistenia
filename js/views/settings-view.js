@@ -164,6 +164,25 @@ export function renderSettingsView() {
     });
   }
 
+  const fontSizeSelect = main.querySelector('#font-size-select');
+  if (fontSizeSelect) {
+    fontSizeSelect.addEventListener('change', (e) => {
+      const state = getState();
+      updateState({
+        settings: {
+          ...state.settings,
+          appearance: {
+            ...state.settings.appearance,
+            fontSize: e.target.value,
+          },
+        },
+      });
+
+      applyFontSize(e.target.value);
+      show(t('settings.font_size_updated') || 'Font size updated', 'success');
+    });
+  }
+
   // Toggle switches
   const toggles = main.querySelectorAll('.setting-toggle');
   toggles.forEach((toggle) => {
@@ -268,5 +287,19 @@ function applyTheme(theme) {
   localStorage.setItem('theme', theme);
 }
 
+const FONT_SIZE_MAP = {
+  small: '14px',
+  medium: '16px',
+  large: '18px',
+};
+
+/**
+ * Apply font size to the app
+ */
+export function applyFontSize(fontSize) {
+  const size = FONT_SIZE_MAP[fontSize] || FONT_SIZE_MAP.medium;
+  document.documentElement.style.fontSize = size;
+}
+
 // Export for router usage
-export default { render: renderSettingsView };
+export default { render: renderSettingsView, applyFontSize };

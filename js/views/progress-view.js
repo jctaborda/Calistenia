@@ -43,7 +43,7 @@ class SimpleChartRenderer {
     const allValues = datasets.flatMap((ds) => ds.data);
     const maxValue = Math.max(...allValues, 1);
 
-    let svgContent = `<svg width="${width}" height="${height}" class="chart-svg">`;
+    let svgContent = `<svg viewBox="0 0 ${width} ${height}" class="chart-svg">`;
 
     // Title
     svgContent += `<text x="${width / 2}" y="25" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #333)">${title}</text>`;
@@ -110,7 +110,7 @@ class SimpleChartRenderer {
 
     const maxValue = Math.max(...datasets.flatMap((ds) => ds.data), 1);
 
-    let svgContent = `<svg width="${width}" height="${height}" class="chart-svg">`;
+    let svgContent = `<svg viewBox="0 0 ${width} ${height}" class="chart-svg">`;
 
     svgContent += `<text x="${width / 2}" y="25" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #333)">${title}</text>`;
 
@@ -163,7 +163,7 @@ class SimpleChartRenderer {
     const legendHeight = legendItems * 20 + 20;
     const totalHeight = size + legendHeight;
 
-    let svgContent = `<svg width="${size}" height="${totalHeight}" class="chart-svg">`;
+    let svgContent = `<svg viewBox="0 0 ${size} ${totalHeight}" class="chart-svg">`;
 
     svgContent += `<text x="${center}" y="25" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #333)">${title}</text>`;
 

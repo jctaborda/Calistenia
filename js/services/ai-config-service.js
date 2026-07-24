@@ -4,6 +4,7 @@
 
 import { storeAIConfigs, aiConfigsLoad } from './database.js';
 import { show } from './toast-service.js';
+import { getState } from './state.js';
 
 const LANG_MAP = { es: 'ai-exercise-config-es.json', en: 'ai-exercise-config.json' };
 
@@ -72,8 +73,8 @@ export async function loadAIConfigs() {
  * @returns {Object|null} The config object or null if not found
  */
 export function getAIConfig(exerciseId) {
-  if (!aiConfigsCache) return null;
-  return aiConfigsCache.find(
+  const configs = aiConfigsCache || getState().aiConfigs || [];
+  return configs.find(
     (c) => String(c.exerciseId) === String(exerciseId)
   ) || null;
 }
@@ -92,8 +93,8 @@ export function hasAIConfig(exerciseId) {
  * @returns {number[]}
  */
 export function getSupportedExerciseIds() {
-  if (!aiConfigsCache) return [];
-  return aiConfigsCache.map((c) => c.exerciseId);
+  const configs = aiConfigsCache || getState().aiConfigs || [];
+  return configs.map((c) => c.exerciseId);
 }
 
 /**

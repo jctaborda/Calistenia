@@ -330,7 +330,7 @@ function renderWeightPerformanceChart(bodyMetrics, history) {
   
   const maxWorkouts = Math.max(...chartData.map(d => d.totalReps), 1);
   
-  let svgContent = `<svg width="${width}" height="${height}" style="background: var(--card-bg, #fff); border-radius: 8px; border: 1px solid var(--gray-200);">`;
+  let svgContent = `<svg viewBox="0 0 ${width} ${height}" class="chart-svg" style="background: var(--card-bg, #fff); border-radius: 8px; border: 1px solid var(--gray-200);">`;
   
   // Draw axes
   svgContent += `<line x1="${padding}" y1="${padding}" x2="${padding}" y2="${height - padding}" stroke="var(--gray-400)" stroke-width="1"/>`;

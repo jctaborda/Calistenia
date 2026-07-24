@@ -8,7 +8,7 @@ import { renderWorkoutSummaryView } from './views/workout-summary-view.js';
 import { renderWorkoutCompletionView } from './views/workout-completion-view.js';
 import { renderOnboardingView } from './views/onboarding-view.js';
 import { renderProfileView } from './views/profile-view.js';
-import { renderSettingsView } from './views/settings-view.js';
+import { renderSettingsView, applyFontSize } from './views/settings-view.js';
 import { renderBuilderView } from './views/builder-view.js';
 import { renderExercisesView } from './views/exercises-view.js';
 import { renderRoutineDetailsView } from './views/routine-details-view.js';
@@ -38,6 +38,12 @@ import { registerGlobalErrorHandlers } from './services/error-boundary-service.j
 import { voiceCuesService } from './services/voice-cues-service.js';
 
 initializeState();
+
+// Apply saved font size
+const initialState = getState();
+if (initialState.settings?.appearance?.fontSize) {
+  applyFontSize(initialState.settings.appearance.fontSize);
+}
 
 // ==================== Root-Level Error Boundary ====================
 // Top-level catch-all for any unhandled errors before/during routing

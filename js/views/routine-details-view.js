@@ -85,10 +85,10 @@ export async function renderRoutineDetailsView(type, id) {
       const muscleIds = isSecondary ? fullExercise.muscles_secondary : fullExercise.muscles;
       
       return muscleIds.map(muscleId => {
-        const muscle = muscleData[muscleId - 1];
+        const muscle = muscleData.find(m => m.id === muscleId);
         if (muscle && muscle.is_front === isFront) {
           const folder = isSecondary ? 'secondary' : 'main';
-          return `<img src="assets/images/muscles/${folder}/muscle-${muscleId}.svg" alt="Muscle ${muscleId}" class="muscle-layer" />`;
+          return `<img src="assets/images/muscles/${folder}/muscle-${muscleId}.svg" alt="Muscle ${muscleId}" class="muscle-layer" loading="lazy" />`;
         }
         return '';
       }).join('');
@@ -164,12 +164,12 @@ export async function renderRoutineDetailsView(type, id) {
           <h3 class="section-title">${t('routine_details.target_muscles')}</h3>
           <div class="muscle-container">
             <div class="muscle-diagram-front">
-              <img src="./assets/images/muscles/muscular_system_front.svg" alt="Muscular System Front" class="base-image">
+              <img src="./assets/images/muscles/muscular_system_front.svg" alt="Muscular System Front" class="base-image" loading="lazy">
               ${generateMuscleImages(routine.exercises, muscles, true, true)}
               ${generateMuscleImages(routine.exercises, muscles, false, true)}
             </div>
             <div class="muscle-diagram-back">
-              <img src="./assets/images/muscles/muscular_system_back.svg" alt="Muscular System Back" class="base-image">
+              <img src="./assets/images/muscles/muscular_system_back.svg" alt="Muscular System Back" class="base-image" loading="lazy">
               ${generateMuscleImages(routine.exercises, muscles, true, false)}
               ${generateMuscleImages(routine.exercises, muscles, false, false)}
             </div>
