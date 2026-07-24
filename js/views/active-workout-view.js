@@ -647,16 +647,16 @@ async function startAITracking(exerciseId, aiConfig) {
 
     // Pose callback
     aiFormService.setPoseCallback((data) => {
-      aiFeedbackOverlay.updatePose(data);
+      aiFeedbackOverlay.setPoseData(data);
       const statusDot = document.getElementById('ai-status-dot');
       const statusText = document.getElementById('ai-status-text');
       if (statusDot && statusText) {
         if (data.isValid) {
           statusDot.className = 'ai-status-dot ai-status-active';
-          statusText.textContent = t('ai.ai_tracking_active');
+          statusText.textContent = t('ai_tracking_active');
         } else {
           statusDot.className = 'ai-status-dot ai-status-lost';
-          statusText.textContent = t('ai.ai_tracking_lost');
+          statusText.textContent = t('ai_tracking_lost');
         }
       }
     });

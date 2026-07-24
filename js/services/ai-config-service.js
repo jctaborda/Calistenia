@@ -42,17 +42,22 @@ export async function loadAIConfigs() {
     const data = await response.json();
     const configs = data.configs || [];
 
-    // Store in IndexedDB with bilingual support
-    // Preserve existing data for the other locale
-    const existingData = await aiConfigsLoad();
-    const existingConfigs = existingData?.configs || [];
-    const enData = locale === 'es' ? existingConfigs : configs;
-    const esData = locale === 'es' ? configs : existingConfigs;
-
-    await storeAIConfigs({ lang: 'en', configs: enData });
-    await storeAIConfigs({ lang: 'es', configs: esData });
-
+    // Populate cache immediately so UI works even if IndexedDB write fails
     aiConfigsCache = configs;
+
+    // Best-effort: store in IndexedDB with bilingual support
+    try {
+      const existingData = await aiConfigsLoad();
+      const existingConfigs = existingData?.configs || [];
+      const enData = locale === 'es' ? existingConfigs : configs;
+      const esData = locale === 'es' ? configs : existingConfigs;
+
+      await storeAIConfigs({ lang: 'en', configs: enData });
+      await storeAIConfigs({ lang: 'es', configs: esData });
+    } catch (idbError) {
+      console.warn('[AIConfigService] Failed to cache configs in IndexedDB:', idbError);
+    }
+
     return configs;
   } catch (error) {
     console.error('[AIConfigService] Error loading from network:', error);
