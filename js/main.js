@@ -106,8 +106,12 @@ async function initializeApp() {
   // Initialize PWA install prompt service
   installPromptService.init();
 
-  // Handle messages from Service Worker (push notifications, background sync)
+  // Register Service Worker and handle messages
   if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch(err => {
+      console.warn('[SW] Registration failed:', err);
+    });
+
     navigator.serviceWorker.addEventListener('message', (event) => {
       if (event.data?.type === 'NAVIGATE') {
         window.location.hash = event.data.hash;
