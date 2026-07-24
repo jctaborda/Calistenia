@@ -3,6 +3,9 @@
  *
  * Manual-only mode: User controls progression by clicking "Next Set" button
  * Flow: Set duration counting → User clicks "Next Set" → Rest timer counting → User clicks "Next Set" → Next set/exercise
+ *
+ * AI Mode: When enabled, shows camera + skeleton overlay, counts reps automatically,
+ * provides form feedback via voice cues.
  */
 
 import { getState, updateState } from '../services/state.js';
@@ -15,6 +18,9 @@ import { escapeHtml } from '../utils/html-helpers.js';
 import { voiceCuesService } from '../services/voice-cues-service.js';
 import { soundService } from '../services/sound-service.js';
 import { show } from '../services/toast-service.js';
+import { aiFormService } from '../services/ai-form-service.js';
+import { aiFeedbackOverlay } from '../components/ai-feedback-overlay.js';
+import { getAIConfig } from '../services/ai-config-service.js';
 
 // Track when set started for duration calculation
 let currentSetStartTime = null;
@@ -25,11 +31,19 @@ let currentRestStartTime = null;
 // Track if we're currently showing rest timer (to prevent re-render)
 let isShowingRestTimer = false;
 
+// AI tracking state
+let aiEnabled = false;
+let aiFormScoreInterval = null;
+let aiCurrentExerciseId = null;
+
 export function renderActiveWorkoutView() {
   const main = document.getElementById('app');
 
   // Clean up any stale timers from previous render before starting new ones
   workoutTimerService.cleanup();
+
+  // Clean up AI from previous render
+  cleanupAI();
 
   // Remove stale stateChange listener from previous render (memory leak fix)
   if (main._handleActiveWorkoutStateChange) {
@@ -82,6 +96,11 @@ export function renderActiveWorkoutView() {
   const totalExercises =
     (routine.warmup?.length || 0) + routine.exercises.length + (routine.cooldown?.length || 0);
 
+  // Check if AI mode is active and this exercise has AI support
+  const workoutAI = activeWorkout.aiMode;
+  const exerciseAIConfig = workoutAI ? getAIConfig(exercise.id) : null;
+  const canUseAI = workoutAI && exerciseAIConfig !== null;
+
   // Render the view
   main.innerHTML = renderActiveWorkoutTemplate({
     routine,
@@ -94,6 +113,8 @@ export function renderActiveWorkoutView() {
     currentSetIndex,
     currentExerciseData,
     localIndex,
+    canUseAI,
+    aiEnabled,
   });
 
   // Start live set duration timer using service (AFTER DOM is rendered)
@@ -120,12 +141,18 @@ export function renderActiveWorkoutView() {
     exercise,
     localIndex,
     exercises,
+    canUseAI,
+    exerciseAIConfig,
   });
+
+  // Start AI tracking if enabled and exercise supports it
+  if (canUseAI && !aiEnabled) {
+    startAITracking(exercise.id, exerciseAIConfig);
+  }
 
   // Bind state change event listener (with cleanup)
   const handleActiveWorkoutStateChange = () => {
     // Don't re-render if we're currently showing rest timer
-    // (user is in the middle of resting and will click "Next Set" to advance)
     if (isShowingRestTimer) {
       return;
     }
@@ -135,6 +162,7 @@ export function renderActiveWorkoutView() {
     } else {
       // Cleanup all timers when leaving active workout view
       workoutTimerService.cleanup();
+      cleanupAI();
     }
   };
 
@@ -156,6 +184,8 @@ function renderActiveWorkoutTemplate({
   currentSetIndex,
   currentExerciseData,
   localIndex,
+  canUseAI,
+  aiEnabled: aiEnabledState,
 }) {
   const phaseColor = phase === 'warmup' ? '#4CAF50' : phase === 'cooldown' ? '#FF9800' : '#2196F3';
 
@@ -167,6 +197,37 @@ function renderActiveWorkoutTemplate({
       <p><span class="phase-badge" style="background: ${phaseColor}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.9em;">${t(`active_workout.${phase}`)}</span> ${t('active_workout.exercise')} ${currentExerciseIndex + 1} ${t('active_workout.of')} ${totalExercises}</p>
       
       ${isHiitWorkout ? workoutTimerService.renderHiitSection(hiitInterval) : ''}
+      
+      ${
+        canUseAI
+          ? `
+      <div id="ai-workout-container" class="ai-workout-video-container">
+        <div class="ai-loading" id="ai-loading">
+          <div class="spinner"></div>
+          <span>${t('ai_initializing')}</span>
+        </div>
+      </div>
+      <div class="ai-workout-stats" id="ai-workout-stats">
+        <div class="ai-workout-stat">
+          <span class="stat-label">${t('ai_reps')}</span>
+          <span class="stat-value" id="ai-rep-count">0</span>
+        </div>
+        <div class="ai-workout-stat">
+          <span class="stat-label">${t('ai_form_score')}</span>
+          <span class="stat-value" id="ai-form-score">-</span>
+        </div>
+        <div class="ai-workout-stat">
+          <span class="stat-label">${t('ai_target_reps')}</span>
+          <span class="stat-value">${currentExerciseData.reps}</span>
+        </div>
+      </div>
+      <div class="ai-workout-status" id="ai-status">
+        <span class="ai-status-dot" id="ai-status-dot"></span>
+        <span id="ai-status-text">${t('ai_waiting')}</span>
+      </div>
+      `
+          : ''
+      }
       
       <div id="set-timer-display" class="card margin-bottom-1">
         <h3>⏱ ${t('active_workout.timer')}</h3>
@@ -191,6 +252,11 @@ function renderActiveWorkoutTemplate({
         <button id="next-set-btn" class="btn flex-1">${t('active_workout.next_set')}</button>
         <button id="adjust-btn" class="btn flex-1">⚙ ${t('active_workout.adjust')}</button>
         <button id="swap-btn" class="btn flex-1">🔄 ${t('active_workout.swap_exercise')}</button>
+        ${
+          canUseAI
+            ? `<button id="ai-toggle-btn" class="btn btn-secondary flex-1">${aiEnabledState ? '⏹ ' + t('ai_stop_tracking') : '📷 ' + t('ai_start_tracking')}</button>`
+            : ''
+        }
       </div>
     </div>
   `
@@ -211,6 +277,8 @@ function wireUpEventHandlers({
   totalExercises,
   exercises,
   localIndex,
+  canUseAI,
+  exerciseAIConfig,
 }) {
   const main = document.getElementById('app');
 
@@ -245,6 +313,25 @@ function wireUpEventHandlers({
     );
   }
 
+  // AI toggle button
+  if (canUseAI) {
+    const aiToggleBtn = main.querySelector('#ai-toggle-btn');
+    if (aiToggleBtn) {
+      aiToggleBtn.addEventListener('click', () => {
+        const exercise = exercises.find(
+          (e) => String(e.id) === String(currentExerciseData.exerciseId)
+        );
+        if (aiEnabled) {
+          stopAITracking();
+          updateAIButton(false);
+        } else if (exerciseAIConfig && exercise) {
+          startAITracking(exercise.id, exerciseAIConfig);
+          updateAIButton(true);
+        }
+      });
+    }
+  }
+
   // Handle HIIT timer if applicable
   if (isHiitWorkout) {
     handleHIITTimer({ hiitInterval, currentExerciseIndex, currentExerciseData, routine });
@@ -259,7 +346,6 @@ function wireUpEventHandlers({
 
 /**
  * Handle next set button click
- * Flow: If showing set duration → show rest timer; If showing rest timer → advance to next set/exercise
  */
 function handleNextSetClick() {
   const { activeWorkout, exercises } = getState();
@@ -267,7 +353,6 @@ function handleNextSetClick() {
   const currentSetIndex = activeWorkout.currentSetIndex || 0;
   const routine = activeWorkout.routine;
 
-  // Get current exercise data
   const { phase, localIndex } = workoutWorkflowService.getPhaseInfo(currentExerciseIndex, routine);
   const currentExerciseData = workoutWorkflowService.getExerciseData(currentExerciseIndex, routine);
 
@@ -284,7 +369,6 @@ function handleNextSetClick() {
       ? Math.floor((Date.now() - currentRestStartTime) / 1000)
       : 0;
 
-    // Add current set to history
     if (!activeWorkout.setHistory) {
       activeWorkout.setHistory = [];
     }
@@ -304,19 +388,17 @@ function handleNextSetClick() {
 
     updateState({ activeWorkout }, { silent: true });
     currentRestStartTime = null;
-    isShowingRestTimer = false; // Clear the flag before advancing
+    isShowingRestTimer = false;
 
-    // Advance to next set/exercise
     advanceWorkout(currentExerciseIndex, currentSetIndex, routine);
   } else {
-    // User clicked after set duration - check if this is the last set of the last exercise
+    // User clicked after set duration
     const totalExercises =
       (routine.warmup?.length || 0) + routine.exercises.length + (routine.cooldown?.length || 0);
     const isLastExercise = currentExerciseIndex >= totalExercises - 1;
     const isLastSet = currentSetIndex >= currentExerciseData.sets - 1;
 
     if (isLastExercise && isLastSet) {
-      // This is the last set of the last exercise - complete workout directly, no rest
       const setDuration = currentSetStartTime
         ? Math.floor((Date.now() - currentSetStartTime) / 1000)
         : 0;
@@ -335,32 +417,32 @@ function handleNextSetClick() {
       });
 
       updateState({ activeWorkout }, { silent: true });
-
-      // Navigate directly to completion view
+      cleanupAI();
       window.location.hash = '#workout-completion';
     } else {
-      // Not the last set - show rest timer
+      // Show rest timer
       const restTime = currentExerciseData.restTime || 60;
 
-      // Hide set duration display
       const setDurationDisplay = main.querySelector('#set-timer-display');
       if (setDurationDisplay) {
         setDurationDisplay.style.display = 'none';
       }
 
-      // Hide current exercise card
       const currExEl = main.querySelector('.current-exercise-card');
       if (currExEl) {
         currExEl.style.display = 'none';
       }
 
-      // Show rest timer BEFORE updating state (to prevent re-render clearing it)
+      // Pause AI during rest
+      if (aiEnabled) {
+        stopAITracking();
+      }
+
       const restEl = main.querySelector('#rest-timer');
       if (restEl) {
         currentRestStartTime = Date.now();
-        isShowingRestTimer = true; // Mark that we're showing rest timer
+        isShowingRestTimer = true;
         workoutTimerService.displayRestTimer(restTime, restEl, () => {
-          // Rest timer target reached — provide feedback
           const settings = getState().settings || {};
           const timerFeedback = settings.timerFeedback || {};
 
@@ -376,9 +458,6 @@ function handleNextSetClick() {
         });
       }
 
-      // Note: Don't push to setHistory here - wait until user clicks "Next" during rest
-      // The set will be saved when they complete the rest period
-
       updateState({ activeWorkout }, { silent: true });
     }
   }
@@ -386,7 +465,6 @@ function handleNextSetClick() {
 
 /**
  * Advance workout to next set or exercise
- * When moving to a new exercise, we still need to show rest before starting the new set
  */
 function advanceWorkout(currentExerciseIndex, currentSetIndex, routine) {
   const { exercises } = getState();
@@ -398,15 +476,12 @@ function advanceWorkout(currentExerciseIndex, currentSetIndex, routine) {
     routine
   );
 
-  // Check if we're completing the workout (after final rest)
   if (result.action === 'complete_workout') {
-    // Save the final rest time before completing
     const { activeWorkout } = getState();
     const actualRestTime = currentRestStartTime
       ? Math.floor((Date.now() - currentRestStartTime) / 1000)
       : 0;
 
-    // Update the last entry in setHistory with actual rest time
     if (activeWorkout.setHistory && activeWorkout.setHistory.length > 0) {
       const lastEntry = activeWorkout.setHistory[activeWorkout.setHistory.length - 1];
       lastEntry.actualRestTime = actualRestTime;
@@ -415,17 +490,14 @@ function advanceWorkout(currentExerciseIndex, currentSetIndex, routine) {
     updateState({ activeWorkout }, { silent: true });
     currentRestStartTime = null;
     isShowingRestTimer = false;
-
-    // Navigate to completion view
+    cleanupAI();
     window.location.hash = '#workout-completion';
   } else if (result.action === 'next_exercise') {
-    // Moving to next exercise - save actual rest time from previous exercise's rest
     const { activeWorkout } = getState();
     const actualRestTime = currentRestStartTime
       ? Math.floor((Date.now() - currentRestStartTime) / 1000)
       : 0;
 
-    // Update the last entry in setHistory with actual rest time
     if (activeWorkout.setHistory && activeWorkout.setHistory.length > 0) {
       const lastEntry = activeWorkout.setHistory[activeWorkout.setHistory.length - 1];
       lastEntry.actualRestTime = actualRestTime;
@@ -435,10 +507,8 @@ function advanceWorkout(currentExerciseIndex, currentSetIndex, routine) {
     currentRestStartTime = null;
     isShowingRestTimer = false;
 
-    // Now advance the state to next exercise
     updateState({ activeWorkout: result.newState }, { silent: true });
 
-    // Trigger voice cue for next exercise
     const nextExerciseData = workoutWorkflowService.getExerciseData(
       result.newState.currentExerciseIndex,
       routine
@@ -452,16 +522,13 @@ function advanceWorkout(currentExerciseIndex, currentSetIndex, routine) {
       }
     }
 
-    // Trigger re-render to show the new exercise's set duration
     updateState({ stateChange: true }, { silent: false });
   } else {
-    // Just moving to next set of same exercise
     const { activeWorkout } = getState();
     const actualRestTime = currentRestStartTime
       ? Math.floor((Date.now() - currentRestStartTime) / 1000)
       : 0;
 
-    // Update the last entry in setHistory with actual rest time
     if (activeWorkout.setHistory && activeWorkout.setHistory.length > 0) {
       const lastEntry = activeWorkout.setHistory[activeWorkout.setHistory.length - 1];
       lastEntry.actualRestTime = actualRestTime;
@@ -471,10 +538,7 @@ function advanceWorkout(currentExerciseIndex, currentSetIndex, routine) {
     currentRestStartTime = null;
     isShowingRestTimer = false;
 
-    // Now advance to next set
     updateState({ activeWorkout: result.newState }, { silent: true });
-
-    // Trigger re-render to show the new set's duration
     updateState({ stateChange: true }, { silent: false });
   }
 }
@@ -552,6 +616,143 @@ function handleHIITTimer({ hiitInterval, currentExerciseIndex, currentExerciseDa
       document.dispatchEvent(new CustomEvent('stateChange'));
     },
   });
+}
+
+// ==================== AI TRACKING ====================
+
+/**
+ * Start AI tracking for the current exercise
+ */
+async function startAITracking(exerciseId, aiConfig) {
+  try {
+    const loadingEl = document.getElementById('ai-loading');
+    if (loadingEl) loadingEl.style.display = 'flex';
+
+    await aiFeedbackOverlay.init('ai-workout-container');
+
+    const { video } = await aiFormService.start({
+      exerciseId: String(exerciseId),
+      aiConfig,
+      mode: 'reps',
+      facingMode: 'user',
+      resolution: { width: 320, height: 240 },
+    });
+
+    aiFeedbackOverlay.setVideo(video);
+    aiEnabled = true;
+    aiCurrentExerciseId = exerciseId;
+
+    // Hide loading
+    if (loadingEl) loadingEl.style.display = 'none';
+
+    // Pose callback
+    aiFormService.setPoseCallback((data) => {
+      aiFeedbackOverlay.updatePose(data);
+      const statusDot = document.getElementById('ai-status-dot');
+      const statusText = document.getElementById('ai-status-text');
+      if (statusDot && statusText) {
+        if (data.isValid) {
+          statusDot.className = 'ai-status-dot ai-status-active';
+          statusText.textContent = t('ai.ai_tracking_active');
+        } else {
+          statusDot.className = 'ai-status-dot ai-status-lost';
+          statusText.textContent = t('ai.ai_tracking_lost');
+        }
+      }
+    });
+
+    // Rep callback
+    aiFormService.setRepCallback((count, meta) => {
+      const repEl = document.getElementById('ai-rep-count');
+      if (repEl) repEl.textContent = count;
+
+      // Voice cues for rep announcements
+      const voiceEvery = aiConfig?.voiceCues?.announceEvery || 5;
+      if (
+        aiConfig?.voiceCues?.announceReps &&
+        count > 0 &&
+        count % voiceEvery === 0
+      ) {
+        voiceCuesService.speak(t('ai_rep_count', { count }));
+      }
+
+      // Check if target reps reached
+      const { activeWorkout } = getState();
+      const currentExerciseIndex = activeWorkout.currentExerciseIndex || 0;
+      const routine = activeWorkout.routine;
+      const exerciseData = workoutWorkflowService.getExerciseData(currentExerciseIndex, routine);
+      if (exerciseData && count >= exerciseData.reps) {
+        show(t('ai_target_reached', { count }), 'success');
+        // Auto-advance: trigger the next set click
+        const nextBtn = document.getElementById('next-set-btn');
+        if (nextBtn) nextBtn.click();
+      }
+    });
+
+    // Form callback
+    aiFormService.setFormCallback((violation) => {
+      const locale = localStorage.getItem('locale') || 'en';
+      const msg = locale === 'es' ? violation.message_es : violation.message_en;
+      show(msg, 'warning');
+
+      if (aiConfig?.voiceCues?.announceForm) {
+        voiceCuesService.speak(msg);
+      }
+
+      aiFeedbackOverlay.setViolations([violation]);
+    });
+
+    // Form score polling
+    aiFormScoreInterval = setInterval(() => {
+      const stats = aiFormService.getStats();
+      const scoreEl = document.getElementById('ai-form-score');
+      if (scoreEl) {
+        scoreEl.textContent = stats.avgFormScore > 0 ? `${stats.avgFormScore}%` : '-';
+      }
+      aiFeedbackOverlay.setFormScore(stats.avgFormScore);
+    }, 500);
+  } catch (error) {
+    console.error('[ActiveWorkout] AI tracking failed:', error);
+    show(t('ai_camera_error'), 'error');
+    aiEnabled = false;
+    const loadingEl = document.getElementById('ai-loading');
+    if (loadingEl) {
+      loadingEl.innerHTML = `<p class="ai-error-text">${t('ai_camera_error')}</p>`;
+    }
+  }
+}
+
+/**
+ * Stop AI tracking
+ */
+function stopAITracking() {
+  if (aiFormScoreInterval) {
+    clearInterval(aiFormScoreInterval);
+    aiFormScoreInterval = null;
+  }
+  aiFormService.stop();
+  aiFeedbackOverlay.destroy();
+  aiEnabled = false;
+  aiCurrentExerciseId = null;
+}
+
+/**
+ * Clean up all AI resources
+ */
+function cleanupAI() {
+  stopAITracking();
+}
+
+/**
+ * Update the AI toggle button text
+ */
+function updateAIButton(isEnabled) {
+  const btn = document.getElementById('ai-toggle-btn');
+  if (btn) {
+    btn.textContent = isEnabled
+      ? '⏹ ' + t('ai_stop_tracking')
+      : '📷 ' + t('ai_start_tracking');
+  }
 }
 
 // Named + default export for maximum flexibility (Pattern 3)

@@ -16,6 +16,9 @@ const DB_NAME = 'calisthenics-db';
  * - v4: Added data_version store for cache sync tracking
  * - v5: [No changes - reserved]
  * - v6: [No changes - reserved]
+ * - v7: Added shared_comments store for workout sharing
+ * - v8: Added shared_comments workoutId index
+ * - v9: Added ai_configs store for AI exercise form tracking configurations
  * 
  * Migration Guide:
  * 1. Increment DB_VERSION at top of file
@@ -23,7 +26,7 @@ const DB_NAME = 'calisthenics-db';
  * 3. Test on fresh install and existing DB
  * 4. Update this changelog with new version details
  */
-export const DB_VERSION = 8;
+export const DB_VERSION = 9;
 export const STORES = {
   EXERCISES: 'exercises',
   WORKOUTS: 'workouts',
@@ -36,7 +39,8 @@ export const STORES = {
   DIFFICULTIES: 'difficulties',
   DELETED_ITEMS: 'deleted_items', // For undo functionality
   DATA_VERSION: 'data_version', // Tracks data.json version for cache sync
-  SHARED_COMMENTS: 'shared_comments' // Stores comments for shared workouts
+  SHARED_COMMENTS: 'shared_comments', // Stores comments for shared workouts
+  AI_CONFIGS: 'ai_configs' // AI exercise form tracking configurations
 };
 
 let db = null;
@@ -141,7 +145,8 @@ export function openDatabase() {
 
       // Migrate: if modules store exists without keyPath, recreate it with keyPath
       if (database.objectStoreNames.contains(STORES.MODULES)) {
-        const oldStore = database.transaction(STORES.MODULES, 'readwrite').objectStore(STORES.MODULES);
+        const upgradeTx = event.target.transaction;
+        const oldStore = upgradeTx.objectStore(STORES.MODULES);
         if (!oldStore.keyPath) {
           // Synchronously save existing entries before recreating the store
           const entries = {};
@@ -210,6 +215,11 @@ export function openDatabase() {
       // Create object store for shared workout comments
       if (!database.objectStoreNames.contains(STORES.SHARED_COMMENTS)) {
         database.createObjectStore(STORES.SHARED_COMMENTS, { keyPath: 'workoutId' });
+      }
+
+      // Create object store for AI exercise form tracking configurations
+      if (!database.objectStoreNames.contains(STORES.AI_CONFIGS)) {
+        database.createObjectStore(STORES.AI_CONFIGS, { keyPath: 'lang' });
       }
     };
 
@@ -383,6 +393,56 @@ export async function loadDataVersion() {
   } catch (error) {
     // Database not available yet or other error — not a fatal error
     console.warn('Could not open database to load data version:', error);
+    return null;
+  }
+}
+
+// AI Configs operations (bilingual: stores 'en' and 'es' keyed entries)
+export async function storeAIConfigs(data) {
+  const database = await openDatabase();
+  const transaction = database.transaction([STORES.AI_CONFIGS], 'readwrite');
+  attachTransactionError(transaction);
+  const store = transaction.objectStore(STORES.AI_CONFIGS);
+
+  const putRequest = store.put(data);
+
+  return new Promise((resolve, reject) => {
+    putRequest.onsuccess = () => resolve({ success: true });
+    putRequest.onerror = () => reject(putRequest.error);
+  });
+}
+
+export async function aiConfigsLoad() {
+  try {
+    const database = await openDatabase();
+    const transaction = database.transaction([STORES.AI_CONFIGS], 'readonly');
+    attachTransactionError(transaction);
+    const store = transaction.objectStore(STORES.AI_CONFIGS);
+
+    return new Promise((resolve) => {
+      const request = store.getAll();
+      request.onsuccess = () => {
+        const results = request.result || [];
+        if (results.length === 0) {
+          resolve(null);
+          return;
+        }
+        // Merge bilingual entries into a single object
+        const merged = { configs: [] };
+        results.forEach((entry) => {
+          if (entry.configs && Array.isArray(entry.configs)) {
+            merged.configs.push(...entry.configs);
+          }
+        });
+        resolve(merged);
+      };
+      request.onerror = () => {
+        console.warn('Could not load AI configs from IndexedDB:', request.error);
+        resolve(null);
+      };
+    });
+  } catch (error) {
+    console.warn('Could not open database to load AI configs:', error);
     return null;
   }
 }

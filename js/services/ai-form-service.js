@@ -1,6 +1,7 @@
 // AI Form Service - Real-time pose detection and form analysis using MediaPipe
 // All processing happens in-browser - no video uploads
 // Uses local @mediapipe/pose package (v0.5) with .tflite models
+// Now config-driven: exercise-specific behavior comes from ai-exercise-config.json
 
 let Pose = null;
 
@@ -26,6 +27,26 @@ const LANDMARKS = {
   RIGHT_ANKLE: 28
 };
 
+// Side-based landmark mapping for config-driven joint lookup
+const SIDE_LANDMARKS = {
+  right: {
+    shoulder: LANDMARKS.RIGHT_SHOULDER,
+    elbow: LANDMARKS.RIGHT_ELBOW,
+    wrist: LANDMARKS.RIGHT_WRIST,
+    hip: LANDMARKS.RIGHT_HIP,
+    knee: LANDMARKS.RIGHT_KNEE,
+    ankle: LANDMARKS.RIGHT_ANKLE
+  },
+  left: {
+    shoulder: LANDMARKS.LEFT_SHOULDER,
+    elbow: LANDMARKS.LEFT_ELBOW,
+    wrist: LANDMARKS.LEFT_WRIST,
+    hip: LANDMARKS.LEFT_HIP,
+    knee: LANDMARKS.LEFT_KNEE,
+    ankle: LANDMARKS.LEFT_ANKLE
+  }
+};
+
 export class AIFormService {
   constructor() {
     this.pose = null;
@@ -34,21 +55,25 @@ export class AIFormService {
     this.canvasCtx = null;
     this.isRunning = false;
     this.lastVideoTime = 0;
-    this.processingInterval = 100; // Process every 100ms (10fps)
+    this.processingInterval = 100;
     this.poseCallback = null;
     this.formCallback = null;
     this.repCallback = null;
-    
+
     // Rep counting state
-    this.repState = 'up'; // 'up' or 'down'
+    this.repState = 'up';
     this.repCount = 0;
     this.lastRepTime = 0;
-    this.repCooldown = 500; // ms between reps
-    
+    this.repCooldown = 500;
+
     // Form tracking
     this.formViolations = [];
     this.formScores = [];
-    this.maxFormScores = 50; // Keep last 50 scores
+    this.maxFormScores = 50;
+
+    // Config-driven state
+    this.aiConfig = null;
+    this.sideLandmarks = null;
   }
 
   /**
@@ -56,41 +81,29 @@ export class AIFormService {
    */
   async initialize() {
     if (this.pose) return;
-    
+
     try {
-      // Load from local @mediapipe/pose package
-      // The pose.js file attaches Pose to window, not as ES module export
       await import('/assets/mediapipe/pose.js');
-      
-      // Get Pose from window object
       Pose = window.Pose;
-      
+
       if (!Pose) {
         throw new Error('MediaPipe Pose not found on window object');
       }
-      
-      // Create Pose instance with local assets
-      // @mediapipe/pose expects locateFile to return paths in the same directory
+
       this.pose = new Pose({
-        locateFile: (file) => {
-          // All MediaPipe files are in the same directory (/assets/mediapipe/)
-          return `/assets/mediapipe/${file}`;
-        }
+        locateFile: (file) => `/assets/mediapipe/${file}`
       });
-      
-      // Set options with local model
+
       await this.pose.setOptions({
-        modelComplexity: 1, // 0=lite, 1=full, 2=heavy
+        modelComplexity: 1,
         smoothLandmarks: true,
         enableSegmentation: false,
         smoothSegmentation: false,
         minDetectionConfidence: 0.5,
         minTrackingConfidence: 0.5
       });
-      
-      // Initialize the pose detection
+
       await this.pose.initialize();
-      
     } catch (error) {
       console.error('[AIFormService] Failed to initialize MediaPipe:', error);
       throw error;
@@ -99,76 +112,77 @@ export class AIFormService {
 
   /**
    * Start camera and pose detection
+   * @param {Object} config - { exerciseId, aiConfig, mode, facingMode, resolution }
    */
   async start(config) {
     await this.initialize();
-    
-    const { exerciseId, mode = 'reps', facingMode = 'user', resolution = { width: 320, height: 240 } } = config;
-    
-    // Get camera stream
+
+    const {
+      exerciseId,
+      aiConfig = null,
+      mode = 'reps',
+      facingMode = 'user',
+      resolution = { width: 320, height: 240 }
+    } = config;
+
     try {
-      // First, enumerate devices to verify camera is available
       const devices = await navigator.mediaDevices.enumerateDevices();
-      const videoDevices = devices.filter(device => device.kind === 'videoinput');
-      
+      const videoDevices = devices.filter((device) => device.kind === 'videoinput');
+
       if (videoDevices.length === 0) {
         throw new Error('No video devices found');
       }
-      
-      // Use minimal constraints
+
       const constraints = {
         video: {
-          facingMode: facingMode,
+          facingMode,
           width: { ideal: resolution.width },
           height: { ideal: resolution.height }
         }
       };
-      
+
       const stream = await navigator.mediaDevices.getUserMedia(constraints);
-      
+
       this.video = document.createElement('video');
       this.video.srcObject = stream;
       this.video.setAttribute('playsinline', true);
       this.video.muted = true;
-      
+
       await new Promise((resolve) => {
         this.video.addEventListener('loadeddata', resolve);
       });
-      
-      // Ensure video is playing
+
       this.video.play().catch((err) => {
         console.error('[AIFormService] Video play failed:', err);
       });
-      
-      // Setup canvas for overlay
+
       this.canvas = document.createElement('canvas');
       this.canvas.width = resolution.width;
       this.canvas.height = resolution.height;
       this.canvasCtx = this.canvas.getContext('2d');
-      
+
       this.exerciseId = exerciseId;
+      this.aiConfig = aiConfig;
       this.mode = mode;
       this.isRunning = true;
       this.lastVideoTime = 0;
       this.repCount = 0;
       this.repState = 'up';
       this.formScores = [];
-      
-      // Register result callback
+
+      // Resolve side landmarks from config
+      const side = aiConfig?.repCounting?.side || 'right';
+      this.sideLandmarks = SIDE_LANDMARKS[side] || SIDE_LANDMARKS.right;
+
       this.pose.onResults((results) => {
         this.handlePoseResults(results);
       });
-      
-      // Start processing loop
+
       this.predictLoop();
-      
-      // Expose video element for rendering
+
       return { video: this.video, canvas: this.canvas };
-      
     } catch (error) {
       console.error('[AIFormService] Camera access denied:', error);
-      console.error('[AIFormService] Error name:', error.name);
-      console.error('[AIFormService] Error message:', error.message);
       throw new Error('Camera access required for AI features: ' + error.message);
     }
   }
@@ -178,46 +192,41 @@ export class AIFormService {
    */
   handlePoseResults(results) {
     if (!this.isRunning || !results) return;
-    
+
     const landmarks = results.poseLandmarks || results.poseWorldLandmarks;
-    
+
     if (!landmarks || landmarks.length === 0) {
       return;
     }
-    
-    // Check if pose is valid (enough keypoints visible)
-    const validLandmarks = landmarks.filter(l => l.visibility > 0.5);
-    const isValid = validLandmarks.length >= 15; // At least 15 keypoints visible
-    
-    // Callback with pose data
+
+    const validLandmarks = landmarks.filter((l) => l.visibility > 0.5);
+    const isValid = validLandmarks.length >= 15;
+
     if (this.poseCallback) {
       this.poseCallback({ landmarks, isValid, visibleCount: validLandmarks.length });
     }
-    
-    // Process form and reps
+
     if (isValid) {
       this.processPose(landmarks);
     }
   }
 
   /**
-   * Main processing loop - called via requestAnimationFrame
+   * Main processing loop
    */
   async predictLoop() {
     if (!this.isRunning || !this.video || !this.pose) return;
-    
+
     if (this.video.currentTime !== this.lastVideoTime) {
       this.lastVideoTime = this.video.currentTime;
-      
+
       try {
-        await this.pose.send({
-          image: this.video
-        });
+        await this.pose.send({ image: this.video });
       } catch (error) {
         console.error('[AIFormService] Error sending frame:', error);
       }
     }
-    
+
     if (this.isRunning) {
       requestAnimationFrame(() => this.predictLoop());
     }
@@ -227,24 +236,18 @@ export class AIFormService {
    * Process pose data for rep counting and form analysis
    */
   processPose(landmarks) {
-    const now = Date.now();
-    
-    // Rep counting based on exercise
     this.countReps(landmarks);
-    
-    // Form analysis
+
     const formScore = this.analyzeForm(landmarks);
     if (formScore !== null) {
       this.formScores.push(formScore);
       if (this.formScores.length > this.maxFormScores) {
         this.formScores.shift();
       }
-      
-      // Check for violations
+
       const violations = this.checkFormViolations(landmarks);
       if (violations.length > 0 && this.formCallback) {
-        violations.forEach(v => {
-          // Throttle voice feedback (once per violation type)
+        violations.forEach((v) => {
           const now = Date.now();
           if (!this.lastViolationTime || now - this.lastViolationTime > 3000) {
             this.formCallback(v);
@@ -259,158 +262,130 @@ export class AIFormService {
    * Calculate angle between 3 points using trigonometry
    */
   calculateAngle(p1, p2, p3) {
-    const radians = Math.atan2(p3.y - p2.y, p3.x - p2.x) - 
-                   Math.atan2(p1.y - p2.y, p1.x - p2.x);
+    const radians =
+      Math.atan2(p3.y - p2.y, p3.x - p2.x) -
+      Math.atan2(p1.y - p2.y, p1.x - p2.x);
     let angle = Math.abs((radians * 180.0) / Math.PI);
     if (angle > 180.0) angle = 360.0 - angle;
     return angle;
   }
 
   /**
-   * Count reps based on joint angles
+   * Get a landmark by config joint name (pointA, vertex, pointB)
+   */
+  _getJointLandmark(landmarks, jointId) {
+    return landmarks[jointId];
+  }
+
+  /**
+   * Count reps based on config-driven joint angles
    */
   countReps(landmarks) {
     if (this.mode !== 'reps') return;
-    
-    const now = Date.now();
-    
-    // Different exercises use different joints
-    const shoulder = landmarks[LANDMARKS.RIGHT_SHOULDER];
-    const elbow = landmarks[LANDMARKS.RIGHT_ELBOW];
-    const wrist = landmarks[LANDMARKS.RIGHT_WRIST];
-    const hip = landmarks[LANDMARKS.RIGHT_HIP];
-    const knee = landmarks[LANDMARKS.RIGHT_KNEE];
-    const ankle = landmarks[LANDMARKS.RIGHT_ANKLE];
-    
-    let angle;
-    
-    // Push-up: shoulder-elbow-wrist angle
-    if (this.exerciseId?.includes('push-up') || this.exerciseId?.includes('flexión')) {
-      angle = this.calculateAngle(shoulder, elbow, wrist);
-      
-      // Rep detection: arm extends (angle > 160)
-      if (angle > 160 && this.repState === 'down') {
+    if (!this.aiConfig?.repCounting?.enabled) return;
+
+    const rc = this.aiConfig.repCounting;
+    const pA = this._getJointLandmark(landmarks, rc.joints.pointA);
+    const vertex = this._getJointLandmark(landmarks, rc.joints.vertex);
+    const pB = this._getJointLandmark(landmarks, rc.joints.pointB);
+
+    if (!pA || !vertex || !pB) return;
+
+    const angle = this.calculateAngle(pA, vertex, pB);
+
+    const countDirection = rc.countDirection || 'extend';
+
+    if (countDirection === 'flex') {
+      if (angle < rc.thresholds.flex && this.repState === 'up') {
+        this.repState = 'down';
+        this.repCount++;
+        if (this.repCallback) {
+          this.repCallback(this.repCount, { angle, type: rc.type });
+        }
+      } else if (angle > rc.thresholds.extend && this.repState === 'down') {
+        this.repState = 'up';
+      }
+    } else {
+      if (angle > rc.thresholds.extend && this.repState === 'down') {
         this.repState = 'up';
         this.repCount++;
         if (this.repCallback) {
-          this.repCallback(this.repCount, { angle, type: 'extension' });
+          this.repCallback(this.repCount, { angle, type: rc.type });
         }
-      }
-      // Rep detection: arm flexes (angle < 90)
-      else if (angle < 90 && this.repState === 'up') {
+      } else if (angle < rc.thresholds.flex && this.repState === 'up') {
         this.repState = 'down';
       }
-    }
-    // Squat: hip-knee-ankle angle
-    else if (this.exerciseId?.includes('squat') || this.exerciseId?.includes('sentadilla')) {
-      angle = this.calculateAngle(hip, knee, ankle);
-      
-      // Rep detection: legs extend (angle > 160)
-      if (angle > 160 && this.repState === 'down') {
-        this.repState = 'up';
-        this.repCount++;
-        if (this.repCallback) {
-          this.repCallback(this.repCount, { angle, type: 'extension' });
-        }
-      }
-      // Rep detection: legs flex (angle < 90)
-      else if (angle < 90 && this.repState === 'up') {
-        this.repState = 'down';
-      }
-    }
-    // Plank/Hold: track time instead
-    else if (this.mode === 'time') {
-      // Time tracking handled separately
     }
   }
 
   /**
-   * Analyze form quality (0-100 score)
+   * Analyze form quality (0-100 score) using config-driven rules
    */
   analyzeForm(landmarks) {
-    const shoulder = landmarks[LANDMARKS.RIGHT_SHOULDER];
-    const elbow = landmarks[LANDMARKS.RIGHT_ELBOW];
-    const wrist = landmarks[LANDMARKS.RIGHT_WRIST];
-    const hip = landmarks[LANDMARKS.RIGHT_HIP];
-    const knee = landmarks[LANDMARKS.RIGHT_KNEE];
-    const ankle = landmarks[LANDMARKS.RIGHT_ANKLE];
-    
+    if (!this.aiConfig?.formAnalysis?.rules) return 100;
+
     let score = 100;
-    
-    // Push-up form checks
-    if (this.exerciseId?.includes('push-up') || this.exerciseId?.includes('flexión')) {
-      const elbowAngle = this.calculateAngle(shoulder, elbow, wrist);
-      const spineAngle = this.calculateAngle(shoulder, hip, ankle);
-      
-      // Check arm extension
-      if (elbowAngle > 140 && elbowAngle < 180) {
-        score -= 0; // Good extension
-      } else if (elbowAngle < 140) {
-        score -= 10; // Not fully extended
-      }
-      
-      // Check spine straightness
-      if (spineAngle > 160) {
-        score -= 0; // Straight back
-      } else if (spineAngle < 150) {
-        score -= 20; // Sagging back
-      }
-    }
-    
-    // Squat form checks
-    else if (this.exerciseId?.includes('squat') || this.exerciseId?.includes('sentadilla')) {
-      const kneeAngle = this.calculateAngle(hip, knee, ankle);
-      
-      // Check depth
-      if (kneeAngle < 90) {
-        score -= 0; // Good depth
-      } else if (kneeAngle < 110) {
-        score -= 10; // Not deep enough
-      } else {
-        score -= 20; // Too shallow
+
+    for (const rule of this.aiConfig.formAnalysis.rules) {
+      const pA = this._getJointLandmark(landmarks, rule.joints.pointA);
+      const vertex = this._getJointLandmark(landmarks, rule.joints.vertex);
+      const pB = this._getJointLandmark(landmarks, rule.joints.pointB);
+
+      if (!pA || !vertex || !pB) continue;
+
+      const angle = this.calculateAngle(pA, vertex, pB);
+
+      if (rule.ranges) {
+        // Multi-range penalty system (e.g., squat depth)
+        for (const range of rule.ranges) {
+          if (angle <= range.max) {
+            score -= range.penalty;
+            break;
+          }
+        }
+      } else if (rule.goodRange) {
+        // Simple good range check (e.g., arm extension, spine alignment)
+        if (angle < rule.goodRange[0] || angle > rule.goodRange[1]) {
+          score -= rule.penalty;
+        }
       }
     }
-    
+
     return Math.max(0, Math.min(100, score));
   }
 
   /**
-   * Check for specific form violations
+   * Check for specific form violations using config-driven rules
    */
   checkFormViolations(landmarks) {
     const violations = [];
-    
-    const shoulder = landmarks[LANDMARKS.RIGHT_SHOULDER];
-    const hip = landmarks[LANDMARKS.RIGHT_HIP];
-    const knee = landmarks[LANDMARKS.RIGHT_KNEE];
-    const ankle = landmarks[LANDMARKS.RIGHT_ANKLE];
-    
-    // Push-up violations
-    if (this.exerciseId?.includes('push-up') || this.exerciseId?.includes('flexión')) {
-      const spineAngle = this.calculateAngle(shoulder, hip, ankle);
-      
-      if (spineAngle < 150) {
+    if (!this.aiConfig?.formAnalysis?.rules) return violations;
+
+    for (const rule of this.aiConfig.formAnalysis.rules) {
+      if (!rule.violation) continue;
+
+      const pA = this._getJointLandmark(landmarks, rule.joints.pointA);
+      const vertex = this._getJointLandmark(landmarks, rule.joints.vertex);
+      const pB = this._getJointLandmark(landmarks, rule.joints.pointB);
+
+      if (!pA || !vertex || !pB) continue;
+
+      const angle = this.calculateAngle(pA, vertex, pB);
+      const v = rule.violation;
+
+      const triggered =
+        (v.compare === 'below' && angle < v.threshold) ||
+        (v.compare === 'above' && angle > v.threshold);
+
+      if (triggered) {
         violations.push({
-          type: 'back_sag',
-          message_en: 'Keep your core tight! Your hips are sagging.',
-          message_es: '¡Mantén el core apretado! Tus caderas están cayendo.'
+          type: v.type,
+          message_en: v.message_en,
+          message_es: v.message_es
         });
       }
     }
-    
-    // Squat violations
-    else if (this.exerciseId?.includes('squat') || this.exerciseId?.includes('sentadilla')) {
-      const kneeAngle = this.calculateAngle(hip, knee, ankle);
-      
-      if (kneeAngle > 100) {
-        violations.push({
-          type: 'shallow_squat',
-          message_en: 'Go deeper! Try to get thighs parallel to the ground.',
-          message_es: '¡Baja más! Intenta poner los muslos paralelos al suelo.'
-        });
-      }
-    }
-    
+
     return violations;
   }
 
@@ -418,10 +393,11 @@ export class AIFormService {
    * Get current statistics
    */
   getStats() {
-    const avgFormScore = this.formScores.length > 0
-      ? this.formScores.reduce((a, b) => a + b, 0) / this.formScores.length
-      : 0;
-    
+    const avgFormScore =
+      this.formScores.length > 0
+        ? this.formScores.reduce((a, b) => a + b, 0) / this.formScores.length
+        : 0;
+
     return {
       repCount: this.repCount,
       avgFormScore: Math.round(avgFormScore),
@@ -457,20 +433,22 @@ export class AIFormService {
    */
   stop() {
     this.isRunning = false;
-    
+
     if (this.video && this.video.srcObject) {
-      this.video.srcObject.getTracks().forEach(track => track.stop());
+      this.video.srcObject.getTracks().forEach((track) => track.stop());
       this.video.srcObject = null;
     }
-    
+
     if (this.pose) {
       this.pose.close().catch(() => {});
       this.pose = null;
     }
-    
+
     this.video = null;
     this.canvas = null;
     this.canvasCtx = null;
+    this.aiConfig = null;
+    this.sideLandmarks = null;
   }
 
   /**

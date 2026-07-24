@@ -12,7 +12,7 @@ import { renderSettingsView } from './views/settings-view.js';
 import { renderBuilderView } from './views/builder-view.js';
 import { renderExercisesView } from './views/exercises-view.js';
 import { renderRoutineDetailsView } from './views/routine-details-view.js';
-import { fetchExercises, fetchRoutines, fetchCategories, fetchEquipment, fetchMuscles, fetchDifficulties, fetchSkillModules } from './services/api.js';
+import { fetchExercises, fetchRoutines, fetchCategories, fetchEquipment, fetchMuscles, fetchDifficulties, fetchSkillModules, fetchAIConfigs } from './services/api.js';
 import { renderSkillModulesView } from './views/skill-modules-view.js';
 import { renderSkillModuleDetailView } from './views/skill-module-detail-view.js';
 import { renderSharedWorkoutView } from './views/shared-workout-view.js';
@@ -35,6 +35,7 @@ import { installPromptService } from './services/install-prompt-service.js';
 import { t } from './i18n.js';
 import './components/install-banner.js';
 import { registerGlobalErrorHandlers } from './services/error-boundary-service.js';
+import { voiceCuesService } from './services/voice-cues-service.js';
 
 initializeState();
 
@@ -90,6 +91,9 @@ async function initializeApp() {
   // Now that cache is fully initialized and synced, start the router
   router();
 
+  // Initialize voice cues service
+  voiceCuesService.initialize();
+
   // Initialize event delegation after router is set up
   setTimeout(() => {
     const main = document.getElementById('app');
@@ -129,7 +133,8 @@ const loadingFlags = {
   categories: false,
   equipment: false,
   muscles: false,
-  difficulties: false
+  difficulties: false,
+  aiConfigs: false
 };
 
 // Shared promises for in-flight loads (dedupe concurrent calls)
@@ -140,7 +145,8 @@ const loadingPromises = {
   categories: null,
   equipment: null,
   muscles: null,
-  difficulties: null
+  difficulties: null,
+  aiConfigs: null
 };
 
 // Generic data loading helper — deduplicates ensure*Loaded pattern
@@ -208,6 +214,10 @@ function ensureDifficultiesLoaded() {
   return ensureDataLoaded('difficulties', fetchDifficulties);
 }
 
+function ensureAIConfigsLoaded() {
+  return ensureDataLoaded('aiConfigs', fetchAIConfigs);
+}
+
 // ==================== Render Route Map ====================
 // Centralized map of routes to their async render functions and args
 const renderRoutes = {
@@ -234,6 +244,7 @@ const paramRoutes = {
   '#skill-module/':          { view: 'skill-module-detail-view.js',    fn: 'renderSkillModuleDetailView', args: [1],  awaitRender: true },
   '#shared-workout/':        { view: 'shared-workout-view.js',         fn: 'renderSharedWorkoutView',       args: [1],  awaitRender: true },
   '#workout-detail/':        { view: 'workout-detail-view.js',         fn: 'renderWorkoutDetailView',         args: [1],  awaitRender: true },
+  '#ai-workout/':            { view: 'ai-workout-view.js',             fn: 'render',                          args: [1],  awaitRender: true },
 };
 
 /**
@@ -268,6 +279,8 @@ function resolveRoute(hash) {
         args = [parts[1]];
       } else if (prefix === '#workout-detail/') {
         args = [parseInt(parts[1])];
+      } else if (prefix === '#ai-workout/') {
+        args = [parts[1]];
       }
 
       return { ...config, params: args };
@@ -322,7 +335,8 @@ async function router() {
       ensureCategoriesLoaded(),
       ensureEquipmentLoaded(),
       ensureMusclesLoaded(),
-      ensureDifficultiesLoaded()
+      ensureDifficultiesLoaded(),
+      ensureAIConfigsLoaded()
     ]);
 
     hideSpinner();

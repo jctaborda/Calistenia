@@ -1,0 +1,4113 @@
+{
+  "dataVersion": "2026-07-24T00:28:23.431Z",
+  "configs": [
+    {
+      "exerciseId": 1,
+      "name": "Flexión",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "arm_extension",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "arm_not_extended",
+              "message_en": "Extend your arms fully at the top!",
+              "message_es": "¡Extiende los brazos completamente arriba!"
+            }
+          },
+          {
+            "name": "spine_alignment",
+            "joints": {
+              "pointA": 12,
+              "vertex": 24,
+              "pointB": 28
+            },
+            "goodRange": [
+              160,
+              180
+            ],
+            "penalty": 20,
+            "violation": {
+              "type": "back_sag",
+              "threshold": 150,
+              "compare": "below",
+              "message_en": "Keep your core tight! Your hips are sagging.",
+              "message_es": "¡Mantén el core apretado! Tus caderas están cayendo."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 2,
+      "name": "Flexión Abierta",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "arm_extension",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "arm_not_extended",
+              "message_en": "Extend your arms fully at the top!",
+              "message_es": "¡Extiende los brazos completamente arriba!"
+            }
+          },
+          {
+            "name": "spine_alignment",
+            "joints": {
+              "pointA": 12,
+              "vertex": 24,
+              "pointB": 28
+            },
+            "goodRange": [
+              160,
+              180
+            ],
+            "penalty": 20,
+            "violation": {
+              "type": "back_sag",
+              "threshold": 150,
+              "compare": "below",
+              "message_en": "Keep your core tight! Your hips are sagging.",
+              "message_es": "¡Mantén el core apretado! Tus caderas están cayendo."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 3,
+      "name": "Flexión Diamante",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "arm_extension",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "arm_not_extended",
+              "message_en": "Extend your arms fully at the top!",
+              "message_es": "¡Extiende los brazos completamente arriba!"
+            }
+          },
+          {
+            "name": "spine_alignment",
+            "joints": {
+              "pointA": 12,
+              "vertex": 24,
+              "pointB": 28
+            },
+            "goodRange": [
+              160,
+              180
+            ],
+            "penalty": 20,
+            "violation": {
+              "type": "back_sag",
+              "threshold": 150,
+              "compare": "below",
+              "message_en": "Keep your core tight! Your hips are sagging.",
+              "message_es": "¡Mantén el core apretado! Tus caderas están cayendo."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 4,
+      "name": "Flexión con Palmada",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "arm_extension",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "arm_not_extended",
+              "message_en": "Extend your arms fully at the top!",
+              "message_es": "¡Extiende los brazos completamente arriba!"
+            }
+          },
+          {
+            "name": "spine_alignment",
+            "joints": {
+              "pointA": 12,
+              "vertex": 24,
+              "pointB": 28
+            },
+            "goodRange": [
+              160,
+              180
+            ],
+            "penalty": 20,
+            "violation": {
+              "type": "back_sag",
+              "threshold": 150,
+              "compare": "below",
+              "message_en": "Keep your core tight! Your hips are sagging.",
+              "message_es": "¡Mantén el core apretado! Tus caderas están cayendo."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 5,
+      "name": "Flexión Arquero",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "arm_extension",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "arm_not_extended",
+              "message_en": "Extend your arms fully at the top!",
+              "message_es": "¡Extiende los brazos completamente arriba!"
+            }
+          },
+          {
+            "name": "spine_alignment",
+            "joints": {
+              "pointA": 12,
+              "vertex": 24,
+              "pointB": 28
+            },
+            "goodRange": [
+              160,
+              180
+            ],
+            "penalty": 20,
+            "violation": {
+              "type": "back_sag",
+              "threshold": 150,
+              "compare": "below",
+              "message_en": "Keep your core tight! Your hips are sagging.",
+              "message_es": "¡Mantén el core apretado! Tus caderas están cayendo."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 6,
+      "name": "Flexión Inclinada",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "arm_extension",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "arm_not_extended",
+              "message_en": "Extend your arms fully at the top!",
+              "message_es": "¡Extiende los brazos completamente arriba!"
+            }
+          },
+          {
+            "name": "spine_alignment",
+            "joints": {
+              "pointA": 12,
+              "vertex": 24,
+              "pointB": 28
+            },
+            "goodRange": [
+              160,
+              180
+            ],
+            "penalty": 20,
+            "violation": {
+              "type": "back_sag",
+              "threshold": 150,
+              "compare": "below",
+              "message_en": "Keep your core tight! Your hips are sagging.",
+              "message_es": "¡Mantén el core apretado! Tus caderas están cayendo."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 7,
+      "name": "Flexión Declinada",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "arm_extension",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "arm_not_extended",
+              "message_en": "Extend your arms fully at the top!",
+              "message_es": "¡Extiende los brazos completamente arriba!"
+            }
+          },
+          {
+            "name": "spine_alignment",
+            "joints": {
+              "pointA": 12,
+              "vertex": 24,
+              "pointB": 28
+            },
+            "goodRange": [
+              160,
+              180
+            ],
+            "penalty": 20,
+            "violation": {
+              "type": "back_sag",
+              "threshold": 150,
+              "compare": "below",
+              "message_en": "Keep your core tight! Your hips are sagging.",
+              "message_es": "¡Mantén el core apretado! Tus caderas están cayendo."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 8,
+      "name": "Flexión Plyo",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "arm_extension",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "arm_not_extended",
+              "message_en": "Extend your arms fully at the top!",
+              "message_es": "¡Extiende los brazos completamente arriba!"
+            }
+          },
+          {
+            "name": "spine_alignment",
+            "joints": {
+              "pointA": 12,
+              "vertex": 24,
+              "pointB": 28
+            },
+            "goodRange": [
+              160,
+              180
+            ],
+            "penalty": 20,
+            "violation": {
+              "type": "back_sag",
+              "threshold": 150,
+              "compare": "below",
+              "message_en": "Keep your core tight! Your hips are sagging.",
+              "message_es": "¡Mantén el core apretado! Tus caderas están cayendo."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 9,
+      "name": "Flexión Spiderman",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "arm_extension",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "arm_not_extended",
+              "message_en": "Extend your arms fully at the top!",
+              "message_es": "¡Extiende los brazos completamente arriba!"
+            }
+          },
+          {
+            "name": "spine_alignment",
+            "joints": {
+              "pointA": 12,
+              "vertex": 24,
+              "pointB": 28
+            },
+            "goodRange": [
+              160,
+              180
+            ],
+            "penalty": 20,
+            "violation": {
+              "type": "back_sag",
+              "threshold": 150,
+              "compare": "below",
+              "message_en": "Keep your core tight! Your hips are sagging.",
+              "message_es": "¡Mantén el core apretado! Tus caderas están cayendo."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 10,
+      "name": "Flexión a Un Brazo",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "arm_extension",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "arm_not_extended",
+              "message_en": "Extend your arms fully at the top!",
+              "message_es": "¡Extiende los brazos completamente arriba!"
+            }
+          },
+          {
+            "name": "spine_alignment",
+            "joints": {
+              "pointA": 12,
+              "vertex": 24,
+              "pointB": 28
+            },
+            "goodRange": [
+              160,
+              180
+            ],
+            "penalty": 20,
+            "violation": {
+              "type": "back_sag",
+              "threshold": 150,
+              "compare": "below",
+              "message_en": "Keep your core tight! Your hips are sagging.",
+              "message_es": "¡Mantén el core apretado! Tus caderas están cayendo."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 31,
+      "name": "Toque de Hombro",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "arm_extension",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "arm_not_extended",
+              "message_en": "Extend your arms fully at the top!",
+              "message_es": "¡Extiende los brazos completamente arriba!"
+            }
+          },
+          {
+            "name": "spine_alignment",
+            "joints": {
+              "pointA": 12,
+              "vertex": 24,
+              "pointB": 28
+            },
+            "goodRange": [
+              160,
+              180
+            ],
+            "penalty": 20,
+            "violation": {
+              "type": "back_sag",
+              "threshold": 150,
+              "compare": "below",
+              "message_en": "Keep your core tight! Your hips are sagging.",
+              "message_es": "¡Mantén el core apretado! Tus caderas están cayendo."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 37,
+      "name": "Flexión Agarre Cerrado",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "arm_extension",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "arm_not_extended",
+              "message_en": "Extend your arms fully at the top!",
+              "message_es": "¡Extiende los brazos completamente arriba!"
+            }
+          },
+          {
+            "name": "spine_alignment",
+            "joints": {
+              "pointA": 12,
+              "vertex": 24,
+              "pointB": 28
+            },
+            "goodRange": [
+              160,
+              180
+            ],
+            "penalty": 20,
+            "violation": {
+              "type": "back_sag",
+              "threshold": 150,
+              "compare": "below",
+              "message_en": "Keep your core tight! Your hips are sagging.",
+              "message_es": "¡Mantén el core apretado! Tus caderas están cayendo."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 11,
+      "name": "Dominada",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension",
+        "countDirection": "flex"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "half_rep",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              0,
+              120
+            ],
+            "penalty": 15,
+            "violation": {
+              "type": "half_rep",
+              "threshold": 130,
+              "compare": "above",
+              "message_en": "Pull up higher! Get your chin above the bar.",
+              "message_es": "¡Sube más! Lleva la barbilla por encima de la barra."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 12,
+      "name": "Dominada Supina",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension",
+        "countDirection": "flex"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "half_rep",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              0,
+              120
+            ],
+            "penalty": 15,
+            "violation": {
+              "type": "half_rep",
+              "threshold": 130,
+              "compare": "above",
+              "message_en": "Pull up higher! Get your chin above the bar.",
+              "message_es": "¡Sube más! Lleva la barbilla por encima de la barra."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 13,
+      "name": "Dominada Abierta",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension",
+        "countDirection": "flex"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "half_rep",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              0,
+              120
+            ],
+            "penalty": 15,
+            "violation": {
+              "type": "half_rep",
+              "threshold": 130,
+              "compare": "above",
+              "message_en": "Pull up higher! Get your chin above the bar.",
+              "message_es": "¡Sube más! Lleva la barbilla por encima de la barra."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 14,
+      "name": "Dominada Arquero",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension",
+        "countDirection": "flex"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "half_rep",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              0,
+              120
+            ],
+            "penalty": 15,
+            "violation": {
+              "type": "half_rep",
+              "threshold": 130,
+              "compare": "above",
+              "message_en": "Pull up higher! Get your chin above the bar.",
+              "message_es": "¡Sube más! Lleva la barbilla por encima de la barra."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 19,
+      "name": "Dominada Negativa",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension",
+        "countDirection": "flex"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "half_rep",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              0,
+              120
+            ],
+            "penalty": 15,
+            "violation": {
+              "type": "half_rep",
+              "threshold": 130,
+              "compare": "above",
+              "message_en": "Pull up higher! Get your chin above the bar.",
+              "message_es": "¡Sube más! Lleva la barbilla por encima de la barra."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 20,
+      "name": "Dominada Asistida",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension",
+        "countDirection": "flex"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "half_rep",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              0,
+              120
+            ],
+            "penalty": 15,
+            "violation": {
+              "type": "half_rep",
+              "threshold": 130,
+              "compare": "above",
+              "message_en": "Pull up higher! Get your chin above the bar.",
+              "message_es": "¡Sube más! Lleva la barbilla por encima de la barra."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 21,
+      "name": "Dominada Commando",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension",
+        "countDirection": "flex"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "half_rep",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              0,
+              120
+            ],
+            "penalty": 15,
+            "violation": {
+              "type": "half_rep",
+              "threshold": 130,
+              "compare": "above",
+              "message_en": "Pull up higher! Get your chin above the bar.",
+              "message_es": "¡Sube más! Lleva la barbilla por encima de la barra."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 22,
+      "name": "Dominada con Toalla",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension",
+        "countDirection": "flex"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "half_rep",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              0,
+              120
+            ],
+            "penalty": 15,
+            "violation": {
+              "type": "half_rep",
+              "threshold": 130,
+              "compare": "above",
+              "message_en": "Pull up higher! Get your chin above the bar.",
+              "message_es": "¡Sube más! Lleva la barbilla por encima de la barra."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 39,
+      "name": "Dominada Supina en Anillas",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension",
+        "countDirection": "flex"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "half_rep",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              0,
+              120
+            ],
+            "penalty": 15,
+            "violation": {
+              "type": "half_rep",
+              "threshold": 130,
+              "compare": "above",
+              "message_en": "Pull up higher! Get your chin above the bar.",
+              "message_es": "¡Sube más! Lleva la barbilla por encima de la barra."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 108,
+      "name": "Remo en Anillas",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension",
+        "countDirection": "flex"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "half_rep",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              0,
+              120
+            ],
+            "penalty": 15,
+            "violation": {
+              "type": "half_rep",
+              "threshold": 130,
+              "compare": "above",
+              "message_en": "Pull up higher! Get your chin above the bar.",
+              "message_es": "¡Sube más! Lleva la barbilla por encima de la barra."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 118,
+      "name": "Remo",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension",
+        "countDirection": "flex"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "half_rep",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              0,
+              120
+            ],
+            "penalty": 15,
+            "violation": {
+              "type": "half_rep",
+              "threshold": 130,
+              "compare": "above",
+              "message_en": "Pull up higher! Get your chin above the bar.",
+              "message_es": "¡Sube más! Lleva la barbilla por encima de la barra."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 119,
+      "name": "Dominada Australiana",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension",
+        "countDirection": "flex"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "half_rep",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              0,
+              120
+            ],
+            "penalty": 15,
+            "violation": {
+              "type": "half_rep",
+              "threshold": 130,
+              "compare": "above",
+              "message_en": "Pull up higher! Get your chin above the bar.",
+              "message_es": "¡Sube más! Lleva la barbilla por encima de la barra."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 120,
+      "name": "Dominada Martillo",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension",
+        "countDirection": "flex"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "half_rep",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              0,
+              120
+            ],
+            "penalty": 15,
+            "violation": {
+              "type": "half_rep",
+              "threshold": 130,
+              "compare": "above",
+              "message_en": "Pull up higher! Get your chin above the bar.",
+              "message_es": "¡Sube más! Lleva la barbilla por encima de la barra."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 41,
+      "name": "Curl de Bíceps",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension",
+        "countDirection": "flex"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "half_rep",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              0,
+              120
+            ],
+            "penalty": 15,
+            "violation": {
+              "type": "half_rep",
+              "threshold": 130,
+              "compare": "above",
+              "message_en": "Pull up higher! Get your chin above the bar.",
+              "message_es": "¡Sube más! Lleva la barbilla por encima de la barra."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 32,
+      "name": "Fondos de Tríceps",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "arm_extension",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "arm_not_extended",
+              "message_en": "Extend your arms fully at the top!",
+              "message_es": "¡Extiende los brazos completamente arriba!"
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 33,
+      "name": "Fondos en Anillas",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "arm_extension",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "arm_not_extended",
+              "message_en": "Extend your arms fully at the top!",
+              "message_es": "¡Extiende los brazos completamente arriba!"
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 34,
+      "name": "Fondos en Banco",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "arm_extension",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "arm_not_extended",
+              "message_en": "Extend your arms fully at the top!",
+              "message_es": "¡Extiende los brazos completamente arriba!"
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 35,
+      "name": "Fondos Coreanos",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "arm_extension",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "arm_not_extended",
+              "message_en": "Extend your arms fully at the top!",
+              "message_es": "¡Extiende los brazos completamente arriba!"
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 36,
+      "name": "Fondos con Peso",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "arm_extension",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "arm_not_extended",
+              "message_en": "Extend your arms fully at the top!",
+              "message_es": "¡Extiende los brazos completamente arriba!"
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 111,
+      "name": "Soporte en Barras Paralelas",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "arm_extension",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "arm_not_extended",
+              "message_en": "Extend your arms fully at the top!",
+              "message_es": "¡Extiende los brazos completamente arriba!"
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 38,
+      "name": "Extensión de Tríceps",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "arm_extension",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "arm_not_extended",
+              "message_en": "Extend your arms fully at the top!",
+              "message_es": "¡Extiende los brazos completamente arriba!"
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 117,
+      "name": "Aplasta Cráneos",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "arm_extension",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "arm_not_extended",
+              "message_en": "Extend your arms fully at the top!",
+              "message_es": "¡Extiende los brazos completamente arriba!"
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 25,
+      "name": "Flexión en Pica",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "arm_extension",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "arm_not_extended",
+              "message_en": "Extend your arms fully at the top!",
+              "message_es": "¡Extiende los brazos completamente arriba!"
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 26,
+      "name": "Flexión en Pino",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "arm_extension",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "arm_not_extended",
+              "message_en": "Extend your arms fully at the top!",
+              "message_es": "¡Extiende los brazos completamente arriba!"
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 67,
+      "name": "Sentadilla",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 24,
+          "vertex": 26,
+          "pointB": 28
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "squat_depth",
+            "joints": {
+              "pointA": 24,
+              "vertex": 26,
+              "pointB": 28
+            },
+            "goodRange": [
+              0,
+              90
+            ],
+            "penalty": 10,
+            "ranges": [
+              {
+                "max": 90,
+                "penalty": 0
+              },
+              {
+                "max": 110,
+                "penalty": 10
+              },
+              {
+                "max": 180,
+                "penalty": 20
+              }
+            ],
+            "violation": {
+              "type": "shallow_squat",
+              "threshold": 100,
+              "compare": "above",
+              "message_en": "Go deeper! Try to get thighs parallel to the ground.",
+              "message_es": "¡Baja más! Intenta poner los muslos paralelos al suelo."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 68,
+      "name": "Sentadilla Pistola",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 24,
+          "vertex": 26,
+          "pointB": 28
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "squat_depth",
+            "joints": {
+              "pointA": 24,
+              "vertex": 26,
+              "pointB": 28
+            },
+            "goodRange": [
+              0,
+              90
+            ],
+            "penalty": 10,
+            "ranges": [
+              {
+                "max": 90,
+                "penalty": 0
+              },
+              {
+                "max": 110,
+                "penalty": 10
+              },
+              {
+                "max": 180,
+                "penalty": 20
+              }
+            ],
+            "violation": {
+              "type": "shallow_squat",
+              "threshold": 100,
+              "compare": "above",
+              "message_en": "Go deeper! Try to get thighs parallel to the ground.",
+              "message_es": "¡Baja más! Intenta poner los muslos paralelos al suelo."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 70,
+      "name": "Sentadilla con Salto",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 24,
+          "vertex": 26,
+          "pointB": 28
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "squat_depth",
+            "joints": {
+              "pointA": 24,
+              "vertex": 26,
+              "pointB": 28
+            },
+            "goodRange": [
+              0,
+              90
+            ],
+            "penalty": 10,
+            "ranges": [
+              {
+                "max": 90,
+                "penalty": 0
+              },
+              {
+                "max": 110,
+                "penalty": 10
+              },
+              {
+                "max": 180,
+                "penalty": 20
+              }
+            ],
+            "violation": {
+              "type": "shallow_squat",
+              "threshold": 100,
+              "compare": "above",
+              "message_en": "Go deeper! Try to get thighs parallel to the ground.",
+              "message_es": "¡Baja más! Intenta poner los muslos paralelos al suelo."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 71,
+      "name": "Sentadilla Búlgara",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 24,
+          "vertex": 26,
+          "pointB": 28
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "squat_depth",
+            "joints": {
+              "pointA": 24,
+              "vertex": 26,
+              "pointB": 28
+            },
+            "goodRange": [
+              0,
+              90
+            ],
+            "penalty": 10,
+            "ranges": [
+              {
+                "max": 90,
+                "penalty": 0
+              },
+              {
+                "max": 110,
+                "penalty": 10
+              },
+              {
+                "max": 180,
+                "penalty": 20
+              }
+            ],
+            "violation": {
+              "type": "shallow_squat",
+              "threshold": 100,
+              "compare": "above",
+              "message_en": "Go deeper! Try to get thighs parallel to the ground.",
+              "message_es": "¡Baja más! Intenta poner los muslos paralelos al suelo."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 73,
+      "name": "Sentadilla Pistola Asistida",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 24,
+          "vertex": 26,
+          "pointB": 28
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "squat_depth",
+            "joints": {
+              "pointA": 24,
+              "vertex": 26,
+              "pointB": 28
+            },
+            "goodRange": [
+              0,
+              90
+            ],
+            "penalty": 10,
+            "ranges": [
+              {
+                "max": 90,
+                "penalty": 0
+              },
+              {
+                "max": 110,
+                "penalty": 10
+              },
+              {
+                "max": 180,
+                "penalty": 20
+              }
+            ],
+            "violation": {
+              "type": "shallow_squat",
+              "threshold": 100,
+              "compare": "above",
+              "message_en": "Go deeper! Try to get thighs parallel to the ground.",
+              "message_es": "¡Baja más! Intenta poner los muslos paralelos al suelo."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 89,
+      "name": "Zancada Lateral",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 24,
+          "vertex": 26,
+          "pointB": 28
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "squat_depth",
+            "joints": {
+              "pointA": 24,
+              "vertex": 26,
+              "pointB": 28
+            },
+            "goodRange": [
+              0,
+              90
+            ],
+            "penalty": 10,
+            "ranges": [
+              {
+                "max": 90,
+                "penalty": 0
+              },
+              {
+                "max": 110,
+                "penalty": 10
+              },
+              {
+                "max": 180,
+                "penalty": 20
+              }
+            ],
+            "violation": {
+              "type": "shallow_squat",
+              "threshold": 100,
+              "compare": "above",
+              "message_en": "Go deeper! Try to get thighs parallel to the ground.",
+              "message_es": "¡Baja más! Intenta poner los muslos paralelos al suelo."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 90,
+      "name": "Sentadilla Cosaca",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 24,
+          "vertex": 26,
+          "pointB": 28
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "squat_depth",
+            "joints": {
+              "pointA": 24,
+              "vertex": 26,
+              "pointB": 28
+            },
+            "goodRange": [
+              0,
+              90
+            ],
+            "penalty": 10,
+            "ranges": [
+              {
+                "max": 90,
+                "penalty": 0
+              },
+              {
+                "max": 110,
+                "penalty": 10
+              },
+              {
+                "max": 180,
+                "penalty": 20
+              }
+            ],
+            "violation": {
+              "type": "shallow_squat",
+              "threshold": 100,
+              "compare": "above",
+              "message_en": "Go deeper! Try to get thighs parallel to the ground.",
+              "message_es": "¡Baja más! Intenta poner los muslos paralelos al suelo."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 92,
+      "name": "Sentadilla Sumo",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 24,
+          "vertex": 26,
+          "pointB": 28
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "squat_depth",
+            "joints": {
+              "pointA": 24,
+              "vertex": 26,
+              "pointB": 28
+            },
+            "goodRange": [
+              0,
+              90
+            ],
+            "penalty": 10,
+            "ranges": [
+              {
+                "max": 90,
+                "penalty": 0
+              },
+              {
+                "max": 110,
+                "penalty": 10
+              },
+              {
+                "max": 180,
+                "penalty": 20
+              }
+            ],
+            "violation": {
+              "type": "shallow_squat",
+              "threshold": 100,
+              "compare": "above",
+              "message_en": "Go deeper! Try to get thighs parallel to the ground.",
+              "message_es": "¡Baja más! Intenta poner los muslos paralelos al suelo."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 72,
+      "name": "Subida al Cajón",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 24,
+          "vertex": 26,
+          "pointB": 28
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "squat_depth",
+            "joints": {
+              "pointA": 24,
+              "vertex": 26,
+              "pointB": 28
+            },
+            "goodRange": [
+              0,
+              90
+            ],
+            "penalty": 10,
+            "ranges": [
+              {
+                "max": 90,
+                "penalty": 0
+              },
+              {
+                "max": 110,
+                "penalty": 10
+              },
+              {
+                "max": 180,
+                "penalty": 20
+              }
+            ],
+            "violation": {
+              "type": "shallow_squat",
+              "threshold": 100,
+              "compare": "above",
+              "message_en": "Go deeper! Try to get thighs parallel to the ground.",
+              "message_es": "¡Baja más! Intenta poner los muslos paralelos al suelo."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 79,
+      "name": "Puente de Glúteos",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 26,
+          "vertex": 24,
+          "pointB": 12
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "hip_extension",
+            "joints": {
+              "pointA": 26,
+              "vertex": 24,
+              "pointB": 12
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "incomplete_extension",
+              "threshold": 140,
+              "compare": "below",
+              "message_en": "Fully extend your hips at the top!",
+              "message_es": "¡Extiende las caderas completamente arriba!"
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 80,
+      "name": "Puente a Una Pierna",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 26,
+          "vertex": 24,
+          "pointB": 12
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "hip_extension",
+            "joints": {
+              "pointA": 26,
+              "vertex": 24,
+              "pointB": 12
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "incomplete_extension",
+              "threshold": 140,
+              "compare": "below",
+              "message_en": "Fully extend your hips at the top!",
+              "message_es": "¡Extiende las caderas completamente arriba!"
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 81,
+      "name": "Empuje de Cadera",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 26,
+          "vertex": 24,
+          "pointB": 12
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "hip_extension",
+            "joints": {
+              "pointA": 26,
+              "vertex": 24,
+              "pointB": 12
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "incomplete_extension",
+              "threshold": 140,
+              "compare": "below",
+              "message_en": "Fully extend your hips at the top!",
+              "message_es": "¡Extiende las caderas completamente arriba!"
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 82,
+      "name": "Patada de Burro",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 26,
+          "vertex": 24,
+          "pointB": 12
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "hip_extension",
+            "joints": {
+              "pointA": 26,
+              "vertex": 24,
+              "pointB": 12
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "incomplete_extension",
+              "threshold": 140,
+              "compare": "below",
+              "message_en": "Fully extend your hips at the top!",
+              "message_es": "¡Extiende las caderas completamente arriba!"
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 75,
+      "name": "Peso Muerto Rumano a Una Pierna",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 26,
+          "vertex": 24,
+          "pointB": 12
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "hip_extension",
+            "joints": {
+              "pointA": 26,
+              "vertex": 24,
+              "pointB": 12
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "incomplete_extension",
+              "threshold": 140,
+              "compare": "below",
+              "message_en": "Fully extend your hips at the top!",
+              "message_es": "¡Extiende las caderas completamente arriba!"
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 63,
+      "name": "Extensión de Espalda",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 26,
+          "vertex": 24,
+          "pointB": 12
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "hip_extension",
+            "joints": {
+              "pointA": 26,
+              "vertex": 24,
+              "pointB": 12
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "incomplete_extension",
+              "threshold": 140,
+              "compare": "below",
+              "message_en": "Fully extend your hips at the top!",
+              "message_es": "¡Extiende las caderas completamente arriba!"
+            }
+          },
+          {
+            "name": "leg_straight",
+            "joints": {
+              "pointA": 24,
+              "vertex": 26,
+              "pointB": 28
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "bent_leg",
+              "threshold": 130,
+              "compare": "below",
+              "message_en": "Keep your legs straight!",
+              "message_es": "¡Mantén las piernas rectas!"
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 76,
+      "name": "Elevación Glúteo-Isquios",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 26,
+          "vertex": 24,
+          "pointB": 12
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "hip_extension",
+            "joints": {
+              "pointA": 26,
+              "vertex": 24,
+              "pointB": 12
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "incomplete_extension",
+              "threshold": 140,
+              "compare": "below",
+              "message_en": "Fully extend your hips at the top!",
+              "message_es": "¡Extiende las caderas completamente arriba!"
+            }
+          },
+          {
+            "name": "leg_straight",
+            "joints": {
+              "pointA": 24,
+              "vertex": 26,
+              "pointB": 28
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "bent_leg",
+              "threshold": 130,
+              "compare": "below",
+              "message_en": "Keep your legs straight!",
+              "message_es": "¡Mantén las piernas rectas!"
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 78,
+      "name": "Elevación Natural Glúteo-Isquios",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 26,
+          "vertex": 24,
+          "pointB": 12
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "hip_extension",
+            "joints": {
+              "pointA": 26,
+              "vertex": 24,
+              "pointB": 12
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "incomplete_extension",
+              "threshold": 140,
+              "compare": "below",
+              "message_en": "Fully extend your hips at the top!",
+              "message_es": "¡Extiende las caderas completamente arriba!"
+            }
+          },
+          {
+            "name": "leg_straight",
+            "joints": {
+              "pointA": 24,
+              "vertex": 26,
+              "pointB": 28
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "bent_leg",
+              "threshold": 130,
+              "compare": "below",
+              "message_en": "Keep your legs straight!",
+              "message_es": "¡Mantén las piernas rectas!"
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 48,
+      "name": "Elevación de Piernas Colgado",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 24,
+          "pointB": 26
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension",
+        "countDirection": "flex"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "range_of_motion",
+            "joints": {
+              "pointA": 12,
+              "vertex": 24,
+              "pointB": 26
+            },
+            "goodRange": [
+              0,
+              120
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "limited_range",
+              "threshold": 130,
+              "compare": "above",
+              "message_en": "Increase your range of motion!",
+              "message_es": "¡Aumenta el rango de movimiento!"
+            }
+          },
+          {
+            "name": "leg_straight",
+            "joints": {
+              "pointA": 24,
+              "vertex": 26,
+              "pointB": 28
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "bent_leg",
+              "threshold": 130,
+              "compare": "below",
+              "message_en": "Keep your legs straight!",
+              "message_es": "¡Mantén las piernas rectas!"
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 65,
+      "name": "Elevación de Piernas",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 24,
+          "pointB": 26
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension",
+        "countDirection": "flex"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "range_of_motion",
+            "joints": {
+              "pointA": 12,
+              "vertex": 24,
+              "pointB": 26
+            },
+            "goodRange": [
+              0,
+              120
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "limited_range",
+              "threshold": 130,
+              "compare": "above",
+              "message_en": "Increase your range of motion!",
+              "message_es": "¡Aumenta el rango de movimiento!"
+            }
+          },
+          {
+            "name": "leg_straight",
+            "joints": {
+              "pointA": 24,
+              "vertex": 26,
+              "pointB": 28
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "bent_leg",
+              "threshold": 130,
+              "compare": "below",
+              "message_en": "Keep your legs straight!",
+              "message_es": "¡Mantén las piernas rectas!"
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 66,
+      "name": "Elevación de Rodillas Colgado",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 24,
+          "pointB": 26
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension",
+        "countDirection": "flex"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "range_of_motion",
+            "joints": {
+              "pointA": 12,
+              "vertex": 24,
+              "pointB": 26
+            },
+            "goodRange": [
+              0,
+              120
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "limited_range",
+              "threshold": 130,
+              "compare": "above",
+              "message_en": "Increase your range of motion!",
+              "message_es": "¡Aumenta el rango de movimiento!"
+            }
+          },
+          {
+            "name": "leg_straight",
+            "joints": {
+              "pointA": 24,
+              "vertex": 26,
+              "pointB": 28
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "bent_leg",
+              "threshold": 130,
+              "compare": "below",
+              "message_en": "Keep your legs straight!",
+              "message_es": "¡Mantén las piernas rectas!"
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 110,
+      "name": "Elevación de Piernas Acostado",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 24,
+          "pointB": 26
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension",
+        "countDirection": "flex"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "range_of_motion",
+            "joints": {
+              "pointA": 12,
+              "vertex": 24,
+              "pointB": 26
+            },
+            "goodRange": [
+              0,
+              120
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "limited_range",
+              "threshold": 130,
+              "compare": "above",
+              "message_en": "Increase your range of motion!",
+              "message_es": "¡Aumenta el rango de movimiento!"
+            }
+          },
+          {
+            "name": "leg_straight",
+            "joints": {
+              "pointA": 24,
+              "vertex": 26,
+              "pointB": 28
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "bent_leg",
+              "threshold": 130,
+              "compare": "below",
+              "message_en": "Keep your legs straight!",
+              "message_es": "¡Mantén las piernas rectas!"
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 53,
+      "name": "Abdominales",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 24,
+          "pointB": 26
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension",
+        "countDirection": "flex"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "range_of_motion",
+            "joints": {
+              "pointA": 12,
+              "vertex": 24,
+              "pointB": 26
+            },
+            "goodRange": [
+              0,
+              120
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "limited_range",
+              "threshold": 130,
+              "compare": "above",
+              "message_en": "Increase your range of motion!",
+              "message_es": "¡Aumenta el rango de movimiento!"
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 109,
+      "name": "Balanceo Hollow",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 24,
+          "pointB": 26
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension",
+        "countDirection": "flex"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "range_of_motion",
+            "joints": {
+              "pointA": 12,
+              "vertex": 24,
+              "pointB": 26
+            },
+            "goodRange": [
+              0,
+              120
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "limited_range",
+              "threshold": 130,
+              "compare": "above",
+              "message_en": "Increase your range of motion!",
+              "message_es": "¡Aumenta el rango de movimiento!"
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 122,
+      "name": "Abdominal con Giro",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 24,
+          "pointB": 26
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension",
+        "countDirection": "flex"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "range_of_motion",
+            "joints": {
+              "pointA": 12,
+              "vertex": 24,
+              "pointB": 26
+            },
+            "goodRange": [
+              0,
+              120
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "limited_range",
+              "threshold": 130,
+              "compare": "above",
+              "message_en": "Increase your range of motion!",
+              "message_es": "¡Aumenta el rango de movimiento!"
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 124,
+      "name": "Bicicletas",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 24,
+          "pointB": 26
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension",
+        "countDirection": "flex"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "range_of_motion",
+            "joints": {
+              "pointA": 12,
+              "vertex": 24,
+              "pointB": 26
+            },
+            "goodRange": [
+              0,
+              120
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "limited_range",
+              "threshold": 130,
+              "compare": "above",
+              "message_en": "Increase your range of motion!",
+              "message_es": "¡Aumenta el rango de movimiento!"
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 74,
+      "name": "Curl Nórdico de Isquios",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 24,
+          "vertex": 26,
+          "pointB": 28
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension",
+        "countDirection": "flex"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "range_of_motion",
+            "joints": {
+              "pointA": 12,
+              "vertex": 24,
+              "pointB": 26
+            },
+            "goodRange": [
+              0,
+              120
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "limited_range",
+              "threshold": 130,
+              "compare": "above",
+              "message_en": "Increase your range of motion!",
+              "message_es": "¡Aumenta el rango de movimiento!"
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 77,
+      "name": "Curl de Isquios con Banda",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 24,
+          "vertex": 26,
+          "pointB": 28
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension",
+        "countDirection": "flex"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "range_of_motion",
+            "joints": {
+              "pointA": 12,
+              "vertex": 24,
+              "pointB": 26
+            },
+            "goodRange": [
+              0,
+              120
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "limited_range",
+              "threshold": 130,
+              "compare": "above",
+              "message_en": "Increase your range of motion!",
+              "message_es": "¡Aumenta el rango de movimiento!"
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 52,
+      "name": "Rodillo Abdominal",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "arm_extension",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "arm_not_extended",
+              "message_en": "Extend your arms fully at the top!",
+              "message_es": "¡Extiende los brazos completamente arriba!"
+            }
+          },
+          {
+            "name": "spine_alignment",
+            "joints": {
+              "pointA": 12,
+              "vertex": 24,
+              "pointB": 28
+            },
+            "goodRange": [
+              160,
+              180
+            ],
+            "penalty": 20,
+            "violation": {
+              "type": "back_sag",
+              "threshold": 150,
+              "compare": "below",
+              "message_en": "Keep your core tight! Your hips are sagging.",
+              "message_es": "¡Mantén el core apretado! Tus caderas están cayendo."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 99,
+      "name": "Burpee",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 14,
+          "pointB": 16
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "arm_extension",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "arm_not_extended",
+              "message_en": "Extend your arms fully at the top!",
+              "message_es": "¡Extiende los brazos completamente arriba!"
+            }
+          },
+          {
+            "name": "spine_alignment",
+            "joints": {
+              "pointA": 12,
+              "vertex": 24,
+              "pointB": 28
+            },
+            "goodRange": [
+              160,
+              180
+            ],
+            "penalty": 20,
+            "violation": {
+              "type": "back_sag",
+              "threshold": 150,
+              "compare": "below",
+              "message_en": "Keep your core tight! Your hips are sagging.",
+              "message_es": "¡Mantén el core apretado! Tus caderas están cayendo."
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 102,
+      "name": "Saltos de Tijera",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 1,
+          "vertex": 12,
+          "pointB": 14
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "arm_extension",
+            "joints": {
+              "pointA": 12,
+              "vertex": 14,
+              "pointB": 16
+            },
+            "goodRange": [
+              140,
+              180
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "arm_not_extended",
+              "message_en": "Extend your arms fully at the top!",
+              "message_es": "¡Extiende los brazos completamente arriba!"
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 100,
+      "name": "Escalador",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 24,
+          "vertex": 26,
+          "pointB": 28
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension",
+        "countDirection": "flex"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "range_of_motion",
+            "joints": {
+              "pointA": 12,
+              "vertex": 24,
+              "pointB": 26
+            },
+            "goodRange": [
+              0,
+              120
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "limited_range",
+              "threshold": 130,
+              "compare": "above",
+              "message_en": "Increase your range of motion!",
+              "message_es": "¡Aumenta el rango de movimiento!"
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 59,
+      "name": "Bicho Muerto",
+      "repCounting": {
+        "enabled": true,
+        "side": "right",
+        "joints": {
+          "pointA": 12,
+          "vertex": 24,
+          "pointB": 26
+        },
+        "thresholds": {
+          "flex": 90,
+          "extend": 160
+        },
+        "type": "extension",
+        "countDirection": "flex"
+      },
+      "formAnalysis": {
+        "rules": [
+          {
+            "name": "range_of_motion",
+            "joints": {
+              "pointA": 12,
+              "vertex": 24,
+              "pointB": 26
+            },
+            "goodRange": [
+              0,
+              120
+            ],
+            "penalty": 10,
+            "violation": {
+              "type": "limited_range",
+              "threshold": 130,
+              "compare": "above",
+              "message_en": "Increase your range of motion!",
+              "message_es": "¡Aumenta el rango de movimiento!"
+            }
+          }
+        ]
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 23,
+      "name": "Pino",
+      "repCounting": {
+        "enabled": false
+      },
+      "formAnalysis": {
+        "rules": []
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 30,
+      "name": "Pino en Pared",
+      "repCounting": {
+        "enabled": false
+      },
+      "formAnalysis": {
+        "rules": []
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 42,
+      "name": "Colgado Muerto",
+      "repCounting": {
+        "enabled": false
+      },
+      "formAnalysis": {
+        "rules": []
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 44,
+      "name": "Colgado con Toalla",
+      "repCounting": {
+        "enabled": false
+      },
+      "formAnalysis": {
+        "rules": []
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 45,
+      "name": "Plancha",
+      "repCounting": {
+        "enabled": false
+      },
+      "formAnalysis": {
+        "rules": []
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 46,
+      "name": "Posición Hollow",
+      "repCounting": {
+        "enabled": false
+      },
+      "formAnalysis": {
+        "rules": []
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 47,
+      "name": "Sitting en L",
+      "repCounting": {
+        "enabled": false
+      },
+      "formAnalysis": {
+        "rules": []
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 50,
+      "name": "Sitting en V",
+      "repCounting": {
+        "enabled": false
+      },
+      "formAnalysis": {
+        "rules": []
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 51,
+      "name": "Sitting en L con Rodillas",
+      "repCounting": {
+        "enabled": false
+      },
+      "formAnalysis": {
+        "rules": []
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 54,
+      "name": "Plancha Lateral",
+      "repCounting": {
+        "enabled": false
+      },
+      "formAnalysis": {
+        "rules": []
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 56,
+      "name": "Bandera Humana",
+      "repCounting": {
+        "enabled": false
+      },
+      "formAnalysis": {
+        "rules": []
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 62,
+      "name": "Posición Superman",
+      "repCounting": {
+        "enabled": false
+      },
+      "formAnalysis": {
+        "rules": []
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 69,
+      "name": "Sentadilla en Pared",
+      "repCounting": {
+        "enabled": false
+      },
+      "formAnalysis": {
+        "rules": []
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 91,
+      "name": "Plancha de Aductores",
+      "repCounting": {
+        "enabled": false
+      },
+      "formAnalysis": {
+        "rules": []
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 105,
+      "name": "Posición Rana",
+      "repCounting": {
+        "enabled": false
+      },
+      "formAnalysis": {
+        "rules": []
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 106,
+      "name": "Posición Cuervo",
+      "repCounting": {
+        "enabled": false
+      },
+      "formAnalysis": {
+        "rules": []
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 113,
+      "name": "Sitting en L Abierto",
+      "repCounting": {
+        "enabled": false
+      },
+      "formAnalysis": {
+        "rules": []
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 115,
+      "name": "Inclinación en Planche",
+      "repCounting": {
+        "enabled": false
+      },
+      "formAnalysis": {
+        "rules": []
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 116,
+      "name": "Planche Encogido",
+      "repCounting": {
+        "enabled": false
+      },
+      "formAnalysis": {
+        "rules": []
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 27,
+      "name": "Planche",
+      "repCounting": {
+        "enabled": false
+      },
+      "formAnalysis": {
+        "rules": []
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 28,
+      "name": "Planche Encogido",
+      "repCounting": {
+        "enabled": false
+      },
+      "formAnalysis": {
+        "rules": []
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 29,
+      "name": "Planche Abierto",
+      "repCounting": {
+        "enabled": false
+      },
+      "formAnalysis": {
+        "rules": []
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 16,
+      "name": "Lever Frontal",
+      "repCounting": {
+        "enabled": false
+      },
+      "formAnalysis": {
+        "rules": []
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 17,
+      "name": "Lever Trasero",
+      "repCounting": {
+        "enabled": false
+      },
+      "formAnalysis": {
+        "rules": []
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 18,
+      "name": "Lever Frontal Encogido",
+      "repCounting": {
+        "enabled": false
+      },
+      "formAnalysis": {
+        "rules": []
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    },
+    {
+      "exerciseId": 49,
+      "name": "Bandera Dragón",
+      "repCounting": {
+        "enabled": false
+      },
+      "formAnalysis": {
+        "rules": []
+      },
+      "voiceCues": {
+        "announceReps": true,
+        "announceEvery": 5,
+        "announceForm": true
+      }
+    }
+  ]
+}

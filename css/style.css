@@ -3839,6 +3839,299 @@ input.error:focus, select.error:focus, textarea.error:focus {
   margin-top: 1.5rem;
 }
 
+/* ===== AI WORKOUT VIEW ===== */
+
+.view-ai-workout {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.ai-workout-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ai-exercise-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.ai-exercise-selector label {
+  font-weight: 600;
+  color: var(--text-primary, #222);
+  white-space: nowrap;
+}
+
+.ai-exercise-selector .form-select {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 6px;
+  background: var(--white, #fff);
+  color: var(--text-primary, #222);
+  font-size: 0.95rem;
+}
+
+.ai-video-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  max-height: 400px;
+  background: #000;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.ai-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  z-index: 10;
+}
+
+.ai-loading .spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.ai-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ai-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.ai-stats .stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.75rem;
+  background: var(--card-bg, #f9f9f9);
+  border-radius: 8px;
+  border: 1px solid var(--border-color, #eee);
+}
+
+.ai-stats .stat-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-secondary, #666);
+  margin-bottom: 0.25rem;
+}
+
+.ai-stats .stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary, #4CAF50);
+}
+
+.ai-status {
+  text-align: center;
+}
+
+.status-indicator {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: var(--gray-200, #e0e0e0);
+  color: var(--text-secondary, #666);
+}
+
+.status-indicator.active {
+  background: var(--success-light, #e8f5e9);
+  color: var(--success, #4CAF50);
+}
+
+.status-indicator.lost {
+  background: var(--danger-light, #ffebee);
+  color: var(--danger, #f44336);
+}
+
+.ai-auto-advance {
+  display: flex;
+  justify-content: center;
+}
+
+.ai-auto-advance .checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--text-primary, #222);
+}
+
+.ai-auto-advance input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary, #4CAF50);
+}
+
+.ai-info {
+  padding: 0.75rem 1rem;
+  background: var(--info-light, #e3f2fd);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: var(--text-primary, #222);
+}
+
+.ai-info p {
+  margin: 0 0 0.5rem;
+  font-weight: 600;
+}
+
+.ai-info ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.ai-info li {
+  margin-bottom: 0.25rem;
+}
+
+.ai-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.ai-error p {
+  color: var(--danger, #f44336);
+  font-weight: 600;
+}
+
+.ai-error .ai-error-detail {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--text-secondary, #666);
+}
+
+/* AI Mode in Active Workout */
+
+.ai-mode-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--text-primary, #222);
+}
+
+.ai-mode-toggle input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary, #4CAF50);
+}
+
+.ai-mode-toggle-label {
+  font-weight: 500;
+}
+
+.start-routine-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.ai-workout-video-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  max-height: 300px;
+  background: #000;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.ai-workout-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.ai-workout-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem;
+  background: var(--card-bg, #f9f9f9);
+  border-radius: 6px;
+  border: 1px solid var(--border-color, #eee);
+}
+
+.ai-workout-stat .stat-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-secondary, #666);
+  margin-bottom: 0.15rem;
+}
+
+.ai-workout-stat .stat-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary, #4CAF50);
+}
+
+.ai-workout-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary, #666);
+}
+
+.ai-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gray-400, #999);
+}
+
+.ai-status-dot.ai-status-active {
+  background: var(--success, #4CAF50);
+}
+
+.ai-status-dot.ai-status-lost {
+  background: var(--danger, #f44336);
+}
+
+.ai-error-text {
+  color: var(--danger, #f44336);
+  font-weight: 500;
+  text-align: center;
+  padding: 1rem;
+}
+
 /* ===== DARK MODE SUPPORT ===== */
 
 /* Dark mode bottom-sheet styles */

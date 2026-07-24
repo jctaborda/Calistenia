@@ -8,6 +8,7 @@ import { showConfirmation } from '../services/confirmation-modal.js';
 import { escapeHtml } from '../utils/html-helpers.js';
 import { getDifficultyClass } from '../utils/helpers.js';
 import { warmUpGeneratorService } from '../services/warmup-generator-service.js';
+import { routineHasAIExercises } from '../services/ai-config-service.js';
 
 export async function renderRoutineDetailsView(type, id) {
   const main = document.getElementById('app');
@@ -28,6 +29,9 @@ export async function renderRoutineDetailsView(type, id) {
     window.location.hash = '#routines';
     return;
   }
+
+  // Check if routine has any exercises with AI form tracking support
+  const hasAISupport = routineHasAIExercises(routine, exercises);
   
   // Helper function to safely find exercise by ID
   function findExerciseById(exerciseId) {
@@ -144,6 +148,12 @@ export async function renderRoutineDetailsView(type, id) {
         ${renderExerciseList(routine.cooldown, t('routine_details.cooldown'))}
         
         <div class="start-routine-container">
+          ${hasAISupport ? `
+          <label class="ai-mode-toggle">
+            <input type="checkbox" id="ai-mode-checkbox">
+            <span class="ai-mode-toggle-label">${t('ai_mode')}</span>
+          </label>
+          ` : ''}
           <button class="btn" id="start-routine-btn" data-type="${type}" data-id="${id}">
             ${t('routine_details.start')}
           </button>
@@ -348,7 +358,9 @@ export async function renderRoutineDetailsView(type, id) {
       e.preventDefault();
       const type = startBtn.dataset.type;
       const id = startBtn.dataset.id;
-      handleStartRoutine(type, id);
+      const aiModeCheckbox = main.querySelector('#ai-mode-checkbox');
+      const aiMode = aiModeCheckbox ? aiModeCheckbox.checked : false;
+      handleStartRoutine(type, id, aiMode);
     });
   }
 }
@@ -356,7 +368,7 @@ export async function renderRoutineDetailsView(type, id) {
 /**
  * Start workout directly (manual mode only) - now handled by event delegation
  */
-function handleStartRoutine(type, id) {
+function handleStartRoutine(type, id, aiMode = false) {
   let routine;
   const state = getState();
   
@@ -371,7 +383,8 @@ function handleStartRoutine(type, id) {
         progress: {},
         currentExerciseIndex: 0,
         currentSetIndex: 0,
-        workoutMode: 'manual' // Always manual mode
+        workoutMode: 'manual',
+        aiMode: aiMode
       }
     });
     

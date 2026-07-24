@@ -103,6 +103,7 @@ export function initializeState() {
     muscles: [],
     difficulties: [],
     modules: [],
+    aiConfigs: [],
     settings: {
       units: 'metric', // 'metric' or 'imperial'
       notifications: {

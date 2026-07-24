@@ -26,10 +26,25 @@ export class VoiceCuesService {
     }
 
     this.isInitialized = true;
-    
+
+    // Sync voiceEnabled with persisted state setting
+    try {
+      const saved = localStorage.getItem('state');
+      if (saved) {
+        const state = JSON.parse(saved);
+        if (state.settings?.voiceCues?.enabled !== false) {
+          this.voiceEnabled = true;
+        }
+      } else {
+        this.voiceEnabled = true;
+      }
+    } catch {
+      this.voiceEnabled = true;
+    }
+
     // Load available voices
     this.loadVoices();
-    
+
     return true;
   }
 

@@ -122,6 +122,17 @@ export async function deleteSkillModule(id) {
   }
 }
 
+// AI Config API
+export async function fetchAIConfigs() {
+  try {
+    const aiConfigService = await import('./ai-config-service.js');
+    return aiConfigService.loadAIConfigs();
+  } catch (error) {
+    console.error('Error fetching AI configs:', error);
+    return [];
+  }
+}
+
 // Re-export ModuleStore for convenience
 export { ModuleStore } from './modules-service.js';
 
