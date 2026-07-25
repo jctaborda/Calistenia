@@ -145,10 +145,8 @@ export function renderActiveWorkoutView() {
     exerciseAIConfig,
   });
 
-  // Start AI tracking if enabled and exercise supports it
-  if (canUseAI && !aiEnabled) {
-    startAITracking(exercise.id, exerciseAIConfig);
-  }
+  // AI tracking is NOT auto-started — user must tap "Allow Camera Access"
+  // to satisfy the user-gesture requirement on mobile browsers.
 
   // Bind state change event listener (with cleanup)
   const handleActiveWorkoutStateChange = () => {
@@ -202,9 +200,14 @@ function renderActiveWorkoutTemplate({
         canUseAI
           ? `
       <div id="ai-workout-container" class="ai-workout-video-container">
-        <div class="ai-loading" id="ai-loading">
-          <div class="spinner"></div>
-          <span>${t('ai_initializing')}</span>
+        <div id="ai-permission-prompt" class="ai-permission-prompt">
+          <p>📷 ${t('ai_permission_explainer')}</p>
+          <ul>
+            <li>${t('ai_info_lighting')}</li>
+            <li>${t('ai_info_full_body')}</li>
+            <li>${t('ai_info_contrast')}</li>
+          </ul>
+          <button class="btn btn-primary" id="ai-start-camera-btn">${t('ai_start_camera')}</button>
         </div>
       </div>
       <div class="ai-workout-stats" id="ai-workout-stats">
@@ -317,7 +320,7 @@ function wireUpEventHandlers({
   if (canUseAI) {
     const aiToggleBtn = main.querySelector('#ai-toggle-btn');
     if (aiToggleBtn) {
-      aiToggleBtn.addEventListener('click', () => {
+      aiToggleBtn.addEventListener('click', async () => {
         const exercise = exercises.find(
           (e) => String(e.id) === String(currentExerciseData.exerciseId)
         );
@@ -325,8 +328,30 @@ function wireUpEventHandlers({
           stopAITracking();
           updateAIButton(false);
         } else if (exerciseAIConfig && exercise) {
-          startAITracking(exercise.id, exerciseAIConfig);
-          updateAIButton(true);
+          aiToggleBtn.disabled = true;
+          await startAITracking(exercise.id, exerciseAIConfig);
+          if (aiEnabled) {
+            updateAIButton(true);
+          }
+          aiToggleBtn.disabled = false;
+        }
+      });
+    }
+
+    // "Allow Camera Access" button inside the permission prompt
+    const startCameraBtn = main.querySelector('#ai-start-camera-btn');
+    if (startCameraBtn) {
+      startCameraBtn.addEventListener('click', async () => {
+        const exercise = exercises.find(
+          (e) => String(e.id) === String(currentExerciseData.exerciseId)
+        );
+        if (exerciseAIConfig && exercise) {
+          startCameraBtn.disabled = true;
+          startCameraBtn.textContent = t('ai_initializing');
+          await startAITracking(exercise.id, exerciseAIConfig);
+          if (aiEnabled) {
+            updateAIButton(true);
+          }
         }
       });
     }
@@ -624,6 +649,18 @@ function handleHIITTimer({ hiitInterval, currentExerciseIndex, currentExerciseDa
  * Start AI tracking for the current exercise
  */
 async function startAITracking(exerciseId, aiConfig) {
+  const container = document.getElementById('ai-workout-container');
+  const promptEl = document.getElementById('ai-permission-prompt');
+
+  // Replace permission prompt with loading spinner
+  if (promptEl) {
+    promptEl.outerHTML = `
+      <div class="ai-loading" id="ai-loading">
+        <div class="spinner"></div>
+        <span>${t('ai_initializing')}</span>
+      </div>`;
+  }
+
   try {
     const loadingEl = document.getElementById('ai-loading');
     if (loadingEl) loadingEl.style.display = 'flex';
@@ -713,11 +750,35 @@ async function startAITracking(exerciseId, aiConfig) {
     }, 500);
   } catch (error) {
     console.error('[ActiveWorkout] AI tracking failed:', error);
-    show(t('ai_camera_error'), 'error');
     aiEnabled = false;
-    const loadingEl = document.getElementById('ai-loading');
-    if (loadingEl) {
-      loadingEl.innerHTML = `<p class="ai-error-text">${t('ai_camera_error')}</p>`;
+
+    // Determine user-friendly error message based on error type
+    let errorMsg = t('ai_camera_error');
+    const msg = error.message || '';
+    if (error.name === 'NotAllowedError' || msg.includes('permission') || msg.includes('denied')) {
+      errorMsg = t('ai_camera_not_allowed');
+    } else if (error.name === 'NotFoundError' || msg.includes('No video devices')) {
+      errorMsg = t('ai_camera_not_found');
+    } else if (error.name === 'NotReadableError' || msg.includes('in use')) {
+      errorMsg = t('ai_camera_in_use');
+    }
+
+    show(errorMsg, 'error');
+
+    // Replace loading/error with a retry prompt
+    if (container) {
+      container.innerHTML = `
+        <div class="ai-camera-error" id="ai-camera-error">
+          <p>${errorMsg}</p>
+          <button class="btn btn-primary" id="ai-retry-camera-btn">${t('ai_try_again')}</button>
+        </div>`;
+
+      document.getElementById('ai-retry-camera-btn').addEventListener('click', async () => {
+        await startAITracking(exerciseId, aiConfig);
+        if (aiEnabled) {
+          updateAIButton(true);
+        }
+      });
     }
   }
 }

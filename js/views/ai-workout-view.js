@@ -52,9 +52,14 @@ async function render(exerciseId) {
         </div>
         
         <div id="ai-workout-container" class="ai-video-container">
-          <div class="ai-loading">
-            <div class="spinner"></div>
-            <p>${t('ai_initializing')}</p>
+          <div class="ai-permission-prompt" id="ai-permission-prompt">
+            <p>📷 ${t('ai_permission_explainer')}</p>
+            <ul>
+              <li>${t('ai_info_lighting')}</li>
+              <li>${t('ai_info_full_body')}</li>
+              <li>${t('ai_info_contrast')}</li>
+            </ul>
+            <button class="btn btn-primary" id="ai-start-camera-btn">${t('ai_start_camera')}</button>
           </div>
         </div>
         
@@ -113,8 +118,18 @@ async function render(exerciseId) {
       const selectedExerciseId = e.target.value;
       if (selectedExerciseId) {
         console.log('[AIWorkoutView] Exercise changed to:', selectedExerciseId);
-        // Restart AI tracking with new exercise
-        await restartAIWithExercise(selectedExerciseId);
+        if (aiViewCleanup) {
+          // Camera is already running — restart with new exercise
+          await restartAIWithExercise(selectedExerciseId);
+        } else {
+          // Camera was not started — just update the target reps display
+          const { exercises: allExercises } = getState();
+          const exercise = allExercises.find(ex => String(ex.id) === String(selectedExerciseId));
+          const targetRepsEl = document.getElementById('ai-target-reps');
+          if (targetRepsEl) {
+            targetRepsEl.textContent = exercise?.reps || '-';
+          }
+        }
       }
     });
   }
@@ -150,44 +165,54 @@ async function render(exerciseId) {
     });
   }
   
-  console.log('[AIWorkoutView] Starting AI tracking...');
-  
-  // Start AI tracking with the exercise ID (if provided or use first from dropdown)
-  const exerciseToUse = exerciseId || exerciseSelect?.value;
-  
-  if (exerciseToUse) {
-    try {
-      const cleanup = await startAITracking(exerciseToUse);
-      
-      // Remove loading overlay after successful initialization
-      const loadingEl = document.querySelector('.ai-loading');
-      if (loadingEl) {
-        loadingEl.remove();
+  // "Start Camera" button — requires user gesture for mobile browsers
+  const startCameraBtn = document.getElementById('ai-start-camera-btn');
+  if (startCameraBtn) {
+    startCameraBtn.addEventListener('click', async () => {
+      const exerciseToUse = exerciseId || exerciseSelect?.value;
+      if (!exerciseToUse) {
+        show(t('ai_select_exercise_prompt'));
+        return;
       }
-      
-      console.log('[AIWorkoutView] AI tracking started successfully');
-    } catch (error) {
-      console.error('[AIWorkoutView] Failed to start:', error);
-      show(error.message || t('ai_camera_error'));
-      
-      // Show error message
-      const container = document.getElementById('ai-workout-container');
-      if (container) {
-        container.innerHTML = `
-          <div class="ai-error">
-            <p>${t('ai_camera_error')}</p>
-            <p class="ai-error-detail">${error.message}</p>
-            <button class="btn btn-primary" id="ai-retry-btn">${t('ai_retry')}</button>
-          </div>
-        `;
-        
-        document.getElementById('ai-retry-btn').addEventListener('click', () => {
-          render(exerciseId);
-        });
+
+      startCameraBtn.disabled = true;
+      startCameraBtn.textContent = t('ai_initializing');
+
+      try {
+        await startAITracking(exerciseToUse);
+        // Remove permission prompt after successful start
+        const promptEl = document.getElementById('ai-permission-prompt');
+        if (promptEl) promptEl.remove();
+        console.log('[AIWorkoutView] AI tracking started successfully');
+      } catch (error) {
+        console.error('[AIWorkoutView] Failed to start:', error);
+
+        let errorMsg = t('ai_camera_error');
+        const msg = error.message || '';
+        if (error.name === 'NotAllowedError' || msg.includes('permission') || msg.includes('denied')) {
+          errorMsg = t('ai_camera_not_allowed');
+        } else if (error.name === 'NotFoundError' || msg.includes('No video devices')) {
+          errorMsg = t('ai_camera_not_found');
+        } else if (error.name === 'NotReadableError' || msg.includes('in use')) {
+          errorMsg = t('ai_camera_in_use');
+        }
+
+        show(errorMsg, 'error');
+
+        const container = document.getElementById('ai-workout-container');
+        if (container) {
+          container.innerHTML = `
+            <div class="ai-camera-error">
+              <p>${errorMsg}</p>
+              <button class="btn btn-primary" id="ai-retry-btn">${t('ai_try_again')}</button>
+            </div>`;
+
+          document.getElementById('ai-retry-btn').addEventListener('click', () => {
+            render(exerciseId);
+          });
+        }
       }
-    }
-  } else {
-    show(t('ai_select_exercise_prompt'));
+    });
   }
 }
 
@@ -220,7 +245,18 @@ async function restartAIWithExercise(exerciseId) {
     aiViewCleanup = cleanup;
   } catch (error) {
     console.error('[AIWorkoutView] Failed to restart:', error);
-    show(error.message || t('ai_camera_error'));
+
+    let errorMsg = t('ai_camera_error');
+    const msg = error.message || '';
+    if (error.name === 'NotAllowedError' || msg.includes('permission') || msg.includes('denied')) {
+      errorMsg = t('ai_camera_not_allowed');
+    } else if (error.name === 'NotFoundError' || msg.includes('No video devices')) {
+      errorMsg = t('ai_camera_not_found');
+    } else if (error.name === 'NotReadableError' || msg.includes('in use')) {
+      errorMsg = t('ai_camera_in_use');
+    }
+
+    show(errorMsg, 'error');
   }
 }
 
