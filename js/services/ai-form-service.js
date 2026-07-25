@@ -115,8 +115,6 @@ export class AIFormService {
    * @param {Object} config - { exerciseId, aiConfig, mode, facingMode, resolution }
    */
   async start(config) {
-    await this.initialize();
-
     const {
       exerciseId,
       aiConfig = null,
@@ -126,7 +124,10 @@ export class AIFormService {
     } = config;
 
     try {
-      // Pre-check: enumerate available devices for diagnostics
+      // Camera access MUST come first — on mobile browsers getUserMedia() requires
+      // a recent user gesture. The MediaPipe initialize() below does a dynamic
+      // import() + WASM/ML model load which can take seconds and invalidate the
+      // gesture context, so we acquire the stream before that happens.
       const devices = await navigator.mediaDevices.enumerateDevices();
       const videoDevices = devices.filter((d) => d.kind === 'videoinput');
       console.log(
@@ -161,6 +162,10 @@ export class AIFormService {
           throw e2;
         }
       }
+
+      // Now that we have the camera stream, initialize MediaPipe (heavy async work
+      // that is no longer gated by the user gesture).
+      await this.initialize();
 
       this.video = document.createElement('video');
       this.video.srcObject = stream;
