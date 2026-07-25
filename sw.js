@@ -287,6 +287,12 @@ self.addEventListener('fetch', event => {
         return fetch(request);
       }
       
+      // Skip MediaPipe assets — large WASM/model/data files must go straight to
+      // the network. Caching them via the SW can corrupt responses on mobile.
+      if (url.pathname.includes('/assets/mediapipe/')) {
+        return fetch(request);
+      }
+      
       try {
         // Strategy 1: HTML and CSS -> Cache-first
         if (request.destination === 'document' || request.destination === 'style') {
