@@ -123,94 +123,88 @@ export class AIFormService {
       resolution = { width: 320, height: 240 }
     } = config;
 
+    // ---- Phase 1: acquire camera stream (must be inside user gesture) ----
+    // On mobile browsers getUserMedia() requires a recent user gesture. Skip
+    // enumerateDevices() entirely — some mobile browsers return 0 video devices
+    // before permission is granted, which would cause a false NotFoundError.
+    let stream;
     try {
-      // Camera access MUST come first — on mobile browsers getUserMedia() requires
-      // a recent user gesture. The MediaPipe initialize() below does a dynamic
-      // import() + WASM/ML model load which can take seconds and invalidate the
-      // gesture context, so we acquire the stream before that happens.
-      const devices = await navigator.mediaDevices.enumerateDevices();
-      const videoDevices = devices.filter((d) => d.kind === 'videoinput');
-      console.log(
-        `[AIFormService] Detected ${videoDevices.length} camera(s):`,
-        videoDevices.map((d) => d.label || 'unlabeled')
-      );
-
-      if (videoDevices.length === 0) {
-        const err = new Error('No camera detected on this device');
-        err.name = 'NotFoundError';
-        throw err;
-      }
-
-      let stream;
-
-      // Try with full constraints first
-      try {
-        stream = await navigator.mediaDevices.getUserMedia({
-          video: {
-            facingMode,
-            width: { ideal: resolution.width },
-            height: { ideal: resolution.height }
-          }
-        });
-      } catch (e) {
-        console.warn('[AIFormService] Full constraints failed, retrying minimal:', e.message);
-        // Fallback: try with any available camera (some PWAs/devices reject facingMode)
-        try {
-          stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        } catch (e2) {
-          console.warn('[AIFormService] Minimal constraints also failed:', e2.message);
-          throw e2;
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode,
+          width: { ideal: resolution.width },
+          height: { ideal: resolution.height }
         }
+      });
+    } catch (e) {
+      console.warn('[AIFormService] Full constraints failed, retrying minimal:', e.message);
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      } catch (e2) {
+        console.warn('[AIFormService] Minimal constraints also failed:', e2.message);
+        throw e2;
       }
-
-      // Now that we have the camera stream, initialize MediaPipe (heavy async work
-      // that is no longer gated by the user gesture).
-      await this.initialize();
-
-      this.video = document.createElement('video');
-      this.video.srcObject = stream;
-      this.video.setAttribute('playsinline', true);
-      this.video.muted = true;
-
-      await new Promise((resolve) => {
-        this.video.addEventListener('loadeddata', resolve);
-      });
-
-      this.video.play().catch((err) => {
-        console.error('[AIFormService] Video play failed:', err);
-      });
-
-      this.canvas = document.createElement('canvas');
-      this.canvas.width = resolution.width;
-      this.canvas.height = resolution.height;
-      this.canvasCtx = this.canvas.getContext('2d');
-
-      this.exerciseId = exerciseId;
-      this.aiConfig = aiConfig;
-      this.mode = mode;
-      this.isRunning = true;
-      this.lastVideoTime = 0;
-      this.repCount = 0;
-      this.repState = 'up';
-      this.formScores = [];
-
-      // Resolve side landmarks from config
-      const side = aiConfig?.repCounting?.side || 'right';
-      this.sideLandmarks = SIDE_LANDMARKS[side] || SIDE_LANDMARKS.right;
-
-      this.pose.onResults((results) => {
-        this.handlePoseResults(results);
-      });
-
-      this.predictLoop();
-
-      return { video: this.video, canvas: this.canvas };
-    } catch (error) {
-      console.error('[AIFormService] Camera access denied:', error);
-      const wrapped = new Error('Camera access required for AI features: ' + error.message);
-      wrapped.name = error.name || 'Error';
-      throw wrapped;
     }
+
+    console.log('[AIFormService] Camera stream acquired');
+
+    // ---- Phase 2: initialize MediaPipe (heavy, not gesture-gated) ----
+    try {
+      await this.initialize();
+    } catch (error) {
+      console.error('[AIFormService] MediaPipe init failed:', error);
+      // Stop the camera we just acquired
+      stream.getTracks().forEach((t) => t.stop());
+      const err = new Error('AI model failed to load: ' + error.message);
+      err.name = 'MediaPipeError';
+      throw err;
+    }
+
+    // ---- Phase 3: wire up video element ----
+    this.video = document.createElement('video');
+    this.video.srcObject = stream;
+    this.video.setAttribute('playsinline', true);
+    this.video.muted = true;
+
+    await new Promise((resolve, reject) => {
+      const timeout = setTimeout(() => {
+        reject(new Error('Video loading timed out'));
+      }, 10000);
+      this.video.addEventListener('loadeddata', () => {
+        clearTimeout(timeout);
+        resolve();
+      });
+    });
+
+    this.video.play().catch((err) => {
+      console.error('[AIFormService] Video play failed:', err);
+    });
+
+    this.canvas = document.createElement('canvas');
+    this.canvas.width = resolution.width;
+    this.canvas.height = resolution.height;
+    this.canvasCtx = this.canvas.getContext('2d');
+
+    this.exerciseId = exerciseId;
+    this.aiConfig = aiConfig;
+    this.mode = mode;
+    this.isRunning = true;
+    this.lastVideoTime = 0;
+    this.repCount = 0;
+    this.repState = 'up';
+    this.formScores = [];
+
+    // Resolve side landmarks from config
+    const side = aiConfig?.repCounting?.side || 'right';
+    this.sideLandmarks = SIDE_LANDMARKS[side] || SIDE_LANDMARKS.right;
+
+    this.pose.onResults((results) => {
+      this.handlePoseResults(results);
+    });
+
+    this.predictLoop();
+
+    return { video: this.video, canvas: this.canvas };
   }
 
   /**

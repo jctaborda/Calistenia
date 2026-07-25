@@ -761,6 +761,8 @@ async function startAITracking(exerciseId, aiConfig) {
       errorMsg = t('ai_camera_not_found');
     } else if (error.name === 'NotReadableError' || msg.includes('in use')) {
       errorMsg = t('ai_camera_in_use');
+    } else if (error.name === 'MediaPipeError' || msg.includes('AI model')) {
+      errorMsg = t('ai_model_load_error');
     }
 
     show(errorMsg, 'error');
