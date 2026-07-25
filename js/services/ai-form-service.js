@@ -126,22 +126,41 @@ export class AIFormService {
     } = config;
 
     try {
+      // Pre-check: enumerate available devices for diagnostics
       const devices = await navigator.mediaDevices.enumerateDevices();
-      const videoDevices = devices.filter((device) => device.kind === 'videoinput');
+      const videoDevices = devices.filter((d) => d.kind === 'videoinput');
+      console.log(
+        `[AIFormService] Detected ${videoDevices.length} camera(s):`,
+        videoDevices.map((d) => d.label || 'unlabeled')
+      );
 
       if (videoDevices.length === 0) {
-        throw new Error('No video devices found');
+        const err = new Error('No camera detected on this device');
+        err.name = 'NotFoundError';
+        throw err;
       }
 
-      const constraints = {
-        video: {
-          facingMode,
-          width: { ideal: resolution.width },
-          height: { ideal: resolution.height }
-        }
-      };
+      let stream;
 
-      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      // Try with full constraints first
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode,
+            width: { ideal: resolution.width },
+            height: { ideal: resolution.height }
+          }
+        });
+      } catch (e) {
+        console.warn('[AIFormService] Full constraints failed, retrying minimal:', e.message);
+        // Fallback: try with any available camera (some PWAs/devices reject facingMode)
+        try {
+          stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        } catch (e2) {
+          console.warn('[AIFormService] Minimal constraints also failed:', e2.message);
+          throw e2;
+        }
+      }
 
       this.video = document.createElement('video');
       this.video.srcObject = stream;
@@ -183,7 +202,9 @@ export class AIFormService {
       return { video: this.video, canvas: this.canvas };
     } catch (error) {
       console.error('[AIFormService] Camera access denied:', error);
-      throw new Error('Camera access required for AI features: ' + error.message);
+      const wrapped = new Error('Camera access required for AI features: ' + error.message);
+      wrapped.name = error.name || 'Error';
+      throw wrapped;
     }
   }
 
