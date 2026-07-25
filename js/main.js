@@ -114,7 +114,7 @@ async function initializeApp() {
 
   // Register Service Worker and handle messages
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').catch(err => {
+    navigator.serviceWorker.register('./sw.js').catch(err => {
       console.warn('[SW] Registration failed:', err);
     });
 
