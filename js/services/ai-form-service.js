@@ -83,7 +83,11 @@ export class AIFormService {
     if (this.pose) return;
 
     try {
-      await import('/assets/mediapipe/pose.js');
+      // Resolve paths relative to this module so the app works when deployed
+      // under a subpath (e.g. GitHub Pages at /Calistenia/).
+      const mediaBase = new URL('../../assets/mediapipe/', import.meta.url).href;
+
+      await import(`${mediaBase}pose.js`);
       Pose = window.Pose;
 
       if (!Pose) {
@@ -91,7 +95,7 @@ export class AIFormService {
       }
 
       this.pose = new Pose({
-        locateFile: (file) => `/assets/mediapipe/${file}`
+        locateFile: (file) => `${mediaBase}${file}`
       });
 
       await this.pose.setOptions({
